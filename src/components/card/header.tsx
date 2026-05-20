@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { View } from "@tarojs/components"
-import { navigateTo } from "@tarojs/taro"
+import { navigate } from "@/utils/navigate"
 
 function CardHeader({
   icon,
@@ -52,14 +52,16 @@ function CardTitle({
 function CardAction({
   children,
   to,
+  onClick,
 }: Readonly<{
   children: ReactNode
   to?: string
+  onClick?: () => void
 }>) {
   const handleClick = () => {
-    if (!to)
-      return
-    void navigateTo({ url: to })
+    if (to)
+      navigate(to)
+    onClick?.()
   }
 
   return (

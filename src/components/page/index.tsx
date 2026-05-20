@@ -7,7 +7,7 @@ function Page({
   children: ReactNode
 }>) {
   return (
-    <View className="w-screen h-screen bg text">
+    <View className="w-screen h-screen flex flex-col bg text">
       {children}
     </View>
   )

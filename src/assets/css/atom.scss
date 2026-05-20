@@ -32,6 +32,9 @@
 
 // 布局
 
+.relative { position: relative; }
+.absolute { position: absolute; }
+
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 
@@ -50,6 +53,8 @@
 
 .center {align-items: center; justify-content: center; }
 .overflow-hidden { overflow: hidden; }
+.hidden { display: none; }
+.opacity { opacity: 0; }
 
 .rounded-sm { border-radius: $roundedSM; }
 .rounded-md { border-radius: $roundedMD; }
@@ -102,6 +107,13 @@
 .gap-lg { gap: $spacingLG; }
 .gap { gap: $spacingMD; }
 
+.inset-xs { top: $spacingXS; right: $spacingXS; bottom: $spacingXS; left: $spacingXS; }
+.inset-sm { top: $spacingSM; right: $spacingSM; bottom: $spacingSM; left: $spacingSM; }
+.inset-md { top: $spacingMD; right: $spacingMD; bottom: $spacingMD; left: $spacingMD; }
+.inset-lg { top: $spacingLG; right: $spacingLG; bottom: $spacingLG; left: $spacingLG; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.inset { top: 0; right: 0; bottom: 0; left: 0; }
+
 // 尺寸
 
 .size-xs { width: $sizeXS; height: $sizeXS; }
@@ -112,6 +124,7 @@
 .size-2xl { width: $size2XL; height: $size2XL; }
 .size-3xl { width: $size3XL; height: $size3XL; }
 .size { width: $sizeMD; height: $sizeMD; }
+.fit { width: fit-content; height: fit-content; }
 
 .w-xs { width: $sizeXS; }
 .w-sm { width: $sizeSM; }
@@ -120,6 +133,7 @@
 .w-xl { width: $sizeXL; }
 .w-2xl { width: $size2XL; }
 .w-3xl { width: $size3XL; }
+.w-fit { width: fit-content; }
 .w-full { width: 100%; }
 .w-screen { width: 100vw; }
 .w { width: $sizeMD; }
@@ -131,6 +145,7 @@
 .h-xl { height: $sizeXL; }
 .h-2xl { height: $size2XL; }
 .h-3xl { height: $size3XL; }
+.h-fit { width: fit-content; }
 .h-full { height: 100%; }
 .h-screen { height: 100vh; }
 .h { height: $sizeMD; }
