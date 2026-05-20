@@ -1,0 +1,135 @@
+@use "variables" as *;
+
+// 颜色
+
+.text-hightlight { color: $textColorHighlighted; }
+.text-base { color: $textColor; }
+.text-toned { color: $textColorToned; }
+.text-muted { color: $textColorMuted; }
+.text-reverse { color: $textColorReverse; }
+.text-primary { color: $primary; }
+
+.bg-base { background-color: $bgColor; }
+.bg-page { background-color: $bgColorPage; }
+.bg-primary { background-color: $bgColorPrimary; }
+.bg { background-color: $bgColor; }
+
+// 文本
+
+.text-sm { font-size: $fontSM;}
+.text-md { font-size: $fontMD; }
+.text-lg { font-size: $fontLG; }
+.text-xl { font-size: $fontXL; }
+.text-2xl { font-size: $font2XL; }
+
+.text-bold { font-weight: bold; }
+
+.text { color: $textColor; font-size: $fontMD; }
+.bold { color: $textColorHighlighted; font-weight: bold; }
+.italic { font-style: italic; }
+.underline { text-decoration: underline; }
+
+// 布局
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+.items-end { align-items: flex-end; }
+
+.justify-start { justify-content: flex-start; }
+.justify-center { justify-content: center; }
+.justify-end { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
+
+.flex-1 { flex: 1; }
+
+.center {align-items: center; justify-content: center; }
+.overflow-hidden { overflow: hidden; }
+
+.rounded-sm { border-radius: $roundedSM; }
+.rounded-md { border-radius: $roundedMD; }
+.rounded-lg { border-radius: $roundedLG; }
+.rounded-xl { border-radius: $roundedXL; }
+.rounded-full { border-radius: 9999px; }
+.rounded { border-radius: $roundedMD; }
+
+// 间距
+
+.p-xs { padding: $spacingXS; }
+.p-sm { padding: $spacingSM; }
+.p-md { padding: $spacingMD; }
+.p-lg { padding: $spacingLG; }
+.p { padding: $spacingMD; }
+
+.px-xs { padding-left: $spacingXS; padding-right: $spacingXS; }
+.px-sm { padding-left: $spacingSM; padding-right: $spacingSM; }
+.px-md { padding-left: $spacingMD; padding-right: $spacingMD; }
+.px-lg { padding-left: $spacingLG; padding-right: $spacingLG; }
+.px { padding-left: $spacingMD; padding-right: $spacingMD; }
+
+.py-xs { padding-top: $spacingXS; padding-bottom: $spacingXS; }
+.py-sm { padding-top: $spacingSM; padding-bottom: $spacingSM; }
+.py-md { padding-top: $spacingMD; padding-bottom: $spacingMD; }
+.py-lg { padding-top: $spacingLG; padding-bottom: $spacingLG; }
+.py { padding-top: $spacingMD; padding-bottom: $spacingMD; }
+
+.m-xs { margin: $spacingXS; }
+.m-sm { margin: $spacingSM; }
+.m-md { margin: $spacingMD; }
+.m-lg { margin: $spacingLG; }
+.m { margin: $spacingMD; }
+
+.mx-xs { margin-left: $spacingXS; margin-right: $spacingXS; }
+.mx-sm { margin-left: $spacingSM; margin-right: $spacingSM; }
+.mx-md { margin-left: $spacingMD; margin-right: $spacingMD; }
+.mx-lg { margin-left: $spacingLG; margin-right: $spacingLG; }
+.mx { margin-left: $spacingMD; margin-right: $spacingMD; }
+
+.my-xs { margin-top: $spacingXS; margin-bottom: $spacingXS; }
+.my-sm { margin-top: $spacingSM; margin-bottom: $spacingSM; }
+.my-md { margin-top: $spacingMD; margin-bottom: $spacingMD; }
+.my-lg { margin-top: $spacingLG; margin-bottom: $spacingLG; }
+.my { margin-top: $spacingMD; margin-bottom: $spacingMD; }
+
+.gap-xs { gap: $spacingXS; }
+.gap-sm { gap: $spacingSM; }
+.gap-md { gap: $spacingMD; }
+.gap-lg { gap: $spacingLG; }
+.gap { gap: $spacingMD; }
+
+// 尺寸
+
+.size-xs { width: $sizeXS; height: $sizeXS; }
+.size-sm { width: $sizeSM; height: $sizeSM; }
+.size-md { width: $sizeMD; height: $sizeMD; }
+.size-lg { width: $sizeLG; height: $sizeLG; }
+.size-xl { width: $sizeXL; height: $sizeXL; }
+.size-2xl { width: $size2XL; height: $size2XL; }
+.size-3xl { width: $size3XL; height: $size3XL; }
+.size { width: $sizeMD; height: $sizeMD; }
+
+.w-xs { width: $sizeXS; }
+.w-sm { width: $sizeSM; }
+.w-md { width: $sizeMD; }
+.w-lg { width: $sizeLG; }
+.w-xl { width: $sizeXL; }
+.w-2xl { width: $size2XL; }
+.w-3xl { width: $size3XL; }
+.w-full { width: 100%; }
+.w-screen { width: 100vw; }
+.w { width: $sizeMD; }
+
+.h-xs { height: $sizeXS; }
+.h-sm { height: $sizeSM; }
+.h-md { height: $sizeMD; }
+.h-lg { height: $sizeLG; }
+.h-xl { height: $sizeXL; }
+.h-2xl { height: $size2XL; }
+.h-3xl { height: $size3XL; }
+.h-full { height: 100%; }
+.h-screen { height: 100vh; }
+.h { height: $sizeMD; }

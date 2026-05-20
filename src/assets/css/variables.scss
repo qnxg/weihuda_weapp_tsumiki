@@ -1,0 +1,40 @@
+@use "theme" as *;
+
+// 颜色
+$primary: var(--primary);
+$textColorHighlighted: var(--text-color-highlighted);
+$textColor: var(--text-color);
+$textColorToned: var(--text-color-toned);
+$textColorMuted: var(--text-color-muted);
+$textColorReverse: var(--text-color-reverse);
+$bgColorPrimary: var(--bg-color-primary);
+$bgColorPage: var(--bg-color-page);
+$bgColor: var(--bg-color);
+
+// 字体大小
+$font2XL: 36px;
+$fontXL: 32px;
+$fontLG: 28px;
+$fontMD: 24px;
+$fontSM: 20px;
+
+// 圆角
+$roundedXL: 24px;
+$roundedLG: 20px;
+$roundedMD: 16px;
+$roundedSM: 12px;
+
+// 间距 (用于 padding, margin, gap 等)
+$spacingLG: 24px;
+$spacingMD: 18px;
+$spacingSM: 12px;
+$spacingXS: 8px;
+
+// 尺寸 (用于宽高等)
+$size3XL: 200px;
+$size2XL: 180px;
+$sizeXL: 160px;
+$sizeLG: 140px;
+$sizeMD: 120px;
+$sizeSM: 100px;
+$sizeXS: 80px;
