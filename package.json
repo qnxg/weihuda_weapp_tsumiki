@@ -1,0 +1,77 @@
+{
+  "name": "front_2026",
+  "version": "1.0.0",
+  "private": true,
+  "description": "湖南大学微生活小程序前端 2026ver.",
+  "templateInfo": {
+    "name": "default",
+    "typescript": true,
+    "css": "Sass",
+    "framework": "React"
+  },
+  "browserslist": {
+    "development": [
+      "defaults and fully supports es6-module",
+      "maintained node versions"
+    ],
+    "production": [
+      "last 3 versions",
+      "Android >= 4.1",
+      "ios >= 8"
+    ]
+  },
+  "author": "",
+  "scripts": {
+    "prepare": "husky",
+    "dev": "taro build --type weapp --watch",
+    "build": "taro build --type weapp",
+    "lint": "eslint .",
+    "fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.24.4",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@tarojs/components": "4.1.11",
+    "@tarojs/helper": "4.1.11",
+    "@tarojs/plugin-framework-react": "4.1.11",
+    "@tarojs/plugin-platform-weapp": "^4.1.11",
+    "@tarojs/react": "4.1.11",
+    "@tarojs/runtime": "4.1.11",
+    "@tarojs/shared": "4.1.11",
+    "@tarojs/taro": "4.1.11",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.19",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^7.6.1",
+    "@babel/core": "^7.24.4",
+    "@babel/plugin-transform-class-properties": "7.25.9",
+    "@babel/preset-react": "^7.24.1",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint-react/eslint-plugin": "^2.13.0",
+    "@tarojs/cli": "4.1.11",
+    "@tarojs/plugin-generator": "4.1.11",
+    "@tarojs/vite-runner": "4.1.11",
+    "@types/minimatch": "^5",
+    "@types/react": "^18.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "babel-preset-taro": "4.1.11",
+    "eslint": "^9",
+    "eslint-config-taro": "4.1.11",
+    "eslint-plugin-format": "^2.0.1",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "postcss": "^8.5.6",
+    "react-refresh": "^0.14.0",
+    "sass": "^1.75.0",
+    "terser": "^5.30.4",
+    "typescript": "^5.4.5",
+    "vite": "^4.2.0"
+  }
+}
