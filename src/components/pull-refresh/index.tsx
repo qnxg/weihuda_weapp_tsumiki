@@ -19,6 +19,15 @@ const STATUS_TEXT: Record<string, string> = {
   [PullRefreshStatus.Loading]: "加载中...",
 }
 
+/**
+ * @description 下拉刷新组件
+ * @example
+ * ```tsx
+ * <PullRefresh onRefresh={() => handleRefresh()}>
+ *   内容
+ * </PullRefresh>
+ * ```
+ */
 function PullRefresh({
   onRefresh,
   children,

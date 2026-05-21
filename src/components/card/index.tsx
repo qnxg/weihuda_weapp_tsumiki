@@ -2,6 +2,18 @@ import type { ComponentProps, ReactNode } from "react"
 import { View } from "@tarojs/components"
 import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
 
+/**
+ * @description 卡片组件
+ * @example
+ * ```tsx
+ * <Card>
+ *   <CardHeader />
+ *   <CardContent>
+ *     content
+ *   </CardContent>
+ * </Card>
+ * ```
+ */
 function Card({
   children,
 }: Readonly<{

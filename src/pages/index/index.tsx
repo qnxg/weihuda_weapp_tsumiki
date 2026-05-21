@@ -1,6 +1,6 @@
 import { Text } from "@tarojs/components"
 import { showModal } from "@tarojs/taro"
-import { MyButton } from "@/components/button"
+import { MyButton } from "@/components/my-button"
 import { Page, PageContent } from "@/components/page"
 
 export default function Index() {
