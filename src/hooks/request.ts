@@ -56,6 +56,7 @@ export function useRequest<T>(
 
     return fnRef.current()
       .then((res) => {
+        // 请求已取消
         if (currentCount !== countRef.current) {
           throw new RequestCancelledError()
         }
@@ -65,23 +66,28 @@ export function useRequest<T>(
         return res
       })
       .catch((err) => {
+        // .then() 抛出的请求取消错误也会捕捉, 继续抛出
         if (err instanceof RequestCancelledError) {
           throw err
         }
 
+        // 请求已取消
         if (currentCount !== countRef.current) {
           throw new RequestCancelledError()
         }
 
+        // request 函数只会抛出 RequestError, 其他错误都视为 hook 使用错误, 需要封装为 RequestError 抛出
         if (!(err instanceof RequestError)) {
-          console.error("Non-server request error: ", err)
+          console.error("[Request Hook Error]", err)
         }
 
         const myError = err instanceof RequestError
           ? err
-          : new RequestError(-1, {} as Response<T>)
+          : new RequestError(-2, "REQUEST_HOOK_ERROR", {} as T)
+
         if (refetchClearError)
           setError(myError)
+
         throw myError
       })
       .finally(() => {

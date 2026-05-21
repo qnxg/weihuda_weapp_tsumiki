@@ -4,29 +4,33 @@ import { ENV } from "@/utils/env"
 /**
  * @interface Response - 通用响应
  * @template T - 响应数据的类型
- * @property {number} code - 响应状态码
+ * @property {string} code - 响应代码
  * @property {T} data - 响应数据
- * @property {string} msg - 响应消息
  */
 export interface Response<T> {
-  code: number
+  code: string
   data: T
-  msg: string
 }
 
 /**
  * @class RequestError - 请求错误类
  * @template T - 响应数据的类型
+ * @param {number} statusCode - HTTP 状态码
+ * @param {string} code - 错误响应代码
+ * @param {T} data - 错误响应数据
  * @property {number} statusCode - HTTP 状态码
- * @property {Response<T>} data - 错误响应
+ * @property {string} code - 错误响应代码
+ * @property {T} data - 错误响应数据
  */
 export class RequestError<T> extends Error {
   statusCode: number
-  data: Response<T>
+  code: string
+  data: T
 
-  constructor(statusCode: number, data: Response<T>) {
-    super(data.msg)
+  constructor(statusCode: number, code: string, data: T) {
+    super(code)
     this.statusCode = statusCode
+    this.code = code
     this.data = data
   }
 }
@@ -67,23 +71,40 @@ export async function request<T = null>(
 
   const authHeader = withToken ? { Authorization: getToken() } : {}
 
-  const res = await Taro.request({
-    url: BASE_URL + url,
-    data,
-    method,
-    header: {
-      "Content-Type": "application/json",
-      ...authHeader,
-      ...header,
-    },
-    timeout,
-  })
-
-  if (res.statusCode !== 200) {
-    throw new RequestError<T>(res.statusCode, res.data as Response<T>)
+  let res: Taro.request.SuccessCallbackResult
+  try {
+    res = await Taro.request({
+      url: BASE_URL + url,
+      data,
+      method,
+      header: {
+        "Content-Type": "application/json",
+        ...authHeader,
+        ...header,
+      },
+      timeout,
+    })
+  }
+  catch (err) {
+    // 请求发送错误 (超时等)
+    console.error(`[Network Error] ${method} ${url} :`, err)
+    throw new RequestError<T>(-1, "NETWORK_ERROR", {} as T)
   }
 
-  return res.data as Response<T>
+  // 服务器错误 (5xx)
+  if (res.statusCode >= 500) {
+    console.error(`[Server Error ${res.statusCode}] ${method} ${url} :`, res.data)
+    throw new RequestError<T>(res.statusCode, "SERVER_ERROR", {} as T)
+  }
+
+  const response = res.data as Response<T>
+
+  // 其他非 200 错误 (业务错误)
+  if (res.statusCode !== 200) {
+    throw new RequestError<T>(res.statusCode, response.code, response.data)
+  }
+
+  return response
 }
 
 request.get = <T = null>(url: string, data?: unknown, options: RequestOptions = {}) =>
