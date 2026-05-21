@@ -13,18 +13,34 @@ export class RequestCancelledError extends Error {
 }
 
 /**
+ * @interface RequestHookOption - useRequest 配置项
+ * @property {boolean} [refetchClearData=true] - 重新请求前是否清空 data, 默认为 true
+ * @property {boolean} [refetchClearError=true] - 重新请求前是否清空 error, 默认为 true
+ * @property {boolean} [initLoadingState=true] - 初始 isLoading 状态, 默认为 true
+ */
+export interface RequestHookOption {
+  refetchClearData?: boolean
+  refetchClearError?: boolean
+  initLoadingState?: boolean
+}
+
+/**
  * @function useRequest - 通用异步请求 Hook
  * @template T - 响应数据的类型
  * @param {() => Promise<Response<T>>} fn - 异步请求函数
  * @param deps - 依赖项数组 (当其中的值发生变化时会重新执行请求)
+ * @param {RequestHookOption} [options] - 配置项
  */
 export function useRequest<T>(
   fn: () => Promise<Response<T>>,
   deps: unknown[] = [],
+  options: RequestHookOption = {},
 ) {
+  const { refetchClearData = true, refetchClearError = true, initLoadingState = true } = options
+
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<RequestError<T> | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(initLoadingState)
   const countRef = useRef(0)
 
   const fnRef = useRef(fn)
@@ -35,7 +51,8 @@ export function useRequest<T>(
     const currentCount = countRef.current
 
     setIsLoading(true)
-    setError(null)
+    if (refetchClearError)
+      setError(null)
 
     return fnRef.current()
       .then((res) => {
@@ -43,7 +60,8 @@ export function useRequest<T>(
           throw new RequestCancelledError()
         }
 
-        setData(res.data)
+        if (refetchClearData)
+          setData(res.data)
         return res
       })
       .catch((err) => {
@@ -62,7 +80,8 @@ export function useRequest<T>(
         const myError = err instanceof RequestError
           ? err
           : new RequestError(-1, {} as Response<T>)
-        setError(myError)
+        if (refetchClearError)
+          setError(myError)
         throw myError
       })
       .finally(() => {
@@ -70,7 +89,7 @@ export function useRequest<T>(
           setIsLoading(false)
         }
       })
-  }, [])
+  }, [refetchClearData, refetchClearError])
 
   useEffect(() => {
     void run()
