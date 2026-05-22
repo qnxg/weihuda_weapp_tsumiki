@@ -13,15 +13,24 @@ export class RequestCancelledError extends Error {
 }
 
 /**
- * @interface RequestHookOption - useRequest 配置项
+ * @interface RequestHookOptions - useRequest 配置项
+ * @template T - 响应数据的类型
  * @property {boolean} [refetchClearData=true] - 重新请求前是否清空 data, 默认为 true
  * @property {boolean} [refetchClearError=true] - 重新请求前是否清空 error, 默认为 true
  * @property {boolean} [initLoadingState=true] - 初始 isLoading 状态, 默认为 true
+ * @property {((fn: () => Promise<Response<T>>) => void) | null} [onRefetch=null] - 重新请求回调
+ * @property {((res: Response<T> | null, err: RequestError<T> | null) => void) | null} [onSettled=null] - 请求结束回调
+ * @property {((res: Response<T>) => void) | null} [onSuccess=null] - 请求成功回调
+ * @property {((err: RequestError<T>) => void) | null} [onError=null] - 请求失败回调
  */
-export interface RequestHookOption {
+export interface RequestHookOptions<T> {
   refetchClearData?: boolean
   refetchClearError?: boolean
   initLoadingState?: boolean
+  onRefetch?: ((fn: () => Promise<Response<T>>) => void) | null
+  onSettled?: ((res: Response<T> | null, err: RequestError<T> | null) => void) | null
+  onSuccess?: ((res: Response<T>) => void) | null
+  onError?: ((err: RequestError<T>) => void) | null
 }
 
 /**
@@ -29,14 +38,22 @@ export interface RequestHookOption {
  * @template T - 响应数据的类型
  * @param {() => Promise<Response<T>>} fn - 异步请求函数
  * @param deps - 依赖项数组 (当其中的值发生变化时会重新执行请求)
- * @param {RequestHookOption} [options] - 配置项
+ * @param {RequestHookOptions} [options] - 配置项
  */
 export function useRequest<T>(
   fn: () => Promise<Response<T>>,
   deps: unknown[] = [],
-  options: RequestHookOption = {},
+  options: RequestHookOptions<T> = {},
 ) {
-  const { refetchClearData = true, refetchClearError = true, initLoadingState = true } = options
+  const {
+    refetchClearData = true,
+    refetchClearError = true,
+    initLoadingState = true,
+    onRefetch = null,
+    onSettled = null,
+    onSuccess = null,
+    onError = null,
+  } = options
 
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<RequestError<T> | null>(null)
@@ -51,8 +68,12 @@ export function useRequest<T>(
     const currentCount = countRef.current
 
     setIsLoading(true)
+    if (refetchClearData)
+      setData(null)
     if (refetchClearError)
       setError(null)
+
+    onRefetch?.(run)
 
     return fnRef.current()
       .then((res) => {
@@ -61,8 +82,9 @@ export function useRequest<T>(
           throw new RequestCancelledError()
         }
 
-        if (refetchClearData)
-          setData(res.data)
+        setData(res.data)
+        onSuccess?.(res)
+        onSettled?.(res, null)
         return res
       })
       .catch((err) => {
@@ -85,9 +107,9 @@ export function useRequest<T>(
           ? err
           : new RequestError(-2, "REQUEST_HOOK_ERROR", {} as T)
 
-        if (refetchClearError)
-          setError(myError)
-
+        setError(myError)
+        onError?.(myError)
+        onSettled?.(null, myError)
         throw myError
       })
       .finally(() => {
@@ -95,7 +117,7 @@ export function useRequest<T>(
           setIsLoading(false)
         }
       })
-  }, [refetchClearData, refetchClearError])
+  }, [refetchClearData, refetchClearError, onRefetch, onSettled, onSuccess, onError])
 
   useEffect(() => {
     void run()
