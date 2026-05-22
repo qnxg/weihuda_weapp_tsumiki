@@ -8,19 +8,19 @@ import type {
   AuthTFAPostResquest,
 } from "@/apis/models/auth"
 import type { MeResponse } from "@/apis/models/me"
-import { request } from "@/utils/request"
+import { authRequest } from "@/utils/auth-request"
 
 export const api = {
-  base: () => request.get<{ hello: string }>("/"),
+  base: () => authRequest.get<{ hello: string }>("/"),
   auth: {
-    login: (data: AuthLoginRequest) => request.get<AuthLoginResponse>("/auth/login", data),
-    refresh: (data: AuthRefreshRequest) => request.get<AuthRefreshResponse>("/auth/refresh", data),
-    bind: (data: AuthBindRequest) => request.post("/auth/bind", data),
+    login: (data: AuthLoginRequest) => authRequest.get<AuthLoginResponse>("/auth/login", data),
+    refresh: (data: AuthRefreshRequest) => authRequest.get<AuthRefreshResponse>("/auth/refresh", data),
+    bind: (data: AuthBindRequest) => authRequest.post("/auth/bind", data),
     tfa: {
-      get: () => request.get<AuthTFAGetResponse>("/auth/tfa"),
-      post: (data: AuthTFAPostResquest) => request.post("/auth/tfa", data),
-      sms: () => request.get("/auth/tfa/sms"),
+      get: () => authRequest.get<AuthTFAGetResponse>("/auth/tfa"),
+      post: (data: AuthTFAPostResquest) => authRequest.post("/auth/tfa", data),
+      sms: () => authRequest.get("/auth/tfa/sms"),
     },
   },
-  me: () => request.get<MeResponse>("/me"),
+  me: () => authRequest.get<MeResponse>("/me"),
 }
