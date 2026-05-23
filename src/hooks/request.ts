@@ -23,14 +23,14 @@ export class RequestCancelledError extends Error {
  * @property {((res: Response<T>) => void) | null} [onSuccess=null] - 请求成功回调
  * @property {((err: RequestError<T>) => void) | null} [onError=null] - 请求失败回调
  */
-export interface RequestHookOptions<T> {
+export interface RequestHookOptions<T extends object | null> {
   refetchClearData?: boolean
   refetchClearError?: boolean
   initLoadingState?: boolean
   onRefetch?: ((fn: () => Promise<Response<T>>) => void) | null
-  onSettled?: ((res: Response<T> | null, err: RequestError<T> | null) => void) | null
+  onSettled?: ((res: Response<T> | null, err: RequestError | null) => void) | null
   onSuccess?: ((res: Response<T>) => void) | null
-  onError?: ((err: RequestError<T>) => void) | null
+  onError?: ((err: RequestError) => void) | null
 }
 
 /**
@@ -40,7 +40,7 @@ export interface RequestHookOptions<T> {
  * @param deps - 依赖项数组 (当其中的值发生变化时会重新执行请求)
  * @param {RequestHookOptions} [options] - 配置项
  */
-export function useRequest<T>(
+export function useRequest<T extends object | null>(
   fn: () => Promise<Response<T>>,
   deps: unknown[] = [],
   options: RequestHookOptions<T> = {},
@@ -56,7 +56,7 @@ export function useRequest<T>(
   } = options
 
   const [data, setData] = useState<T | null>(null)
-  const [error, setError] = useState<RequestError<T> | null>(null)
+  const [error, setError] = useState<RequestError | null>(null)
   const [isLoading, setIsLoading] = useState(initLoadingState)
   const countRef = useRef(0)
 
@@ -105,7 +105,7 @@ export function useRequest<T>(
 
         const myError = err instanceof RequestError
           ? err
-          : new RequestError(-2, "REQUEST_HOOK_ERROR", {} as T)
+          : new RequestError(-2, "REQUEST_HOOK_ERROR", null)
 
         setError(myError)
         onError?.(myError)

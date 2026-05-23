@@ -7,27 +7,26 @@ import { ENV } from "@/utils/env"
  * @property {string} code - 响应代码
  * @property {T} data - 响应数据
  */
-export interface Response<T> {
+export interface Response<T extends object | null> {
   code: string
   data: T
 }
 
 /**
  * @class RequestError - 请求错误类
- * @template T - 响应数据的类型
  * @param {number} statusCode - HTTP 状态码
  * @param {string} code - 错误响应代码
- * @param {T} data - 错误响应数据
+ * @param {unknown} data - 错误响应数据
  * @property {number} statusCode - HTTP 状态码
  * @property {string} code - 错误响应代码
- * @property {T} data - 错误响应数据
+ * @property {unknown} data - 错误响应数据
  */
-export class RequestError<T> extends Error {
+export class RequestError extends Error {
   statusCode: number
   code: string
-  data: T
+  data: unknown
 
-  constructor(statusCode: number, code: string, data: T) {
+  constructor(statusCode: number, code: string, data: unknown) {
     super(code)
     this.statusCode = statusCode
     this.code = code
@@ -47,9 +46,9 @@ export type Header = Record<string, string>
  * @property {((url: string, data: unknown, method: RequestMethod, header: Header, err: any) => void) | null} [onError=null] - 请求错误回调
  * @property {((url: string, data: unknown, method: RequestMethod, header: Header, err: any) => void) | null} [onNetworkError=null] - 网络错误回调
  * @property {((url: string, data: unknown, method: RequestMethod, header: Header, error: unknown) => void) | null} [onServerError=null] - 服务器错误回调
- * @property {((url: string, data: unknown, method: RequestMethod, header: Header, error: RequestError<T>) => void) | null} [onBusinessError=null] - 业务错误回调
+ * @property {((url: string, data: unknown, method: RequestMethod, header: Header, error: RequestError) => void) | null} [onBusinessError=null] - 业务错误回调
  * @property {((url: string, data: unknown, method: RequestMethod, header: Header, response: T) => void) | null} [onSuccess=null] - 请求成功回调
- * @property {((url: string, data: unknown, method: RequestMethod, header: Header, res: T | null, err: any) => void) | null} [onSettled=null] - 请求结束回调
+ * @property {((url: string, data: unknown, method: RequestMethod, header: Header, response: T | null, err: any) => void) | null} [onSettled=null] - 请求结束回调
  */
 export interface RequestOptions<T> {
   header?: Header
@@ -58,9 +57,9 @@ export interface RequestOptions<T> {
   onError?: ((url: string, data: unknown, method: RequestMethod, header: Header, err: any) => void) | null
   onNetworkError?: ((url: string, data: unknown, method: RequestMethod, header: Header, err: any) => void) | null
   onServerError?: ((url: string, data: unknown, method: RequestMethod, header: Header, error: unknown) => void) | null
-  onBusinessError?: ((url: string, data: unknown, method: RequestMethod, header: Header, error: RequestError<T>) => void) | null
+  onBusinessError?: ((url: string, data: unknown, method: RequestMethod, header: Header, error: RequestError) => void) | null
   onSuccess?: ((url: string, data: unknown, method: RequestMethod, header: Header, response: T) => void) | null
-  onSettled?: ((url: string, data: unknown, method: RequestMethod, header: Header, res: T | null, err: any) => void) | null
+  onSettled?: ((url: string, data: unknown, method: RequestMethod, header: Header, response: T | null, err: any) => void) | null
 }
 
 const BASE_URL = ENV.BASE_URL
@@ -73,7 +72,7 @@ const BASE_URL = ENV.BASE_URL
  * @param {RequestMethod} method - HTTP 请求方法
  * @param {RequestOptions} options - 请求配置项
  */
-export async function request<T = null>(
+export async function request<T extends object | null = null>(
   url: string,
   data: unknown,
   method: RequestMethod,
@@ -114,7 +113,7 @@ export async function request<T = null>(
     onNetworkError?.(url, data, method, mergedHeader, err)
     onError?.(url, data, method, mergedHeader, err)
     onSettled?.(url, data, method, mergedHeader, null, err)
-    throw new RequestError<T>(-1, "NETWORK_ERROR", {} as T)
+    throw new RequestError(-1, "NETWORK_ERROR", null)
   }
 
   // 服务器错误 (5xx)
@@ -123,14 +122,14 @@ export async function request<T = null>(
     onServerError?.(url, data, method, mergedHeader, res.data)
     onError?.(url, data, method, mergedHeader, res.data)
     onSettled?.(url, data, method, mergedHeader, null, res.data)
-    throw new RequestError<T>(res.statusCode, "SERVER_ERROR", {} as T)
+    throw new RequestError(res.statusCode, "SERVER_ERROR", null)
   }
 
   const response = res.data as Response<T>
 
   // 其他非 200 错误 (业务错误)
   if (res.statusCode !== 200) {
-    const error = new RequestError<T>(res.statusCode, response.code, response.data)
+    const error = new RequestError(res.statusCode, response.code, response.data)
     onBusinessError?.(url, data, method, mergedHeader, error)
     onError?.(url, data, method, mergedHeader, error)
     onSettled?.(url, data, method, mergedHeader, null, error)
@@ -142,14 +141,14 @@ export async function request<T = null>(
   return response
 }
 
-request.get = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+request.get = <T extends object | null = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   request<T>(url, data, "GET", options)
 
-request.post = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+request.post = <T extends object | null = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   request<T>(url, data, "POST", options)
 
-request.put = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+request.put = <T extends object | null = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   request<T>(url, data, "PUT", options)
 
-request.delete = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+request.delete = <T extends object | null = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   request<T>(url, data, "DELETE", options)

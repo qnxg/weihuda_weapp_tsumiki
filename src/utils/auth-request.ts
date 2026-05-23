@@ -11,7 +11,7 @@ const getToken = () => "token-placeholder"
  * @param {RequestMethod} method - HTTP 请求方法
  * @param {RequestOptions<T>} [options] - 请求配置项
  */
-export async function authRequest<T = null>(
+export async function authRequest<T extends object | null>(
   url: string,
   data: unknown,
   method: RequestMethod,
@@ -52,14 +52,14 @@ export async function authRequest<T = null>(
   })
 }
 
-authRequest.get = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+authRequest.get = <T extends object | null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   authRequest<T>(url, data, "GET", options)
 
-authRequest.post = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+authRequest.post = <T extends object | null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   authRequest<T>(url, data, "POST", options)
 
-authRequest.put = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+authRequest.put = <T extends object | null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   authRequest<T>(url, data, "PUT", options)
 
-authRequest.delete = <T = null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
+authRequest.delete = <T extends object | null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   authRequest<T>(url, data, "DELETE", options)
