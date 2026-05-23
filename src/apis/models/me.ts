@@ -1,5 +1,5 @@
 /**
- * @interface MeResponse - 用户信息响应
+ * @description 用户信息响应
  * @property {string} class - 班级
  * @property {string} name - 姓名
  * @property {string} major - 专业

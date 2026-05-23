@@ -1,5 +1,5 @@
 /**
- * @interface AnnouncementResponse - 公告响应
+ * @description 公告响应
  * @property {number} id - 公告 ID
  * @property {string} title - 公告标题
  * @property {string | null} url - 公告跳转链接

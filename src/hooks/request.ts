@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { RequestError } from "@/utils/request"
 
 /**
- * @class RequestCancelledError - 请求取消错误类
+ * @description 用于标记请求已取消的错误类
  */
 export class RequestCancelledError extends Error {
   constructor() {
@@ -13,7 +13,7 @@ export class RequestCancelledError extends Error {
 }
 
 /**
- * @interface RequestHookOptions - useRequest 配置项
+ * @description useRequest 配置项
  * @template T - 响应数据的类型
  * @property {boolean} [refetchClearData=true] - 重新请求前是否清空 data, 默认为 true
  * @property {boolean} [refetchClearError=true] - 重新请求前是否清空 error, 默认为 true
@@ -34,7 +34,7 @@ export interface RequestHookOptions<T extends object | null> {
 }
 
 /**
- * @function useRequest - 通用异步请求 Hook
+ * @description query 风格的通用异步请求 Hook
  * @template T - 响应数据的类型
  * @param {() => Promise<Response<T>>} fn - 异步请求函数
  * @param deps - 依赖项数组 (当其中的值发生变化时会重新执行请求)

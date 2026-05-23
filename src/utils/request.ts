@@ -2,7 +2,7 @@ import Taro from "@tarojs/taro"
 import { ENV } from "@/utils/env"
 
 /**
- * @interface Response - 通用响应
+ * @description 通用响应
  * @template T - 响应数据的类型
  * @property {string} code - 响应代码
  * @property {T} data - 响应数据
@@ -13,7 +13,7 @@ export interface Response<T extends object | null> {
 }
 
 /**
- * @class RequestError - 请求错误类
+ * @description 请求错误类
  * @param {number} statusCode - HTTP 状态码
  * @param {string} code - 错误响应代码
  * @param {unknown} data - 错误响应数据
@@ -38,7 +38,7 @@ export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE"
 export type Header = Record<string, string>
 
 /**
- * @interface RequestConfig - 请求配置
+ * @description 请求配置
  * @property {string} url - 请求 URL
  * @property {unknown} data - 请求数据
  * @property {RequestMethod} method - HTTP 请求方法
@@ -52,7 +52,7 @@ export interface RequestConfig {
 }
 
 /**
- * @interface RequestOptions - 通用请求函数配置项
+ * @description 通用请求函数配置项
  * @template T - 响应数据的类型
  * @property {Header} [header] - 额外的请求头
  * @property {number} [timeout] - 请求超时时间, 单位为毫秒
@@ -81,10 +81,10 @@ export interface RequestOptions<T> {
 const BASE_URL = ENV.BASE_URL
 
 /**
- * @function request - 通用请求函数
+ * @description 通用请求函数
  * @template T - 响应数据的类型
  * @param {string} url - 请求 URL, 会自动拼接 BASE_URL
- * @param {unknown} data - 请求数据 (对于 GET 请求会被转换为查询参数)
+ * @param {unknown} data - 请求数据
  * @param {RequestMethod} method - HTTP 请求方法
  * @param {RequestOptions} options - 请求配置项
  */

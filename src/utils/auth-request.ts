@@ -4,10 +4,10 @@ import { request, RequestError } from "./request"
 const getToken = () => "token-placeholder"
 
 /**
- * @function authRequest - 自动携带鉴权头并处理鉴权错误的请求函数
+ * @description 自动携带鉴权头并处理鉴权错误的请求函数
  * @template T - 响应数据的类型
  * @param {string} url - 请求 URL
- * @param {unknown} data - 请求数据 (对于 GET 请求会被转换为查询参数)
+ * @param {unknown} data - 请求数据
  * @param {RequestMethod} method - HTTP 请求方法
  * @param {RequestOptions} [options] - 请求配置项
  */
