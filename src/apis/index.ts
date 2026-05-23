@@ -1,11 +1,12 @@
+import type { AnnouncementResponse } from "@/apis/models/announcement"
 import type {
-  AuthBindRequest,
   AuthLoginRequest,
   AuthLoginResponse,
+  AuthPowRequest,
+  AuthPowResponse,
   AuthRefreshRequest,
   AuthRefreshResponse,
-  AuthTFAGetResponse,
-  AuthTFAPostResquest,
+  AuthTFAResquest,
 } from "@/apis/models/auth"
 import type { MeResponse } from "@/apis/models/me"
 import { authRequest } from "@/utils/auth-request"
@@ -15,12 +16,13 @@ export const api = {
   auth: {
     login: (data: AuthLoginRequest) => authRequest.get<AuthLoginResponse>("/auth/login", data),
     refresh: (data: AuthRefreshRequest) => authRequest.get<AuthRefreshResponse>("/auth/refresh", data),
-    bind: (data: AuthBindRequest) => authRequest.post("/auth/bind", data),
     tfa: {
-      get: () => authRequest.get<AuthTFAGetResponse>("/auth/tfa"),
-      post: (data: AuthTFAPostResquest) => authRequest.post("/auth/tfa", data),
-      sms: () => authRequest.get("/auth/tfa/sms"),
+      get: () => authRequest.get("/auth/tfa"),
+      post: (data: AuthTFAResquest) => authRequest.post("/auth/tfa", data),
     },
+    unbind: () => authRequest.get("/auth/unbind"),
+    pow: (data: AuthPowRequest) => authRequest.get<AuthPowResponse>("/auth/pow", data),
   },
   me: () => authRequest.get<MeResponse>("/me"),
+  announcement: () => authRequest.get<AnnouncementResponse>("/announcement"),
 }

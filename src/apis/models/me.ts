@@ -5,7 +5,7 @@
  * @property {string} major - 专业
  * @property {number} enter - 入学年份
  * @property {string} sex - 性别
- * @property {number | null} xz - ??
+ * @property {number | null} xz - 血制
  * @property {string} stu_id - 学号
  * @see https://app.apifox.com/link/project/8311217/apis/api-461766515
  */
