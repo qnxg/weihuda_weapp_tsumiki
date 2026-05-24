@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { View } from "@tarojs/components"
-import { navigate } from "@/utils/navigate"
+import { navigate } from "@/libs/navigate"
 
 /**
  * @description 卡片头部

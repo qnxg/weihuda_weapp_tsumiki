@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro"
-import { ENV } from "@/utils/env"
+import { ENV } from "@/libs/env"
 
 /**
  * @description 通用响应

@@ -1,5 +1,5 @@
-import type { RequestMethod, RequestOptions, Response } from "./request"
-import { request, RequestError } from "./request"
+import type { RequestMethod, RequestOptions, Response } from "@/libs/request"
+import { request, RequestError } from "@/libs/request"
 
 const getToken = () => "token-placeholder"
 

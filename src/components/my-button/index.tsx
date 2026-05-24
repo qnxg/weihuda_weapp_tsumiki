@@ -1,8 +1,8 @@
 import type { ButtonProps } from "@tarojs/components"
 import type { ComponentProps, ReactNode } from "react"
 import { Button as TaroButton, View } from "@tarojs/components"
-import { cn } from "@/utils/cn"
-import { navigate } from "@/utils/navigate"
+import { cn } from "@/libs/cn"
+import { navigate } from "@/libs/navigate"
 
 /**
  * @description 带简单样式和原生按钮功能的自定义按钮组件

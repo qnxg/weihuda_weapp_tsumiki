@@ -1,6 +1,6 @@
-import type { Response } from "@/utils/request"
+import type { Response } from "@/libs/request"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { RequestError } from "@/utils/request"
+import { RequestError } from "@/libs/request"
 
 /**
  * @description 用于标记请求已取消的错误类
