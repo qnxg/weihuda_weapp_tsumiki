@@ -125,7 +125,7 @@ export function useRequest<T extends object | null>(
     void run()
       .catch((err) => {
         if (!(err instanceof RequestCancelledError)) {
-          console.error(err)
+          logger.fatal(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
         }
       })
 

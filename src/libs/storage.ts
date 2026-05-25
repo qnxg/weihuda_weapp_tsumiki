@@ -8,7 +8,7 @@ import { logger } from "@/libs/logger"
  * @param {string} key - 存储键
  * @param {T} [value] - 可选的初始值, 如果提供则会立即存储
  * @property {string} key - 存储键
- * @property {() => Promise<T | null>} get - 获取存储数据
+ * @property {() => Promise<T | undefined>} get - 获取存储数据
  * @property {(value: T) => Promise<void>} set - 设置存储数据
  * @property {() => Promise<void>} remove - 删除存储数据
  */
@@ -23,18 +23,18 @@ export class MyStorage<T> {
     }
   }
 
-  async get(): Promise<T | null> {
-    return new Promise<T | null>((resolve, _) => {
+  async get(): Promise<T | undefined> {
+    return new Promise<T | undefined>((resolve, _) => {
       Taro.getStorage({
         key: this.key,
         success: res => resolve(res.data as T),
         fail: (err) => {
           logger.error(LABEL.lib.storage, `${this.key}: `, err)
-          resolve(null)
+          resolve(undefined)
         },
       }).catch((error) => {
         logger.error(LABEL.lib.storage, `${this.key}: `, error)
-        resolve(null)
+        resolve(undefined)
       })
     })
   }
