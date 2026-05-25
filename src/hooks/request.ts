@@ -1,5 +1,7 @@
 import type { Response } from "@/libs/request"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { LABEL } from "@/config/logger-label"
+import { logger } from "@/libs/logger"
 import { RequestError } from "@/libs/request"
 
 /**
@@ -100,7 +102,7 @@ export function useRequest<T extends object | null>(
 
         // request 函数只会抛出 RequestError, 其他错误都视为 hook 使用错误, 需要封装为 RequestError 抛出
         if (!(err instanceof RequestError)) {
-          console.error("[Request Hook Error]", err)
+          logger.fatal(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
         }
 
         const myError = err instanceof RequestError

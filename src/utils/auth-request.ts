@@ -1,4 +1,6 @@
 import type { RequestMethod, RequestOptions, Response } from "@/libs/request"
+import { LABEL } from "@/config/logger-label"
+import { logger } from "@/libs/logger"
 import { request, RequestError } from "@/libs/request"
 import { MyStorage } from "@/libs/storage"
 
@@ -25,7 +27,7 @@ export async function authRequest<T extends object | null>(
 
   const token = await tokenStorage.get()
   if (!token) {
-    console.warn("[AuthRequest] 未找到 token.")
+    logger.warn(LABEL.util.auth_request, "未找到 token.")
   }
 
   return request<T>(url, data, method, {
@@ -38,10 +40,10 @@ export async function authRequest<T extends object | null>(
       if (error.statusCode === 401) {
         switch (error.code) {
           case "AUTH_TOKEN_INVALID":
-            console.error("[AuthRequest] Token 无效.")
+            logger.error(LABEL.util.auth_request, "Token 无效.")
             return new RequestError(0, "AUTH_TOKEN_INVALID", "Token 无效.")
           case "TFA":
-            console.error("[AuthRequest] 需要进行双因子验证.")
+            logger.error(LABEL.util.auth_request, "需要进行双因子验证.")
             return new RequestError(0, "TFA", "需要进行双因子验证.")
         }
       }

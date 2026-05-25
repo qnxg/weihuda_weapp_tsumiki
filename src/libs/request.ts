@@ -1,5 +1,7 @@
 import Taro from "@tarojs/taro"
-import { ENV } from "@/libs/env"
+import { ENV } from "@/config/env"
+import { LABEL } from "@/config/logger-label"
+import { logger } from "@/libs/logger"
 
 /**
  * @description 通用响应
@@ -128,7 +130,7 @@ export async function request<T extends object | null = null>(
   }
   catch (err) {
     // 请求发送错误 (超时等)
-    console.error(`[Network Error] ${method} ${url} :`, err)
+    logger.error(LABEL.lib.request.NETWORK_ERROR, `${method} ${url}: `, err)
     onNetworkError?.(config, err)
     onError?.(config, err)
     onSettled?.(config, null, err)
@@ -137,7 +139,7 @@ export async function request<T extends object | null = null>(
 
   // 服务器错误 (5xx)
   if (res.statusCode >= 500) {
-    console.error(`[Server Error ${res.statusCode}] ${method} ${url} :`, res.data)
+    logger.error(LABEL.lib.request.SERVER_ERROR, `${method} ${url}: `, res.data)
     onServerError?.(config, res.data)
     onError?.(config, res.data)
     onSettled?.(config, null, res.data)

@@ -1,4 +1,6 @@
 import Taro from "@tarojs/taro"
+import { LABEL } from "@/config/logger-label"
+import { logger } from "@/libs/logger"
 
 /**
  * @description 通用存储类
@@ -27,11 +29,11 @@ export class MyStorage<T> {
         key: this.key,
         success: res => resolve(res.data as T),
         fail: (err) => {
-          console.error(`[STORAGE ERROR ${this.key}]`, err)
+          logger.error(LABEL.lib.storage, `${this.key}: `, err)
           resolve(null)
         },
       }).catch((error) => {
-        console.error(`[STORAGE ERROR ${this.key}]`, error)
+        logger.error(LABEL.lib.storage, `${this.key}: `, error)
         resolve(null)
       })
     })
@@ -44,11 +46,11 @@ export class MyStorage<T> {
         data: value,
         success: () => resolve(),
         fail: (err) => {
-          console.error(`[STORAGE ERROR ${this.key}]`, err)
+          logger.error(LABEL.lib.storage, `${this.key}: `, err)
           resolve()
         },
       }).catch((error) => {
-        console.error(`[STORAGE ERROR ${this.key}]`, error)
+        logger.error(LABEL.lib.storage, `${this.key}: `, error)
         resolve()
       })
     })
@@ -60,11 +62,11 @@ export class MyStorage<T> {
         key: this.key,
         success: () => resolve(),
         fail: (err) => {
-          console.error(`[STORAGE ERROR ${this.key}]`, err)
+          logger.error(LABEL.lib.storage, `${this.key}: `, err)
           resolve()
         },
       }).catch((error) => {
-        console.error(`[STORAGE ERROR ${this.key}]`, error)
+        logger.error(LABEL.lib.storage, `${this.key}: `, error)
         resolve()
       })
     })
