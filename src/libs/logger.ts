@@ -13,7 +13,7 @@ export function logger(
   label: string,
   ...args: any[]
 ) {
-  if (level >= ENV.LOG_LEVEL)
+  if (level > ENV.LOG_LEVEL)
     return
 
   fn(`[${level}][${label}]`, ...args)
