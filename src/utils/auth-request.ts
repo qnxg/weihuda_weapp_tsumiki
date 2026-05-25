@@ -2,12 +2,12 @@ import type { RequestMethod, RequestOptions, Response } from "@/libs/request"
 import { LABEL } from "@/config/logger-label"
 import { logger } from "@/libs/logger"
 import { request, RequestError } from "@/libs/request"
-import { MyStorage } from "@/libs/storage"
+import { Storage } from "@/libs/storage"
 
 /**
  * @description token 存储实例
  */
-export const tokenStorage = new MyStorage<string>("token")
+export const tokenStorage = new Storage<string>("token")
 
 /**
  * @description 自动携带鉴权头并处理鉴权错误的请求函数

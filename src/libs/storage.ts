@@ -12,7 +12,7 @@ import { logger } from "@/libs/logger"
  * @property {(value: T) => Promise<void>} set - 设置存储数据
  * @property {() => Promise<void>} remove - 删除存储数据
  */
-export class MyStorage<T> {
+export class Storage<T> {
   key: string
 
   constructor(key: string, value?: T) {

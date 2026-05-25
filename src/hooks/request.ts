@@ -36,6 +36,20 @@ export interface RequestHookOptions<T extends object | null> {
 }
 
 /**
+ * @template T - 响应数据的类型
+ * @property {T | null} data - 请求成功时的数据, 失败或未请求时为 null
+ * @property {RequestError | null} error - 请求失败时的错误对象, 成功或未请求时为 null
+ * @property {boolean} isLoading - 请求是否正在进行中
+ * @property {() => Promise<Response<T>>} refetch - 重新发起请求的函数
+ */
+interface RequestResult<T extends object | null> {
+  data: T | null
+  error: RequestError | null
+  isLoading: boolean
+  refetch: () => Promise<Response<T>>
+}
+
+/**
  * @description query 风格的通用异步请求 Hook
  * @template T - 响应数据的类型
  * @param {() => Promise<Response<T>>} fn - 异步请求函数
@@ -46,7 +60,7 @@ export function useRequest<T extends object | null>(
   fn: () => Promise<Response<T>>,
   deps: unknown[] = [],
   options: RequestHookOptions<T> = {},
-) {
+): RequestResult<T> {
   const {
     refetchClearData = true,
     refetchClearError = true,
