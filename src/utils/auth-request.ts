@@ -1,7 +1,11 @@
 import type { RequestMethod, RequestOptions, Response } from "@/libs/request"
 import { request, RequestError } from "@/libs/request"
+import { MyStorage } from "@/libs/storage"
 
-const getToken = () => "token-placeholder"
+/**
+ * @description token 存储实例
+ */
+export const tokenStorage = new MyStorage<string>("token")
 
 /**
  * @description 自动携带鉴权头并处理鉴权错误的请求函数
@@ -19,10 +23,15 @@ export async function authRequest<T extends object | null>(
 ): Promise<Response<T>> {
   const { businessErrorInterceptor, ...restOptions } = options
 
+  const token = await tokenStorage.get()
+  if (!token) {
+    console.warn("[AuthRequest] 未找到 token.")
+  }
+
   return request<T>(url, data, method, {
     ...restOptions,
     header: {
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token ?? ""}`,
       ...restOptions.header,
     },
     businessErrorInterceptor: (config, error) => {

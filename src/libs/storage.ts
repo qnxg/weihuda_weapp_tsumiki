@@ -10,7 +10,7 @@ import Taro from "@tarojs/taro"
  * @property {(value: T) => Promise<void>} set - 设置存储数据
  * @property {() => Promise<void>} remove - 删除存储数据
  */
-export class Storage<T> {
+export class MyStorage<T> {
   key: string
 
   constructor(key: string, value?: T) {
