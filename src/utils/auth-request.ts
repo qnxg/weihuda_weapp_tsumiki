@@ -17,7 +17,7 @@ export const tokenStorage = new Storage<string>("token")
  * @param {RequestMethod} method - HTTP 请求方法
  * @param {RequestOptions} [options] - 请求配置项
  */
-export async function authRequest<T extends object | null>(
+async function authRequest<T extends object | null>(
   url: string,
   data: unknown,
   method: RequestMethod,
@@ -63,3 +63,5 @@ authRequest.put = <T extends object | null>(url: string, data?: unknown, options
 
 authRequest.delete = <T extends object | null>(url: string, data?: unknown, options: RequestOptions<T> = {}) =>
   authRequest<T>(url, data, "DELETE", options)
+
+export { authRequest as request }
