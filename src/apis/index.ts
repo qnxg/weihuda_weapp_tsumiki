@@ -9,7 +9,7 @@ import type {
   AuthTFAResquest,
 } from "@/apis/models/auth"
 import type { MeResponse } from "@/apis/models/me"
-import { request } from "@/utils/auth-request"
+import { request } from "@/libs/auth-request"
 
 export const api = {
   base: () => request.get<{ hello: string }>("/"),

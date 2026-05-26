@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { Storage } from "@/libs/storage"
+import { Storage } from "@/utils/storage"
 
 /**
  * @template T - 存储数据的类型

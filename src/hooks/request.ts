@@ -1,8 +1,8 @@
 import type { Response } from "@/libs/request"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
-import { logger } from "@/libs/logger"
 import { RequestError } from "@/libs/request"
+import { logger } from "@/utils/logger"
 
 /**
  * @description 用于标记请求已取消的错误类

@@ -1,8 +1,8 @@
 import type { RequestMethod, RequestOptions, Response } from "@/libs/request"
 import { LABEL } from "@/config/logger-label"
-import { logger } from "@/libs/logger"
 import { request, RequestError } from "@/libs/request"
-import { Storage } from "@/libs/storage"
+import { logger } from "@/utils/logger"
+import { Storage } from "@/utils/storage"
 
 /**
  * @description token 存储实例

@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro"
 import { ENV } from "@/config/env"
 import { LABEL } from "@/config/logger-label"
-import { logger } from "@/libs/logger"
+import { logger } from "@/utils/logger"
 
 /**
  * @description 通用响应

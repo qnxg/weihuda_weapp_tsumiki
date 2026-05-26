@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { View } from "@tarojs/components"
 import { createContext, useCallback, useContext, useMemo, useState } from "react"
-import { cn } from "@/libs/cn"
+import { cn } from "@/utils/cn"
 
 interface ContentValue {
   activeTab: string
