@@ -7,6 +7,7 @@ import { Courses } from "@/pages/index/components/cards/courses"
 import { Electricity } from "@/pages/index/components/cards/electricity"
 import { Jifen } from "@/pages/index/components/cards/jifen"
 import { DateBar } from "@/pages/index/components/date-bar"
+import { CardLoadingProvider } from "@/pages/index/contexts/card-loading"
 
 export default function Index() {
   const cards: CardItem[] = [
@@ -19,11 +20,14 @@ export default function Index() {
   return (
     <Page>
       <DateBar />
-      <PageContent>
-        <PullRefresh onRefresh={() => {}}>
-          <CardList cards={cards} />
-        </PullRefresh>
-      </PageContent>
+
+      <CardLoadingProvider>
+        <PageContent>
+          <PullRefresh onRefresh={() => {}}>
+            <CardList cards={cards} />
+          </PullRefresh>
+        </PageContent>
+      </CardLoadingProvider>
     </Page>
   )
 }
