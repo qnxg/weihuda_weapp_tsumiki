@@ -1,13 +1,7 @@
-import type { ReactNode } from "react"
+import type { CardItem } from "@/pages/index/components/cards"
 import { View } from "@tarojs/components"
 import { PullRefresh } from "@/components/pull-refresh"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
-
-export interface CardItem {
-  name: string
-  key: string
-  content: ReactNode
-}
 
 /**
  * @description 带加载状态管理的卡片列表

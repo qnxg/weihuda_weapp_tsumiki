@@ -7,14 +7,14 @@ import { useCardLoadingContext } from "@/pages/index/contexts/card-loading"
  * @property {(key: string, fn: Refresher) => void} registerCard - 注册卡片刷新函数并增加计数
  * @property {(key: string) => void} unregisterCard - 注销卡片刷新函数并减少计数
  * @property {(key: string) => void} onCardFinish - 卡片请求完成时调用, 减少计数
- * @property {() => void} triggerRefresh - 触发所有已注册卡片的刷新函数执行
+ * @property {() => Promise<void>} triggerRefresh - 触发所有已注册卡片的刷新函数执行, 全部完成后 resolved
  */
 interface CardLoadingResult {
   isLoading: boolean
   registerCard: (key: string, fn: Refresher) => void
   unregisterCard: (key: string) => void
   onCardFinish: (key: string) => void
-  triggerRefresh: () => void
+  triggerRefresh: () => Promise<void>
 }
 
 /**
@@ -40,9 +40,10 @@ export function useCardLoading(): CardLoadingResult {
     setCount(count - 1)
   }, [setCount, count])
 
-  const triggerRefresh = useCallback(() => {
-    refreshers.forEach(fn => fn())
-  }, [refreshers])
+  const triggerRefresh = useCallback(async () => {
+    setCount(refreshers.size)
+    await Promise.allSettled(Array.from(refreshers.values(), fn => fn()))
+  }, [refreshers, setCount])
 
   return {
     isLoading,

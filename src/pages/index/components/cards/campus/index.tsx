@@ -1,19 +1,51 @@
 import { View } from "@tarojs/components"
+import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
+import { useRequest } from "@/hooks/request"
+import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import { mockRequest } from "@/utils/mock-request"
 
 /**
  * @description 校园卡余额
  */
-export function Campus() {
+export function Campus({
+  cardKey,
+}: Readonly<{
+  cardKey: string
+}>) {
+  const { registerCard, onCardFinish } = useCardLoading()
+
+  const { data, isLoading, refetch } = useRequest(() =>
+    mockRequest({ cardNumber: "114514", balance: 114.5 }),
+  )
+
+  useEffect(() => {
+    registerCard(cardKey, refetch)
+  }, [registerCard, refetch, cardKey])
+
+  useEffect(() => {
+    if (!isLoading) {
+      onCardFinish(cardKey)
+    }
+  }, [isLoading, onCardFinish, cardKey])
+
   return (
     <Card>
       <CardHeader
         title="校园卡余额"
         action="查看账单"
       />
-      <CardContent className="h-lg p flex items-center justify-between text-xl">
-        <View>卡号: 114514</View>
-        <View>余额: 114.5</View>
+      <CardContent className="p flex items-center justify-between text-xl">
+        <View>
+          卡号:
+          {" "}
+          {data?.cardNumber}
+        </View>
+        <View>
+          余额:
+          {" "}
+          {data?.balance}
+        </View>
       </CardContent>
     </Card>
   )
