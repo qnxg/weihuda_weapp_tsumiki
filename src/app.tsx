@@ -1,9 +1,14 @@
 import type { PropsWithChildren } from "react"
 
+import { UserProvider } from "@/contexts/user"
 import "./app.scss"
 
-function App({ children }: PropsWithChildren<any>) {
-  return children
+export default function App({
+  children,
+}: PropsWithChildren<any>) {
+  return (
+    <UserProvider>
+      {children}
+    </UserProvider>
+  )
 }
-
-export default App

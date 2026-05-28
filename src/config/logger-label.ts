@@ -8,6 +8,7 @@ export const LABEL = {
   },
   util: {
     auth_request: "Auth Request",
+    parse_sex: "Parse Sex",
   },
   hook: {
     request: {

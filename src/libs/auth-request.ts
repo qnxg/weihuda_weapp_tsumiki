@@ -1,5 +1,6 @@
 import type { RequestMethod, RequestOptions, Response } from "@/libs/request"
 import { LABEL } from "@/config/logger-label"
+import { STORAGE } from "@/config/storage-key"
 import { request, RequestError } from "@/libs/request"
 import { logger } from "@/utils/logger"
 import { Storage } from "@/utils/storage"
@@ -7,7 +8,7 @@ import { Storage } from "@/utils/storage"
 /**
  * @description token 存储实例
  */
-export const tokenStorage = new Storage<string>("token")
+export const tokenStorage = new Storage<string>(STORAGE.token.access_token)
 
 /**
  * @description 自动携带鉴权头并处理鉴权错误的请求函数
