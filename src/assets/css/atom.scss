@@ -69,48 +69,56 @@
 .p-sm { padding: $spacingSM; }
 .p-md { padding: $spacingMD; }
 .p-lg { padding: $spacingLG; }
-.p { padding: $spacingMD; }
+.p-xl { padding: $spacingXL; }
+.p { padding: $spacingLG; }
 
 .px-xs { padding-left: $spacingXS; padding-right: $spacingXS; }
 .px-sm { padding-left: $spacingSM; padding-right: $spacingSM; }
 .px-md { padding-left: $spacingMD; padding-right: $spacingMD; }
 .px-lg { padding-left: $spacingLG; padding-right: $spacingLG; }
-.px { padding-left: $spacingMD; padding-right: $spacingMD; }
+.px-xl { padding-left: $spacingXL; padding-right: $spacingXL; }
+.px { padding-left: $spacingLG; padding-right: $spacingLG; }
 
 .py-xs { padding-top: $spacingXS; padding-bottom: $spacingXS; }
 .py-sm { padding-top: $spacingSM; padding-bottom: $spacingSM; }
 .py-md { padding-top: $spacingMD; padding-bottom: $spacingMD; }
 .py-lg { padding-top: $spacingLG; padding-bottom: $spacingLG; }
-.py { padding-top: $spacingMD; padding-bottom: $spacingMD; }
+.py-xl { padding-top: $spacingXL; padding-bottom: $spacingXL; }
+.py { padding-top: $spacingLG; padding-bottom: $spacingLG; }
 
 .m-xs { margin: $spacingXS; }
 .m-sm { margin: $spacingSM; }
 .m-md { margin: $spacingMD; }
 .m-lg { margin: $spacingLG; }
-.m { margin: $spacingMD; }
+.m-xl { margin: $spacingXL; }
+.m { margin: $spacingLG; }
 
 .mx-xs { margin-left: $spacingXS; margin-right: $spacingXS; }
 .mx-sm { margin-left: $spacingSM; margin-right: $spacingSM; }
 .mx-md { margin-left: $spacingMD; margin-right: $spacingMD; }
 .mx-lg { margin-left: $spacingLG; margin-right: $spacingLG; }
-.mx { margin-left: $spacingMD; margin-right: $spacingMD; }
+.mx-xl { margin-left: $spacingXL; margin-right: $spacingXL; }
+.mx { margin-left: $spacingLG; margin-right: $spacingLG; }
 
 .my-xs { margin-top: $spacingXS; margin-bottom: $spacingXS; }
 .my-sm { margin-top: $spacingSM; margin-bottom: $spacingSM; }
 .my-md { margin-top: $spacingMD; margin-bottom: $spacingMD; }
 .my-lg { margin-top: $spacingLG; margin-bottom: $spacingLG; }
-.my { margin-top: $spacingMD; margin-bottom: $spacingMD; }
+.my-xl { margin-top: $spacingXL; margin-bottom: $spacingXL; }
+.my { margin-top: $spacingLG; margin-bottom: $spacingLG; }
 
 .gap-xs { gap: $spacingXS; }
 .gap-sm { gap: $spacingSM; }
 .gap-md { gap: $spacingMD; }
 .gap-lg { gap: $spacingLG; }
-.gap { gap: $spacingMD; }
+.gap-xl { gap: $spacingXL; }
+.gap { gap: $spacingLG; }
 
 .inset-xs { top: $spacingXS; right: $spacingXS; bottom: $spacingXS; left: $spacingXS; }
 .inset-sm { top: $spacingSM; right: $spacingSM; bottom: $spacingSM; left: $spacingSM; }
 .inset-md { top: $spacingMD; right: $spacingMD; bottom: $spacingMD; left: $spacingMD; }
 .inset-lg { top: $spacingLG; right: $spacingLG; bottom: $spacingLG; left: $spacingLG; }
+.inset-xl { top: $spacingXL; right: $spacingXL; bottom: $spacingXL; left: $spacingXL; }
 .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
 .inset { top: 0; right: 0; bottom: 0; left: 0; }
 

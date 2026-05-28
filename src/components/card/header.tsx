@@ -36,7 +36,7 @@ function CardHeader({
   action?: string | ReactNode
   to?: string
   onClick?: () => void
-  children: ReactNode
+  children?: ReactNode
 }>) {
   return (
     <View className="flex items-center gap">

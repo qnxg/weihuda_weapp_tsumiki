@@ -50,7 +50,6 @@ function Tabs({
   children,
   ...props
 }: Readonly<{
-  className?: string
   value?: string
   defaultValue?: string
   onChange?: (value: string) => void
@@ -142,8 +141,8 @@ function TabTrigger({
           onClick={() => onTabChange(value)}
           className={cn(
             "flex flex-col center py-xs font-xl gap-xs",
-            { "text-primary": isActive },
           )}
+          data-active={isActive}
         >
           {children}
         </Slot>

@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from "react"
 import { View } from "@tarojs/components"
+import { cn } from "@/utils/cn"
 import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
 
 /**
@@ -15,12 +16,14 @@ import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
  * ```
  */
 function Card({
+  className,
   children,
 }: Readonly<{
+  className?: string
   children: ReactNode
 }>) {
   return (
-    <View className="p bg rounded-sm flex flex-col gap">
+    <View className={cn("p bg rounded-sm flex flex-col gap", className)}>
       {children}
     </View>
   )

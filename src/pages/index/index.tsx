@@ -1,38 +1,28 @@
-import { Text } from "@tarojs/components"
-import { showModal } from "@tarojs/taro"
-import { MyButton } from "@/components/my-button"
+import type { CardItem } from "@/pages/index/components/card-list"
 import { Page, PageContent } from "@/components/page"
+import { PullRefresh } from "@/components/pull-refresh"
+import { CardList } from "@/pages/index/components/card-list"
+import { Campus } from "@/pages/index/components/cards/campus"
+import { Courses } from "@/pages/index/components/cards/courses"
+import { Electricity } from "@/pages/index/components/cards/electricity"
+import { Jifen } from "@/pages/index/components/cards/jifen"
+import { DateBar } from "@/pages/index/components/date-bar"
 
 export default function Index() {
+  const cards: CardItem[] = [
+    { name: "积分", key: "jifen", content: <Jifen /> },
+    { name: "课程", key: "course", content: <Courses /> },
+    { name: "电量", key: "electricity", content: <Electricity /> },
+    { name: "校园卡余额", key: "campus", content: <Campus /> },
+  ]
+
   return (
     <Page>
+      <DateBar />
       <PageContent>
-        <Text className="text-xl text-hightlight">Hello world!</Text>
-        <Text className="text-md text-primary">base</Text>
-        <MyButton
-          className="fit px-lg py-sm bg-primary rounded-sm"
-          to="/pages/toolkit/index"
-        >
-          Tool
-        </MyButton>
-        <MyButton
-          className="fit px-lg py-sm bg-primary rounded-full"
-          to="/tools/pages/grade/grade/index"
-        >
-          Grade
-        </MyButton>
-        <MyButton
-          className="fit px-lg py-sm bg-primary rounded-full"
-          onClick={() => void showModal({
-            title: "提示",
-            content: "这是一个模态框",
-            showCancel: true,
-            cancelText: "取消",
-            confirmText: "确定",
-          })}
-        >
-          Open Modal
-        </MyButton>
+        <PullRefresh onRefresh={() => {}}>
+          <CardList cards={cards} />
+        </PullRefresh>
       </PageContent>
     </Page>
   )
