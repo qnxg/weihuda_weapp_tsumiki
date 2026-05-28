@@ -1,5 +1,4 @@
 import { Page, PageContent } from "@/components/page"
-import { PullRefresh } from "@/components/pull-refresh"
 import { CardList } from "@/pages/index/components/card-list"
 
 import { cards } from "@/pages/index/components/cards"
@@ -13,9 +12,7 @@ export default function Index() {
 
       <CardLoadingProvider>
         <PageContent>
-          <PullRefresh onRefresh={() => {}}>
-            <CardList cards={cards} />
-          </PullRefresh>
+          <CardList cards={cards} />
         </PageContent>
       </CardLoadingProvider>
     </Page>
