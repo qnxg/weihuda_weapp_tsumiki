@@ -23,7 +23,8 @@
     "preserveConstEnums": true,
     "removeComments": false,
     "sourceMap": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "include": ["./src", "./types", "./config"],
   "compileOnSave": false

@@ -25,6 +25,7 @@
     "prepare": "husky",
     "dev": "taro build --type weapp --watch",
     "build": "taro build --type weapp",
+    "check": "tsc --noEmit",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },

@@ -25,7 +25,7 @@ export function useUser(): UserHookResult {
   const { user, setUser } = useUserContext()
 
   const updateUser = useCallback(async () => {
-    return api.me()
+    return api.me.get()
       .then((res) => {
         const data = res.data
         const userInfo: UserInfo = {
