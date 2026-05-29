@@ -34,6 +34,7 @@ export function Electricity({
       <CardHeader
         title="宿舍电量"
         action="查看电量"
+        to="/tools/pages/campus/electricity/index"
       />
       <CardContent className="p flex items-center justify-between text-xl">
         <View>

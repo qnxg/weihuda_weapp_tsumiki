@@ -34,6 +34,7 @@ export function Grade({
       <CardHeader
         title="成绩查询"
         action="查看更多"
+        to="/tools/pages/grade/grade/index"
       />
       <CardContent className="p flex items-center justify-between text-xl">
         <View>

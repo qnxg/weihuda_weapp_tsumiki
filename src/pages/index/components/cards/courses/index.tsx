@@ -38,6 +38,8 @@ export function Courses({
     <Card>
       <CardHeader
         title="我的课程"
+        action="更多"
+        to="/pages/table/index"
       />
       <CardContent>
         <Tabs

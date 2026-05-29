@@ -34,6 +34,7 @@ export function Campus({
       <CardHeader
         title="校园卡余额"
         action="查看账单"
+        to="/tools/pages/campus/card-bill/index"
       />
       <CardContent className="p flex items-center justify-between text-xl">
         <View>
