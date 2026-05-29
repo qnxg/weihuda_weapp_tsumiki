@@ -8,7 +8,12 @@ import type {
   AuthRefreshResponse,
   AuthTFAResquest,
 } from "@/apis/models/auth"
-import type { MeResponse } from "@/apis/models/me"
+import type {
+  IndexCardSettingRequestData,
+  MeResponse,
+  MeSettingResponse,
+  TableSettingRequestData,
+} from "@/apis/models/me"
 import { request } from "@/libs/auth-request"
 
 export const api = {
@@ -23,6 +28,15 @@ export const api = {
     unbind: () => request.get("/auth/unbind"),
     pow: (data: AuthPowRequest) => request.get<AuthPowResponse>("/auth/pow", data),
   },
-  me: () => request.get<MeResponse>("/me"),
+  me: {
+    get: () => request.get<MeResponse>("/me"),
+    setting: {
+      get: () => request.get<MeSettingResponse>("/me/setting"),
+      getIndexCard: () => request.get<IndexCardSettingRequestData>("/me/setting/index_card_setting"),
+      getTable: () => request.get<TableSettingRequestData>("/me/setting/table_setting"),
+      putIndexCard: (data: IndexCardSettingRequestData) => request.put<IndexCardSettingRequestData>("/me/setting/index_card_setting", data),
+      putTable: (data: TableSettingRequestData) => request.put<TableSettingRequestData>("/me/setting/table_setting", data),
+    },
+  },
   announcement: () => request.get<AnnouncementResponse>("/announcement"),
 }

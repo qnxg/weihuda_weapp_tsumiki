@@ -42,7 +42,8 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.6.1",

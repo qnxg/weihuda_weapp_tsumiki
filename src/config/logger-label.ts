@@ -14,5 +14,9 @@ export const LABEL = {
     request: {
       REQUEST_HOOK_ERROR: "Request Hook Error",
     },
+    setting: {
+      FETCH_ERROR: "Setting Fetch Error",
+      UPDATE_ERROR: "Setting Update Error",
+    },
   },
 }
