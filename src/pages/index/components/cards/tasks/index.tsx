@@ -1,9 +1,9 @@
+import { View } from "@tarojs/components"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import { mockRequest } from "@/utils/mock-request"
-import { View } from "@tarojs/components";
 
 /**
  * @description 近期待办
