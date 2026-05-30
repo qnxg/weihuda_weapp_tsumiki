@@ -60,18 +60,26 @@ export default defineAppConfig({
       {
         pagePath: "pages/index/index",
         text: "首页",
+        iconPath: "static/tab/index-default.png",
+        selectedIconPath: "static/tab/index-selected.png",
       },
       {
         pagePath: "pages/toolkit/index",
         text: "工具箱",
+        iconPath: "static/tab/toolkit-default.png",
+        selectedIconPath: "static/tab/toolkit-selected.png",
       },
       {
         pagePath: "pages/table/index",
         text: "课表",
+        iconPath: "static/tab/table-default.png",
+        selectedIconPath: "static/tab/table-selected.png",
       },
       {
         pagePath: "pages/profile/index",
         text: "我的",
+        iconPath: "static/tab/profile-default.png",
+        selectedIconPath: "static/tab/profile-selected.png",
       },
     ],
   },

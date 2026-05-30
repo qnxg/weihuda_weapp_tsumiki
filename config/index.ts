@@ -29,6 +29,10 @@ export default defineConfig<"vite">(async (merge) => {
     },
     copy: {
       patterns: [
+        { from: "src/static/tab/index-dark-selected.png", to: "dist/static/tab/index-dark-selected.png" },
+        { from: "src/static/tab/toolkit-dark-selected.png", to: "dist/static/tab/toolkit-dark-selected.png" },
+        { from: "src/static/tab/table-dark-selected.png", to: "dist/static/tab/table-dark-selected.png" },
+        { from: "src/static/tab/profile-dark-selected.png", to: "dist/static/tab/profile-dark-selected.png" },
       ],
       options: {
       },

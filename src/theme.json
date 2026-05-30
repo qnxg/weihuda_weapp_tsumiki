@@ -9,7 +9,15 @@
     "tabFontColor": "#cccccc",
     "tabSelectedColor": "#328ccb",
     "tabBgColor": "#ffffff",
-    "tabBorderStyle": "white"
+    "tabBorderStyle": "white",
+    "indexIconDefault": "static/tab/index-default.png",
+    "indexIconSelected": "static/tab/index-selected.png",
+    "toolkitIconDefault": "static/tab/toolkit-default.png",
+    "toolkitIconSelected": "static/tab/toolkit-selected.png",
+    "tableIconDefault": "static/tab/table-default.png",
+    "tableIconSelected": "static/tab/table-selected.png",
+    "profileIconDefault": "static/tab/profile-default.png",
+    "profileIconSelected": "static/tab/profile-selected.png"
   },
   "dark": {
     "navBgColor": "#202020",
@@ -21,6 +29,14 @@
     "tabFontColor": "#bebebe",
     "tabSelectedColor": "#328ccb",
     "tabBgColor": "#202020",
-    "tabBorderStyle": "black"
+    "tabBorderStyle": "black",
+    "indexIconDefault": "static/tab/index-default.png",
+    "indexIconSelected": "static/tab/index-dark-selected.png",
+    "toolkitIconDefault": "static/tab/toolkit-default.png",
+    "toolkitIconSelected": "static/tab/toolkit-dark-selected.png",
+    "tableIconDefault": "static/tab/table-default.png",
+    "tableIconSelected": "static/tab/table-dark-selected.png",
+    "profileIconDefault": "static/tab/profile-default.png",
+    "profileIconSelected": "static/tab/profile-dark-selected.png"
   }
 }
