@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import CampusIcon from "@/static/index/campus.svg"
 import { mockRequest } from "@/utils/mock-request"
 
 /**
@@ -32,6 +33,7 @@ export function Campus({
   return (
     <Card>
       <CardHeader
+        icon={CampusIcon}
         title="校园卡余额"
         action="查看账单"
         to="/tools/pages/campus/card-bill/index"

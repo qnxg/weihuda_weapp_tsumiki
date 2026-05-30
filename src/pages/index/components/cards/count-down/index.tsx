@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import CountDownIcon from "@/static/index/count-down.svg"
 import { mockRequest } from "@/utils/mock-request"
 
 /**
@@ -32,7 +33,10 @@ export function CountDown({
   return (
     <Card>
       <CardHeader
+        icon={CountDownIcon}
         title="假期倒计时"
+        action="查看校历"
+        to="/tools/pages/campus/calender/index"
       />
       <CardContent className="p flex items-center text-xl">
         <View>

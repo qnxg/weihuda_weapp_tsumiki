@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import GradeIcon from "@/static/index/grade.svg"
 import { mockRequest } from "@/utils/mock-request"
 
 /**
@@ -32,6 +33,7 @@ export function Grade({
   return (
     <Card>
       <CardHeader
+        icon={GradeIcon}
         title="成绩查询"
         action="查看更多"
         to="/tools/pages/grade/grade/index"

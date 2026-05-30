@@ -4,6 +4,7 @@ import { MyButton } from "@/components/my-button"
 import { TabContent, TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import CoursesIcon from "@/static/index/courses.svg"
 import { mockRequest } from "@/utils/mock-request"
 
 type TabValue = "today" | "tomorrow"
@@ -37,6 +38,7 @@ export function Courses({
   return (
     <Card>
       <CardHeader
+        icon={CoursesIcon}
         title="我的课程"
         action="更多"
         to="/pages/table/index"

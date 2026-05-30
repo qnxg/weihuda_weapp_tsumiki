@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import ElectricityIcon from "@/static/index/electricity.svg"
 import { mockRequest } from "@/utils/mock-request"
 
 /**
@@ -32,6 +33,7 @@ export function Electricity({
   return (
     <Card>
       <CardHeader
+        icon={ElectricityIcon}
         title="宿舍电量"
         action="查看电量"
         to="/tools/pages/campus/electricity/index"

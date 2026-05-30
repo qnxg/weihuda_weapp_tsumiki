@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import TasksIcon from "@/static/index/tasks.svg"
 import { mockRequest } from "@/utils/mock-request"
 
 /**
@@ -32,6 +33,7 @@ export function Tasks({
   return (
     <Card>
       <CardHeader
+        icon={TasksIcon}
         title="近期待办"
       />
       <CardContent className="p flex items-center justify-between text-xl">

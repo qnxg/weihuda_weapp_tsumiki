@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { View } from "@tarojs/components"
+import { Icon } from "@/components/icon"
 import { navigate } from "@/utils/navigate"
 
 /**
@@ -8,7 +9,7 @@ import { navigate } from "@/utils/navigate"
  * 1. 传入 CardIcon, CardTitle, CardAction 组件作为子元素
  * ```tsx
  * <CardHeader>
- *   <CardIcon>icon</CardIcon>
+ *   <CardIcon src={icon} />
  *   <CardTitle>title</CardTitle>
  *   <CardAction to="/path">action</CardAction>
  * </CardHeader>
@@ -31,7 +32,7 @@ function CardHeader({
   onClick,
   children,
 }: Readonly<{
-  icon?: ReactNode
+  icon?: string
   title?: string | ReactNode
   action?: string | ReactNode
   to?: string
@@ -39,8 +40,8 @@ function CardHeader({
   children?: ReactNode
 }>) {
   return (
-    <View className="flex items-center gap">
-      {icon ? <CardIcon>{icon}</CardIcon> : null}
+    <View className="flex items-center gap-sm">
+      {icon ? <CardIcon src={icon} /> : null}
       {title ? <CardTitle>{title}</CardTitle> : null}
       {action ? <CardAction to={to} onClick={onClick}>{action}</CardAction> : null}
       {children}
@@ -49,14 +50,18 @@ function CardHeader({
 }
 
 function CardIcon({
-  children,
+  src,
 }: Readonly<{
-  children: ReactNode
+  src: string
 }>) {
   return (
-    <View className="text-base text-xl">
-      {children}
-    </View>
+    <Icon
+      style={{
+        width: "1.5rem",
+        height: "1.5rem",
+      }}
+      src={src}
+    />
   )
 }
 

@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import EmailIcon from "@/static/index/email.svg"
 import { mockRequest } from "@/utils/mock-request"
 
 /**
@@ -32,6 +33,7 @@ export function Email({
   return (
     <Card>
       <CardHeader
+        icon={EmailIcon}
         title="校园邮箱"
       />
       <CardContent className="p flex items-center justify-between text-xl">
