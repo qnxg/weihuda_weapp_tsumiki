@@ -5,7 +5,7 @@ import { api } from "@/apis"
 import { LABEL } from "@/config/logger-label"
 import { SETTINGS } from "@/config/setting"
 import { STORAGE } from "@/config/storage-key"
-import { useSettingStore } from "@/stores/setting"
+import { useSettingContext } from "@/contexts/setting"
 import { logger } from "@/utils/logger"
 import { convertIndexCardSetting, convertTableSetting, pickLatestSetting } from "@/utils/setting"
 import { Storage } from "@/utils/storage"
@@ -43,7 +43,7 @@ export function useSetting(): SettingHookResult {
     setTableSetting,
     setIsLoading,
     setIsUpdating,
-  } = useSettingStore()
+  } = useSettingContext()
 
   const settings = useMemo<Setting>(() => ({
     indexCardSetting,

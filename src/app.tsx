@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react"
 import Taro, { setTabBarItem, useLaunch } from "@tarojs/taro"
 
+import { SettingProvider } from "@/contexts/setting"
 import { UserProvider } from "@/contexts/user"
 import theme from "./theme.json"
 import "./app.scss"
@@ -43,7 +44,9 @@ export default function App({
 
   return (
     <UserProvider>
-      {children}
+      <SettingProvider>
+        {children}
+      </SettingProvider>
     </UserProvider>
   )
 }
