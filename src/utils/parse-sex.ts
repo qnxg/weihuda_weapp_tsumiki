@@ -1,4 +1,4 @@
-import type { Sex } from "@/contexts/user"
+import type { Sex } from "@/types/user"
 import { LABEL } from "@/config/logger-label"
 import { logger } from "@/utils/logger"
 

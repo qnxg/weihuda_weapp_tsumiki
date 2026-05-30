@@ -1,5 +1,5 @@
-import type { Response } from "@/libs/request"
-import { RequestError } from "@/libs/request"
+import type { Response } from "@/types/request"
+import { RequestError } from "@/types/request"
 
 /**
  * @description Mock 请求配置项

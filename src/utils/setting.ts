@@ -1,5 +1,5 @@
 import type { IndexCardSettingRequestData, TableSettingRequestData } from "@/apis/models/me"
-import type { CommonSetting, IndexCardSetting, TableSetting } from "@/store/setting"
+import type { CommonSetting, IndexCardSetting, TableSetting } from "@/types/setting"
 
 /**
  * @description 转换 API 返回的首页卡片设置为内部格式

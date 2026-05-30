@@ -1,3 +1,6 @@
+/**
+ * @description 本地存储键配置
+ */
 export const STORAGE = {
   token: {
     access_token: "access_token",

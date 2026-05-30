@@ -1,3 +1,6 @@
+/**
+ * @description 日志标签配置
+ */
 export const LABEL = {
   lib: {
     request: {

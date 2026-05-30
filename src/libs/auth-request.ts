@@ -1,7 +1,9 @@
-import type { RequestMethod, RequestOptions, Response } from "@/libs/request"
+import type { RequestOptions } from "@/libs/request"
+import type { RequestMethod, Response } from "@/types/request"
 import { LABEL } from "@/config/logger-label"
 import { STORAGE } from "@/config/storage-key"
-import { request, RequestError } from "@/libs/request"
+import { request } from "@/libs/request"
+import { RequestError } from "@/types/request"
 import { logger } from "@/utils/logger"
 import { Storage } from "@/utils/storage"
 

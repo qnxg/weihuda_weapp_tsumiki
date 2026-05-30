@@ -1,24 +1,14 @@
 import type { IndexCardSettingRequestData, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
-import type { IndexCardSetting, TableSetting } from "@/store/setting"
+import type { IndexCardSetting, Setting, TableSetting } from "@/types/setting"
 import { useCallback, useEffect, useMemo } from "react"
 import { api } from "@/apis"
 import { LABEL } from "@/config/logger-label"
 import { SETTINGS } from "@/config/setting"
 import { STORAGE } from "@/config/storage-key"
-import { useSettingStore } from "@/store/setting"
+import { useSettingStore } from "@/stores/setting"
 import { logger } from "@/utils/logger"
 import { convertIndexCardSetting, convertTableSetting, pickLatestSetting } from "@/utils/setting"
 import { Storage } from "@/utils/storage"
-
-/**
- * @description 全部设置数据类型
- * @property {IndexCardSetting | null} indexCardSetting - 首页卡片设置
- * @property {TableSetting | null} tableSetting - 课表设置
- */
-export interface Setting {
-  indexCardSetting: IndexCardSetting | null
-  tableSetting: TableSetting | null
-}
 
 /**
  * @property {Setting} settings - 当前所有设置

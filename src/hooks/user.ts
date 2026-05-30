@@ -1,4 +1,4 @@
-import type { UserInfo } from "@/contexts/user"
+import type { UserInfo } from "@/types/user"
 import { useCallback, useEffect } from "react"
 import { api } from "@/apis"
 import { useUserContext } from "@/contexts/user"

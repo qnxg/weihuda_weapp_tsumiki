@@ -1,4 +1,4 @@
-import type { Setting } from "@/hooks/setting"
+import type { Setting } from "@/types/setting"
 
 /**
  * @description 默认设置, 用于用户未设置时的默认值

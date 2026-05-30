@@ -1,8 +1,8 @@
 import type { Reducer } from "react"
-import type { Response } from "@/libs/request"
+import type { Response } from "@/types/request"
 import { useCallback, useEffect, useMemo, useReducer, useRef } from "react"
 import { LABEL } from "@/config/logger-label"
-import { RequestError } from "@/libs/request"
+import { RequestError } from "@/types/request"
 import { logger } from "@/utils/logger"
 import { Storage } from "@/utils/storage"
 

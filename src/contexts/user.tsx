@@ -1,14 +1,6 @@
 import type { ReactNode } from "react"
+import type { UserInfo } from "@/types/user"
 import { createContext, useContext, useMemo, useState } from "react"
-
-export type Sex = "Male" | "Female"
-
-export interface UserInfo {
-  name: string
-  sex: Sex
-  enter: number
-  stu_id: string
-}
 
 interface UserContextValue {
   user: UserInfo | null
