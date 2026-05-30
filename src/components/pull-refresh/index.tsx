@@ -124,9 +124,9 @@ function PullRefresh({
       onRefresherRestore={onRestore}
       onRefresherAbort={onRestore}
     >
-      <Slot name="refresher">
+      <Slot name="refresher" className="w-full">
         {statusText && (
-          <View className="w-screen h-sm flex center">{statusText}</View>
+          <View className="h-sm flex center">{statusText}</View>
         )}
       </Slot>
       {children}
