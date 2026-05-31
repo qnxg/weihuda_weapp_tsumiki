@@ -1,6 +1,6 @@
 import type { IndexCardSettingRequestData, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
 import type { IndexCardSetting, Setting, TableSetting } from "@/types/setting"
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { api } from "@/apis"
 import { LABEL } from "@/config/logger-label"
 import { SETTINGS } from "@/config/setting"
@@ -37,13 +37,12 @@ export function useSetting(): SettingHookResult {
   const {
     indexCardSetting,
     tableSetting,
-    isLoading,
-    isUpdating,
     setIndexCardSetting,
     setTableSetting,
-    setIsLoading,
-    setIsUpdating,
   } = useSettingContext()
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const settings = useMemo<Setting>(() => ({
     indexCardSetting,
@@ -91,7 +90,7 @@ export function useSetting(): SettingHookResult {
     }
 
     setIsLoading(false)
-  }, [setIndexCardSetting, setTableSetting, setIsLoading])
+  }, [setIndexCardSetting, setTableSetting])
 
   const updateIndexCardSetting = useCallback(async (setting: IndexCardSetting) => {
     setIsUpdating(true)
@@ -114,7 +113,7 @@ export function useSetting(): SettingHookResult {
     finally {
       setIsUpdating(false)
     }
-  }, [setIndexCardSetting, setIsUpdating])
+  }, [setIndexCardSetting])
 
   const updateTableSetting = useCallback(async (setting: TableSetting) => {
     setIsUpdating(true)
@@ -137,7 +136,7 @@ export function useSetting(): SettingHookResult {
     finally {
       setIsUpdating(false)
     }
-  }, [setTableSetting, setIsUpdating])
+  }, [setTableSetting])
 
   useEffect(() => {
     if (indexCardSetting === null && tableSetting === null) {

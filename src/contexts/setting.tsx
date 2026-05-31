@@ -5,12 +5,8 @@ import { createContext, useContext, useMemo, useState } from "react"
 interface SettingContextValue {
   indexCardSetting: IndexCardSetting | null
   tableSetting: TableSetting | null
-  isLoading: boolean
-  isUpdating: boolean
   setIndexCardSetting: (setting: IndexCardSetting) => void
   setTableSetting: (setting: TableSetting) => void
-  setIsLoading: (isLoading: boolean) => void
-  setIsUpdating: (isUpdating: boolean) => void
 }
 
 const SettingContext = createContext<SettingContextValue | null>(null)
@@ -22,19 +18,13 @@ export function SettingProvider({
 }>) {
   const [indexCardSetting, setIndexCardSetting] = useState<IndexCardSetting | null>(null)
   const [tableSetting, setTableSetting] = useState<TableSetting | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isUpdating, setIsUpdating] = useState(false)
 
   const value = useMemo(() => ({
     indexCardSetting,
     tableSetting,
-    isLoading,
-    isUpdating,
     setIndexCardSetting,
     setTableSetting,
-    setIsLoading,
-    setIsUpdating,
-  }), [indexCardSetting, tableSetting, isLoading, isUpdating])
+  }), [indexCardSetting, tableSetting])
 
   return (
     <SettingContext.Provider value={value}>
