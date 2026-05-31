@@ -14,6 +14,7 @@ import type {
   MeSettingResponse,
   TableSettingRequestData,
 } from "@/apis/models/me"
+import type { SemesterRequest, SemesterResponse } from "@/apis/models/semester"
 import { request } from "@/libs/auth-request"
 
 export const api = {
@@ -39,4 +40,5 @@ export const api = {
     },
   },
   announcement: () => request.get<AnnouncementResponse>("/announcement"),
+  semester: (data?: SemesterRequest) => request.get<SemesterResponse>("/semster", data),
 }
