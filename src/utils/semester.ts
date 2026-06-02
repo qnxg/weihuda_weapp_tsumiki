@@ -1,18 +1,18 @@
 import type { Dayjs } from "dayjs"
-import type { Semester, SemesterIdentifier, SemesterInfo } from "@/types/semester"
+import type { Semester, SemesterInfo, XQ } from "@/types/semester"
 import dayjs from "@/utils/dayjs"
 
 /**
  * @description 获取下一学期的标识符
  *   - 学期顺序: 秋季学期 -> 寒假 -> 春季学期 -> 暑假 -> 秋季学期 (次年)
  */
-export function getNextSemester(semester: SemesterIdentifier): SemesterIdentifier {
-  const order: Semester[] = ["autumn", "winter", "spring", "summer"]
-  const currentIndex = order.indexOf(semester.semester)
+export function getNextSemester(semester: Semester): Semester {
+  const order: XQ[] = ["autumn", "winter", "spring", "summer"]
+  const currentIndex = order.indexOf(semester.xq)
   const nextIndex = (currentIndex + 1) % order.length
-  const nextSemesterValue = order[nextIndex]
-  const nextYear = nextSemesterValue === "autumn" ? semester.year + 1 : semester.year
-  return { year: nextYear, semester: nextSemesterValue }
+  const nextXQValue = order[nextIndex]
+  const nextXN = nextXQValue === "autumn" ? semester.xn + 1 : semester.xn
+  return { xn: nextXN, xq: nextXQValue }
 }
 
 /**
@@ -52,7 +52,7 @@ export function getSemesterDateInfo(
   }
 }
 
-const SEMESTER_NAME_MAP: Record<Semester, string> = {
+const SEMESTER_NAME_MAP: Record<XQ, string> = {
   autumn: "秋季学期",
   winter: "寒假",
   spring: "春季学期",
@@ -63,11 +63,11 @@ const SEMESTER_NAME_MAP: Record<Semester, string> = {
  * @description 获取学期名称
  * @example
  * ```ts
- * getSemesterName({ year: 2025, semester: "autumn" }) // "2025-2026秋季学期"
+ * getSemesterName({ xn: 2025, xq: "autumn" }) // "2025-2026秋季学期"
  * ```
  */
-export function getSemesterName(semester: SemesterIdentifier | SemesterInfo): string {
-  const year = semester.year
-  const s = semester.semester
-  return `${year}-${year + 1}${SEMESTER_NAME_MAP[s]}`
+export function getSemesterName(semester: Semester | SemesterInfo): string {
+  const xn = semester.xn
+  const xq = semester.xq
+  return `${xn}-${xn + 1}${SEMESTER_NAME_MAP[xq]}`
 }
