@@ -1,12 +1,5 @@
 /**
  * @description 用户信息响应
- * @property {string} class - 班级
- * @property {string} name - 姓名
- * @property {string} major - 专业
- * @property {number} enter - 入学年份
- * @property {string} sex - 性别
- * @property {number | null} xz - 血制
- * @property {string} stu_id - 学号
  * @see https://app.apifox.com/link/project/8311217/apis/api-461766515
  */
 export interface MeResponse {
@@ -21,9 +14,6 @@ export interface MeResponse {
 
 /**
  * @description 首页卡片设置请求数据
- * @property {number} version - 版本号
- * @property {object} setting - 设置内容
- * @property {string[]} setting.cards - 卡片 key 列表
  * @see https://app.apifox.com/link/project/8311217/apis/api-465881355
  */
 export interface IndexCardSettingRequestData {
@@ -35,9 +25,6 @@ export interface IndexCardSettingRequestData {
 
 /**
  * @description 课表设置请求数据
- * @property {number} version - 版本号
- * @property {object} setting - 设置内容
- * @property {boolean} setting.display_not_current_week_courses - 是否显示非本周课程
  * @see https://app.apifox.com/link/project/8311217/apis/api-465881355
  */
 export interface TableSettingRequestData {
@@ -49,11 +36,69 @@ export interface TableSettingRequestData {
 
 /**
  * @description 获取全部设置的响应
- * @property {IndexCardSettingRequestData} index_card_setting - 首页卡片设置
- * @property {TableSettingRequestData} table_setting - 课表设置
  * @see https://app.apifox.com/link/project/8311217/apis/api-465876637
  */
 export interface MeSettingResponse {
   index_card_setting: IndexCardSettingRequestData
   table_setting: TableSettingRequestData
 }
+
+/**
+ * @description 获取当前用户信息请求
+ */
+export type MeGetRequest = undefined
+
+/**
+ * @description 获取当前用户信息响应
+ */
+export type MeGetResponse = MeResponse
+
+/**
+ * @description 获取设置请求
+ */
+export type MeSettingGetRequest = undefined
+
+/**
+ * @description 获取设置响应
+ */
+export type MeSettingGetResponse = MeSettingResponse
+
+/**
+ * @description 获取首页卡片设置请求
+ */
+export type MeSettingGetIndexCardRequest = undefined
+
+/**
+ * @description 获取首页卡片设置响应
+ */
+export type MeSettingGetIndexCardResponse = IndexCardSettingRequestData
+
+/**
+ * @description 获取课表设置请求
+ */
+export type MeSettingGetTableRequest = undefined
+
+/**
+ * @description 获取课表设置响应
+ */
+export type MeSettingGetTableResponse = TableSettingRequestData
+
+/**
+ * @description 修改首页卡片设置请求
+ */
+export type MeSettingPutIndexCardRequest = IndexCardSettingRequestData
+
+/**
+ * @description 修改首页卡片设置响应
+ */
+export type MeSettingPutIndexCardResponse = IndexCardSettingRequestData
+
+/**
+ * @description 修改课表设置请求
+ */
+export type MeSettingPutTableRequest = TableSettingRequestData
+
+/**
+ * @description 修改课表设置响应
+ */
+export type MeSettingPutTableResponse = TableSettingRequestData

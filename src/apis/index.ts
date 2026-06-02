@@ -8,13 +8,21 @@ import type {
   AuthRefreshResponse,
   AuthTFAResquest,
 } from "@/apis/models/auth"
+
 import type {
-  IndexCardSettingRequestData,
-  MeResponse,
-  MeSettingResponse,
-  TableSettingRequestData,
-} from "@/apis/models/me"
-import type { Semester, SemesterInfo } from "@/types/semester"
+  CourseDeleteRequest,
+  CourseDeleteResponse,
+  CourseGetExtraRequest,
+  CourseGetExtraResponse,
+  CourseGetRequest,
+  CourseGetResponse,
+  CoursePostRequest,
+  CoursePostResponse,
+  CoursePutRequest,
+  CoursePutResponse,
+} from "@/apis/models/course"
+import type { IndexCardSettingRequestData, MeResponse, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
+import type { SemesterRequest, SemesterResponse } from "@/apis/models/semester"
 import { request } from "@/libs/auth-request"
 
 export const api = {
@@ -40,5 +48,12 @@ export const api = {
     },
   },
   announcement: () => request.get<AnnouncementResponse>("/announcement"),
-  semester: (data?: Semester) => request.get<SemesterInfo>("/semster", data),
+  semester: (data?: SemesterRequest) => request.get<SemesterResponse>("/semster", data),
+  course: {
+    get: (data: CourseGetRequest) => request.get<CourseGetResponse>("/course", data),
+    getExtra: (data: CourseGetExtraRequest) => request.get<CourseGetExtraResponse>("/course/extra", data),
+    post: (data: CoursePostRequest) => request.post<CoursePostResponse>("/course", data),
+    put: (customize_id: number, data: CoursePutRequest) => request.put<CoursePutResponse>(`/course/${customize_id}`, data),
+    delete: (customize_id: number, data: CourseDeleteRequest) => request.delete<CourseDeleteResponse>(`/course/${customize_id}`, data),
+  },
 }
