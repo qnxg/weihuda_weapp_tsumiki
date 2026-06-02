@@ -111,6 +111,7 @@ function PullRefresh({
 
   return (
     <ScrollView
+      className="h-full flex-1"
       scrollY
       enhanced
       showScrollbar={false}

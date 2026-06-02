@@ -19,7 +19,7 @@ function Page({
   children: ReactNode
 }>) {
   return (
-    <View className="w-screen h-screen flex flex-col bg text overflow-auto">
+    <View className="w-screen h-screen flex flex-col bg text overflow-hidden">
       {children}
     </View>
   )
@@ -31,7 +31,7 @@ function PageContent({
   children: ReactNode
 }>) {
   return (
-    <View className="p bg-page flex-1">
+    <View className="p bg-page flex-1 overflow-hidden">
       {children}
     </View>
   )

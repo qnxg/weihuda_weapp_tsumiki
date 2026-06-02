@@ -32,29 +32,26 @@ export default function Table() {
       </View>
 
       {/* 表格区 */}
-      <View
-        style={{
-          display: "grid",
-          gridTemplateColumns: "auto 1fr",
-          gridTemplateRows: "auto 1fr",
-        }}
-      >
-        {/* 左上角空白 */}
-        <View />
+      <View className="flex-1 flex flex-col overflow-hidden">
+        <View className="w-full flex">
+          {/* 左上角空白 */}
+          <View className="w-xs" />
 
-        {/* 顶部日期头 */}
-        <DateHeader start={semester?.start} week={week} />
+          {/* 顶部日期头 */}
+          {/* 横向: w-full + justify-evenly + gap-2xs */}
+          <DateHeader start={semester?.start} week={week} />
+        </View>
 
-        {/* 左侧时间头 */}
-        <TimeHeader />
-
-        {/* 表格区 */}
-        {/* 横向: w-fill + 7 个元素 justify-evenly */}
-        {/* 纵向: 12 个元素 h-xs + gap */}
         <PullRefresh onRefresh={() => {}}>
-          <TableContent />
-        </PullRefresh>
+          <View className="flex-1 flex w-full">
+            {/* 左侧时间头 */}
+            {/* 纵向: h * 12 + gap-2xs */}
+            <TimeHeader />
 
+            {/* 表格区 */}
+            <TableContent />
+          </View>
+        </PullRefresh>
       </View>
 
       {/* 悬浮层 */}

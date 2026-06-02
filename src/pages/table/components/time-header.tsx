@@ -15,12 +15,12 @@ export function TimeHeader() {
   })?.index
 
   return (
-    <View className="w-xs flex flex-col gap">
+    <View className="w-xs flex flex-col gap-2xs">
       {SCHEDULES.map(schedule => (
         <View
           key={schedule.index}
           className={cn(
-            "size-xs flex flex-col items-center justify-center",
+            "w-xs h flex flex-col items-center justify-center",
             current === schedule.index ? "text-primary" : "",
           )}
         >

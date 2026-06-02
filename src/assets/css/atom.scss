@@ -52,7 +52,6 @@
 .flex-1 { flex: 1; }
 
 .center {align-items: center; justify-content: center; }
-.overflow-auto { overflow: auto; }
 .overflow-hidden { overflow: hidden; }
 .hidden { display: none; }
 .opacity { opacity: 0; }
@@ -108,6 +107,7 @@
 .my-xl { margin-top: $spacingXL; margin-bottom: $spacingXL; }
 .my { margin-top: $spacingLG; margin-bottom: $spacingLG; }
 
+.gap-2xs { gap: $spacing2XS; }
 .gap-xs { gap: $spacingXS; }
 .gap-sm { gap: $spacingSM; }
 .gap-md { gap: $spacingMD; }
