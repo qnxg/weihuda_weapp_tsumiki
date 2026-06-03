@@ -8,7 +8,7 @@ import { Storage } from "@/utils/storage"
 
 type RequestStatus = "loading" | "success" | "error"
 type CacheStatus = "loading" | "success" | "error"
-type Status = "loading" | "waiting" | "updating" | "success" | "cached" | "error"
+export type Status = "loading" | "waiting" | "updating" | "success" | "cached" | "error"
 
 interface State<T> {
   status: Status
