@@ -1,6 +1,6 @@
 import type { IndexCardSettingRequestData, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
 import type { IndexCardSetting, Setting, TableSetting } from "@/types/setting"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { api } from "@/apis"
 import { LABEL } from "@/config/logger-label"
 import { SETTINGS } from "@/config/setting"
@@ -41,7 +41,8 @@ export function useSetting(): SettingHookResult {
     setTableSetting,
   } = useSettingContext()
 
-  const [isLoading, setIsLoading] = useState(true)
+  const initRef = useRef(false)
+  const [isLoading, setIsLoading] = useState(!indexCardSetting || !tableSetting)
   const [isUpdating, setIsUpdating] = useState(false)
 
   const settings = useMemo<Setting>(() => ({
@@ -50,6 +51,10 @@ export function useSetting(): SettingHookResult {
   }), [indexCardSetting, tableSetting])
 
   const init = useCallback(async () => {
+    if (initRef.current)
+      return
+    initRef.current = true
+
     setIsLoading(true)
 
     const apiPromise = api.me.setting.get().then(res => res.data).catch((error) => {
@@ -64,33 +69,33 @@ export function useSetting(): SettingHookResult {
 
     const apiData: MeSettingResponse | null = await apiPromise
 
-    const indexCardSetting = pickLatestSetting(
+    const pickedIndexCardSetting = pickLatestSetting(
       apiData?.index_card_setting ? convertIndexCardSetting(apiData.index_card_setting) : null,
       indexCardSettingStorageData,
       SETTINGS.indexCardSetting!,
     )
-    const tableSetting = pickLatestSetting(
+    const pickedTableSetting = pickLatestSetting(
       apiData?.table_setting ? convertTableSetting(apiData.table_setting) : null,
       tableSettingStorageData,
       SETTINGS.tableSetting!,
     )
 
-    setIndexCardSetting(indexCardSetting)
-    setTableSetting(tableSetting)
+    setIndexCardSetting(pickedIndexCardSetting)
+    setTableSetting(pickedTableSetting)
 
     if (apiData) {
       await Promise.all([
-        indexCardSetting.version > (indexCardSettingStorageData?.version ?? 0)
-          ? indexCardSettingStorage.set(indexCardSetting)
+        pickedIndexCardSetting.version > (indexCardSettingStorageData?.version ?? 0)
+          ? indexCardSettingStorage.set(pickedIndexCardSetting)
           : Promise.resolve(),
-        tableSetting.version > (tableSettingStorageData?.version ?? 0)
-          ? tableSettingStorage.set(tableSetting)
+        pickedTableSetting.version > (tableSettingStorageData?.version ?? 0)
+          ? tableSettingStorage.set(pickedTableSetting)
           : Promise.resolve(),
       ])
     }
 
     setIsLoading(false)
-  }, [setIndexCardSetting, setTableSetting])
+  }, [indexCardSetting, setIndexCardSetting, setTableSetting, tableSetting])
 
   const updateIndexCardSetting = useCallback(async (setting: IndexCardSetting) => {
     setIsUpdating(true)
@@ -142,7 +147,10 @@ export function useSetting(): SettingHookResult {
     if (indexCardSetting === null && tableSetting === null) {
       void init()
     }
-  }, [init, indexCardSetting, tableSetting])
+    else {
+      setIsLoading(false)
+    }
+  }, [indexCardSetting, init, tableSetting])
 
   return {
     settings,

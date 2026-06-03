@@ -17,7 +17,7 @@ import { getSemesterDateInfo } from "@/utils/semester"
 export default function Table() {
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
   const { isLoading: isSettingLoading } = useSetting()
-  const { data: _course, isLoading: isCourseLoading } = useCourse(semester)
+  const { data: _course, isLoading: _isCourseLoading } = useCourse(semester)
 
   const isLoading = useMemo(() => (
     isSemesterLoading || isSettingLoading
@@ -32,10 +32,6 @@ export default function Table() {
       setWeek(newWeek)
     }
   }, [semester])
-
-  useEffect(() => {
-    console.log("semester: ", isSemesterLoading, "setting: ", isSettingLoading, "course: ", isCourseLoading)
-  }, [isCourseLoading, isSemesterLoading, isSettingLoading])
 
   return (
     <Page isLoading={isLoading}>
