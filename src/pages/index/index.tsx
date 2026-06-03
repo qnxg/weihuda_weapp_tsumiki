@@ -10,17 +10,19 @@ import { Setting } from "@/pages/index/components/setting"
 import { CardLoadingProvider } from "@/pages/index/contexts/card-loading"
 
 export default function Index() {
-  const { settings } = useSetting()
+  const { settings, isLoading } = useSetting()
 
   useEffect(() => {
     console.log(settings)
   }, [settings])
 
   const cardKeys = settings.indexCardSetting?.setting.cards ?? []
-  const displayCards = cardKeys.map(key => cards.find(card => card.key === key)).filter(Boolean) as CardItem[]
+  const displayCards = cardKeys
+    .map(key => cards.find(card => card.key === key))
+    .filter(Boolean) as CardItem[]
 
   return (
-    <Page>
+    <Page isLoading={isLoading}>
       <DateBar />
 
       <CardLoadingProvider>
