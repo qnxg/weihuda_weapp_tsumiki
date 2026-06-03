@@ -2,7 +2,8 @@ import type { BaseEventOrig } from "@tarojs/components"
 import type { ReactNode } from "react"
 import { ScrollView, Slot, View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
-import { useCallback, useMemo, useReducer } from "react"
+import { useCallback, useReducer } from "react"
+import "./index.scss"
 
 const HEAD_HEIGHT = 50 // 同 h-sm
 
@@ -82,8 +83,6 @@ function PullRefresh({
     triggered: false,
   })
 
-  const statusText = useMemo(() => STATUS_TEXT[state.status], [state.status])
-
   const onPulling = useCallback((e: BaseEventOrig) => {
     const dy: number = e.detail?.dy ?? 0
     dispatch({ type: "PULLING", dy })
@@ -126,8 +125,36 @@ function PullRefresh({
       onRefresherAbort={onRestore}
     >
       <Slot name="refresher" className="w-full">
-        {statusText && (
-          <View className="h-sm flex center">{statusText}</View>
+        {state.status !== "loading" && (
+          <View className="h-sm flex center">{STATUS_TEXT[state.status]}</View>
+        )}
+        {state.status === "loading" && (
+          <View className="h-sm flex center gap-xs">
+            <View
+              className="rounded-full bg-primary loading"
+              style={{
+                width: "16rpx",
+                height: "16rpx",
+                animationDelay: "0s",
+              }}
+            />
+            <View
+              className="rounded-full bg-primary loading"
+              style={{
+                width: "16rpx",
+                height: "16rpx",
+                animationDelay: "0.2s",
+              }}
+            />
+            <View
+              className="rounded-full bg-primary loading"
+              style={{
+                width: "16rpx",
+                height: "16rpx",
+                animationDelay: "0.4s",
+              }}
+            />
+          </View>
         )}
       </Slot>
       {children}

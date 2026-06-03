@@ -7,7 +7,7 @@ import "./index.scss"
  * @example
  * ```tsx
  * <Page isLoading={isLoading}>
- *   纯白背景内容, 在 loading 时自动整页的加载动画
+ *   纯白背景内容, 在 loading 时自动整页的动画
  *   <PageContent>
  *     淡白色带边距内容, 自动占满页面剩余高度
  *   </PageContent>
@@ -30,6 +30,7 @@ function Page({
                 className="relative size rounded-full spin"
                 style={{
                   background: "conic-gradient(from 0deg, #222222, #aaaaaa)",
+                  opacity: "0.5",
                 }}
               >
                 <View className="absolute inset-xs rounded-full bg" />
