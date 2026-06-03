@@ -1,5 +1,4 @@
 import type { CardItem } from "@/pages/index/components/cards"
-import { useEffect } from "react"
 
 import { Page, PageContent } from "@/components/page"
 import { useSetting } from "@/hooks/setting"
@@ -11,10 +10,6 @@ import { CardLoadingProvider } from "@/pages/index/contexts/card-loading"
 
 export default function Index() {
   const { settings, isLoading } = useSetting()
-
-  useEffect(() => {
-    console.log(settings)
-  }, [settings])
 
   const cardKeys = settings.indexCardSetting?.setting.cards ?? []
   const displayCards = cardKeys

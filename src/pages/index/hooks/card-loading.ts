@@ -21,8 +21,13 @@ interface CardLoadingResult {
  * @description 卡片加载状态管理 Hook, 用于统一管理 Index 页面下所有卡片的加载状态
  */
 export function useCardLoading(): CardLoadingResult {
-  const { count, refreshers, setCount, addRefresher, removeRefresher }
-    = useCardLoadingContext()
+  const {
+    count,
+    refreshers,
+    setCount,
+    addRefresher,
+    removeRefresher,
+  } = useCardLoadingContext()
 
   const isLoading = useMemo(() => count > 0, [count])
 

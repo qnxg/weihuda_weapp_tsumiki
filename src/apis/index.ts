@@ -48,7 +48,7 @@ export const api = {
     },
   },
   announcement: () => request.get<AnnouncementResponse>("/announcement"),
-  semester: (data?: SemesterRequest) => request.get<SemesterResponse>("/semster", data),
+  semester: (data?: SemesterRequest) => request.get<SemesterResponse>("/semester", data),
   course: {
     get: (data: CourseGetRequest) => request.get<CourseGetResponse>("/course", data),
     getExtra: (data: CourseGetExtraRequest) => request.get<CourseGetExtraResponse>("/course/extra", data),

@@ -10,4 +10,12 @@ export const STORAGE = {
     index_card: "index_card_setting",
     table: "table_setting",
   },
+  page: {
+    table: {
+      course: {
+        prefix: "course",
+        placeholder: "placeholder",
+      },
+    },
+  },
 }

@@ -1,5 +1,5 @@
 import type { RequestError } from "@/types/request"
-import type { Semester, SemesterInfo, XN, XQ } from "@/types/semester"
+import type { Semester } from "@/types/semester"
 import { useCallback, useEffect, useState } from "react"
 import { api } from "@/apis"
 import { useSemesterContext } from "@/contexts/semester"
@@ -10,54 +10,25 @@ interface UseSemesterResult {
   error: RequestError | null
 }
 
+type SemesterInfo = Awaited<ReturnType<typeof api.semester>>["data"]
+
 /**
  * @description 学期信息 Hook
  *   - mount 时自动请求本学期信息并缓存
  *   - 传入参数可获取指定学期信息
  */
-export function useSemester(args?: Semester): UseSemesterResult {
-  const {
-    semesters,
-    currentSemester,
-    setSemesters,
-    setCurrentSemester,
-  } = useSemesterContext()
+export function useSemester(s?: Semester): UseSemesterResult {
+  const { getSemester, setSemester } = useSemesterContext()
 
   const [data, setData] = useState<SemesterInfo | null>(null)
   const [error, setError] = useState<RequestError | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
-  // 检查 semesters 中是否存在指定学期
-  const hasSemester = useCallback((xn: XN, xq: XQ) => {
-    return semesters.some(
-      item => item.xn === xn && item.xq === xq,
-    )
-  }, [semesters])
-
-  // 更新或添加学期信息到 semesters 中
-  const upsertSemester = useCallback((semester: SemesterInfo) => {
-    setSemesters((prev) => {
-      if (hasSemester(semester.xn, semester.xq)) {
-        return prev.map(item =>
-          item.xn === semester.xn && item.xq === semester.xq
-            ? semester
-            : item,
-        )
-      }
-      return [...prev, semester]
-    })
-  }, [setSemesters, hasSemester])
-
-  // 请求学期信息
-  const fetchSemester = useCallback(async (xn?: XN, xq?: XQ) => {
+  const fetchSemester = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
-      const res = await api.semester(
-        xn !== undefined && xq !== undefined
-          ? { xn, xq }
-          : undefined,
-      )
+      const res = await api.semester(s)
       return res.data
     }
     catch (err) {
@@ -68,42 +39,24 @@ export function useSemester(args?: Semester): UseSemesterResult {
     finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [s])
 
   useEffect(() => {
-    // args 存在
-    if (args) {
-      if (hasSemester(args.xn, args.xq)) {
-        const semester = semesters.find(
-          item => item.xn === args.xn && item.xq === args.xq,
-        )
-        setData(semester!)
-        return
-      }
-
-      void fetchSemester(args.xn, args.xq).then((semester) => {
-        if (semester) {
-          upsertSemester(semester)
-          setData(semester)
-        }
-      })
+    const semester = getSemester(s)
+    if (semester) {
+      setData(semester)
+      setIsLoading(false)
       return
     }
 
-    // args 不存在, 为当前学期
-    if (currentSemester !== null) {
-      setData(currentSemester)
-      return
-    }
-
-    void fetchSemester().then((semester) => {
-      if (semester) {
-        upsertSemester(semester)
-        setCurrentSemester(semester)
-        setData(semester)
+    void fetchSemester().then((res) => {
+      if (res) {
+        const isCurrent = !s
+        setSemester(res, isCurrent)
+        setData(res)
       }
     })
-  }, [args, semesters, currentSemester, fetchSemester, setSemesters, setCurrentSemester, hasSemester, upsertSemester])
+  }, [s, getSemester, setSemester, fetchSemester])
 
   return { data, isLoading, error }
 }

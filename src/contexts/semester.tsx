@@ -1,12 +1,10 @@
 import type { ReactNode } from "react"
-import type { SemesterInfo } from "@/types/semester"
-import { createContext, useContext, useMemo, useState } from "react"
+import type { Semester, SemesterInfo } from "@/types/semester"
+import { createContext, useCallback, useContext, useMemo, useState } from "react"
 
 interface SemesterContextValue {
-  semesters: SemesterInfo[]
-  currentSemester: SemesterInfo | null
-  setSemesters: (semesters: SemesterInfo[] | ((prev: SemesterInfo[]) => SemesterInfo[])) => void
-  setCurrentSemester: (semester: SemesterInfo | null) => void
+  getSemester: (s?: Semester) => SemesterInfo | null
+  setSemester: (s: SemesterInfo, isCurrent?: boolean) => void
 }
 
 const SemesterContext = createContext<SemesterContextValue | null>(null)
@@ -17,14 +15,35 @@ export function SemesterProvider({
   children: ReactNode
 }>) {
   const [semesters, setSemesters] = useState<SemesterInfo[]>([])
-  const [currentSemester, setCurrentSemester] = useState<SemesterInfo | null>(null)
+  const [current, setCurrent] = useState<number | null>(null)
+
+  const getSemester = useCallback((s?: Semester): SemesterInfo | null => {
+    if (!s) {
+      return current !== null ? semesters[current] ?? null : null
+    }
+
+    return semesters.find(item => item.xn === s.xn && item.xq === s.xq) ?? null
+  }, [semesters, current])
+
+  const setSemester = useCallback((s: SemesterInfo, isCurrent = false) => {
+    const index = semesters.findIndex(item => item.xn === s.xn && item.xq === s.xq)
+
+    if (index >= 0) {
+      setSemesters(prev => prev.map((item, i) => i === index ? s : item))
+      if (isCurrent)
+        setCurrent(index)
+    }
+    else {
+      setSemesters(prev => [...prev, s])
+      if (isCurrent)
+        setCurrent(semesters.length)
+    }
+  }, [semesters])
 
   const value = useMemo(() => ({
-    semesters,
-    currentSemester,
-    setSemesters,
-    setCurrentSemester,
-  }), [semesters, currentSemester])
+    getSemester,
+    setSemester,
+  }), [getSemester, setSemester])
 
   return (
     <SemesterContext.Provider value={value}>

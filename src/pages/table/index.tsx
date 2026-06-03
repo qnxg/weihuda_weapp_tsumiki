@@ -1,8 +1,9 @@
 import { View } from "@tarojs/components"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Page } from "@/components/page"
 import { PullRefresh } from "@/components/pull-refresh"
 import { useSemester } from "@/hooks/semester"
+import { useSetting } from "@/hooks/setting"
 import { DateHeader } from "@/pages/table/components/date-header"
 import { Detail } from "@/pages/table/components/detail"
 import { ExtraCourses } from "@/pages/table/components/extra-courses"
@@ -10,10 +11,17 @@ import { Menu } from "@/pages/table/components/menu"
 import { Options } from "@/pages/table/components/options"
 import { TableContent } from "@/pages/table/components/table-content"
 import { TimeHeader } from "@/pages/table/components/time-header"
+import { useCourse } from "@/pages/table/hooks/course"
 import { getSemesterDateInfo } from "@/utils/semester"
 
 export default function Table() {
-  const { data: semester, isLoading } = useSemester()
+  const { data: semester, isLoading: isSemesterLoading } = useSemester()
+  const { isLoading: isSettingLoading } = useSetting()
+  const { data: _course, isLoading: isCourseLoading } = useCourse(semester)
+
+  const isLoading = useMemo(() => (
+    isSemesterLoading || isSettingLoading
+  ), [isSemesterLoading, isSettingLoading])
 
   const [week, setWeek] = useState(1)
 
@@ -24,6 +32,10 @@ export default function Table() {
       setWeek(newWeek)
     }
   }, [semester])
+
+  useEffect(() => {
+    console.log("semester: ", isSemesterLoading, "setting: ", isSettingLoading, "course: ", isCourseLoading)
+  }, [isCourseLoading, isSemesterLoading, isSettingLoading])
 
   return (
     <Page isLoading={isLoading}>

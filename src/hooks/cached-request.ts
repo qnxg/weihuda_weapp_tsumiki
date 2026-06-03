@@ -200,6 +200,14 @@ function reducer<T>(state: State<T>, action: Action<T>): State<T> {
 }
 
 /**
+ * @description 缓存请求 Hook 配置项
+ * @property {boolean} [enabled=true] - 是否启用自动请求和缓存读取
+ */
+interface CachedRequestOptions {
+  enabled?: boolean
+}
+
+/**
  * @template T - 响应数据的类型
  * @property {Status} status - 当前状态
  * @property {T | null} data - 响应数据
@@ -224,10 +232,12 @@ interface CachedRequestResult<T> {
  * @template T - 响应数据的类型
  * @param {() => Promise<Response<T>>} fn - 异步请求函数
  * @param {string} key - 存储键
+ * @param {CachedRequestOptions} [options] - 配置项
  */
 export function useCachedRequest<T extends object | null>(
   fn: () => Promise<Response<T>>,
   key: string,
+  options: CachedRequestOptions = {},
 ): CachedRequestResult<T> {
   const [state, dispatch] = useReducer<Reducer<State<T>, Action<T>>>(reducer, {
     status: "loading",
@@ -302,8 +312,10 @@ export function useCachedRequest<T extends object | null>(
   }, [cacheFn, requestFn])
 
   useEffect(() => {
+    if (options?.enabled === false)
+      return
     void execute()
-  }, [execute])
+  }, [execute, options?.enabled])
 
   // 重新请求, 保留数据和错误
   const refetch = useCallback(() => {
