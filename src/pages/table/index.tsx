@@ -13,7 +13,8 @@ import { TimeHeader } from "@/pages/table/components/time-header"
 import { getSemesterDateInfo } from "@/utils/semester"
 
 export default function Table() {
-  const { data: semester } = useSemester()
+  const { data: semester, isLoading } = useSemester()
+
   const [week, setWeek] = useState(1)
 
   // semester 初始化完成后写入初始周数
@@ -25,7 +26,7 @@ export default function Table() {
   }, [semester])
 
   return (
-    <Page>
+    <Page isLoading={isLoading}>
       {/* 顶部标题区 */}
       <View className="w-full flex items-center justify-center text-lg py-xs">
         <View>我是标题</View>
@@ -38,14 +39,14 @@ export default function Table() {
           <View className="w-xs" />
 
           {/* 顶部日期头 */}
-          {/* 横向: w-full + justify-evenly + gap-2xs */}
+          {/* 横向: w-full + justify-evenly + gap-4rpx */}
           <DateHeader start={semester?.start} week={week} />
         </View>
 
         <PullRefresh onRefresh={() => {}}>
           <View className="flex-1 flex w-full">
             {/* 左侧时间头 */}
-            {/* 纵向: h * 12 + gap-2xs */}
+            {/* 纵向: h * 12 + gap-4rpx */}
             <TimeHeader />
 
             {/* 表格区 */}

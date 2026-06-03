@@ -15,7 +15,12 @@ export function TimeHeader() {
   })?.index
 
   return (
-    <View className="w-xs flex flex-col gap-2xs">
+    <View
+      className="w-xs flex flex-col"
+      style={{
+        gap: "4rpx",
+      }}
+    >
       {SCHEDULES.map(schedule => (
         <View
           key={schedule.index}

@@ -3,11 +3,12 @@ import { View } from "@tarojs/components"
 export function TableContent() {
   return (
     <View
-      className="flex-1 h-full gap-2xs"
+      className="flex-1 h-full"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(7, 1fr)",
         gridTemplateRows: "repeat(12, 1fr)",
+        gap: "4rpx",
       }}
     >
       {Array.from({ length: 12 }).map((_, i) => (
