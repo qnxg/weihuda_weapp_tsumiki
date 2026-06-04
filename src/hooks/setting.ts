@@ -95,7 +95,7 @@ export function useSetting(): SettingHookResult {
     }
 
     setIsLoading(false)
-  }, [indexCardSetting, setIndexCardSetting, setTableSetting, tableSetting])
+  }, [setIndexCardSetting, setTableSetting])
 
   const updateIndexCardSetting = useCallback(async (setting: IndexCardSetting) => {
     setIsUpdating(true)

@@ -71,6 +71,8 @@ export default function Table() {
       ))
       const newCells = mergeCells(initCells)
       setCells(newCells)
+
+      console.log("cells: ", initCells, "merged: ", newCells)
     }
   }, [course, week, settings.tableSetting])
 

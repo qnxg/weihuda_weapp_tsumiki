@@ -301,6 +301,9 @@ export function useCachedRequest<T extends object | null>(
 
   // 初始化时同时发起请求和缓存读取
   const execute = useCallback(() => {
+    if (options?.enabled === false)
+      return
+
     dispatch({ type: "INIT" })
 
     const storage = storageRef.current
@@ -309,7 +312,7 @@ export function useCachedRequest<T extends object | null>(
 
     requestFn(storage)
     cacheFn()
-  }, [cacheFn, requestFn])
+  }, [cacheFn, requestFn, options?.enabled])
 
   useEffect(() => {
     if (options?.enabled === false)

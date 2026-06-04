@@ -89,7 +89,7 @@ export function mergeCells(cells: Cell[][]): Cell[][] {
       "class_name",
       "type",
       "credit",
-      "weeks",
+      // "weeks", 非基本类型, 需特殊处理
       "day",
       // "time", 课程合并不比较节次
       "extra",
@@ -100,15 +100,17 @@ export function mergeCells(cells: Cell[][]): Cell[][] {
       "customize_id",
       "bgColor",
       "color",
-    ] as Array<keyof CourseItemWithColor>
+    ] as const as Array<keyof CourseItemWithColor>
 
-    // 除 time节次 外, 逐个字段校验
-    for (const k of keys) {
-      if (c1[k] !== c2[k])
-        return false
-    }
+    // 基本类型的逐个字段校验
+    if (!keys.every(k => c1[k] === c2[k]))
+      return false
 
-    return true
+    // weeks 处理
+    if (c1.weeks.length !== c2.weeks.length)
+      return false
+
+    return c1.weeks.every(i => c2.weeks.includes(i))
   }
 
   // 判断是否可以合并

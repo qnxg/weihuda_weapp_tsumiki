@@ -29,18 +29,34 @@ export function TableContent({
         return (
           <View
             key={`${cell.day}-${cell.start}`}
-            className="relative"
+            className="relative rounded-sm"
             style={{
+              padding: "2rpx",
               gridColumn: cell.day + 1,
               gridRow: `${cell.start} / span ${cell.span}`,
               backgroundColor: current ? current.bgColor : "#efefef",
               color: current ? current.color : "#aeaeae",
             }}
           >
-            {cell.items.map(i => i.course_name).join(",")}
+            <View
+              className="text-md overflow-hidden"
+              style={{
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: "3",
+              }}
+            >
+              {display.course_name}
+            </View>
+            {display.place && (
+              <View className="text-sm">
+                @
+                {display.place}
+              </View>
+            )}
 
             {/* 多课程合并标记 */}
-            {cell.items.length >= 0 && (
+            {cell.items.length > 1 && (
               <View
                 className="absolute"
                 style={{
@@ -49,7 +65,7 @@ export function TableContent({
                   bottom: "3rpx",
                   width: "0",
                   height: "0",
-                  border: "12rpx solid",
+                  border: "12rpx solid", // 同 rounded-sm
                   borderRadius: "10rpx 0 10rpx 0",
                   borderColor: "#d8d8d8 #eeeeee #eeeeee #d8d8d8",
                 }}
