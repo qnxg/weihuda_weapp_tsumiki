@@ -97,8 +97,13 @@ export default function Table() {
           <DateHeader start={semester?.start} week={week} />
         </View>
 
-        <PullRefresh onRefresh={() => {}}>
-          <View className="flex-1 flex w-full">
+        <PullRefresh
+          onRefresh={() => {}}
+          // 标题区: text-lg (28px) + py-xs (16px) = 44px
+          // 日期头行: h-xs (80px) + py-xs (16px) = 96px
+          topGap={140}
+        >
+          <View className="flex w-full">
             {/* 左侧时间头 */}
             {/* 纵向: h * 12 + gap-4rpx */}
             <TimeHeader />

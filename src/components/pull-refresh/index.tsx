@@ -66,16 +66,21 @@ const STATUS_TEXT: Record<PullStatus, string> = {
  * @example
  * 接受一个 Promise, 会在下拉时进入刷新状态, 触发 Promise, 并在 Promise 完成后恢复初始状态
  * ```tsx
- * <PullRefresh onRefresh={() => handleRefresh()}>
+ * <PullRefresh
+ *   topGap={100}
+ *   onRefresh={() => handleRefresh()}
+ * >
  *   内容
  * </PullRefresh>
  * ```
  */
 function PullRefresh({
   onRefresh,
+  topGap,
   children,
 }: Readonly<{
   onRefresh: () => Promise<void> | void
+  topGap?: number
   children: ReactNode
 }>) {
   const [state, dispatch] = useReducer(reducer, {
@@ -110,7 +115,9 @@ function PullRefresh({
 
   return (
     <ScrollView
-      className="h-full flex-1"
+      style={{
+        height: topGap ? `calc(100vh - ${topGap}rpx)` : "100%",
+      }}
       scrollY
       enhanced
       showScrollbar={false}
