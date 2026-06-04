@@ -22,7 +22,7 @@ function Page({
   isLoading?: boolean
 }>) {
   return (
-    <View className="w-screen h-screen flex flex-col bg text overflow-hidden">
+    <View className="relative w-screen h-screen flex flex-col bg text overflow-hidden">
       {isLoading
         ? (
             <View className="w-full h-full flex justify-center items-center">

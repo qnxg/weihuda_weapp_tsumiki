@@ -1,3 +1,4 @@
+import type { CourseItem } from "@/apis/models/course"
 import type { Status } from "@/hooks/cached-request"
 import { View } from "@tarojs/components"
 import { useEffect, useMemo, useState } from "react"
@@ -6,14 +7,27 @@ import { PullRefresh } from "@/components/pull-refresh"
 import { useSemester } from "@/hooks/semester"
 import { useSetting } from "@/hooks/setting"
 import { DateHeader } from "@/pages/table/components/date-header"
-import { Detail } from "@/pages/table/components/detail"
-import { ExtraCourses } from "@/pages/table/components/extra-courses"
 import { Menu } from "@/pages/table/components/menu"
-import { Options } from "@/pages/table/components/options"
 import { TableContent } from "@/pages/table/components/table-content"
 import { TimeHeader } from "@/pages/table/components/time-header"
 import { useCourse } from "@/pages/table/hooks/course"
+import { colorCourses, formatCourses, getInitCells, mergeCells } from "@/pages/table/utils/course"
 import { getSemesterDateInfo, getSemesterName } from "@/utils/semester"
+
+export type CourseItemWithColor = CourseItem & {
+  bgColor: string
+  color: string
+}
+
+/**
+ * @description 课表页按天划分的每个单元格结构
+ */
+export interface Cell {
+  day: number
+  start: number
+  span: number
+  items: CourseItemWithColor[]
+}
 
 const STATUS_TEXT: Record<Status, string> = {
   loading: "(加载中)",
@@ -26,22 +40,39 @@ const STATUS_TEXT: Record<Status, string> = {
 
 export default function Table() {
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
-  const { isLoading: isSettingLoading } = useSetting()
-  const { data: _course, status, isLoading: _isCourseLoading } = useCourse(semester)
+  const { settings, isLoading: isSettingLoading } = useSetting()
+  const { data: course, status, isLoading: _isCourseLoading } = useCourse(semester)
 
   const isLoading = useMemo(() => (
     isSemesterLoading || isSettingLoading
   ), [isSemesterLoading, isSettingLoading])
 
+  // 当前周, 学期信息加载之前为 1, 和学期的空值搭配显示未本周
   const [week, setWeek] = useState(1)
 
-  // semester 初始化完成后写入初始周数
+  // 课表 cells, 共 7 个元素, 0 - 6 表示一周; 每个元素为一个 DayCell 数组
+  const [cells, setCells] = useState<Cell[][]>(() => getInitCells())
+
+  // semester 就绪后写入初始周数
   useEffect(() => {
     if (semester) {
       const { week: newWeek } = getSemesterDateInfo(semester)
       setWeek(newWeek)
     }
   }, [semester])
+
+  // course 就绪后更新 cells
+  useEffect(() => {
+    if (course) {
+      const coloredCourse = colorCourses(course)
+      const initCells = formatCourses(coloredCourse.filter(
+        // 是否显示非本周课程
+        c => c.weeks.includes(week) || settings.tableSetting?.setting.displayNotCurrentWeekCourses,
+      ))
+      const newCells = mergeCells(initCells)
+      setCells(newCells)
+    }
+  }, [course, week, settings.tableSetting])
 
   return (
     <Page isLoading={isLoading}>
@@ -71,17 +102,10 @@ export default function Table() {
             <TimeHeader />
 
             {/* 表格区 */}
-            <TableContent />
+            <TableContent week={week} cells={cells} />
           </View>
         </PullRefresh>
       </View>
-
-      {/* 悬浮层 */}
-      <Detail />
-
-      {/* Popup 层 */}
-      <Options />
-      <ExtraCourses />
 
       {/* 绝对定位层 */}
       <Menu />
