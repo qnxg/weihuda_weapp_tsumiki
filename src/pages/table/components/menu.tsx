@@ -7,7 +7,15 @@ import ExtraIcon from "@/static/table/extra.svg"
 import MoreIcon from "@/static/table/more.svg"
 import SettingIcon from "@/static/table/setting.svg"
 
-export function Menu() {
+export function Menu({
+  onAdd,
+  onSetting,
+  onExtra,
+}: Readonly<{
+  onAdd: () => void
+  onSetting: () => void
+  onExtra: () => void
+}>) {
   const [isActive, setIsActive] = useState(false)
 
   return (
@@ -29,8 +37,11 @@ export function Menu() {
           height: "40rpx",
         }}
       />
+
+      {/* 子按钮 */}
       <View
         className="absolute size-xs flex center rounded-full bg-primary"
+        onClick={() => onAdd()}
         style={{
           top: "0",
           // 同 size-xs
@@ -52,6 +63,7 @@ export function Menu() {
       </View>
       <View
         className="absolute size-xs flex center rounded-full bg-primary"
+        onClick={() => onSetting()}
         style={{
           // 同 size-xs, 斜向 sqrt(2) / 2 倍
           top: "-64rpx",
@@ -73,6 +85,7 @@ export function Menu() {
       </View>
       <View
         className="absolute size-xs flex center rounded-full bg-primary"
+        onClick={() => onExtra()}
         style={{
           // 同 size-xs
           top: "-80rpx",

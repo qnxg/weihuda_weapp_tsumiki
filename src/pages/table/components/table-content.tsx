@@ -4,9 +4,11 @@ import { View } from "@tarojs/components"
 export function TableContent({
   week,
   cells,
+  onShowDetail,
 }: Readonly<{
   week: number
   cells: Cell[][]
+  onShowDetail: (cell: Cell) => void
 }>) {
   return (
     <View
@@ -37,6 +39,7 @@ export function TableContent({
               backgroundColor: current ? current.bgColor : "#efefef",
               color: current ? current.color : "#aeaeae",
             }}
+            onClick={() => onShowDetail(cell)}
           >
             <View
               className="text-md overflow-hidden"

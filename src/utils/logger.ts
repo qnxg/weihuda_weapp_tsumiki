@@ -19,7 +19,9 @@ export function logger(
   fn(`[${level}][${label}]`, ...args)
 }
 
+// eslint-disable-next-line no-console
 logger.debug = (label: string, ...args: any[]) => logger(console.log, 4, label, ...args)
+// eslint-disable-next-line no-console
 logger.info = (label: string, ...args: any[]) => logger(console.info, 3, label, ...args)
 logger.warn = (label: string, ...args: any[]) => logger(console.warn, 2, label, ...args)
 logger.error = (label: string, ...args: any[]) => logger(console.error, 1, label, ...args)

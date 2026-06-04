@@ -13,7 +13,6 @@ export default antfu({
   react: true,
 }).removeRules(
   "node/prefer-global/process",
-  "no-console",
   "react-hooks-extra/no-direct-set-state-in-use-effect",
   "react-refresh/only-export-components",
   "react/no-array-index-key",
