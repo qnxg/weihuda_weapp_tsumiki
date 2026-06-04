@@ -13,11 +13,14 @@ import "./index.scss"
 export function Icon({
   src,
   className,
+  theme = "auto",
   ...props
-}: Readonly<ComponentProps<typeof Image>>) {
+}: Readonly<{
+  theme?: "light" | "dark" | "auto"
+} & ComponentProps<typeof Image>>) {
   return (
     <Image
-      className={cn("icon", className)}
+      className={cn(`icon--${theme}`, className)}
       src={src}
       {...props}
     />

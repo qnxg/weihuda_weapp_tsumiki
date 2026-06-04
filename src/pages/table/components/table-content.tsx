@@ -31,7 +31,7 @@ export function TableContent({
             key={`${cell.day}-${cell.start}`}
             className="relative rounded-sm"
             style={{
-              padding: "2rpx",
+              padding: "6rpx",
               gridColumn: cell.day + 1,
               gridRow: `${cell.start} / span ${cell.span}`,
               backgroundColor: current ? current.bgColor : "#efefef",

@@ -1,5 +1,15 @@
 .icon {
-  @media (prefers-color-scheme: dark) {
+  &--auto {
+    @media (prefers-color-scheme: dark) {
+      filter: invert(0.9) hue-rotate(185deg);
+    }
+  }
+
+  &--dark {
     filter: invert(0.9) hue-rotate(185deg);
+  }
+
+  &--light {
+    filter: none;
   }
 }
