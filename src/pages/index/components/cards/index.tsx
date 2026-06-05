@@ -17,7 +17,7 @@ export interface CardItem {
 
 export const cards: CardItem[] = [
   { name: "积分", key: "jifen", content: <Jifen cardKey="jifen" /> },
-  { name: "课程", key: "course", content: <Courses cardKey="course" /> },
+  { name: "课程", key: "courses", content: <Courses cardKey="courses" /> },
   { name: "电量", key: "electricity", content: <Electricity cardKey="electricity" /> },
   { name: "校园卡余额", key: "campus", content: <Campus cardKey="campus" /> },
   { name: "近期待办", key: "tasks", content: <Tasks cardKey="tasks" /> },
