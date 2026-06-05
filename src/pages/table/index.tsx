@@ -200,6 +200,16 @@ export default function Table() {
                 setActiveCell(cell)
                 setOverlayContentKey("detail")
               }}
+              onChangePrevWeek={() => {
+                if (week <= 1)
+                  return
+                setWeek(p => p - 1)
+              }}
+              onChangeNextWeek={() => {
+                if (!semester || week >= semester.weeks)
+                  return
+                setWeek(p => p + 1)
+              }}
             />
           </View>
         </PullRefresh>

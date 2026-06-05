@@ -1,15 +1,39 @@
 import type { Cell } from "@/pages/table"
 import { View } from "@tarojs/components"
+import { useState } from "react"
 
 export function TableContent({
   week,
   cells,
   onShowDetail,
+  onChangePrevWeek,
+  onChangeNextWeek,
 }: Readonly<{
   week: number
   cells: Cell[][]
   onShowDetail: (cell: Cell) => void
+  onChangePrevWeek: () => void
+  onChangeNextWeek: () => void
 }>) {
+  const [touchStartPosX, setTouchStartPosX] = useState(0)
+
+  // 此处类型不规范为 Taro 的问题
+  const handleTouchStart = (e: any) => {
+    if (e.touches.length === 1) {
+      setTouchStartPosX(e.changedTouches[0].pageX)
+    }
+  }
+
+  const handleTouchEnd = (e: any) => {
+    if (e.changedTouches.length === 1) {
+      const end = e.changedTouches[0].pageX
+      const offset = end - touchStartPosX
+      if (Math.abs(offset) <= 80)
+        return
+      offset > 0 ? onChangePrevWeek() : onChangeNextWeek()
+    }
+  }
+
   return (
     <View
       className="flex-1 h-full"
@@ -20,6 +44,8 @@ export function TableContent({
         gridTemplateRows: "repeat(12, 120rpx)",
         gap: "4rpx",
       }}
+      onTouchStart={e => handleTouchStart(e)}
+      onTouchEnd={e => handleTouchEnd(e)}
     >
       {cells.map(dayCells => dayCells.map((cell) => {
         const current = cell.items.find(i => i.weeks.includes(week))
