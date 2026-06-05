@@ -41,7 +41,12 @@ export function Menu({
       {/* 子按钮 */}
       <View
         className="absolute size-xs flex center rounded-full bg-primary"
-        onClick={() => onAddButtonClick()}
+        onClick={(e) => {
+          e.stopPropagation()
+          if (!isActive)
+            return
+          onAddButtonClick()
+        }}
         style={{
           top: "0",
           // 同 size-xs
@@ -63,7 +68,12 @@ export function Menu({
       </View>
       <View
         className="absolute size-xs flex center rounded-full bg-primary"
-        onClick={() => onOptionsButtonClick()}
+        onClick={(e) => {
+          e.stopPropagation()
+          if (!isActive)
+            return
+          onOptionsButtonClick()
+        }}
         style={{
           // 同 size-xs, 斜向 sqrt(2) / 2 倍
           top: "-64rpx",
@@ -85,7 +95,12 @@ export function Menu({
       </View>
       <View
         className="absolute size-xs flex center rounded-full bg-primary"
-        onClick={() => onExtraButtonClick()}
+        onClick={(e) => {
+          e.stopPropagation()
+          if (!isActive)
+            return
+          onExtraButtonClick()
+        }}
         style={{
           // 同 size-xs
           top: "-80rpx",
