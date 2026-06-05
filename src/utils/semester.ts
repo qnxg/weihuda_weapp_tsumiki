@@ -16,6 +16,18 @@ export function getNextSemester(semester: Semester): Semester {
 }
 
 /**
+ * @description 获取上一学期的标识符
+ */
+export function getPrevSemester(semester: Semester): Semester {
+  const order: XQ[] = ["autumn", "winter", "spring", "summer"]
+  const currentIndex = order.indexOf(semester.xq)
+  const prevIndex = (currentIndex - 1 + order.length) % order.length
+  const prevXQValue = order[prevIndex]
+  const prevXN = prevXQValue === "summer" ? semester.xn - 1 : semester.xn
+  return { xn: prevXN, xq: prevXQValue }
+}
+
+/**
  * @description 获取学期日期相关信息
  *   - week: 当前是第几周, 从 1 开始, 不在学期内返回 -1
  *   - passed: 已经过去的天数, 在学期开始前为负数
@@ -70,4 +82,25 @@ export function getSemesterName(semester: Semester | SemesterInfo): string {
   const xn = semester.xn
   const xq = semester.xq
   return `${xn}-${xn + 1}${SEMESTER_NAME_MAP[xq]}`
+}
+
+const SEMESTER_NAME_REGEX = /^(\d{4})-(\d{4})(秋季学期|寒假|春季学期|暑假\(含夏季学期\))$/
+
+/**
+ * @description 根据学期名称获取学期标识符
+ * @example
+ * ```ts
+ * getSemesterFromName("2025-2026秋季学期") // { xn: 2025, xq: "autumn" }
+ * ```
+ */
+export function getSemesterFromName(s: string): Semester | null {
+  const match = s.match(SEMESTER_NAME_REGEX)
+  if (!match)
+    return null
+  const xn = Number.parseInt(match[1], 10)
+  const name = match[3]
+  const xq = (Object.entries(SEMESTER_NAME_MAP).find(([, v]) => v === name)?.[0] as XQ) ?? null
+  if (!xq)
+    return null
+  return { xn, xq }
 }

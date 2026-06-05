@@ -27,6 +27,9 @@ export const LABEL = {
       custom: {
         INVALID_INDEX: "Custom Course Invalid Index",
       },
+      options: {
+        SEMESTER_NOT_ACCESSIBLE: "Table Options Semester Not Accessible",
+      },
     },
   },
 }

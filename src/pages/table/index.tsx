@@ -1,5 +1,6 @@
 import type { CourseItem, CustomCourseRequest } from "@/apis/models/course"
 import type { Status } from "@/hooks/cached-request"
+import type { Semester } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { showToast } from "@tarojs/taro"
 import { useEffect, useMemo, useState } from "react"
@@ -7,6 +8,7 @@ import { api } from "@/apis"
 import { Overlay } from "@/components/overlay"
 import { Page } from "@/components/page"
 import { PullRefresh } from "@/components/pull-refresh"
+import { SETTINGS } from "@/config/setting"
 import { useSemester } from "@/hooks/semester"
 import { useSetting } from "@/hooks/setting"
 import { CustomCourse } from "@/pages/table/components/custom-course"
@@ -56,8 +58,11 @@ const STATUS_TEXT: Record<Status, string> = {
 }
 
 export default function Table() {
-  const { data: semester, isLoading: isSemesterLoading } = useSemester()
-  const { settings, isLoading: isSettingLoading } = useSetting()
+  // 学期标识符
+  const [displaySemester, setDisplaySemester] = useState<Semester | null>(null)
+
+  const { data: semester, isLoading: isSemesterLoading } = useSemester(displaySemester ?? undefined)
+  const { settings, isLoading: isSettingLoading, isUpdating, updateTableSetting } = useSetting()
   const { data: course, status, refetch } = useCourse(semester)
 
   const isLoading = useMemo(() => (
@@ -202,9 +207,9 @@ export default function Table() {
 
       {/* 绝对定位层 */}
       <Menu
-        onAdd={() => setOverlayContentKey("custom")}
-        onSetting={() => setOverlayContentKey("options")}
-        onExtra={() => setOverlayContentKey("extra")}
+        onAddButtonClick={() => setOverlayContentKey("custom")}
+        onOptionsButtonClick={() => setOverlayContentKey("options")}
+        onExtraButtonClick={() => setOverlayContentKey("extra")}
       />
 
       {/* 覆盖层 */}
@@ -229,7 +234,27 @@ export default function Table() {
               }}
             />
           )}
-          {overlayContentKey === "options" && <Options />}
+          {overlayContentKey === "options" && (
+            <Options
+              enable={!isUpdating}
+              semester={semester ? { xn: semester.xn, xq: semester.xq } : { xn: 2025, xq: "spring" }}
+              week={week}
+              weeks={semester ? semester.weeks : 1}
+              tableSetting={settings.tableSetting ?? SETTINGS.tableSetting!}
+              onSemesterChange={(semester) => {
+                setDisplaySemester(semester)
+              }}
+              onWeekChange={(week) => {
+                setWeek(week)
+              }}
+              onTableSettingChange={(setting) => {
+                void updateTableSetting(setting)
+              }}
+              onClose={() => {
+                setOverlayContentKey(null)
+              }}
+            />
+          )}
           {overlayContentKey === "extra" && <ExtraCourses />}
           {overlayContentKey === "custom" && (
             <CustomCourse
