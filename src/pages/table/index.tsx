@@ -1,7 +1,9 @@
-import type { CourseItem } from "@/apis/models/course"
+import type { CourseItem, CustomCourseRequest } from "@/apis/models/course"
 import type { Status } from "@/hooks/cached-request"
 import { View } from "@tarojs/components"
+import { showToast } from "@tarojs/taro"
 import { useEffect, useMemo, useState } from "react"
+import { api } from "@/apis"
 import { Overlay } from "@/components/overlay"
 import { Page } from "@/components/page"
 import { PullRefresh } from "@/components/pull-refresh"
@@ -17,6 +19,7 @@ import { TableContent } from "@/pages/table/components/table-content"
 import { TimeHeader } from "@/pages/table/components/time-header"
 import { useCourse } from "@/pages/table/hooks/course"
 import { colorCourses, formatCourses, getInitCells, mergeCells } from "@/pages/table/utils/course"
+import { RequestError } from "@/types/request"
 import { getSemesterDateInfo, getSemesterName } from "@/utils/semester"
 
 export type CourseItemWithColor = CourseItem & {
@@ -55,7 +58,7 @@ const STATUS_TEXT: Record<Status, string> = {
 export default function Table() {
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
   const { settings, isLoading: isSettingLoading } = useSetting()
-  const { data: course, status, isLoading: _isCourseLoading } = useCourse(semester)
+  const { data: course, status, refetch } = useCourse(semester)
 
   const isLoading = useMemo(() => (
     isSemesterLoading || isSettingLoading
@@ -64,7 +67,7 @@ export default function Table() {
   // 当前周, 学期信息加载之前为 1, 和学期的空值搭配显示未本周
   const [week, setWeek] = useState(1)
 
-  // 课表 cells, 共 7 个元素, 0 - 6 表示一周; 每个元素为一个 DayCell 数组
+  // 课表 cells, 共 7 个元素, 0 - 6 表示一周; 每个元素为一个 Cell 数组
   const [cells, setCells] = useState<Cell[][]>(() => getInitCells())
 
   // 覆盖层内容类型, null 表示不显示
@@ -72,6 +75,64 @@ export default function Table() {
 
   // 设置 Detail 组件显示信息
   const [activeCell, setActiveCell] = useState<Cell | null>(null)
+
+  // 设置 CustomCourse 组件显示信息
+  const [activeCustomCourse, setActiveCustomCourse] = useState<CourseItemWithColor | null>(null)
+
+  // 删除自定义课程并刷新课程数据函数
+  const handleDeleteCustomCourse = async (customize_id: number) => {
+    if (customize_id === -1 || !semester)
+      return
+
+    try {
+      await api.course.delete(customize_id, { xn: semester.xn, xq: semester.xq })
+    }
+    catch (error) {
+      if (error instanceof RequestError) {
+        await showToast({
+          title: `删除失败: ${error.message}`,
+          icon: "error",
+        })
+      }
+    }
+    finally {
+      refetch()
+    }
+  }
+
+  // 更新自定义课程并刷新课程数据函数
+  const handleEditCustomCourse = async (customize_id: number | null, course: CustomCourseRequest) => {
+    if (!semester)
+      return
+
+    try {
+      if (customize_id) {
+        await api.course.put(customize_id, {
+          xn: semester.xn,
+          xq: semester.xq,
+          course,
+        })
+      }
+      else {
+        await api.course.post({
+          xn: semester.xn,
+          xq: semester.xq,
+          course,
+        })
+      }
+    }
+    catch (error) {
+      if (error instanceof RequestError) {
+        await showToast({
+          title: `${customize_id ? "更新" : "添加"}失败: ${error.message}`,
+          icon: "error",
+        })
+      }
+    }
+    finally {
+      refetch()
+    }
+  }
 
   // semester 就绪后写入初始周数
   useEffect(() => {
@@ -157,11 +218,37 @@ export default function Table() {
                 setActiveCell(null)
                 setOverlayContentKey(null)
               }}
+              onCustomDelete={(course) => {
+                void handleDeleteCustomCourse(course.customize_id)
+                setActiveCell(null)
+                setOverlayContentKey(null)
+              }}
+              onCustomEdit={(course) => {
+                setActiveCustomCourse(course)
+                setOverlayContentKey("custom")
+              }}
             />
           )}
           {overlayContentKey === "options" && <Options />}
           {overlayContentKey === "extra" && <ExtraCourses />}
-          {overlayContentKey === "custom" && <CustomCourse />}
+          {overlayContentKey === "custom" && (
+            <CustomCourse
+              weeks={semester ? semester.weeks : 1}
+              cell={activeCell}
+              course={activeCustomCourse}
+              onCancel={() => {
+                setActiveCell(null)
+                setActiveCustomCourse(null)
+                setOverlayContentKey(null)
+              }}
+              onConfirm={(customize_id, course) => {
+                void handleEditCustomCourse(customize_id, course)
+                setActiveCell(null)
+                setActiveCustomCourse(null)
+                setOverlayContentKey(null)
+              }}
+            />
+          )}
         </Overlay>
       )}
     </Page>

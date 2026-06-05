@@ -22,4 +22,11 @@ export const LABEL = {
       UPDATE_ERROR: "Setting Update Error",
     },
   },
+  page: {
+    table: {
+      custom: {
+        INVALID_INDEX: "Custom Course Invalid Index",
+      },
+    },
+  },
 }

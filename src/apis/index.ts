@@ -11,7 +11,6 @@ import type {
 
 import type {
   CourseDeleteRequest,
-  CourseDeleteResponse,
   CourseGetExtraRequest,
   CourseGetExtraResponse,
   CourseGetRequest,
@@ -54,6 +53,6 @@ export const api = {
     getExtra: (data: CourseGetExtraRequest) => request.get<CourseGetExtraResponse>("/course/extra", data),
     post: (data: CoursePostRequest) => request.post<CoursePostResponse>("/course", data),
     put: (customize_id: number, data: CoursePutRequest) => request.put<CoursePutResponse>(`/course/${customize_id}`, data),
-    delete: (customize_id: number, data: CourseDeleteRequest) => request.delete<CourseDeleteResponse>(`/course/${customize_id}`, data),
+    delete: (customize_id: number, data: CourseDeleteRequest) => request.delete(`/course/${customize_id}`, data),
   },
 }

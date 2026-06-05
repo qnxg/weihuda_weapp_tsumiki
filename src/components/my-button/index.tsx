@@ -55,7 +55,7 @@ function MyButton({
         "relative",
         className,
         { "bg-primary text-reverse": active === true },
-        { "bg-transparent text-base": active === false },
+        { "bg text-base": active === false },
       )}
       {...props}
     >

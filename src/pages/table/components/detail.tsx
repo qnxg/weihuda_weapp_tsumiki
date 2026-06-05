@@ -1,14 +1,22 @@
 import type { Cell, CourseItemWithColor } from "@/pages/table"
 import { ScrollView, Swiper, SwiperItem, View } from "@tarojs/components"
+import { Icon } from "@/components/icon"
+import { MyButton } from "@/components/my-button"
+import EditIcon from "@/static/table/edit.svg"
+import TrashIcon from "@/static/table/trash.svg"
 
 export function Detail({
   cell,
   week,
   onClose,
+  onCustomDelete,
+  onCustomEdit,
 }: Readonly<{
   cell: Cell
   week: number
   onClose: () => void
+  onCustomDelete: (course: CourseItemWithColor) => void
+  onCustomEdit: (course: CourseItemWithColor) => void
 }>) {
   // 将当前周的课程放在前面, 其他周的课程放在后面
   const currentWeekCourses: CourseItemWithColor[] = []
@@ -49,6 +57,7 @@ export function Detail({
                 top: "200rpx",
                 bottom: "200rpx",
                 position: "absolute",
+                // 此处文本较浅, 背景色使用原前景色
                 backgroundColor: course.weeks.includes(week) ? course.color : "#aeaeae",
               }}
               // 阻断事件冒泡, 卡片内点击不关闭详情
@@ -65,15 +74,17 @@ export function Detail({
                     <View>{course.type}</View>
                     <View>{course.course_id}</View>
                   </View>
-                  <View style={{
+
+                  <View
+                    style={{
                     // 同 2 被 text-2xl
-                    fontSize: "48rpx",
-                  }}
+                      fontSize: "48rpx",
+                    }}
                   >
                     {course.course_name}
                   </View>
-                  <View className="flex flex-col gap-sm">
 
+                  <View className="flex flex-col gap-sm">
                     {(course.place || course.area) && (
                       <View>
                         {course.place}
@@ -107,6 +118,57 @@ export function Detail({
                       {course.extra}
                     </View>
                   </View>
+
+                  {course.customize_id !== -1 && (
+                    <View
+                      className="absolute flex flex-col items-center gap-xs"
+                      style={{
+                      // 同 m-md
+                        bottom: "20rpx",
+                        left: "0",
+                        right: "0",
+                      }}
+                    >
+                      <MyButton
+                        className="flex center gap-sm px py-xs rounded-sm"
+                        style={{
+                          // 同 text-reverse
+                          backgroundColor: "#ffffff",
+                          color: course.weeks.includes(week) ? course.color : "#aeaeae",
+                        }}
+                        onClick={() => onCustomDelete(course)}
+                      >
+                        <Icon
+                          theme="light"
+                          src={TrashIcon}
+                          style={{
+                            width: "32rpx",
+                            height: "32rpx",
+                          }}
+                        />
+                        <View>删除</View>
+                      </MyButton>
+                      <MyButton
+                        className="flex center gap-sm px py-xs rounded-sm"
+                        style={{
+                          // 同 text-reverse
+                          backgroundColor: "#ffffff",
+                          color: course.weeks.includes(week) ? course.color : "#aeaeae",
+                        }}
+                        onClick={() => onCustomEdit(course)}
+                      >
+                        <Icon
+                          theme="light"
+                          src={EditIcon}
+                          style={{
+                            width: "32rpx",
+                            height: "32rpx",
+                          }}
+                        />
+                        <View>编辑</View>
+                      </MyButton>
+                    </View>
+                  )}
                 </View>
               </ScrollView>
             </View>

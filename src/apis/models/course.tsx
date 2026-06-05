@@ -104,34 +104,28 @@ export type CourseGetExtraResponse = ExtraCourseItem[]
  * @description 添加自定义课程请求数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-465968797
  */
-export type CoursePostRequest = Semester & CustomCourseRequest
+export type CoursePostRequest = Semester & { course: CustomCourseRequest }
 
 /**
  * @description 添加自定义课程响应数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-465968797
  */
-export type CoursePostResponse = CourseItem[]
+export type CoursePostResponse = CourseItem
 
 /**
  * @description 编辑自定义课程请求数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-465969451
  */
-export type CoursePutRequest = Semester & CustomCourseRequest
+export type CoursePutRequest = Semester & { course: CustomCourseRequest }
 
 /**
  * @description 编辑自定义课程响应数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-465969451
  */
-export type CoursePutResponse = CourseItem[]
+export type CoursePutResponse = CourseItem
 
 /**
  * @description 删除自定义课程请求数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-465970608
  */
 export type CourseDeleteRequest = Semester
-
-/**
- * @description 删除自定义课程响应数据
- * @see https://app.apifox.com/link/project/8311217/apis/api-465970608
- */
-export type CourseDeleteResponse = CourseItem[]
