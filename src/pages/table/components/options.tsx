@@ -8,7 +8,6 @@ import { useUser } from "@/hooks/user"
 import CloseIcon from "@/static/table/close.svg"
 import { logger } from "@/utils/logger"
 import { getPrevSemester, getSemesterFromName, getSemesterName } from "@/utils/semester"
-import "./index.scss"
 
 export function Options({
   enable,
@@ -40,7 +39,9 @@ export function Options({
 
     // 倒序得到学期数组
     const semesters = [semester]
-    for (let times = 0; times <= 20; times++) {
+
+    // 防止死循环
+    for (let times = 0; times <= 100; times++) {
       const prev = getPrevSemester(semesters.at(-1)!)
       semesters.push(prev)
 
@@ -48,7 +49,7 @@ export function Options({
         break
 
       times += 1
-      if (times === 20) {
+      if (times === 100) {
         logger.error(LABEL.page.table.options.SEMESTER_NOT_ACCESSIBLE, `semester: ${JSON.stringify(semester)}`)
       }
     }
