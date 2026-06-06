@@ -2,6 +2,7 @@ import type { Cell, CourseItemWithColor } from "@/pages/table"
 import { ScrollView, Swiper, SwiperItem, View } from "@tarojs/components"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
+import { OverlayMask } from "@/components/overlay"
 import EditIcon from "@/static/table/edit.svg"
 import TrashIcon from "@/static/table/trash.svg"
 
@@ -33,8 +34,8 @@ export function Detail({
   const courses = [...currentWeekCourses, ...notCurrentWeekCourses]
 
   return (
-    <View
-      className="w-full h-full flex center bg-shadow"
+    <OverlayMask
+      position="center"
       onClick={() => onClose()}
     >
       <Swiper
@@ -175,6 +176,6 @@ export function Detail({
           </SwiperItem>
         ))}
       </Swiper>
-    </View>
+    </OverlayMask>
   )
 }

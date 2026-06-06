@@ -57,6 +57,7 @@ export function CustomCourse({
     }
   }
 
+  // 表单值
   const [data, setData] = useState<CustomCourseRequest>(() => initData())
 
   // picker 值, 为 PICKER_RANGE 的数组索引
@@ -65,6 +66,8 @@ export function CustomCourse({
     Math.min(...data.times) - 1,
     Math.max(...data.times) - 1,
   ]))
+
+  const [isPickerEditing, setIsPickerEditing] = useState(false)
 
   const handleWeekSelectAll = () => {
     if (data.weeks.length === weeks) {
@@ -96,6 +99,8 @@ export function CustomCourse({
   }
 
   const handlePickerColumnChange = (e: BaseEventOrig<PickerMultiSelectorProps.ColumnChangeEventDetail>) => {
+    setIsPickerEditing(true)
+
     const value = e.detail.value
     const column = e.detail.column
     const newPicker = [...picker]
@@ -110,11 +115,15 @@ export function CustomCourse({
       if (newPicker[2] < newPicker[1])
         newPicker[1] = newPicker[2]
     }
+
     setPicker(newPicker)
   }
 
-  // 当 picker 变化时, 更新 data 中的 day 和 times
+  // 当 picker 完成变化后, 更新 data 中的 day 和 times
   useEffect(() => {
+    if (isPickerEditing)
+      return
+
     const start = picker[1]
     const end = picker[2]
     const range = Array.from({ length: end - start + 1 }).map((_, i) => start + i + 1)
@@ -123,7 +132,7 @@ export function CustomCourse({
       day: picker[0],
       times: range,
     }))
-  }, [picker])
+  }, [isPickerEditing, picker])
 
   return (
     <View className="h-full bg-page flex flex-col p gap">
@@ -202,12 +211,20 @@ export function CustomCourse({
                     key={i}
                     className="flex center rounded-full"
                     style={{
-                      width: "32rpx",
-                      height: "32rpx",
+                      width: "48rpx",
+                      height: "48rpx",
                       // 同 primary
                       border: "2rpx solid #328ccb",
                       backgroundColor: data.weeks.includes(i + 1) ? "#328ccb" : "transparent",
                       color: data.weeks.includes(i + 1) ? "#ffffff" : "#328ccb",
+                    }}
+                    onClick={() => {
+                      setData(p => ({
+                        ...p,
+                        weeks: p.weeks.includes(i + 1)
+                          ? p.weeks.filter(w => w !== i + 1)
+                          : [...p.weeks, i + 1].sort((a, b) => a - b),
+                      }))
                     }}
                   >
                     {i + 1}
@@ -249,13 +266,7 @@ export function CustomCourse({
                 value={picker}
                 mode="multiSelector"
                 onColumnChange={e => handlePickerColumnChange(e)}
-                onChange={(e) => {
-                  setPicker([
-                    e.detail.value[0],
-                    e.detail.value[1],
-                    e.detail.value[2],
-                  ])
-                }}
+                onChange={() => setIsPickerEditing(false)}
               >
                 <View>
                   {CUSTOM_COURSE_PICKER_RANGE[0][picker[0]]}

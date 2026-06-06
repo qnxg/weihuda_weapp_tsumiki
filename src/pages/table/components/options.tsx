@@ -3,6 +3,7 @@ import type { TableSetting } from "@/types/setting"
 import { Picker, Switch, View } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import { Icon } from "@/components/icon"
+import { OverlayMask } from "@/components/overlay"
 import { LABEL } from "@/config/logger-label"
 import { useUser } from "@/hooks/user"
 import CloseIcon from "@/static/table/close.svg"
@@ -63,6 +64,8 @@ export function Options({
   // 用于学期 / 星期的 Picker 组件
   const [picker, setPicker] = useState([0, week - 1])
 
+  const [isPickerEditing, setIsPickerEditing] = useState(false)
+
   // 控制页面进入 / 移出动画
   const [isOpen, setIsOpen] = useState(false)
 
@@ -76,9 +79,12 @@ export function Options({
 
   // 应用 picker 变化
   useEffect(() => {
+    if (isPickerEditing)
+      return
+
     onSemesterChange(getSemesterFromName(pickerSemesterRange[picker[0]])!)
     onWeekChange(picker[1] + 1)
-  }, [onSemesterChange, onWeekChange, picker, pickerSemesterRange])
+  }, [isPickerEditing, onSemesterChange, onWeekChange, picker, pickerSemesterRange])
 
   // 初始挂载, 使用 setTimeout 宏任务防止在 transition 加载完成前 transform 变化
   useEffect(() => {
@@ -90,8 +96,8 @@ export function Options({
   }, [])
 
   return (
-    <View
-      className="w-full h-full bg-shadow flex flex-col justify-end"
+    <OverlayMask
+      position="bottom"
       onClick={() => handleClose()}
     >
       <View
@@ -124,16 +130,12 @@ export function Options({
               value={picker}
               mode="multiSelector"
               onColumnChange={(e) => {
+                setIsPickerEditing(true)
                 const newPicker = [...picker]
                 newPicker[e.detail.column] = e.detail.value
                 setPicker(newPicker)
               }}
-              onChange={(e) => {
-                setPicker([
-                  e.detail.value[0],
-                  e.detail.value[1],
-                ])
-              }}
+              onChange={() => setIsPickerEditing(false)}
             >
               <View>
                 {pickerSemesterRange[picker[0]]}
@@ -169,6 +171,6 @@ export function Options({
           </View>
         </View>
       </View>
-    </View>
+    </OverlayMask>
   )
 }
