@@ -124,7 +124,8 @@ export function Detail({
                     <View
                       className="absolute flex flex-col items-center gap-xs"
                       style={{
-                      // 同 m-md
+                        color: "#000000",
+                        // 同 m-md
                         bottom: "20rpx",
                         left: "0",
                         right: "0",
@@ -135,7 +136,6 @@ export function Detail({
                         style={{
                           // 同 text-reverse
                           backgroundColor: "#ffffff",
-                          color: course.weeks.includes(week) ? course.color : "#aeaeae",
                         }}
                         onClick={() => onCustomDelete(course)}
                       >
@@ -154,7 +154,6 @@ export function Detail({
                         style={{
                           // 同 text-reverse
                           backgroundColor: "#ffffff",
-                          color: course.weeks.includes(week) ? course.color : "#aeaeae",
                         }}
                         onClick={() => onCustomEdit(course)}
                       >
