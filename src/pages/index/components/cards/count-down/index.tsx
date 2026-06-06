@@ -1,9 +1,9 @@
 import { View } from "@tarojs/components"
-import Taro from "@tarojs/taro"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
+import { useTheme } from "@/hooks/theme"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CountDownIcon from "@/static/index/count-down.svg"
 import { mockRequest } from "@/utils/mock-request"
@@ -16,6 +16,8 @@ export function CountDown({
 }: Readonly<{
   cardKey: string
 }>) {
+  const { isDark } = useTheme()
+
   const { registerCard, onCardFinish } = useCardLoading()
 
   const { data, isLoading, refetch } = useRequest(() =>
@@ -31,8 +33,6 @@ export function CountDown({
       onCardFinish(cardKey)
     }
   }, [isLoading, onCardFinish, cardKey])
-
-  const darkMode = Taro.getAppBaseInfo().theme === "dark"
 
   return (
     <Card>
@@ -57,7 +57,7 @@ export function CountDown({
                       key={index}
                       className="text-2xl text-hightlight text-bold p bg-page rounded-sm"
                       style={{
-                        backgroundColor: darkMode ? "#303030" : "#f7f7f7",
+                        backgroundColor: isDark ? "#303030" : "#f7f7f7",
                       }}
                     >
                       {num}

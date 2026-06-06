@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { ScrollView, Slot, View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
 import { useCallback, useReducer } from "react"
+import { useTheme } from "@/hooks/theme"
 import "./index.scss"
 
 const HEAD_HEIGHT = 50 // 同 h-sm
@@ -83,6 +84,8 @@ function PullRefresh({
   topGap?: number
   children: ReactNode
 }>) {
+  const { isDark } = useTheme()
+
   const [state, dispatch] = useReducer(reducer, {
     status: "awaiting",
     triggered: false,
@@ -111,8 +114,6 @@ function PullRefresh({
     })
   }, [])
 
-  const darkMode = Taro.getAppBaseInfo().theme === "dark"
-
   return (
     <ScrollView
       style={{
@@ -123,7 +124,7 @@ function PullRefresh({
       showScrollbar={false}
       refresherEnabled
       refresherThreshold={HEAD_HEIGHT}
-      refresherBackground={darkMode ? "#000000" : "#fafafa"} // 同 bg-page
+      refresherBackground={isDark ? "#000000" : "#fafafa"} // 同 bg-page
       refresherDefaultStyle="none"
       refresherTriggered={state.triggered}
       onRefresherPulling={onPulling}
