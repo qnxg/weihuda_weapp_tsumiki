@@ -11,12 +11,12 @@ import { PullRefresh } from "@/components/pull-refresh"
 import { SETTINGS } from "@/config/setting"
 import { useSemester } from "@/hooks/semester"
 import { useSetting } from "@/hooks/setting"
+import { CourseOptions } from "@/pages/table/components/course-options"
 import { CustomCourse } from "@/pages/table/components/custom-course"
 import { DateHeader } from "@/pages/table/components/date-header"
 import { Detail } from "@/pages/table/components/detail"
 import { ExtraCourses } from "@/pages/table/components/extra-courses"
 import { Menu } from "@/pages/table/components/menu"
-import { Options } from "@/pages/table/components/options"
 import { TableContent } from "@/pages/table/components/table-content"
 import { TimeHeader } from "@/pages/table/components/time-header"
 import { useCourse } from "@/pages/table/hooks/course"
@@ -245,7 +245,7 @@ export default function Table() {
             />
           )}
           {overlayContentKey === "options" && (
-            <Options
+            <CourseOptions
               enable={!isUpdating}
               semester={semester ? { xn: semester.xn, xq: semester.xq } : { xn: 2025, xq: "spring" }}
               week={week}

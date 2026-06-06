@@ -10,7 +10,7 @@ import CloseIcon from "@/static/table/close.svg"
 import { logger } from "@/utils/logger"
 import { getPrevSemester, getSemesterFromName, getSemesterName } from "@/utils/semester"
 
-export function Options({
+export function CourseOptions({
   enable,
   semester,
   week,
@@ -101,14 +101,14 @@ export function Options({
       onClick={() => handleClose()}
     >
       <View
-        className="bg flex flex-col p-xl gap"
+        className="bg flex flex-col p gap"
         style={{
           transform: isOpen ? "translateY(0)" : "translateY(100%)",
           transition: "transform 0.2s ease",
         }}
         onClick={e => e.stopPropagation()}
       >
-        <View className="flex items-center justify-between text-2xl text-bold">
+        <View className="flex items-center justify-between p text-2xl text-bold">
           <View>课表选项</View>
           <View onClick={() => handleClose()}>
             <Icon
@@ -121,53 +121,55 @@ export function Options({
           </View>
         </View>
 
-        <View className="flex items-center justify-between">
-          <View>当前信息: </View>
-          <View>
-            <Picker
-              disabled={!enable}
-              range={pickerRange}
-              value={picker}
-              mode="multiSelector"
-              onColumnChange={(e) => {
-                setIsPickerEditing(true)
-                const newPicker = [...picker]
-                newPicker[e.detail.column] = e.detail.value
-                setPicker(newPicker)
-              }}
-              onChange={() => setIsPickerEditing(false)}
-            >
-              <View>
-                {pickerSemesterRange[picker[0]]}
-                {" "}
-                第
-                {" "}
-                {pickerWeekRange[picker[1]]}
-                {" "}
-                周
-              </View>
-            </Picker>
+        <View className="flex flex-col p gap">
+          <View className="flex items-center justify-between">
+            <View>当前信息: </View>
+            <View>
+              <Picker
+                disabled={!enable}
+                range={pickerRange}
+                value={picker}
+                mode="multiSelector"
+                onColumnChange={(e) => {
+                  setIsPickerEditing(true)
+                  const newPicker = [...picker]
+                  newPicker[e.detail.column] = e.detail.value
+                  setPicker(newPicker)
+                }}
+                onChange={() => setIsPickerEditing(false)}
+              >
+                <View>
+                  {pickerSemesterRange[picker[0]]}
+                  {" "}
+                  第
+                  {" "}
+                  {pickerWeekRange[picker[1]]}
+                  {" "}
+                  周
+                </View>
+              </Picker>
+            </View>
           </View>
-        </View>
 
-        <View className="flex items-center justify-between">
-          <View>显示非本周课程: </View>
-          <View>
-            <Switch
+          <View className="flex items-center justify-between">
+            <View>显示非本周课程: </View>
+            <View>
+              <Switch
               // 同 primary
-              color="#328ccb"
-              controlled="true"
-              style={{
-                transform: "scale(0.8)",
-              }}
-              checked={tableSetting.setting!.displayNotCurrentWeekCourses}
-              disabled={!enable}
-              onChange={() => {
-                const newTableSetting = { ...tableSetting }
-                newTableSetting.setting.displayNotCurrentWeekCourses = !tableSetting.setting!.displayNotCurrentWeekCourses
-                onTableSettingChange(newTableSetting)
-              }}
-            />
+                color="#328ccb"
+                controlled="true"
+                style={{
+                  transform: "scale(0.8)",
+                }}
+                checked={tableSetting.setting!.displayNotCurrentWeekCourses}
+                disabled={!enable}
+                onChange={() => {
+                  const newTableSetting = { ...tableSetting }
+                  newTableSetting.setting.displayNotCurrentWeekCourses = !tableSetting.setting!.displayNotCurrentWeekCourses
+                  onTableSettingChange(newTableSetting)
+                }}
+              />
+            </View>
           </View>
         </View>
       </View>

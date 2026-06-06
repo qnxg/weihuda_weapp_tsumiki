@@ -3,6 +3,7 @@ import { ScrollView, View } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Icon } from "@/components/icon"
+import { Options } from "@/components/options"
 import { OverlayMask } from "@/components/overlay"
 import { STORAGE } from "@/config/storage-key"
 import { useCachedRequest } from "@/hooks/cached-request"
@@ -47,7 +48,7 @@ export function ExtraCourses({
       onClick={() => handleClose()}
     >
       <View
-        className="bg flex flex-col p-xl gap"
+        className="bg flex flex-col p gap"
         style={{
           maxHeight: "80vh",
           transform: isOpen ? "translateY(0)" : "translateY(100%)",
@@ -61,7 +62,7 @@ export function ExtraCourses({
           enhanced
           showScrollbar={false}
         >
-          <View className="flex items-center justify-between text-2xl text-bold">
+          <View className="flex items-center justify-between p text-2xl text-bold">
             <View>
               无课表课程
               {" "}
@@ -79,45 +80,27 @@ export function ExtraCourses({
           </View>
 
           {data && data.length > 0 && (
-            <View className="flex flex-col gap">
+            <View className="flex flex-col gap p">
               {data.map((course, index) => (
                 <View
                   key={`${course.course_name}_${index}`}
                   className="py flex flex-col gap-sm rounded-sm"
                 >
                   <View className="text-xl">{course.course_name}</View>
-                  <View className="flex items-center justify-between">
-                    <View>课程代码</View>
-                    <View>{course.course_id}</View>
-                  </View>
-                  <View className="flex items-center justify-between">
-                    <View>教师</View>
-                    <View>{course.teacher}</View>
-                  </View>
-                  <View className="flex items-center justify-between">
-                    <View>上课班级</View>
-                    <View>{course.class_name}</View>
-                  </View>
-                  <View className="flex items-center justify-between">
-                    <View>校区</View>
-                    <View>{course.area}</View>
-                  </View>
-                  <View className="flex items-center justify-between">
-                    <View>课程性质</View>
-                    <View>{course.type}</View>
-                  </View>
-                  <View className="flex items-center justify-between">
-                    <View>学分</View>
-                    <View>{course.credit}</View>
-                  </View>
-                  <View className="flex items-center justify-between">
-                    <View>人数</View>
-                    <View>{course.people}</View>
-                  </View>
-                  <View className="flex items-center justify-between">
-                    <View>备注</View>
-                    <View>{course.extra}</View>
-                  </View>
+
+                  <Options
+                    type="underline"
+                    items={[
+                      { title: "课程代码", content: course.course_id },
+                      { title: "教师", content: course.teacher },
+                      { title: "上课班级", content: course.class_name },
+                      { title: "校区", content: course.area },
+                      { title: "课程性质", content: course.type },
+                      { title: "学分", content: course.credit },
+                      { title: "人数", content: course.people },
+                      { title: "备注", content: course.extra },
+                    ]}
+                  />
                 </View>
               ))}
             </View>
