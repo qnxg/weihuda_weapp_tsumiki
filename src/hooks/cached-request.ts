@@ -250,6 +250,10 @@ export function useCachedRequest<T extends object | null>(
   })
   const isIdle = useMemo(() => (state.status === "success" || state.status === "cached" || state.status === "error"), [state.status])
 
+  // 用 ref 缓存 fn, 避免函数引用变化导致 useEffect 重复执行
+  const fnRef = useRef(fn)
+  fnRef.current = fn
+
   const storageRef = useRef<Storage<T> | null>(null)
 
   useEffect(() => {
@@ -258,7 +262,7 @@ export function useCachedRequest<T extends object | null>(
 
   // 用于更新状态机的请求函数
   const requestFn = useCallback((storage: Storage<T>) => {
-    fn()
+    fnRef.current()
       .then((res) => {
         dispatch({ type: "REQUEST_SUCCESS", payload: res.data })
         return storage.set(res.data)
@@ -267,7 +271,6 @@ export function useCachedRequest<T extends object | null>(
         dispatch({ type: "CACHE_UPDATED" })
       })
       .catch((err) => {
-        // request 函数只会抛出 RequestError, 其他错误都视为 hook 使用错误, 需要封装为 RequestError 抛出
         if (!(err instanceof RequestError)) {
           logger.fatal(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
         }
@@ -277,7 +280,7 @@ export function useCachedRequest<T extends object | null>(
           : new RequestError(-2, "REQUEST_HOOK_ERROR", null)
         dispatch({ type: "REQUEST_FAIL", payload: myError })
       })
-  }, [fn])
+  }, [])
 
   // 用于更新状态机的缓存读取函数
   const cacheFn = useCallback(() => {

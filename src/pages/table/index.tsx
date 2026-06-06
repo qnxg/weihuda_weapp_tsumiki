@@ -265,7 +265,14 @@ export default function Table() {
               }}
             />
           )}
-          {overlayContentKey === "extra" && <ExtraCourses />}
+          {overlayContentKey === "extra" && (
+            <ExtraCourses
+              semester={semester ? { xn: semester.xn, xq: semester.xq } : { xn: 2025, xq: "spring" }}
+              onClose={() => {
+                setOverlayContentKey(null)
+              }}
+            />
+          )}
           {overlayContentKey === "custom" && (
             <CustomCourse
               weeks={semester ? semester.weeks : 1}

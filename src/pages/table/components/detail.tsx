@@ -42,9 +42,9 @@ export function Detail({
         previousMargin="150rpx"
         nextMargin="150rpx"
       >
-        {courses.map(course => (
+        {courses.map((course, index) => (
           <SwiperItem
-            key={course.course_name}
+            key={`${course.course_name}_${index}`}
             className="w-screen h-full"
           >
             {/* 详情卡片 */}

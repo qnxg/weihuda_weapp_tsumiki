@@ -16,6 +16,9 @@ export const STORAGE = {
         prefix: "course",
         placeholder: "placeholder",
       },
+      extra: {
+        prefix: "extra_course",
+      },
     },
   },
 }
