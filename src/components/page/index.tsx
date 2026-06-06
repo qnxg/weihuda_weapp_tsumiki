@@ -48,7 +48,12 @@ function PageContent({
   children: ReactNode
 }>) {
   return (
-    <View className="p bg-page flex-1 overflow-hidden">
+    <View
+      className="p bg-page flex-1 overflow-hidden"
+      style={{
+        paddingBottom: "0",
+      }}
+    >
       {children}
     </View>
   )

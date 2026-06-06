@@ -11,10 +11,6 @@ interface MockRequestOptions {
   errorRate?: number
 }
 
-function randomDelay(): number {
-  return Math.floor(Math.random() * 5001)
-}
-
 /**
  * @description Mock 请求函数
  * @template T - 返回数据类型
@@ -27,7 +23,7 @@ export async function mockRequest<T extends object | null>(
 ): Promise<Response<T>> {
   const { delay = "auto", errorRate = 0 } = options
 
-  const ms = delay === "auto" ? randomDelay() : delay
+  const ms = delay === "auto" ? Math.floor(Math.random() * 5000) : delay
 
   await new Promise<void>(resolve => setTimeout(resolve, ms))
 

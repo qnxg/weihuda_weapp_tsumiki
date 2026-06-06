@@ -1,6 +1,7 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
+import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import ElectricityIcon from "@/static/index/electricity.svg"
@@ -39,17 +40,28 @@ export function Electricity({
         to="/tools/pages/campus/electricity/index"
       />
       <CardContent className="p flex items-center justify-between text-xl">
-        <View>
-          宿舍号:
-          {" "}
-          {data?.roomNumber}
-        </View>
-        <View>
-          剩余电量:
-          {" "}
-          {data?.remaining}
-          度
-        </View>
+        {data
+          ? (
+              <>
+                <View>
+                  宿舍号:
+                  {" "}
+                  {data.roomNumber}
+                </View>
+                <View>
+                  剩余电量:
+                  {" "}
+                  {data.remaining}
+                  度
+                </View>
+              </>
+            )
+          : (
+              <>
+                <Skeleton className="w-2xl" />
+                <Skeleton className="w-2xl" />
+              </>
+            )}
       </CardContent>
     </Card>
   )

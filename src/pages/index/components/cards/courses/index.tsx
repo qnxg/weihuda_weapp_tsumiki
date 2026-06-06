@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { MyButton } from "@/components/my-button"
+import { Skeleton } from "@/components/skeleton"
 import { TabContent, TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
@@ -48,28 +49,43 @@ export function Courses({
           className="flex flex-col gap"
           value={tab}
         >
-          <TabList>
-            <TabTrigger asChild value="today">
-              <MyButton
-                className="flex-1 flex center rounded-sm"
-                active={tab === "today"}
-                onClick={() => setTab("today")}
-              >
-                今日
-              </MyButton>
-            </TabTrigger>
-            <TabTrigger asChild value="today">
-              <MyButton
-                className="flex-1 flex center rounded-sm"
-                active={tab === "tomorrow"}
-                onClick={() => setTab("tomorrow")}
-              >
-                明日
-              </MyButton>
-            </TabTrigger>
-          </TabList>
+          {data
+            ? (
+                <TabList>
+                  <TabTrigger asChild value="today">
+                    <MyButton
+                      className="flex-1 flex center rounded-sm"
+                      active={tab === "today"}
+                      onClick={() => setTab("today")}
+                    >
+                      今日
+                    </MyButton>
+                  </TabTrigger>
+                  <TabTrigger asChild value="today">
+                    <MyButton
+                      className="flex-1 flex center rounded-sm"
+                      active={tab === "tomorrow"}
+                      onClick={() => setTab("tomorrow")}
+                    >
+                      明日
+                    </MyButton>
+                  </TabTrigger>
+                </TabList>
+              )
+            : (
+                <Skeleton
+                  className="w-full"
+                  style={{
+                    height: "48rpx",
+                  }}
+                />
+              )}
           <TabContent className="w-full h-lg flex center">
-            {tab === "today" ? data?.today : data?.tomorrow}
+            {data
+              ? (
+                  tab === "today" ? data.today : data.tomorrow
+                )
+              : <Skeleton className="w-full h" />}
           </TabContent>
         </Tabs>
       </CardContent>

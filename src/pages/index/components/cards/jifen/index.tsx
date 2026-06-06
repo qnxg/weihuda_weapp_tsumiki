@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
+import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import JifenIcon from "@/static/index/jifen.svg"
@@ -34,27 +35,33 @@ export function Jifen({
 
   return (
     <Card>
-      <CardContent className="p flex items-center justify-between">
+      <CardContent className="flex items-center justify-between">
         <View className="flex items-center gap">
           <Icon
             style={{
-              width: "2rem",
-              height: "2rem",
+              width: "48rpx",
+              height: "48rpx",
             }}
             src={JifenIcon}
           />
-          <View className="text-xl">
-            当前积分:
-            {" "}
-            {data?.points}
-          </View>
+          { data
+            ? (
+                <View className="text-xl">
+                  当前积分:
+                  {" "}
+                  {data.points}
+                </View>
+              )
+            : <Skeleton className="w-xl" />}
         </View>
-        <MyButton
-          active={true}
-          className="w-lg py-xs flex center rounded-sm"
-        >
-          签到
-        </MyButton>
+        {data && (
+          <MyButton
+            active={true}
+            className="w-lg py-sm flex center rounded-sm"
+          >
+            签到
+          </MyButton>
+        )}
       </CardContent>
     </Card>
   )

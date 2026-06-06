@@ -1,6 +1,7 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
+import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CampusIcon from "@/static/index/campus.svg"
@@ -39,16 +40,27 @@ export function Campus({
         to="/tools/pages/campus/card-bill/index"
       />
       <CardContent className="p flex items-center justify-between text-xl">
-        <View>
-          卡号:
-          {" "}
-          {data?.cardNumber}
-        </View>
-        <View>
-          余额:
-          {" "}
-          {data?.balance}
-        </View>
+        {data
+          ? (
+              <>
+                <View>
+                  卡号:
+                  {" "}
+                  {data.cardNumber}
+                </View>
+                <View>
+                  余额:
+                  {" "}
+                  {data.balance}
+                </View>
+              </>
+            )
+          : (
+              <>
+                <Skeleton className="w-2xl" />
+                <Skeleton className="w-2xl" />
+              </>
+            )}
       </CardContent>
     </Card>
   )

@@ -1,6 +1,7 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
+import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import TasksIcon from "@/static/index/tasks.svg"
@@ -37,11 +38,15 @@ export function Tasks({
         title="近期待办"
       />
       <CardContent className="p flex items-center justify-between text-xl">
-        <View>
-          近期任务:
-          {" "}
-          {data?.tasks}
-        </View>
+        {data
+          ? (
+              <View>
+                近期任务:
+                {" "}
+                {data.tasks}
+              </View>
+            )
+          : <Skeleton className="w-full h" />}
       </CardContent>
     </Card>
   )

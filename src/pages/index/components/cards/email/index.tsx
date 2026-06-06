@@ -1,6 +1,7 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
+import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import EmailIcon from "@/static/index/email.svg"
@@ -37,13 +38,17 @@ export function Email({
         title="校园邮箱"
       />
       <CardContent className="p flex items-center justify-between text-xl">
-        <View>
-          您有
-          {" "}
-          {data?.unreadCount}
-          {" "}
-          封未读邮件
-        </View>
+        {data
+          ? (
+              <View>
+                您有
+                {" "}
+                {data.unreadCount}
+                {" "}
+                封未读邮件
+              </View>
+            )
+          : <Skeleton className="w-full" />}
       </CardContent>
     </Card>
   )

@@ -1,6 +1,8 @@
 import { View } from "@tarojs/components"
+import Taro from "@tarojs/taro"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
+import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CountDownIcon from "@/static/index/count-down.svg"
@@ -30,6 +32,8 @@ export function CountDown({
     }
   }, [isLoading, onCardFinish, cardKey])
 
+  const darkMode = Taro.getAppBaseInfo().theme === "dark"
+
   return (
     <Card>
       <CardHeader
@@ -39,24 +43,33 @@ export function CountDown({
         to="/tools/pages/campus/calender/index"
       />
       <CardContent className="p flex items-center text-xl">
-        <View>
-          距离本学期
-          {data?.type === "end" ? "结束" : "开始"}
-          还有
-        </View>
-        <View className="flex items-center px gap">
-          {data && String(data?.countDown).padStart(3, "0").split("").map((num, index) => (
-            <View
-              key={index}
-              className="text-2xl text-hightlight text-bold p bg-page rounded-sm"
-            >
-              {num}
-            </View>
-          ))}
-        </View>
-        <View>
-          天
-        </View>
+        {data
+          ? (
+              <>
+                <View>
+                  距离本学期
+                  {data.type === "end" ? "结束" : "开始"}
+                  还有
+                </View>
+                <View className="flex items-center px gap">
+                  {String(data.countDown).padStart(3, "0").split("").map((num, index) => (
+                    <View
+                      key={index}
+                      className="text-2xl text-hightlight text-bold p bg-page rounded-sm"
+                      style={{
+                        backgroundColor: darkMode ? "#303030" : "#f7f7f7",
+                      }}
+                    >
+                      {num}
+                    </View>
+                  ))}
+                </View>
+                <View>
+                  天
+                </View>
+              </>
+            )
+          : <Skeleton className="w-full" /> }
       </CardContent>
     </Card>
   )

@@ -1,6 +1,7 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
+import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import GradeIcon from "@/static/index/grade.svg"
@@ -39,11 +40,15 @@ export function Grade({
         to="/tools/pages/grade/grade/index"
       />
       <CardContent className="p flex items-center justify-between text-xl">
-        <View>
-          成绩:
-          {" "}
-          {data?.score}
-        </View>
+        {data
+          ? (
+              <View>
+                成绩:
+                {" "}
+                {data.score}
+              </View>
+            )
+          : <Skeleton className="w-full" />}
       </CardContent>
     </Card>
   )

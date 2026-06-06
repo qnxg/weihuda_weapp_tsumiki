@@ -36,7 +36,7 @@ export default function App({
   children,
 }: PropsWithChildren<any>) {
   useLaunch(() => {
-    const currentTheme = Taro.getSystemInfoSync().theme || "light"
+    const currentTheme = Taro.getAppBaseInfo().theme || "light"
     updateTabBarIcons(currentTheme as "light" | "dark")
     Taro.onThemeChange(({ theme }) => {
       updateTabBarIcons(theme as "light" | "dark")
