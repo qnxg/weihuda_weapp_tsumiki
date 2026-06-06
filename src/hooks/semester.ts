@@ -1,21 +1,29 @@
 import type { RequestError } from "@/types/request"
-import type { Semester } from "@/types/semester"
+import type { Semester, SemesterInfo } from "@/types/semester"
 import { useCallback, useEffect, useState } from "react"
 import { api } from "@/apis"
+import { STORAGE } from "@/config/storage-key"
 import { useSemesterContext } from "@/contexts/semester"
+import { Storage } from "@/utils/storage"
 
+const semesterStorage = new Storage<SemesterInfo>(STORAGE.semester.current)
+
+/**
+ * @property {SemesterInfo | null} data - 学期信息
+ * @property {boolean} isLoading - 加载状态
+ * @property {RequestError | null} error - 错误信息
+ */
 interface UseSemesterResult {
   data: SemesterInfo | null
   isLoading: boolean
   error: RequestError | null
 }
 
-type SemesterInfo = Awaited<ReturnType<typeof api.semester>>["data"]
-
 /**
  * @description 学期信息 Hook
  *   - mount 时自动请求本学期信息并缓存
  *   - 传入参数可获取指定学期信息
+ *   - fetch 失败时使用 storage 降级
  */
 export function useSemester(s?: Semester): UseSemesterResult {
   const { getSemester, setSemester } = useSemesterContext()
@@ -54,6 +62,18 @@ export function useSemester(s?: Semester): UseSemesterResult {
         const isCurrent = !s
         setSemester(res, isCurrent)
         setData(res)
+        if (isCurrent) {
+          void semesterStorage.set(res)
+        }
+      }
+      else {
+        // fetch 失败, 使用 storage 降级
+        semesterStorage.get().then((storageData) => {
+          if (storageData) {
+            setSemester(storageData, !s)
+            setData(storageData)
+          }
+        })
       }
     })
   }, [s, getSemester, setSemester, fetchSemester])

@@ -10,6 +10,9 @@ export const STORAGE = {
     index_card: "index_card_setting",
     table: "table_setting",
   },
+  semester: {
+    current: "current_semester",
+  },
   page: {
     table: {
       course: {
