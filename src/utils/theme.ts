@@ -10,11 +10,11 @@ interface ThemeHookResult {
 }
 
 /**
- * @description 主题 Hook
+ * @description 获取主题
  */
-// eslint-disable-next-line react/no-unnecessary-use-prefix
-export function useTheme(): ThemeHookResult {
+export function getTheme(): ThemeHookResult {
   const theme = Taro.getAppBaseInfo().theme ?? "light"
+
   const isDark = theme === "dark"
 
   return {

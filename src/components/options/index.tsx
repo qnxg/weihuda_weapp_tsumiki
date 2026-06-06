@@ -4,6 +4,7 @@ import { Icon } from "@/components/icon"
 import ToIcon from "@/static/common/to.svg"
 import { cn } from "@/utils/cn"
 import { navigate } from "@/utils/navigate"
+import { getTheme } from "@/utils/theme"
 
 type Size = "sm" | "md" | "lg"
 
@@ -95,10 +96,13 @@ function Options({
   type?: "divided" | "underline" | "plain"
   children?: ReactNode
 }>) {
+  const { isDark } = getTheme()
+
   return (
     <View
       className="flex flex-col bg-page"
       style={{
+        backgroundColor: isDark ? "#303030" : "#f7f7f7",
         gap: type !== "plain" ? "6rpx" : "",
         paddingBottom: type === "underline" ? "6rpx" : "",
       }}

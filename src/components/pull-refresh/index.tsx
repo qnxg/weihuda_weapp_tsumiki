@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 import { ScrollView, Slot, View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
 import { useCallback, useReducer } from "react"
-import { useTheme } from "@/hooks/theme"
+import { getTheme } from "@/utils/theme"
 import "./index.scss"
 
 const HEAD_HEIGHT = 50 // 同 h-sm
@@ -84,7 +84,7 @@ function PullRefresh({
   topGap?: number
   children: ReactNode
 }>) {
-  const { isDark } = useTheme()
+  const { isDark } = getTheme()
 
   const [state, dispatch] = useReducer(reducer, {
     status: "awaiting",

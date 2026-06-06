@@ -3,10 +3,10 @@ import { useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
-import { useTheme } from "@/hooks/theme"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CountDownIcon from "@/static/index/count-down.svg"
 import { mockRequest } from "@/utils/mock-request"
+import { getTheme } from "@/utils/theme"
 
 /**
  * @description 假期倒计时
@@ -16,7 +16,7 @@ export function CountDown({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { isDark } = useTheme()
+  const { isDark } = getTheme()
 
   const { registerCard, onCardFinish } = useCardLoading()
 
