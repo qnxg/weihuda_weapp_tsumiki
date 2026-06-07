@@ -1,25 +1,20 @@
 import type { Semester } from "@/types/semester"
 import { ScrollView, View } from "@tarojs/components"
 import { useEffect, useState } from "react"
-import { api } from "@/apis"
 import { Icon } from "@/components/icon"
 import { Options } from "@/components/options"
 import { OverlayMask } from "@/components/overlay"
-import { STORAGE } from "@/config/storage-key"
-import { useCachedRequest } from "@/hooks/cached-request"
+import { useExtraCourse } from "@/pages/table/hooks/extra-course"
 import CloseIcon from "@/static/table/close.svg"
 
 export function ExtraCourses({
   semester,
   onClose,
 }: Readonly<{
-  semester: Semester
+  semester: Semester | null
   onClose: () => void
 }>) {
-  const { data, isLoading } = useCachedRequest(
-    () => api.course.getExtra(semester),
-    `${STORAGE.page.table.extra.prefix}_${semester.xn}_${semester.xq}`,
-  )
+  const { data, isLoading } = useExtraCourse(semester)
 
   const [isOpen, setIsOpen] = useState(false)
 

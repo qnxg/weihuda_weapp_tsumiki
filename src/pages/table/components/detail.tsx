@@ -1,5 +1,9 @@
 import type { Cell, CourseItemWithColor } from "@/pages/table"
+import type { RequestError } from "@/types/request"
+import type { Semester } from "@/types/semester"
 import { ScrollView, Swiper, SwiperItem, View } from "@tarojs/components"
+import { hideLoading, showLoading, showToast } from "@tarojs/taro"
+import { api } from "@/apis"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { OverlayMask } from "@/components/overlay"
@@ -10,13 +14,15 @@ export function Detail({
   cell,
   week,
   onClose,
+  semester,
   onCustomDelete,
   onCustomEdit,
 }: Readonly<{
   cell: Cell
   week: number
+  semester: Semester | null
   onClose: () => void
-  onCustomDelete: (course: CourseItemWithColor) => void
+  onCustomDelete: () => void
   onCustomEdit: (course: CourseItemWithColor) => void
 }>) {
   // 将当前周的课程放在前面, 其他周的课程放在后面
@@ -32,6 +38,49 @@ export function Detail({
   })
 
   const courses = [...currentWeekCourses, ...notCurrentWeekCourses]
+
+  const handleDelete = (course: CourseItemWithColor) => {
+    if (!semester) {
+      void showToast({
+        title: "学期信息加载失败, 无法删除课程",
+        icon: "error",
+      })
+      return
+    }
+
+    if (course.customize_id === -1)
+      return
+
+    void showLoading({ title: "加载中..." })
+    api.course.delete(course.customize_id, { xn: semester.xn, xq: semester.xq })
+      .then(() => {
+        hideLoading()
+        onCustomDelete()
+      })
+      .catch((err: RequestError) => {
+        hideLoading()
+
+        switch (err.code) {
+          case "SEMESTER_NOT_FOUND":
+            void showToast({
+              title: "学期信息未找到, 无法删除课程",
+              icon: "error",
+            })
+            break
+          case "COURSE_NOT_FOUND":
+            void showToast({
+              title: "课程信息未找到, 可能已被删除",
+              icon: "error",
+            })
+            break
+          default:
+            void showToast({
+              title: `删除失败: ${err.message}`,
+              icon: "error",
+            })
+        }
+      })
+  }
 
   return (
     <OverlayMask
@@ -137,7 +186,7 @@ export function Detail({
                           // 同 text-reverse
                           backgroundColor: "#ffffff",
                         }}
-                        onClick={() => onCustomDelete(course)}
+                        onClick={() => handleDelete(course)}
                       >
                         <Icon
                           theme="light"

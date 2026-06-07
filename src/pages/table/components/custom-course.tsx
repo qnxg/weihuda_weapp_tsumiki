@@ -1,8 +1,12 @@
 import type { BaseEventOrig, PickerMultiSelectorProps } from "@tarojs/components"
 import type { CustomCourseRequest } from "@/apis/models/course"
 import type { Cell, CourseItemWithColor } from "@/pages/table"
+import type { RequestError } from "@/types/request"
+import type { Semester } from "@/types/semester"
 import { Input, Picker, View } from "@tarojs/components"
+import { hideLoading, showLoading, showToast } from "@tarojs/taro"
 import { useEffect, useState } from "react"
+import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { LABEL } from "@/config/logger-label"
@@ -18,14 +22,16 @@ export function CustomCourse({
   cell,
   course,
   weeks,
+  semester,
   onCancel,
   onConfirm,
 }: Readonly<{
   cell: Cell | null
   course: CourseItemWithColor | null
   weeks: number
+  semester: Semester | null
   onCancel: () => void
-  onConfirm: (customize_id: number | null, course: CustomCourseRequest) => void
+  onConfirm: () => void
 }>) {
   if (cell && course && !cell.items.includes(course)) {
     logger.error(LABEL.page.table.custom.INVALID_INDEX, `course: ${course.course_name}`)
@@ -69,6 +75,7 @@ export function CustomCourse({
 
   const [isPickerEditing, setIsPickerEditing] = useState(false)
 
+  // 周全选
   const handleWeekSelectAll = () => {
     if (data.weeks.length === weeks) {
       setData(p => ({
@@ -84,6 +91,7 @@ export function CustomCourse({
     }
   }
 
+  // 单周
   const handleWeekSelectOdd = () => {
     setData(p => ({
       ...p,
@@ -91,6 +99,7 @@ export function CustomCourse({
     }))
   }
 
+  // 双周
   const handleWeekSelectEven = () => {
     setData(p => ({
       ...p,
@@ -98,6 +107,7 @@ export function CustomCourse({
     }))
   }
 
+  // Picker 选择器内部变化
   const handlePickerColumnChange = (e: BaseEventOrig<PickerMultiSelectorProps.ColumnChangeEventDetail>) => {
     setIsPickerEditing(true)
 
@@ -117,6 +127,54 @@ export function CustomCourse({
     }
 
     setPicker(newPicker)
+  }
+
+  // 更新课程
+  const handleConfirm = () => {
+    if (!semester) {
+      void showToast({
+        title: "学期信息加载失败, 无法保存课程",
+        icon: "error",
+      })
+      return
+    }
+
+    void showLoading({ title: "正在保存..." })
+    Promise.resolve(() => {
+      if (course) {
+        return api.course.put(course.customize_id, {
+          xn: semester.xn,
+          xq: semester.xq,
+          course: data,
+        })
+      }
+      return api.course.post({
+        xn: semester.xn,
+        xq: semester.xq,
+        course: data,
+      })
+    })
+      .then(() => {
+        hideLoading()
+        onConfirm()
+      })
+      .catch((err: RequestError) => {
+        hideLoading()
+
+        switch (err.code) {
+          case "SEMESTER_NOT_FOUND":
+            void showToast({
+              title: "学期信息未找到, 无法保存课程",
+              icon: "error",
+            })
+            break
+          default:
+            void showToast({
+              title: `保存失败: ${err.message}`,
+              icon: "error",
+            })
+        }
+      })
   }
 
   // 当 picker 完成变化后, 更新 data 中的 day 和 times
@@ -292,7 +350,7 @@ export function CustomCourse({
         <MyButton
           active={true}
           className="flex-1 p flex center text-xl rounded-sm"
-          onClick={() => onConfirm(course?.customize_id ?? null, data)}
+          onClick={() => handleConfirm()}
         >
           确认
         </MyButton>

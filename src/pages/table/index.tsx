@@ -1,10 +1,8 @@
-import type { CourseItem, CustomCourseRequest } from "@/apis/models/course"
+import type { CourseItem } from "@/apis/models/course"
 import type { Status } from "@/hooks/cached-request"
 import type { Semester } from "@/types/semester"
 import { View } from "@tarojs/components"
-import { showToast } from "@tarojs/taro"
 import { useEffect, useMemo, useState } from "react"
-import { api } from "@/apis"
 import { Overlay } from "@/components/overlay"
 import { Page } from "@/components/page"
 import { PullRefresh } from "@/components/pull-refresh"
@@ -21,7 +19,6 @@ import { TableContent } from "@/pages/table/components/table-content"
 import { TimeHeader } from "@/pages/table/components/time-header"
 import { useCourse } from "@/pages/table/hooks/course"
 import { colorCourses, formatCourses, getInitCells, mergeCells } from "@/pages/table/utils/course"
-import { RequestError } from "@/types/request"
 import { getSemesterDateInfo, getSemesterName } from "@/utils/semester"
 
 export type CourseItemWithColor = CourseItem & {
@@ -83,61 +80,6 @@ export default function Table() {
 
   // 设置 CustomCourse 组件显示信息
   const [activeCustomCourse, setActiveCustomCourse] = useState<CourseItemWithColor | null>(null)
-
-  // 删除自定义课程并刷新课程数据函数
-  const handleDeleteCustomCourse = async (customize_id: number) => {
-    if (customize_id === -1 || !semester)
-      return
-
-    try {
-      await api.course.delete(customize_id, { xn: semester.xn, xq: semester.xq })
-    }
-    catch (error) {
-      if (error instanceof RequestError) {
-        await showToast({
-          title: `删除失败: ${error.message}`,
-          icon: "error",
-        })
-      }
-    }
-    finally {
-      refetch()
-    }
-  }
-
-  // 更新自定义课程并刷新课程数据函数
-  const handleEditCustomCourse = async (customize_id: number | null, course: CustomCourseRequest) => {
-    if (!semester)
-      return
-
-    try {
-      if (customize_id) {
-        await api.course.put(customize_id, {
-          xn: semester.xn,
-          xq: semester.xq,
-          course,
-        })
-      }
-      else {
-        await api.course.post({
-          xn: semester.xn,
-          xq: semester.xq,
-          course,
-        })
-      }
-    }
-    catch (error) {
-      if (error instanceof RequestError) {
-        await showToast({
-          title: `${customize_id ? "更新" : "添加"}失败: ${error.message}`,
-          icon: "error",
-        })
-      }
-    }
-    finally {
-      refetch()
-    }
-  }
 
   // semester 就绪后写入初始周数
   useEffect(() => {
@@ -229,12 +171,13 @@ export default function Table() {
             <Detail
               cell={activeCell}
               week={week}
+              semester={semester}
               onClose={() => {
                 setActiveCell(null)
                 setOverlayContentKey(null)
               }}
-              onCustomDelete={(course) => {
-                void handleDeleteCustomCourse(course.customize_id)
+              onCustomDelete={() => {
+                void refetch()
                 setActiveCell(null)
                 setOverlayContentKey(null)
               }}
@@ -247,7 +190,7 @@ export default function Table() {
           {overlayContentKey === "options" && (
             <CourseOptions
               enable={!isUpdating}
-              semester={semester ? { xn: semester.xn, xq: semester.xq } : { xn: 2025, xq: "spring" }}
+              semester={semester}
               week={week}
               weeks={semester ? semester.weeks : 1}
               tableSetting={settings.tableSetting ?? SETTINGS.tableSetting!}
@@ -267,7 +210,7 @@ export default function Table() {
           )}
           {overlayContentKey === "extra" && (
             <ExtraCourses
-              semester={semester ? { xn: semester.xn, xq: semester.xq } : { xn: 2025, xq: "spring" }}
+              semester={semester}
               onClose={() => {
                 setOverlayContentKey(null)
               }}
@@ -278,13 +221,14 @@ export default function Table() {
               weeks={semester ? semester.weeks : 1}
               cell={activeCell}
               course={activeCustomCourse}
+              semester={semester}
               onCancel={() => {
                 setActiveCell(null)
                 setActiveCustomCourse(null)
                 setOverlayContentKey(null)
               }}
-              onConfirm={(customize_id, course) => {
-                void handleEditCustomCourse(customize_id, course)
+              onConfirm={() => {
+                void refetch()
                 setActiveCell(null)
                 setActiveCustomCourse(null)
                 setOverlayContentKey(null)

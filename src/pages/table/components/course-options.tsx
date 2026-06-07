@@ -22,7 +22,7 @@ export function CourseOptions({
   onClose,
 }: Readonly<{
   enable: boolean
-  semester: Semester
+  semester: Semester | null
   week: number
   weeks: number
   tableSetting: TableSetting
@@ -35,6 +35,9 @@ export function CourseOptions({
 
   // 根据当前学期和用户信息生成学期选择范围, 最多包含 20 个学期(防止死循环)
   const getPickerSemesterRange = () => {
+    if (!semester)
+      return ["学期信息加载失败"]
+
     if (!user)
       return [getSemesterName(semester)]
 
