@@ -42,7 +42,7 @@ export function Detail({
   const handleDelete = (course: CourseItemWithColor) => {
     if (!semester) {
       void showToast({
-        title: "学期信息加载失败, 无法删除课程",
+        title: "学期信息缺失",
         icon: "error",
       })
       return
@@ -63,13 +63,13 @@ export function Detail({
         switch (err.code) {
           case "SEMESTER_NOT_FOUND":
             void showToast({
-              title: "学期信息未找到, 无法删除课程",
+              title: "学期不存在",
               icon: "error",
             })
             break
           case "COURSE_NOT_FOUND":
             void showToast({
-              title: "课程信息未找到, 可能已被删除",
+              title: "课程不存在",
               icon: "error",
             })
             break

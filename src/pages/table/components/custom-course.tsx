@@ -133,7 +133,15 @@ export function CustomCourse({
   const handleConfirm = () => {
     if (!semester) {
       void showToast({
-        title: "学期信息加载失败, 无法保存课程",
+        title: "学期信息缺失",
+        icon: "error",
+      })
+      return
+    }
+
+    if (!data.course_name || data.weeks.length === 0 || data.times.length === 0) {
+      void showToast({
+        title: "请填写必填项",
         icon: "error",
       })
       return
@@ -164,7 +172,7 @@ export function CustomCourse({
         switch (err.code) {
           case "SEMESTER_NOT_FOUND":
             void showToast({
-              title: "学期信息未找到, 无法保存课程",
+              title: "学期不存在",
               icon: "error",
             })
             break

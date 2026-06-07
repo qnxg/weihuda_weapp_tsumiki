@@ -1,6 +1,6 @@
 import type { RequestError } from "@/types/request"
 import type { Semester, SemesterInfo } from "@/types/semester"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
 import { STORAGE } from "@/config/storage-key"
 import { useSemesterContext } from "@/contexts/semester"
@@ -32,6 +32,11 @@ export function useSemester(s?: Semester): UseSemesterResult {
   const [error, setError] = useState<RequestError | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  const getSemesterRef = useRef(getSemester)
+  getSemesterRef.current = getSemester
+  const setSemesterRef = useRef(setSemester)
+  setSemesterRef.current = setSemester
+
   const fetchSemester = useCallback(async () => {
     setIsLoading(true)
     setError(null)
@@ -49,18 +54,21 @@ export function useSemester(s?: Semester): UseSemesterResult {
     }
   }, [s])
 
+  const fetchSemesterRef = useRef(fetchSemester)
+  fetchSemesterRef.current = fetchSemester
+
   useEffect(() => {
-    const semester = getSemester(s)
+    const semester = getSemesterRef.current(s)
     if (semester) {
       setData(semester)
       setIsLoading(false)
       return
     }
 
-    void fetchSemester().then((res) => {
+    void fetchSemesterRef.current().then((res) => {
       if (res) {
         const isCurrent = !s
-        setSemester(res, isCurrent)
+        setSemesterRef.current(res, isCurrent)
         setData(res)
         if (isCurrent) {
           void semesterStorage.set(res)
@@ -70,13 +78,13 @@ export function useSemester(s?: Semester): UseSemesterResult {
         // fetch 失败, 使用 storage 降级
         semesterStorage.get().then((storageData) => {
           if (storageData) {
-            setSemester(storageData, !s)
+            setSemesterRef.current(storageData, !s)
             setData(storageData)
           }
         })
       }
     })
-  }, [s, getSemester, setSemester, fetchSemester])
+  }, [s])
 
   return { data, isLoading, error }
 }

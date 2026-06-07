@@ -36,7 +36,7 @@ export function CourseOptions({
   // 根据当前学期和用户信息生成学期选择范围, 最多包含 20 个学期(防止死循环)
   const getPickerSemesterRange = () => {
     if (!semester)
-      return ["学期信息加载失败"]
+      return ["学期信息缺失"]
 
     if (!user)
       return [getSemesterName(semester)]
@@ -67,8 +67,6 @@ export function CourseOptions({
   // 用于学期 / 星期的 Picker 组件
   const [picker, setPicker] = useState([0, week - 1])
 
-  const [isPickerEditing, setIsPickerEditing] = useState(false)
-
   // 控制页面进入 / 移出动画
   const [isOpen, setIsOpen] = useState(false)
 
@@ -81,13 +79,23 @@ export function CourseOptions({
   }
 
   // 应用 picker 变化
-  useEffect(() => {
-    if (isPickerEditing)
+  const handlePickerChange = () => {
+    if (!semester)
       return
 
-    onSemesterChange(getSemesterFromName(pickerSemesterRange[picker[0]])!)
+    const newSemester = getSemesterFromName(pickerSemesterRange[picker[0]])
+    if (newSemester)
+      onSemesterChange(newSemester!)
+
     onWeekChange(picker[1] + 1)
-  }, [isPickerEditing, onSemesterChange, onWeekChange, picker, pickerSemesterRange])
+  }
+
+  // 应用 setting 变化
+  const handleSettingChange = () => {
+    const newTableSetting = { ...tableSetting }
+    newTableSetting.setting.displayNotCurrentWeekCourses = !tableSetting.setting!.displayNotCurrentWeekCourses
+    onTableSettingChange(newTableSetting)
+  }
 
   // 初始挂载, 使用 setTimeout 宏任务防止在 transition 加载完成前 transform 变化
   useEffect(() => {
@@ -134,12 +142,11 @@ export function CourseOptions({
                 value={picker}
                 mode="multiSelector"
                 onColumnChange={(e) => {
-                  setIsPickerEditing(true)
                   const newPicker = [...picker]
                   newPicker[e.detail.column] = e.detail.value
                   setPicker(newPicker)
                 }}
-                onChange={() => setIsPickerEditing(false)}
+                onChange={() => handlePickerChange()}
               >
                 <View>
                   {pickerSemesterRange[picker[0]]}
@@ -166,11 +173,7 @@ export function CourseOptions({
                 }}
                 checked={tableSetting.setting!.displayNotCurrentWeekCourses}
                 disabled={!enable}
-                onChange={() => {
-                  const newTableSetting = { ...tableSetting }
-                  newTableSetting.setting.displayNotCurrentWeekCourses = !tableSetting.setting!.displayNotCurrentWeekCourses
-                  onTableSettingChange(newTableSetting)
-                }}
+                onChange={() => handleSettingChange()}
               />
             </View>
           </View>

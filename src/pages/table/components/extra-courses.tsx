@@ -1,5 +1,6 @@
 import type { Semester } from "@/types/semester"
 import { ScrollView, View } from "@tarojs/components"
+import { showToast } from "@tarojs/taro"
 import { useEffect, useState } from "react"
 import { Icon } from "@/components/icon"
 import { Options } from "@/components/options"
@@ -36,6 +37,16 @@ export function ExtraCourses({
     }
   }, [isLoading])
 
+  useEffect(() => {
+    if (!semester) {
+      void showToast({
+        title: "学期信息缺失",
+        icon: "error",
+      })
+      onClose()
+    }
+  }, [])
+
   return (
     <OverlayMask
       position="bottom"
@@ -51,29 +62,29 @@ export function ExtraCourses({
         }}
         onClick={e => e.stopPropagation()}
       >
+        <View className="flex items-center justify-between p text-2xl text-bold">
+          <View>
+            无课表课程
+            {" "}
+            {data && data.length > 0 && `(${data.length})`}
+          </View>
+          <View onClick={() => handleClose()}>
+            <Icon
+              style={{
+                width: "32rpx",
+                height: "32rpx",
+              }}
+              src={CloseIcon}
+            />
+          </View>
+        </View>
+
         <ScrollView
           className="h-full"
           scrollY
           enhanced
           showScrollbar={false}
         >
-          <View className="flex items-center justify-between p text-2xl text-bold">
-            <View>
-              无课表课程
-              {" "}
-              {data && data.length > 0 && `(${data.length})`}
-            </View>
-            <View onClick={() => handleClose()}>
-              <Icon
-                style={{
-                  width: "32rpx",
-                  height: "32rpx",
-                }}
-                src={CloseIcon}
-              />
-            </View>
-          </View>
-
           {data && data.length > 0 && (
             <View className="flex flex-col gap p">
               {data.map((course, index) => (

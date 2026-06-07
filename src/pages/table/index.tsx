@@ -108,7 +108,7 @@ export default function Table() {
       <View className="w-full flex items-center justify-center text-lg py-xs">
         <View>
           {semester && `${getSemesterName(semester)} - 第${week}周`}
-          {semester ? STATUS_TEXT[status] : "加载学期信息失败"}
+          {semester ? STATUS_TEXT[status] : "学期信息加载失败"}
         </View>
       </View>
 
