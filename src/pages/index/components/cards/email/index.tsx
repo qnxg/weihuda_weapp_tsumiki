@@ -1,8 +1,9 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
-import { Card, CardContent, CardHeader } from "@/components/card"
+import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
+import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import EmailIcon from "@/static/index/email.svg"
 import { mockRequest } from "@/utils/mock-request"
@@ -18,7 +19,7 @@ export function Email({
   const { registerCard, onCardFinish } = useCardLoading()
 
   const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ unreadCount: 42 }),
+    mockRequest({ unreadCount: 42 }, { errorRate: 0.2 }),
   )
 
   useEffect(() => {
@@ -37,7 +38,12 @@ export function Email({
         icon={EmailIcon}
         title="校园邮箱"
       />
-      <CardContent className="p flex items-center justify-between text-xl">
+      <IndexCardContent
+        className="p flex items-center justify-between text-xl"
+        isLoading={isLoading}
+        isFailed={!data}
+        onRefresh={refetch}
+      >
         {data
           ? (
               <View>
@@ -49,7 +55,7 @@ export function Email({
               </View>
             )
           : <Skeleton className="w-full" />}
-      </CardContent>
+      </IndexCardContent>
     </Card>
   )
 }

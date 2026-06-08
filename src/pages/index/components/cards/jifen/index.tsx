@@ -20,7 +20,7 @@ export function Jifen({
   const { registerCard, onCardFinish } = useCardLoading()
 
   const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ points: 114514 }),
+    mockRequest({ points: 114514 }, { errorRate: 0.2 }),
   )
 
   useEffect(() => {
@@ -44,24 +44,33 @@ export function Jifen({
             }}
             src={JifenIcon}
           />
-          { data
-            ? (
+          {isLoading
+            ? <Skeleton className="w-xl" />
+            : (
                 <View className="text-xl">
                   当前积分:
                   {" "}
-                  {data.points}
+                  {data ? data.points : "加载失败"}
                 </View>
-              )
-            : <Skeleton className="w-xl" />}
+              )}
         </View>
-        {data && (
-          <MyButton
-            active={true}
-            className="w-lg py-sm flex center rounded-sm"
-          >
-            签到
-          </MyButton>
-        )}
+        {!isLoading && (
+          data
+            ? (
+                <MyButton
+                  active={true}
+                  className="w-lg py-sm flex center rounded-sm"
+                >
+                  签到
+                </MyButton>
+              )
+            : (
+                <MyButton
+                  className="py-sm bg-transparent text-primary text-xl flex center"
+                >
+                  重试
+                </MyButton>
+              ))}
       </CardContent>
     </Card>
   )

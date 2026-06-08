@@ -1,8 +1,9 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
-import { Card, CardContent, CardHeader } from "@/components/card"
+import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
+import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CountDownIcon from "@/static/index/count-down.svg"
 import { mockRequest } from "@/utils/mock-request"
@@ -21,7 +22,7 @@ export function CountDown({
   const { registerCard, onCardFinish } = useCardLoading()
 
   const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ type: "end", countDown: 42 }),
+    mockRequest({ type: "end", countDown: 42 }, { errorRate: 0.2 }),
   )
 
   useEffect(() => {
@@ -42,7 +43,12 @@ export function CountDown({
         action="查看校历"
         to="/tools/pages/campus/calender/index"
       />
-      <CardContent className="p flex items-center text-xl">
+      <IndexCardContent
+        className="p flex items-center text-xl"
+        isLoading={isLoading}
+        isFailed={!data}
+        onRefresh={refetch}
+      >
         {data
           ? (
               <>
@@ -70,7 +76,7 @@ export function CountDown({
               </>
             )
           : <Skeleton className="w-full" /> }
-      </CardContent>
+      </IndexCardContent>
     </Card>
   )
 }

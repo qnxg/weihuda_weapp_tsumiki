@@ -1,8 +1,9 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
-import { Card, CardContent, CardHeader } from "@/components/card"
+import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
+import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import GradeIcon from "@/static/index/grade.svg"
 import { mockRequest } from "@/utils/mock-request"
@@ -18,7 +19,7 @@ export function Grade({
   const { registerCard, onCardFinish } = useCardLoading()
 
   const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ score: 100 }),
+    mockRequest({ score: 100 }, { errorRate: 0.2 }),
   )
 
   useEffect(() => {
@@ -39,7 +40,12 @@ export function Grade({
         action="查看更多"
         to="/tools/pages/grade/grade/index"
       />
-      <CardContent className="p flex items-center justify-between text-xl">
+      <IndexCardContent
+        className="p flex items-center justify-between text-xl"
+        isLoading={isLoading}
+        isFailed={!data}
+        onRefresh={refetch}
+      >
         {data
           ? (
               <View>
@@ -49,7 +55,7 @@ export function Grade({
               </View>
             )
           : <Skeleton className="w-full" />}
-      </CardContent>
+      </IndexCardContent>
     </Card>
   )
 }

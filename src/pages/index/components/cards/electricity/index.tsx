@@ -1,8 +1,9 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
-import { Card, CardContent, CardHeader } from "@/components/card"
+import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
+import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import ElectricityIcon from "@/static/index/electricity.svg"
 import { mockRequest } from "@/utils/mock-request"
@@ -18,7 +19,7 @@ export function Electricity({
   const { registerCard, onCardFinish } = useCardLoading()
 
   const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ roomNumber: "123", remaining: 1145.14 }),
+    mockRequest({ roomNumber: "123", remaining: 1145.14 }, { errorRate: 0.2 }),
   )
 
   useEffect(() => {
@@ -39,7 +40,12 @@ export function Electricity({
         action="查看电量"
         to="/tools/pages/campus/electricity/index"
       />
-      <CardContent className="p flex items-center justify-between text-xl">
+      <IndexCardContent
+        className="p flex items-center justify-between text-xl"
+        isLoading={isLoading}
+        isFailed={!data}
+        onRefresh={refetch}
+      >
         {data
           ? (
               <>
@@ -62,7 +68,7 @@ export function Electricity({
                 <Skeleton className="w-2xl" />
               </>
             )}
-      </CardContent>
+      </IndexCardContent>
     </Card>
   )
 }

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader } from "@/components/card"
+import { Card, CardHeader } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { Skeleton } from "@/components/skeleton"
 import { TabContent, TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
+import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CoursesIcon from "@/static/index/courses.svg"
 import { mockRequest } from "@/utils/mock-request"
@@ -21,7 +22,7 @@ export function Courses({
   const { registerCard, onCardFinish } = useCardLoading()
 
   const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ today: "今日课程", tomorrow: "明日课程" }),
+    mockRequest({ today: "今日课程", tomorrow: "明日课程" }, { errorRate: 0.2 }),
   )
 
   const [tab, setTab] = useState<TabValue>("today")
@@ -44,7 +45,12 @@ export function Courses({
         action="更多"
         to="/pages/table/index"
       />
-      <CardContent>
+      <IndexCardContent
+        className=""
+        isLoading={isLoading}
+        isFailed={!data}
+        onRefresh={refetch}
+      >
         <Tabs
           className="flex flex-col gap"
           value={tab}
@@ -88,7 +94,7 @@ export function Courses({
               : <Skeleton className="w-full h" />}
           </TabContent>
         </Tabs>
-      </CardContent>
+      </IndexCardContent>
     </Card>
   )
 }
