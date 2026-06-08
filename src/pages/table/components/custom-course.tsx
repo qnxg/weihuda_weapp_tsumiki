@@ -148,41 +148,37 @@ export function CustomCourse({
     }
 
     void showLoading({ title: "正在保存..." })
-    Promise.resolve(() => {
-      if (course) {
-        return api.course.put(course.customize_id, {
+    const request = course
+      ? api.course.put(course.customize_id, {
           xn: semester.xn,
           xq: semester.xq,
           course: data,
         })
-      }
-      return api.course.post({
-        xn: semester.xn,
-        xq: semester.xq,
-        course: data,
-      })
-    })
-      .then(() => {
-        hideLoading()
-        onConfirm()
-      })
-      .catch((err: RequestError) => {
-        hideLoading()
+      : api.course.post({
+          xn: semester.xn,
+          xq: semester.xq,
+          course: data,
+        })
+    request.then(() => {
+      hideLoading()
+      onConfirm()
+    }).catch((err: RequestError) => {
+      hideLoading()
 
-        switch (err.code) {
-          case "SEMESTER_NOT_FOUND":
-            void showToast({
-              title: "学期不存在",
-              icon: "error",
-            })
-            break
-          default:
-            void showToast({
-              title: `保存失败: ${err.message}`,
-              icon: "error",
-            })
-        }
-      })
+      switch (err.code) {
+        case "SEMESTER_NOT_FOUND":
+          void showToast({
+            title: "学期不存在",
+            icon: "error",
+          })
+          break
+        default:
+          void showToast({
+            title: `保存失败: ${err.message}`,
+            icon: "error",
+          })
+      }
+    })
   }
 
   // 当 picker 完成变化后, 更新 data 中的 day 和 times
