@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { Icon } from "@/components/icon"
 import { Options } from "@/components/options"
 import { OverlayMask } from "@/components/overlay"
-import { useExtraCourse } from "@/pages/table/hooks/extra-course"
+import { useExtraCourse } from "@/hooks/course"
 import CloseIcon from "@/static/table/close.svg"
 
 export function ExtraCourses({
