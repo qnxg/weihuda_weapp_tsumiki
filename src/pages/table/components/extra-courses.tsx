@@ -45,7 +45,7 @@ export function ExtraCourses({
       })
       onClose()
     }
-  }, [])
+  }, [onClose, semester])
 
   return (
     <OverlayMask
