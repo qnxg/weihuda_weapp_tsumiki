@@ -1,5 +1,6 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
+import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
@@ -7,7 +8,6 @@ import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import JifenIcon from "@/static/index/jifen.svg"
-import { mockRequest } from "@/utils/mock-request"
 
 /**
  * @description 积分
@@ -19,9 +19,7 @@ export function Jifen({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ points: 114514 }, { errorRate: 0.2 }),
-  )
+  const { data, isLoading, refetch } = useRequest(() => api.jifen.get())
 
   useEffect(() => {
     registerCard(cardKey, refetch)
@@ -50,7 +48,7 @@ export function Jifen({
                 <View className="text-xl">
                   当前积分:
                   {" "}
-                  {data ? data.points : "加载失败"}
+                  {data ? data.jifen : "加载失败"}
                 </View>
               )}
         </View>

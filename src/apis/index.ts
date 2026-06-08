@@ -20,6 +20,12 @@ import type {
   CoursePutRequest,
   CoursePutResponse,
 } from "@/apis/models/course"
+import type {
+  JifenGetGoodsResponse,
+  JifenGetRecordRequest,
+  JifenGetRecordResponse,
+  JifenGetResponse,
+} from "@/apis/models/jifen"
 import type { IndexCardSettingRequestData, MeResponse, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
 import type { SemesterRequest, SemesterResponse } from "@/apis/models/semester"
 import { request } from "@/libs/auth-request"
@@ -54,5 +60,12 @@ export const api = {
     post: (data: CoursePostRequest) => request.post<CoursePostResponse>("/course", data),
     put: (customize_id: number, data: CoursePutRequest) => request.put<CoursePutResponse>(`/course/${customize_id}`, data),
     delete: (customize_id: number, data: CourseDeleteRequest) => request.delete(`/course/${customize_id}`, data),
+  },
+  jifen: {
+    get: () => request.get<JifenGetResponse>("/jifen"),
+    post: () => request.post("/jifen"),
+    getRecord: (data: JifenGetRecordRequest) => request.get<JifenGetRecordResponse>("/jifen/record", data),
+    getGoods: () => request.get<JifenGetGoodsResponse>("/jifen/goods"),
+    postGoods: (id: number) => request.post(`/jifen/goods/${id}`),
   },
 }
