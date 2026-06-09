@@ -9,6 +9,7 @@ import type {
   AuthTFAResquest,
 } from "@/apis/models/auth"
 
+import type { CardInfoResponse, CardRecordRequest, CardRecordResponse } from "@/apis/models/card"
 import type {
   CourseDeleteRequest,
   CourseGetExtraRequest,
@@ -20,6 +21,7 @@ import type {
   CoursePutRequest,
   CoursePutResponse,
 } from "@/apis/models/course"
+import type { DormResponse, ElectricityResponse } from "@/apis/models/electricity"
 import type { EmailResponse } from "@/apis/models/email"
 import type {
   JifenGetGoodsResponse,
@@ -71,5 +73,17 @@ export const api = {
   },
   email: {
     get: () => request.get<EmailResponse>("/email"),
+  },
+  card: {
+    info: () => request.get<CardInfoResponse>("/card/info"),
+    record: (data: CardRecordRequest) => request.get<CardRecordResponse>("/card/record", data),
+  },
+  dorm: {
+    get: () => request.get<DormResponse>("/dorm"),
+    put: () => request.put("/dorm"),
+  },
+  electricity: {
+    get: () => request.get<ElectricityResponse>("/electricity"),
+    put: () => request.put("/electricity"),
   },
 }

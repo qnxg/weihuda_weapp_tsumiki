@@ -1,12 +1,12 @@
 import { View } from "@tarojs/components"
 import { useEffect } from "react"
+import { api } from "@/apis"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CampusIcon from "@/static/index/campus.svg"
-import { mockRequest } from "@/utils/mock-request"
 
 /**
  * @description 校园卡余额
@@ -18,9 +18,7 @@ export function Campus({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ cardNumber: "114514", balance: 114.5 }, { errorRate: 0.2 }),
-  )
+  const { data, isLoading, refetch } = useRequest(() => api.card.info())
 
   useEffect(() => {
     registerCard(cardKey, refetch)
@@ -52,7 +50,7 @@ export function Campus({
                 <View>
                   卡号:
                   {" "}
-                  {data.cardNumber}
+                  {data.id}
                 </View>
                 <View>
                   余额:

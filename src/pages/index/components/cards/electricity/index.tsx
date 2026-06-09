@@ -1,12 +1,12 @@
 import { View } from "@tarojs/components"
-import { useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
+import { api } from "@/apis"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useRequest } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import ElectricityIcon from "@/static/index/electricity.svg"
-import { mockRequest } from "@/utils/mock-request"
 
 /**
  * @description 电量
@@ -18,9 +18,21 @@ export function Electricity({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ roomNumber: "123", remaining: 1145.14 }, { errorRate: 0.2 }),
-  )
+  const { data: dormData, isLoading: isDormLoading, refetch: dormRefetch } = useRequest(() => api.dorm.get())
+  const { data: electricityData, isLoading: isElectricityLoading, refetch: electricityRefetch } = useRequest(() => api.electricity.get())
+
+  const isLoading = useMemo(() => (
+    isDormLoading || isElectricityLoading
+  ), [isDormLoading, isElectricityLoading])
+
+  const refetch = useCallback(() => {
+    void dormRefetch()
+    void electricityRefetch()
+  }, [dormRefetch, electricityRefetch])
+
+  const isFailed = useMemo(() => (
+    !dormData || !electricityData
+  ), [dormData, electricityData])
 
   useEffect(() => {
     registerCard(cardKey, refetch)
@@ -43,21 +55,21 @@ export function Electricity({
       <IndexCardContent
         className="p flex items-center justify-between text-xl"
         isLoading={isLoading}
-        isFailed={!data}
+        isFailed={isFailed}
         onRefresh={refetch}
       >
-        {data
+        {!isFailed
           ? (
               <>
                 <View>
                   宿舍号:
                   {" "}
-                  {data.roomNumber}
+                  {dormData!.room}
                 </View>
                 <View>
                   剩余电量:
                   {" "}
-                  {data.remaining}
+                  {electricityData!.info}
                   度
                 </View>
               </>
