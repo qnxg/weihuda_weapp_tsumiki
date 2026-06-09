@@ -1,12 +1,12 @@
 import { View } from "@tarojs/components"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
-import { useRequest } from "@/hooks/request"
+import { useSemester } from "@/hooks/semester"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CountDownIcon from "@/static/index/count-down.svg"
-import { mockRequest } from "@/utils/mock-request"
+import { getSemesterDateInfo } from "@/utils/semester"
 import { getTheme } from "@/utils/theme"
 
 /**
@@ -19,15 +19,18 @@ export function CountDown({
 }>) {
   const { isDark } = getTheme()
 
-  const { registerCard, onCardFinish } = useCardLoading()
+  const { onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() =>
-    mockRequest({ type: "end", countDown: 42 }, { errorRate: 0.2 }),
-  )
+  const { data, isLoading } = useSemester()
+
+  const [next, setNext] = useState(0)
 
   useEffect(() => {
-    registerCard(cardKey, refetch)
-  }, [registerCard, refetch, cardKey])
+    if (data) {
+      const { next: newNext } = getSemesterDateInfo(data)
+      setNext(newNext)
+    }
+  }, [data])
 
   useEffect(() => {
     if (!isLoading) {
@@ -47,18 +50,18 @@ export function CountDown({
         className="p flex items-center text-xl"
         isLoading={isLoading}
         isFailed={!data}
-        onRefresh={refetch}
+        onRefresh={() => {}}
       >
         {data
           ? (
               <>
                 <View>
-                  距离本学期
-                  {data.type === "end" ? "结束" : "开始"}
+                  距离
+                  {data.xq === "autumn" || data.xq === "spring" ? "本学期结束" : "下学期开始"}
                   还有
                 </View>
                 <View className="flex items-center px gap">
-                  {String(data.countDown).padStart(3, "0").split("").map((num, index) => (
+                  {String(next).padStart(3, "0").split("").map((num, index) => (
                     <View
                       key={index}
                       className="text-2xl text-hightlight text-bold p bg-page rounded-sm"

@@ -57,6 +57,9 @@ function MyButton({
         { "bg-primary text-reverse": active === true },
         { "bg text-base": active === false },
       )}
+      style={{
+        transition: "background-color 0.1s, color 0.1s",
+      }}
       {...props}
     >
       <TaroButton

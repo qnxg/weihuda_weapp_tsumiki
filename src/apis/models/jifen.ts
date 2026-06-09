@@ -34,23 +34,30 @@ interface JifenGoodsItem {
 
 /**
  * @description 获取积分总数响应
+ * @property {number} jifen - 当前积分总数
+ * @property {boolean} is_checked - 今日是否已签到
  * @see https://app.apifox.com/link/project/8311217/apis/api-470226524
  */
 export interface JifenGetResponse {
   jifen: number
+  is_checked: boolean
 }
 
 /**
  * @description 获取积分记录请求
+ * @property {number} [page] - 页码
+ * @property {number} [size] - 每页记录数
  * @see https://app.apifox.com/link/project/8311217/apis/api-470236473
  */
 export interface JifenGetRecordRequest {
-  page: number
-  size: number
+  page?: number
+  size?: number
 }
 
 /**
  * @description 获取积分记录响应
+ * @property {number} total - 记录总数
+ * @property {JifenRecordItem[]} records - 记录列表
  * @see https://app.apifox.com/link/project/8311217/apis/api-470236473
  */
 export interface JifenGetRecordResponse {

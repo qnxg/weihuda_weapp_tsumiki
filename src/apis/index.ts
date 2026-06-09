@@ -20,6 +20,7 @@ import type {
   CoursePutRequest,
   CoursePutResponse,
 } from "@/apis/models/course"
+import type { EmailResponse } from "@/apis/models/email"
 import type {
   JifenGetGoodsResponse,
   JifenGetRecordRequest,
@@ -67,5 +68,8 @@ export const api = {
     getRecord: (data: JifenGetRecordRequest) => request.get<JifenGetRecordResponse>("/jifen/record", data),
     getGoods: () => request.get<JifenGetGoodsResponse>("/jifen/goods"),
     postGoods: (id: number) => request.post(`/jifen/goods/${id}`),
+  },
+  email: {
+    get: () => request.get<EmailResponse>("/email"),
   },
 }
