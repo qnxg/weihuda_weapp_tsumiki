@@ -1,6 +1,7 @@
 import type { CardItem } from "@/pages/index/components/cards"
 import { View } from "@tarojs/components"
 import { PullRefresh } from "@/components/pull-refresh"
+import { Setting } from "@/pages/index/components/setting"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 
 /**
@@ -15,7 +16,13 @@ export function CardList({
 
   return (
     <PullRefresh onRefresh={triggerRefresh}>
-      <View className="flex flex-col gap">
+      <View
+        className="flex flex-col gap"
+        style={{
+        // 同 gap
+          paddingBottom: "20rpx",
+        }}
+      >
         {cards.map(card => (
           <View
             key={card.key}
@@ -24,6 +31,7 @@ export function CardList({
             {card.content}
           </View>
         ))}
+        <Setting />
       </View>
     </PullRefresh>
   )

@@ -5,7 +5,6 @@ import { useSetting } from "@/hooks/setting"
 import { CardList } from "@/pages/index/components/card-list"
 import { cards } from "@/pages/index/components/cards"
 import { DateBar } from "@/pages/index/components/date-bar"
-import { Setting } from "@/pages/index/components/setting"
 import { CardLoadingProvider } from "@/pages/index/contexts/card-loading"
 
 export default function Index() {
@@ -24,7 +23,6 @@ export default function Index() {
         {(settings.indexCardSetting?.setting.cards) && (
           <PageContent>
             <CardList cards={displayCards} />
-            <Setting />
           </PageContent>
         )}
       </CardLoadingProvider>
