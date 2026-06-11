@@ -7,6 +7,7 @@ export interface MeResponse {
   name: string
   major: string
   enter: number
+  college: string
   sex: string
   xz: number | null
   stu_id: string

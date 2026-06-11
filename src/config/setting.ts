@@ -7,7 +7,7 @@ export const SETTINGS: Setting = {
   indexCardSetting: {
     version: 1,
     setting: {
-      cards: ["jifen", "courses", "tasks", "electricity", "campus", "count_down", "grade", "email"],
+      cards: ["jifen", "courses", "tasks", "electricity", "campus_card", "count_down", "grade", "email"],
     },
   },
   tableSetting: {

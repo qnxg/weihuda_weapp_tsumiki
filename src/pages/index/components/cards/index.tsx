@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 
-import { Campus } from "@/pages/index/components/cards/campus"
+import { CampusCard } from "@/pages/index/components/cards/campus-card"
 import { CountDown } from "@/pages/index/components/cards/count-down"
 import { Courses } from "@/pages/index/components/cards/courses"
 import { Electricity } from "@/pages/index/components/cards/electricity"
@@ -19,7 +19,7 @@ export const cards: CardItem[] = [
   { name: "积分", key: "jifen", content: <Jifen cardKey="jifen" /> },
   { name: "课程", key: "courses", content: <Courses cardKey="courses" /> },
   { name: "电量", key: "electricity", content: <Electricity cardKey="electricity" /> },
-  { name: "校园卡余额", key: "campus", content: <Campus cardKey="campus" /> },
+  { name: "校园卡余额", key: "campus_card", content: <CampusCard cardKey="campus_card" /> },
   { name: "近期待办", key: "tasks", content: <Tasks cardKey="tasks" /> },
   { name: "假期倒计时", key: "count_down", content: <CountDown cardKey="count_down" /> },
   { name: "校园邮箱", key: "email", content: <Email cardKey="email" /> },

@@ -13,9 +13,9 @@ export interface DormResponse {
 
 /**
  * @description 电量信息响应
- * @property {string} info - 电量信息
+ * @property {string} balance - 电量余额
  * @see https://app.apifox.com/link/project/8311217/apis/api-471053086
  */
 export interface ElectricityResponse {
-  info: string
+  balance: string
 }

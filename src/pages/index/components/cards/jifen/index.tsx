@@ -32,7 +32,13 @@ export function Jifen({
     setIsChecking(true)
 
     api.jifen.post()
-      .then(() => refetch())
+      .then(() => {
+        void showToast({
+          title: "签到成功",
+          icon: "success",
+        })
+        void refetch()
+      })
       .catch((err) => {
         switch (err.code) {
           case "REPEATED_CHECK":

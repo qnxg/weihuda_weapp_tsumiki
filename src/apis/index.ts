@@ -83,7 +83,7 @@ export const api = {
     put: () => request.put("/dorm"),
   },
   electricity: {
-    get: () => request.get<ElectricityResponse>("/electricity"),
-    put: () => request.put("/electricity"),
+    get: () => request.get<ElectricityResponse>("/dorm/electricity"),
+    put: () => request.put("/dorm/electricity"),
   },
 }

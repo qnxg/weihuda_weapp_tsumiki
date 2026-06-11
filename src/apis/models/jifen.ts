@@ -2,13 +2,13 @@
  * @description 积分记录项
  * @property {number} id - 记录 ID
  * @property {number} jifen - 积分变动数量
- * @property {string} desc - 记录描述
+ * @property {string} description - 记录描述
  * @property {string} create_at - 记录创建时间
  */
 interface JifenRecordItem {
   id: number
   jifen: number
-  desc: string
+  description: string
   create_at: string
 }
 

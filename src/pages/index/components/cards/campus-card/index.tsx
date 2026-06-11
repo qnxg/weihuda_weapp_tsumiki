@@ -11,7 +11,7 @@ import CampusIcon from "@/static/index/campus.svg"
 /**
  * @description 校园卡余额
  */
-export function Campus({
+export function CampusCard({
   cardKey,
 }: Readonly<{
   cardKey: string

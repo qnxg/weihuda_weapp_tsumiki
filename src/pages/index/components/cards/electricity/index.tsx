@@ -69,8 +69,7 @@ export function Electricity({
                 <View>
                   剩余电量:
                   {" "}
-                  {electricityData!.info}
-                  度
+                  {electricityData!.balance}
                 </View>
               </>
             )
