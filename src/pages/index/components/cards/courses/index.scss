@@ -1,0 +1,79 @@
+.card {
+  &--normal {
+    // BG_COLOR[0]
+    background-color: #e6f4ff;
+  }
+
+  &--upcoming {
+    // BG_COLOR[4]
+    background-color: #fcebcd;
+  }
+
+  &--doing {
+    // BG_COLOR[2]
+    background-color: #defbf7;
+  }
+
+  &--ended {
+    background-color: #efefef;
+  }
+}
+
+.header {
+  &--normal {
+    // FONT_COLOR[0]
+    background-color: #08a0e2;
+  }
+
+  &--upcoming {
+    // FONT_COLOR[4]
+    background-color: #ff9900;
+  }
+
+  &--doing {
+    // FONT_COLOR[2]
+    background-color: #3cb3c9;
+  }
+
+  &--ended {
+    background-color: #aeaeae;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    &--normal {
+      background-color: darken(#08a0e2, 25%);
+    }
+
+    &--upcoming {
+      background-color: darken(#ff9900, 25%);
+    }
+
+    &--doing {
+      background-color: darken(#3cb3c9, 25%);
+    }
+
+    &--ended {
+      background-color: darken(#aeaeae, 25%);
+    }
+  }
+
+  .header {
+    &--normal {
+      background-color: darken(#e6f4ff, 25%);
+    }
+
+    &--upcoming {
+      background-color: darken(#fcebcd, 25%);
+    }
+
+    &--doing {
+      background-color: darken(#defbf7, 25%);
+    }
+
+    &--ended {
+      background-color: darken(#efefef, 25%);
+    }
+  }
+}

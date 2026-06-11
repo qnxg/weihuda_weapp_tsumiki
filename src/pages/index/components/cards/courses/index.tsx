@@ -5,7 +5,6 @@ import { Card, CardHeader } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { Skeleton } from "@/components/skeleton"
 import { TabContent, TabList, Tabs, TabTrigger } from "@/components/tabs"
-import { BG_COLOR, FONT_COLOR } from "@/config/color"
 import { SCHEDULES } from "@/config/schedule"
 import { useCourse } from "@/hooks/course"
 import { useSemester } from "@/hooks/semester"
@@ -19,8 +18,10 @@ import { IndexCardEmpty } from "@/pages/index/components/cards/index-card-empty"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CoursesIcon from "@/static/index/courses.svg"
 import EmptyIcon from "@/static/index/courses/empty.svg"
+import { cn } from "@/utils/cn"
 import dayjs from "@/utils/dayjs"
 import { getSemesterDateInfo } from "@/utils/semester"
+import "./index.scss"
 
 type TabValue = "today" | "tomorrow"
 
@@ -114,45 +115,43 @@ export function Courses({
           const start = SCHEDULES.find(s => s.index === card.start)?.start ?? ""
           const end = SCHEDULES.find(s => s.index === card.start + card.span)?.end ?? ""
 
-          // 今日课程才嶕峣 isComing, 明日课程 isComing 始终为 false
-          const isComing = tab === "today" && dayjs().diff(dayjs(start, "HH:mm"), "minute") <= 20
+          const getStatus = () => {
+            if (tab === "tomorrow")
+              return "normal"
 
-          // 今日课程才校验 isEnd, 明日课程 isEnd 始终为 false
-          const isEnd = tab === "today" && dayjs().isAfter(dayjs(end, "HH:mm"), "minute")
+            if (dayjs().diff(dayjs(start, "HH:mm"), "minute") <= 20)
+              return "upcoming"
 
-          const bgColor = isComing
-            ? BG_COLOR[4] // 黄色
-            : isEnd
-              ? "#efefef" // 灰色
-              : BG_COLOR[0] // 蓝色
+            if (dayjs().isBetween(start, end))
+              return "doing"
 
-          const headColor = isComing
-            ? FONT_COLOR[4]
-            : isEnd
-              ? "#aeaeae"
-              : FONT_COLOR[0]
+            if (dayjs().isAfter(dayjs(end, "HH:mm"), "minute"))
+              return "ended"
+
+            return "normal"
+          }
+
+          const status = getStatus()
 
           // 处理潜在的课程重叠情况
           return card.items.map((course, i) => (
             <View
               key={`${card.start}-${index}-${i}`}
-              className="relative flex py-sm px-md gap rounded-sm overflow-hidden"
+              className={cn("relative flex py-sm px-md gap rounded-sm overflow-hidden", `card--${status}`)}
               style={{
-                backgroundColor: bgColor,
                 // 二倍 px
                 paddingLeft: "32rpx",
               }}
             >
               {/* 前置 header 装饰 */}
               <View
-                className="absolute"
+                className={cn("absolute", `header--${status}`)}
                 style={{
                   // 同 px-md
                   width: "16rpx",
                   height: "100%",
                   left: "0",
                   top: "0",
-                  backgroundColor: headColor,
                 }}
               />
 
