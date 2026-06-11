@@ -31,6 +31,10 @@ function Option({
     onClick?.()
   }
 
+  const iconSize = size === "sm"
+    ? "32rpx"
+    : size === "md" ? "40rpx" : "48rpx"
+
   return (
     <View
       className={cn(
@@ -41,29 +45,27 @@ function Option({
       )}
       onClick={() => handleClick()}
     >
-      <View>
+      <View className="flex items-center gap">
         {icon && (
           <Icon
             src={icon}
-            className={cn(
-              size === "sm" && "size-sm",
-              size === "md" && "size-md",
-              size === "lg" && "size-lg",
-            )}
+            style={{
+              width: iconSize,
+              height: iconSize,
+            }}
           />
         )}
         {title}
       </View>
-      <View>
+      <View className="flex items-center gap">
         {content && (<View>{content}</View>)}
         {!content && (to || onClick) && (
           <Icon
             src={ToIcon}
-            className={cn(
-              size === "sm" && "size-sm",
-              size === "md" && "size-md",
-              size === "lg" && "size-lg",
-            )}
+            style={{
+              width: iconSize,
+              height: iconSize,
+            }}
           />
         )}
       </View>
@@ -93,7 +95,7 @@ function Options({
 }: Readonly<{
   items?: OptionItem[]
   // 操作列表的类型, 决定 Option 之间的分隔线样式, 默认为 "divided"
-  type?: "divided" | "underline" | "plain"
+  type?: "divided" | "underline" | "wrapped" | "plain"
   children?: ReactNode
 }>) {
   const { isDark } = getTheme()
@@ -104,7 +106,8 @@ function Options({
       style={{
         backgroundColor: isDark ? "#303030" : "#f7f7f7",
         gap: type !== "plain" ? "6rpx" : "",
-        paddingBottom: type === "underline" ? "6rpx" : "",
+        paddingTop: type === "wrapped" ? "6rpx" : "",
+        paddingBottom: type === "underline" || type === "wrapped" ? "6rpx" : "",
       }}
     >
       {items && items.length > 0 && items.map((option, index) => (

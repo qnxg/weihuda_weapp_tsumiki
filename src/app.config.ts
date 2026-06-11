@@ -5,10 +5,10 @@ export default defineAppConfig({
     "pages/table/index",
     "pages/profile/index",
     // 非 tab 页
-    "pages/login/index",
+    "pages/disclaimers/index",
     "pages/feedback/index",
     "pages/faq/index",
-    "pages/disclaimers/index",
+    "pages/jifen/index",
     "pages/message/index",
   ],
   subPackages: [
@@ -35,6 +35,7 @@ export default defineAppConfig({
     {
       root: "setting",
       pages: [
+        "pages/index/index",
         "pages/index-card/index",
         "pages/lab-bind/index",
         "pages/class-table/index",
