@@ -35,6 +35,11 @@ import type {
   JifenGetResponse,
 } from "@/apis/models/jifen"
 import type { IndexCardSettingRequestData, MeResponse, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
+import type {
+  MonthNetflowResponse,
+  NetflowDetailResponse,
+  NetflowOrderResponse,
+} from "@/apis/models/netflow"
 import type { SemesterRequest, SemesterResponse } from "@/apis/models/semester"
 import { request } from "@/libs/auth-request"
 
@@ -94,5 +99,10 @@ export const api = {
   grade: {
     get: (data: GradeRequest) => request.get<GradeResponse>("/grade", data),
     getDetail: (jx0404id: string) => request.get<GradeDetailResponse>(`/grade/${jx0404id}`),
+  },
+  netflow: {
+    get: () => request.get<MonthNetflowResponse>("/netflow"),
+    getOrder: () => request.get<NetflowOrderResponse>("/netflow/order"),
+    getDetail: (type: "month" | "day") => request.get<NetflowDetailResponse>("/netflow/detail", type),
   },
 }
