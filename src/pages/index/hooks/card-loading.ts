@@ -1,5 +1,5 @@
 import type { Refresher } from "@/pages/index/contexts/card-loading"
-import { useCallback, useMemo } from "react"
+import { useCallback } from "react"
 import { useCardLoadingContext } from "@/pages/index/contexts/card-loading"
 
 /**
@@ -22,28 +22,26 @@ interface CardLoadingResult {
  */
 export function useCardLoading(): CardLoadingResult {
   const {
-    count,
+    isLoading,
     refreshers,
     setCount,
     addRefresher,
     removeRefresher,
   } = useCardLoadingContext()
 
-  const isLoading = useMemo(() => count > 0, [count])
-
   const registerCard = useCallback((key: string, fn: Refresher) => {
     addRefresher(key, fn)
-    setCount(count + 1)
-  }, [addRefresher, setCount, count])
+    setCount(p => p + 1)
+  }, [addRefresher, setCount])
 
   const unregisterCard = useCallback((key: string) => {
     removeRefresher(key)
-    setCount(count - 1)
-  }, [removeRefresher, setCount, count])
+    setCount(p => p - 1)
+  }, [removeRefresher, setCount])
 
   const onCardFinish = useCallback((_key: string) => {
-    setCount(count - 1)
-  }, [setCount, count])
+    setCount(p => p - 1)
+  }, [setCount])
 
   const triggerRefresh = useCallback(async () => {
     setCount(refreshers.size)

@@ -1,11 +1,11 @@
 import { View } from "@tarojs/components"
 import { useCallback, useEffect, useMemo } from "react"
 import { Card, CardHeader } from "@/components/card"
-import { Icon } from "@/components/icon"
 import { Skeleton } from "@/components/skeleton"
 import { useGrade } from "@/hooks/grade"
 import { useSemester } from "@/hooks/semester"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
+import { IndexCardEmpty } from "@/pages/index/components/cards/index-card-empty"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import GradeIcon from "@/static/index/grade.svg"
 import EmptyIcon from "@/static/index/grade/empty.svg"
@@ -42,12 +42,7 @@ export function Grade({
       return <Skeleton className="w-full" />
 
     if (grade.length === 0) {
-      return (
-        <View className="flex flex-col items-center gap">
-          <Icon className="size-sm" src={EmptyIcon} />
-          <View>暂无成绩数据, 好好学习吧</View>
-        </View>
-      )
+      return <IndexCardEmpty icon={EmptyIcon} text="暂无成绩数据, 好好学习吧" />
     }
 
     return (

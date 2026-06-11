@@ -1,12 +1,12 @@
 import type { ReactNode } from "react"
-import { createContext, useContext, useMemo, useState } from "react"
+import { createContext, useCallback, useContext, useMemo, useState } from "react"
 
 export type Refresher = () => void
 
 interface CardLoadingContextValue {
-  count: number
+  isLoading: boolean
   refreshers: Map<string, Refresher>
-  setCount: (count: number) => void
+  setCount: (count: number | ((prev: number) => number)) => void
   addRefresher: (key: string, refresher: Refresher) => void
   removeRefresher: (key: string) => void
 }
@@ -21,23 +21,25 @@ export function CardLoadingProvider({
   const [count, setCount] = useState(0)
   const [refreshers, setRefreshers] = useState(() => new Map<string, Refresher>())
 
-  const addRefresher = (key: string, fn: Refresher) =>
-    setRefreshers(p => new Map(p).set(key, fn))
+  const isLoading = useMemo(() => count > 0, [count])
 
-  const removeRefresher = (key: string) =>
+  const addRefresher = useCallback((key: string, fn: Refresher) =>
+    setRefreshers(p => new Map(p).set(key, fn)), [])
+
+  const removeRefresher = useCallback((key: string) =>
     setRefreshers((p) => {
       const next = new Map(p)
       next.delete(key)
       return next
-    })
+    }), [])
 
   const value = useMemo(() => ({
-    count,
+    isLoading,
     refreshers,
     setCount,
     addRefresher,
     removeRefresher,
-  }), [count, refreshers])
+  }), [addRefresher, isLoading, refreshers, removeRefresher])
 
   return (
     <CardLoadingContext.Provider value={value}>

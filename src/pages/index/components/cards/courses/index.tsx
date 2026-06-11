@@ -15,8 +15,10 @@ import {
   mergeCourseCards,
 } from "@/pages/index/components/cards/courses/utils/course"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
+import { IndexCardEmpty } from "@/pages/index/components/cards/index-card-empty"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CoursesIcon from "@/static/index/courses.svg"
+import EmptyIcon from "@/static/index/courses/empty.svg"
 import dayjs from "@/utils/dayjs"
 import { getSemesterDateInfo } from "@/utils/semester"
 
@@ -91,15 +93,15 @@ export function Courses({
   }, [isLoading, onCardFinish, cardKey])
 
   const Content = useCallback(() => {
-    if (!course)
+    if (!cards)
       return <Skeleton className="w-full h" />
 
-    if (cards.length === 0) {
+    if (cards.map(card => card.items).flat().length === 0) {
       return (
-        <View>
-          {tab === "today" ? "今日" : "明日"}
-          无课
-        </View>
+        <IndexCardEmpty
+          icon={EmptyIcon}
+          text={`${tab === "today" ? "今日" : "明日"}无课, 好好放松一下吧`}
+        />
       )
     }
 
@@ -112,7 +114,8 @@ export function Courses({
           const start = SCHEDULES.find(s => s.index === card.start)?.start ?? ""
           const end = SCHEDULES.find(s => s.index === card.start + card.span)?.end ?? ""
 
-          const isComing = dayjs().diff(dayjs(start, "HH:mm"), "minute") <= 20
+          // 今日课程才嶕峣 isComing, 明日课程 isComing 始终为 false
+          const isComing = tab === "today" && dayjs().diff(dayjs(start, "HH:mm"), "minute") <= 20
 
           // 今日课程才校验 isEnd, 明日课程 isEnd 始终为 false
           const isEnd = tab === "today" && dayjs().isAfter(dayjs(end, "HH:mm"), "minute")
@@ -176,7 +179,7 @@ export function Courses({
         })}
       </View>
     )
-  }, [cards, course, tab])
+  }, [cards, tab])
 
   return (
     <Card>
@@ -208,7 +211,7 @@ export function Courses({
                       今日
                     </MyButton>
                   </TabTrigger>
-                  <TabTrigger asChild value="today">
+                  <TabTrigger asChild value="tomorrow">
                     <MyButton
                       className="flex-1 flex center rounded-sm"
                       active={tab === "tomorrow"}
