@@ -7,7 +7,11 @@ export const LABEL = {
       NETWORK_ERROR: "Network Error",
       SERVER_ERROR: "Server Error",
     },
-    storage: "Storage Error",
+    storage: {
+      GET_ERROR: "Storage Get Error",
+      SET_ERROR: "Storage Set Error",
+      EXPIRED: "Storage Expired",
+    },
   },
   util: {
     auth_request: "Auth Request",

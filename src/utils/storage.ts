@@ -1,6 +1,20 @@
 import Taro from "@tarojs/taro"
 import { LABEL } from "@/config/logger-label"
+import dayjs from "@/utils/dayjs"
 import { logger } from "@/utils/logger"
+
+/**
+ * @description 实际存储结构
+ * @template T - 存储数据的类型
+ * @property {T} data - 存储的数据
+ * @property {string} update_at - 最后更新时间, 为 "YYYY-MM-DD HH:mm:ss" 格式的字符串
+ * @property {number | null} expired - 有效期, 单位 ms, null 为永不过期
+ */
+interface StorageData<T> {
+  data: T
+  update_at: string
+  expired: number | null
+}
 
 /**
  * @description 通用存储类
@@ -24,33 +38,54 @@ export class Storage<T> {
   }
 
   async get(): Promise<T | undefined> {
-    return new Promise<T | undefined>((resolve, _) => {
+    return new Promise<T | undefined>((resolve) => {
       Taro.getStorage({
         key: this.key,
-        success: res => resolve(res.data as T),
+        success: (res) => {
+          const stored = res.data as StorageData<T>
+          if (stored?.update_at) {
+            if (stored.expired !== null) {
+              const diff = dayjs().diff(dayjs(stored.update_at, "YYYY-MM-DD HH:mm:ss"))
+              if (diff > stored.expired) {
+                logger.warn(LABEL.lib.storage.EXPIRED, `${this.key}: expired`)
+                resolve(undefined)
+              }
+            }
+            resolve(stored.data)
+          }
+          else {
+            resolve(stored as T)
+          }
+        },
         fail: (err) => {
-          logger.error(LABEL.lib.storage, `${this.key}: `, err)
+          logger.error(LABEL.lib.storage.GET_ERROR, `${this.key}: `, err)
           resolve(undefined)
         },
       }).catch((error) => {
-        logger.error(LABEL.lib.storage, `${this.key}: `, error)
+        logger.error(LABEL.lib.storage.GET_ERROR, `${this.key}: `, error)
         resolve(undefined)
       })
     })
   }
 
   async set(value: T): Promise<void> {
+    const storageData: StorageData<T> = {
+      data: value,
+      update_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      expired: null,
+    }
+
     return new Promise<void>((resolve, _) => {
       Taro.setStorage({
         key: this.key,
-        data: value,
+        data: storageData,
         success: () => resolve(),
         fail: (err) => {
-          logger.error(LABEL.lib.storage, `${this.key}: `, err)
+          logger.error(LABEL.lib.storage.SET_ERROR, `${this.key}: `, err)
           resolve()
         },
       }).catch((error) => {
-        logger.error(LABEL.lib.storage, `${this.key}: `, error)
+        logger.error(LABEL.lib.storage.SET_ERROR, `${this.key}: `, error)
         resolve()
       })
     })
@@ -62,11 +97,11 @@ export class Storage<T> {
         key: this.key,
         success: () => resolve(),
         fail: (err) => {
-          logger.error(LABEL.lib.storage, `${this.key}: `, err)
+          logger.error(LABEL.lib.storage.GET_ERROR, `${this.key}: `, err)
           resolve()
         },
       }).catch((error) => {
-        logger.error(LABEL.lib.storage, `${this.key}: `, error)
+        logger.error(LABEL.lib.storage.GET_ERROR, `${this.key}: `, error)
         resolve()
       })
     })
