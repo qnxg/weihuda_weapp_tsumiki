@@ -35,11 +35,13 @@ interface JifenGoodsItem {
 /**
  * @description 获取积分总数响应
  * @property {number} jifen - 当前积分总数
+ * @property {number} combo - 当前连续签到天数
  * @property {boolean} is_checked - 今日是否已签到
  * @see https://app.apifox.com/link/project/8311217/apis/api-470226524
  */
 export interface JifenGetResponse {
   jifen: number
+  combo: number
   is_checked: boolean
 }
 
