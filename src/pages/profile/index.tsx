@@ -1,6 +1,6 @@
 import type { OptionItem } from "@/components/options"
 import { ScrollView, View } from "@tarojs/components"
-import Taro from "@tarojs/taro"
+import Taro, { clearStorageSync, reLaunch } from "@tarojs/taro"
 import { api } from "@/apis"
 import { Card } from "@/components/card"
 import { Icon } from "@/components/icon"
@@ -18,6 +18,7 @@ import SettingIcon from "@/static/profile/setting.svg"
 import UnbindIcon from "@/static/profile/unbind.svg"
 import dayjs from "@/utils/dayjs"
 import { navigate } from "@/utils/navigate"
+import { clearAllStorage } from "@/utils/storage"
 
 const options: OptionItem[] = [
   { title: "小程序设置", icon: SettingIcon, to: "/setting/pages/index/index", size: "lg" },
@@ -30,6 +31,42 @@ const options: OptionItem[] = [
 export default function Profile() {
   const { user } = useUser()
   const { data: jifenData } = useRequest(() => api.jifen.get())
+
+  const handleClearCache = async () => {
+    const res = await Taro.showModal({
+      title: "确认清除",
+      content: "清除后将自动返回首页",
+      confirmColor: "#ff5555",
+      cancelColor: "#328ccb",
+    })
+    if (res.confirm) {
+      clearAllStorage()
+      await Taro.showToast({
+        title: "清除成功",
+      })
+      await reLaunch({
+        url: "/pages/index/index",
+      })
+    }
+  }
+
+  const handleUnBind = async () => {
+    const res = await Taro.showModal({
+      title: "确认解绑",
+      content: "解绑后会情况全部缓存, 并要求重新登录",
+      confirmColor: "#ff5555",
+      cancelColor: "#328ccb",
+    })
+    if (res.confirm) {
+      clearStorageSync()
+      await Taro.showToast({
+        title: "清除成功",
+      })
+      await reLaunch({
+        url: "/pages/index/index",
+      })
+    }
+  }
 
   return (
     <Page>
@@ -100,11 +137,13 @@ export default function Profile() {
                     title="清除缓存"
                     icon={ClearIcon}
                     size="lg"
+                    onClick={() => handleClearCache()}
                   />
                   <Option
                     title="解除绑定"
                     icon={UnbindIcon}
                     size="lg"
+                    onClick={() => handleUnBind()}
                   />
                 </Options>
               </View>

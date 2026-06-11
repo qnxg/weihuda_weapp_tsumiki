@@ -1,5 +1,6 @@
 import Taro from "@tarojs/taro"
 import { LABEL } from "@/config/logger-label"
+import { STORAGE } from "@/config/storage-key"
 import dayjs from "@/utils/dayjs"
 import { logger } from "@/utils/logger"
 
@@ -106,4 +107,22 @@ export class Storage<T> {
       })
     })
   }
+}
+
+/**
+ * @description 安全清除缓存需保留的 key
+ */
+const IMPORTANT_KEYS = [STORAGE.token.access_token, STORAGE.token.refresh_token]
+
+/**
+ * @description 安全清除缓存函数
+ */
+export function clearAllStorage() {
+  const keys = Taro.getStorageInfoSync().keys.filter(k => !IMPORTANT_KEYS.includes(k))
+  const backup = Taro.batchGetStorageSync(keys).map((v, idx) => ({
+    key: keys[idx]!,
+    value: v,
+  }))
+  Taro.clearStorageSync()
+  Taro.batchSetStorageSync(backup as any) // Taro 类型问题
 }
