@@ -105,7 +105,7 @@ export function Courses({
 
     return (
       <View className="w-full flex flex-col gap">
-        {cards.map((card) => {
+        {cards.map((card, index) => {
           if (card.items.length === 0)
             return null
 
@@ -130,9 +130,9 @@ export function Courses({
               : FONT_COLOR[0]
 
           // 处理潜在的课程重叠情况
-          return card.items.map((course, index) => (
+          return card.items.map((course, i) => (
             <View
-              key={`${card.start}-${index}`}
+              key={`${card.start}-${index}-${i}`}
               className="relative flex py-sm px-md gap rounded-sm overflow-hidden"
               style={{
                 backgroundColor: bgColor,

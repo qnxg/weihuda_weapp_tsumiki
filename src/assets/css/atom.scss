@@ -83,6 +83,11 @@
 .underline {
   text-decoration: underline;
 }
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 // endregion
 

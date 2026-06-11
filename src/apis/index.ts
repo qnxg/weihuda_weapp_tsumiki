@@ -24,6 +24,11 @@ import type {
 import type { DormResponse, ElectricityResponse } from "@/apis/models/electricity"
 import type { EmailResponse } from "@/apis/models/email"
 import type {
+  GradeDetailResponse,
+  GradeRequest,
+  GradeResponse,
+} from "@/apis/models/grade"
+import type {
   JifenGetGoodsResponse,
   JifenGetRecordRequest,
   JifenGetRecordResponse,
@@ -85,5 +90,9 @@ export const api = {
   electricity: {
     get: () => request.get<ElectricityResponse>("/dorm/electricity"),
     put: () => request.put("/dorm/electricity"),
+  },
+  grade: {
+    get: (data: GradeRequest) => request.get<GradeResponse>("/grade", data),
+    getDetail: (jx0404id: string) => request.get<GradeDetailResponse>(`/grade/${jx0404id}`),
   },
 }
