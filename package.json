@@ -1,8 +1,8 @@
 {
-  "name": "front_2026",
+  "name": "weihuda_weapp_tsumiki",
   "version": "1.0.0",
   "private": true,
-  "description": "湖南大学微生活小程序前端 2026ver.",
+  "description": "湖南大学微生活小程序前端 Tsumiki 版",
   "templateInfo": {
     "name": "default",
     "typescript": true,

@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "./dist",
-  "projectname": "front_2026",
-  "description": "湖南大学微生活小程序前端 2026ver.",
+  "projectname": "weihuda_weapp_tsumiki",
+  "description": "湖南大学微生活小程序前端 Tsumiki 版",
   "appid": "touristappid",
   "setting": {
     "urlCheck": true,
