@@ -2,7 +2,7 @@ import type { OptionItem } from "@/components/options"
 import { ScrollView, View } from "@tarojs/components"
 import Taro, { clearStorageSync, reLaunch } from "@tarojs/taro"
 import { api } from "@/apis"
-import { Card } from "@/components/card"
+import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { Option, Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
@@ -10,7 +10,6 @@ import { useRequest } from "@/hooks/request"
 import { useUser } from "@/hooks/user"
 import ClearIcon from "@/static/profile/clear.svg"
 import DisclaimersIcon from "@/static/profile/disclaimers.svg"
-import FAQIcon from "@/static/profile/faq.svg"
 import FeedbackIcon from "@/static/profile/feedback.svg"
 import JifenIcon from "@/static/profile/jifen.svg"
 import MessageIcon from "@/static/profile/message.svg"
@@ -24,7 +23,6 @@ const options: OptionItem[] = [
   { title: "小程序设置", icon: SettingIcon, to: "/setting/pages/index/index", size: "lg" },
   { title: "消息盒子", icon: MessageIcon, to: "/pages/message/index", size: "lg" },
   { title: "我要反馈", icon: FeedbackIcon, to: "/pages/feedback/index", size: "lg" },
-  { title: "常见问题", icon: FAQIcon, to: "/pages/faq/index", size: "lg" },
   { title: "免责声明", icon: DisclaimersIcon, to: "/pages/disclaimers/index", size: "lg" },
 ]
 
@@ -79,7 +77,7 @@ export default function Profile() {
         >
           <View className="h-full flex flex-col gap">
             <Card>
-              <View className="flex gap p">
+              <CardContent className="flex gap p">
                 <View className="size-sm rounded-full bg-primary flex center text-2xl text-reverse">
                   {user ? user.name.at(0) : "U"}
                 </View>
@@ -87,11 +85,11 @@ export default function Profile() {
                   <View className="text-xl text-bold">{user ? user.name : "小程序用户"}</View>
                   <View className="text-toned">{user ? user.stu_id : "---"}</View>
                 </View>
-              </View>
+              </CardContent>
             </Card>
 
             <Card>
-              <View className="flex center gap">
+              <CardContent className="flex center gap">
                 <View className="w-2xl h-md flex flex-col center">
                   <View className="size-xs flex center text-2xl bold">{jifenData?.jifen ?? "--"}</View>
                   <View>当前积分</View>
@@ -121,17 +119,17 @@ export default function Profile() {
                   </View>
                   <View>积分中心</View>
                 </View>
-              </View>
+              </CardContent>
             </Card>
 
             <Card className="text-xl">
-              <View className="px">
+              <CardContent className="px">
                 <Options items={options} />
-              </View>
+              </CardContent>
             </Card>
 
             <Card className="text-xl">
-              <View className="px">
+              <CardContent className="px">
                 <Options>
                   <Option
                     title="清除缓存"
@@ -146,7 +144,7 @@ export default function Profile() {
                     onClick={() => handleUnBind()}
                   />
                 </Options>
-              </View>
+              </CardContent>
             </Card>
 
             <View className="flex flex-col center gap">

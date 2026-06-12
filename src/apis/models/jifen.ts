@@ -5,7 +5,7 @@
  * @property {string} description - 记录描述
  * @property {string} create_at - 记录创建时间
  */
-interface JifenRecordItem {
+export interface JifenRecordItem {
   id: number
   jifen: number
   description: string
@@ -22,7 +22,7 @@ interface JifenRecordItem {
  * @property {string} description - 奖品描述
  * @property {boolean} in_redeem - 是否处于兑换状态 (已消费但未兑换为 true, 兑换后恢复默认 false)
  */
-interface JifenGoodsItem {
+export interface JifenGoodsItem {
   id: number
   name: string
   cover: string
@@ -58,12 +58,14 @@ export interface JifenGetRecordRequest {
 
 /**
  * @description 获取积分记录响应
- * @property {number} total - 记录总数
+ * @property {number} pages - 记录总页数
+ * @property {number} page - 当前页码
  * @property {JifenRecordItem[]} records - 记录列表
  * @see https://app.apifox.com/link/project/8311217/apis/api-470236473
  */
 export interface JifenGetRecordResponse {
-  total: number
+  pages: number
+  page: number
   records: JifenRecordItem[]
 }
 

@@ -7,7 +7,6 @@ export default defineAppConfig({
     // 非 tab 页
     "pages/disclaimers/index",
     "pages/feedback/index",
-    "pages/faq/index",
     "pages/jifen/index",
     "pages/message/index",
   ],
