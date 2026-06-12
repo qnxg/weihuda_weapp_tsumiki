@@ -113,7 +113,7 @@ export function Courses({
             return null
 
           const start = SCHEDULES.find(s => s.index === card.start)?.start ?? ""
-          const end = SCHEDULES.find(s => s.index === card.start + card.span)?.end ?? ""
+          const end = SCHEDULES.find(s => s.index === card.start + card.span - 1)?.end ?? ""
 
           const getStatus = () => {
             if (tab === "tomorrow")
