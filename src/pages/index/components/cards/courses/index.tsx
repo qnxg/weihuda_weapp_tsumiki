@@ -1,6 +1,6 @@
 import type { CourseItem } from "@/apis/models/course"
 import { View } from "@tarojs/components"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Card, CardHeader } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { Skeleton } from "@/components/skeleton"
@@ -33,6 +33,102 @@ export interface CourseCard {
   start: number
   span: number
   items: CourseItem[]
+}
+
+/**
+ * @description 课程组件内容
+ */
+function CourseContent({
+  cards,
+  tab,
+}: Readonly<{
+  cards: CourseCard[]
+  tab: TabValue
+}>) {
+  if (!cards)
+    return <Skeleton className="w-full h" />
+
+  if (cards.map(card => card.items).flat().length === 0) {
+    return (
+      <IndexCardEmpty
+        icon={EmptyIcon}
+        text={`${tab === "today" ? "今日" : "明日"}无课, 好好放松一下吧`}
+      />
+    )
+  }
+
+  return (
+    <View className="w-full flex flex-col gap">
+      {cards.map((card, index) => {
+        if (card.items.length === 0)
+          return null
+
+        const start = SCHEDULES.find(s => s.index === card.start)?.start ?? ""
+        const end = SCHEDULES.find(s => s.index === card.start + card.span - 1)?.end ?? ""
+
+        const getStatus = () => {
+          if (tab === "tomorrow")
+            return "normal"
+
+          if (dayjs().diff(dayjs(start, "HH:mm"), "minute") <= 20)
+            return "upcoming"
+
+          if (dayjs().isBetween(start, end))
+            return "doing"
+
+          if (dayjs().isAfter(dayjs(end, "HH:mm"), "minute"))
+            return "ended"
+
+          return "normal"
+        }
+
+        const status = getStatus()
+
+        // 处理潜在的课程重叠情况
+        return card.items.map((course, i) => (
+          <View
+            key={`${card.start}-${index}-${i}`}
+            className={cn("relative flex py-sm px-md gap rounded-sm overflow-hidden", `card--${status}`)}
+            style={{
+              // 二倍 px
+              paddingLeft: "32rpx",
+            }}
+          >
+            {/* 前置 header 装饰 */}
+            <View
+              className={cn("absolute", `header--${status}`)}
+              style={{
+                // 同 px-md
+                width: "16rpx",
+                height: "100%",
+                left: "0",
+                top: "0",
+              }}
+            />
+
+            <View className="size-xs flex flex-col gap-sm center">
+              <View className="text-lg">{start}</View>
+              <View>{end}</View>
+            </View>
+            <View className="h-xs flex-1 flex flex-col gap-sm justify-center">
+              <View className="text-lg">{course.course_name}</View>
+              <View>
+                第
+                {card.start}
+                -
+                {card.start + card.span - 1}
+                节
+                {" | "}
+                {course.place}
+                {" | "}
+                {course.teacher}
+              </View>
+            </View>
+          </View>
+        ))
+      })}
+    </View>
+  )
 }
 
 /**
@@ -93,93 +189,6 @@ export function Courses({
     }
   }, [isLoading, onCardFinish, cardKey])
 
-  const Content = useCallback(() => {
-    if (!cards)
-      return <Skeleton className="w-full h" />
-
-    if (cards.map(card => card.items).flat().length === 0) {
-      return (
-        <IndexCardEmpty
-          icon={EmptyIcon}
-          text={`${tab === "today" ? "今日" : "明日"}无课, 好好放松一下吧`}
-        />
-      )
-    }
-
-    return (
-      <View className="w-full flex flex-col gap">
-        {cards.map((card, index) => {
-          if (card.items.length === 0)
-            return null
-
-          const start = SCHEDULES.find(s => s.index === card.start)?.start ?? ""
-          const end = SCHEDULES.find(s => s.index === card.start + card.span - 1)?.end ?? ""
-
-          const getStatus = () => {
-            if (tab === "tomorrow")
-              return "normal"
-
-            if (dayjs().diff(dayjs(start, "HH:mm"), "minute") <= 20)
-              return "upcoming"
-
-            if (dayjs().isBetween(start, end))
-              return "doing"
-
-            if (dayjs().isAfter(dayjs(end, "HH:mm"), "minute"))
-              return "ended"
-
-            return "normal"
-          }
-
-          const status = getStatus()
-
-          // 处理潜在的课程重叠情况
-          return card.items.map((course, i) => (
-            <View
-              key={`${card.start}-${index}-${i}`}
-              className={cn("relative flex py-sm px-md gap rounded-sm overflow-hidden", `card--${status}`)}
-              style={{
-                // 二倍 px
-                paddingLeft: "32rpx",
-              }}
-            >
-              {/* 前置 header 装饰 */}
-              <View
-                className={cn("absolute", `header--${status}`)}
-                style={{
-                  // 同 px-md
-                  width: "16rpx",
-                  height: "100%",
-                  left: "0",
-                  top: "0",
-                }}
-              />
-
-              <View className="size-xs flex flex-col gap-sm center">
-                <View className="text-lg">{start}</View>
-                <View>{end}</View>
-              </View>
-              <View className="h-xs flex-1 flex flex-col gap-sm justify-center">
-                <View className="text-lg">{course.course_name}</View>
-                <View>
-                  第
-                  {card.start}
-                  -
-                  {card.start + card.span - 1}
-                  节
-                  {" | "}
-                  {course.place}
-                  {" | "}
-                  {course.teacher}
-                </View>
-              </View>
-            </View>
-          ))
-        })}
-      </View>
-    )
-  }, [cards, tab])
-
   return (
     <Card>
       <CardHeader
@@ -230,7 +239,7 @@ export function Courses({
                 />
               )}
           <TabContent className="w-full py flex center">
-            <Content />
+            <CourseContent cards={cards} tab={tab} />
           </TabContent>
         </Tabs>
       </IndexCardContent>

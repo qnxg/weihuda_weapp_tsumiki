@@ -16,5 +16,4 @@ export default antfu({
   "react-hooks-extra/no-direct-set-state-in-use-effect",
   "react-refresh/only-export-components",
   "react/no-array-index-key",
-  "react/no-nested-component-definitions",
 )

@@ -1,5 +1,6 @@
+import type { GradeItem } from "@/apis/models/grade"
 import { View } from "@tarojs/components"
-import { useCallback, useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useGrade } from "@/hooks/grade"
@@ -10,6 +11,49 @@ import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import GradeIcon from "@/static/index/grade.svg"
 import EmptyIcon from "@/static/index/grade/empty.svg"
 
+/**
+ * @description 成绩组件内容
+ */
+function GradeContent({
+  grade,
+}: Readonly<{
+  grade: GradeItem[]
+}>) {
+  if (!grade)
+    return <Skeleton className="w-full" />
+
+  if (grade.length === 0) {
+    return <IndexCardEmpty icon={EmptyIcon} text="暂无成绩数据, 好好学习吧" />
+  }
+
+  return (
+    <View className="w-full flex flex-col gap">
+      {grade.map((item, index) => (
+        <View
+          key={`${item.course_name}-${index}`}
+          className="flex items-center gap"
+        >
+          <View className="w text-md ellipsis">{item.course_name}</View>
+          <View
+            className="flex-1 bg-page rounded-full overflow-hidden"
+            style={{
+              height: "16rpx",
+            }}
+          >
+            <View
+              className="bg-primary"
+              style={{
+                width: `${item.score}%`,
+                height: "100%",
+              }}
+            />
+          </View>
+          <View className="flex center text-md text-toned w-xs">{item.score}</View>
+        </View>
+      ))}
+    </View>
+  )
+}
 /**
  * @description 成绩查询
  */
@@ -37,43 +81,6 @@ export function Grade({
     }
   }, [isLoading, onCardFinish, cardKey])
 
-  const Content = useCallback(() => {
-    if (!grade)
-      return <Skeleton className="w-full" />
-
-    if (grade.length === 0) {
-      return <IndexCardEmpty icon={EmptyIcon} text="暂无成绩数据, 好好学习吧" />
-    }
-
-    return (
-      <View className="w-full flex flex-col gap">
-        {grade.map((item, index) => (
-          <View
-            key={`${item.course_name}-${index}`}
-            className="flex items-center gap"
-          >
-            <View className="w text-md ellipsis">{item.course_name}</View>
-            <View
-              className="flex-1 bg-page rounded-full overflow-hidden"
-              style={{
-                height: "16rpx",
-              }}
-            >
-              <View
-                className="bg-primary"
-                style={{
-                  width: `${item.score}%`,
-                  height: "100%",
-                }}
-              />
-            </View>
-            <View className="flex center text-md text-toned w-xs">{item.score}</View>
-          </View>
-        ))}
-      </View>
-    )
-  }, [grade])
-
   return (
     <Card>
       <CardHeader
@@ -88,7 +95,7 @@ export function Grade({
         isFailed={!grade}
         onRefresh={refetch}
       >
-        <Content />
+        <GradeContent grade={grade ?? []} />
       </IndexCardContent>
     </Card>
   )
