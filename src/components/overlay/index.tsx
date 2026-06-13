@@ -139,7 +139,7 @@ function Popup({
       onClick={() => handleClose()}
     >
       <View
-        className="bg flex flex-col p"
+        className="bg flex flex-col p overflow-hidden"
         style={{
           maxHeight: "80vh",
           transform: isOpen ? "translateY(0)" : "translateY(100%)",
@@ -161,7 +161,7 @@ function Popup({
         </View>
 
         <ScrollView
-          className="h-full"
+          className="flex-1 overflow-hidden"
           scrollY
           enhanced
           showScrollbar={false}
