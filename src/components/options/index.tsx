@@ -105,9 +105,9 @@ function Options({
       className="flex flex-col"
       style={{
         backgroundColor: isDark ? "#303030" : "#f7f7f7",
-        gap: type !== "plain" ? "6rpx" : "",
-        paddingTop: type === "wrapped" ? "6rpx" : "",
-        paddingBottom: type === "underline" || type === "wrapped" ? "6rpx" : "",
+        gap: type !== "plain" ? "2rpx" : "",
+        paddingTop: type === "wrapped" ? "2rpx" : "",
+        paddingBottom: type === "underline" || type === "wrapped" ? "2rpx" : "",
       }}
     >
       {items && items.length > 0 && items.map((option, index) => (

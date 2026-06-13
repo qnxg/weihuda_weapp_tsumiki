@@ -25,6 +25,7 @@
 - 遮罩组件 `/overlay`: 全屏遮罩层组件
   - `Overlay`: 遮罩层组件, 全屏 fixed 定位
   - `OverlayMask`: 带遮罩内容展示组件, 支持 loading 状态和 top/center/bottom 三种定位模式
+  - `Popup`: 底部弹出式弹窗组件, 集成 Overlay + OverlayMask + ScrollView, 支持滑入动画
 
 - 页面容器组件 `/page`: 页面基本布局组件
   - `Page`: 页面容器组件, 提供基本布局样式, 支持 loading 状态

@@ -5,6 +5,7 @@ import { showToast } from "@tarojs/taro"
 import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
+import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { PullRefresh } from "@/components/pull-refresh"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
@@ -175,10 +176,12 @@ export default function Grade() {
 
       {/* 覆盖层 */}
       {jx0404id && (
-        <Detail
-          jx0404id={jx0404id}
-          onClose={() => setJX0404id(null)}
-        />
+        <Overlay>
+          <Detail
+            jx0404id={jx0404id}
+            onClose={() => setJX0404id(null)}
+          />
+        </Overlay>
       )}
     </Page>
   )

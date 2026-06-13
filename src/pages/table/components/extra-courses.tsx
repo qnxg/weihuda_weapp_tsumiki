@@ -1,12 +1,10 @@
 import type { Semester } from "@/types/semester"
-import { ScrollView, View } from "@tarojs/components"
+import { View } from "@tarojs/components"
 import { showToast } from "@tarojs/taro"
-import { useEffect, useState } from "react"
-import { Icon } from "@/components/icon"
+import { useEffect, useMemo } from "react"
 import { Options } from "@/components/options"
-import { OverlayMask } from "@/components/overlay"
+import { Popup } from "@/components/overlay"
 import { useExtraCourse } from "@/hooks/course"
-import CloseIcon from "@/static/table/close.svg"
 
 export function ExtraCourses({
   semester,
@@ -17,25 +15,7 @@ export function ExtraCourses({
 }>) {
   const { data, isLoading } = useExtraCourse(semester)
 
-  const [isOpen, setIsOpen] = useState(false)
-
-  const handleClose = () => {
-    setIsOpen(false)
-
-    setTimeout(() => {
-      onClose()
-    }, 200)
-  }
-
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setIsOpen(true)
-      }, 0)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isLoading])
+  const title = useMemo(() => `无课表课程${data && data.length > 0 ? `(${data.length})` : ""}`, [data])
 
   useEffect(() => {
     if (!semester) {
@@ -48,71 +28,37 @@ export function ExtraCourses({
   }, [onClose, semester])
 
   return (
-    <OverlayMask
-      position="bottom"
+    <Popup
       isLoading={isLoading}
-      onClick={() => handleClose()}
+      onClose={onClose}
+      title={title}
     >
-      <View
-        className="bg flex flex-col p gap"
-        style={{
-          maxHeight: "80vh",
-          transform: isOpen ? "translateY(0)" : "translateY(100%)",
-          transition: "transform 0.2s ease",
-        }}
-        onClick={e => e.stopPropagation()}
-      >
-        <View className="flex items-center justify-between p text-2xl text-bold">
-          <View>
-            无课表课程
-            {" "}
-            {data && data.length > 0 && `(${data.length})`}
-          </View>
-          <View onClick={() => handleClose()}>
-            <Icon
-              style={{
-                width: "32rpx",
-                height: "32rpx",
-              }}
-              src={CloseIcon}
-            />
-          </View>
-        </View>
+      {data && data.length > 0 && (
+        <View className="flex flex-col gap p">
+          {data.map((course, index) => (
+            <View
+              key={`${course.course_name}_${index}`}
+              className="py flex flex-col gap-sm rounded-sm"
+            >
+              <View className="text-xl bold">{course.course_name}</View>
 
-        <ScrollView
-          className="h-full"
-          scrollY
-          enhanced
-          showScrollbar={false}
-        >
-          {data && data.length > 0 && (
-            <View className="flex flex-col gap p">
-              {data.map((course, index) => (
-                <View
-                  key={`${course.course_name}_${index}`}
-                  className="py flex flex-col gap-sm rounded-sm"
-                >
-                  <View className="text-xl">{course.course_name}</View>
-
-                  <Options
-                    type="underline"
-                    items={[
-                      { title: "课程代码", content: course.course_id },
-                      { title: "教师", content: course.teacher },
-                      { title: "上课班级", content: course.class_name },
-                      { title: "校区", content: course.area },
-                      { title: "课程性质", content: course.type },
-                      { title: "学分", content: course.credit },
-                      { title: "人数", content: course.people },
-                      { title: "备注", content: course.extra },
-                    ]}
-                  />
-                </View>
-              ))}
+              <Options
+                type="underline"
+                items={[
+                  { title: "课程代码", content: course.course_id },
+                  { title: "教师", content: course.teacher },
+                  { title: "上课班级", content: course.class_name },
+                  { title: "校区", content: course.area },
+                  { title: "课程性质", content: course.type },
+                  { title: "学分", content: course.credit },
+                  { title: "人数", content: course.people },
+                  { title: "备注", content: course.extra },
+                ]}
+              />
             </View>
-          )}
-        </ScrollView>
-      </View>
-    </OverlayMask>
+          ))}
+        </View>
+      )}
+    </Popup>
   )
 }

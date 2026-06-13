@@ -1,12 +1,10 @@
 import type { Semester } from "@/types/semester"
 import type { TableSetting } from "@/types/setting"
 import { Picker, Switch, View } from "@tarojs/components"
-import { useEffect, useState } from "react"
-import { Icon } from "@/components/icon"
-import { OverlayMask } from "@/components/overlay"
+import { useState } from "react"
+import { Popup } from "@/components/overlay"
 import { LABEL } from "@/config/logger-label"
 import { useUser } from "@/hooks/user"
-import CloseIcon from "@/static/table/close.svg"
 import { logger } from "@/utils/logger"
 import { getPrevSemester, getSemesterFromName, getSemesterName } from "@/utils/semester"
 
@@ -67,17 +65,6 @@ export function CourseOptions({
   // 用于学期 / 星期的 Picker 组件
   const [picker, setPicker] = useState([0, week - 1])
 
-  // 控制页面进入 / 移出动画
-  const [isOpen, setIsOpen] = useState(false)
-
-  const handleClose = () => {
-    setIsOpen(false)
-
-    setTimeout(() => {
-      onClose()
-    }, 200)
-  }
-
   // 应用 picker 变化
   const handlePickerChange = () => {
     if (!semester)
@@ -97,88 +84,58 @@ export function CourseOptions({
     onTableSettingChange(newTableSetting)
   }
 
-  // 初始挂载, 使用 setTimeout 宏任务防止在 transition 加载完成前 transform 变化
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(true)
-    }, 0)
-
-    return () => clearTimeout(timer)
-  }, [])
-
   return (
-    <OverlayMask
-      position="bottom"
-      onClick={() => handleClose()}
+    <Popup
+      isLoading={false}
+      onClose={onClose}
+      title="课表选项"
     >
-      <View
-        className="bg flex flex-col p gap"
-        style={{
-          transform: isOpen ? "translateY(0)" : "translateY(100%)",
-          transition: "transform 0.2s ease",
-        }}
-        onClick={e => e.stopPropagation()}
-      >
-        <View className="flex items-center justify-between p text-2xl text-bold">
-          <View>课表选项</View>
-          <View onClick={() => handleClose()}>
-            <Icon
-              style={{
-                width: "32rpx",
-                height: "32rpx",
+      <View className="flex flex-col p gap">
+        <View className="flex items-center justify-between">
+          <View>当前信息: </View>
+          <View>
+            <Picker
+              disabled={!enable}
+              range={pickerRange}
+              value={picker}
+              mode="multiSelector"
+              onColumnChange={(e) => {
+                const newPicker = [...picker]
+                newPicker[e.detail.column] = e.detail.value
+                setPicker(newPicker)
               }}
-              src={CloseIcon}
+              onChange={() => handlePickerChange()}
+            >
+              <View>
+                {pickerSemesterRange[picker[0]]}
+                {" "}
+                第
+                {" "}
+                {pickerWeekRange[picker[1]]}
+                {" "}
+                周
+              </View>
+            </Picker>
+          </View>
+        </View>
+
+        <View className="flex items-center justify-between">
+          <View>显示非本周课程: </View>
+          <View>
+            <Switch
+            // 同 primary
+              color="#328ccb"
+              controlled="true"
+              style={{
+                transform: "scale(0.8)",
+              }}
+              checked={tableSetting.setting!.displayNotCurrentWeekCourses}
+              disabled={!enable}
+              onChange={() => handleSettingChange()}
             />
           </View>
         </View>
-
-        <View className="flex flex-col p gap">
-          <View className="flex items-center justify-between">
-            <View>当前信息: </View>
-            <View>
-              <Picker
-                disabled={!enable}
-                range={pickerRange}
-                value={picker}
-                mode="multiSelector"
-                onColumnChange={(e) => {
-                  const newPicker = [...picker]
-                  newPicker[e.detail.column] = e.detail.value
-                  setPicker(newPicker)
-                }}
-                onChange={() => handlePickerChange()}
-              >
-                <View>
-                  {pickerSemesterRange[picker[0]]}
-                  {" "}
-                  第
-                  {" "}
-                  {pickerWeekRange[picker[1]]}
-                  {" "}
-                  周
-                </View>
-              </Picker>
-            </View>
-          </View>
-
-          <View className="flex items-center justify-between">
-            <View>显示非本周课程: </View>
-            <View>
-              <Switch
-              // 同 primary
-                color="#328ccb"
-                controlled="true"
-                style={{
-                  transform: "scale(0.8)",
-                }}
-                checked={tableSetting.setting!.displayNotCurrentWeekCourses}
-                disabled={!enable}
-                onChange={() => handleSettingChange()}
-              />
-            </View>
-          </View>
-        </View>
       </View>
-    </OverlayMask>
+    </Popup>
   )
 }
