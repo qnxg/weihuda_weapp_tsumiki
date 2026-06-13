@@ -75,6 +75,17 @@ const SEMESTER_NAME_MAP: Record<XQ, string> = {
  * @description 获取学期名称
  * @example
  * ```ts
+ * getXQName("autumn") // "秋季学期"
+ * ```
+ */
+export function getXQName(xq: XQ): string {
+  return SEMESTER_NAME_MAP[xq]
+}
+
+/**
+ * @description 获取学期完整名称
+ * @example
+ * ```ts
  * getSemesterName({ xn: 2025, xq: "autumn" }) // "2025-2026秋季学期"
  * ```
  */
@@ -87,7 +98,7 @@ export function getSemesterName(semester: Semester | SemesterInfo): string {
 const SEMESTER_NAME_REGEX = /^(\d{4})-(\d{4})(秋季学期|寒假|春季学期|暑假\(含夏季学期\))$/
 
 /**
- * @description 根据学期名称获取学期标识符
+ * @description 根据学期完整名称获取学期标识符
  * @example
  * ```ts
  * getSemesterFromName("2025-2026秋季学期") // { xn: 2025, xq: "autumn" }

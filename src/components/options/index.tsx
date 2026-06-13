@@ -102,7 +102,7 @@ function Options({
 
   return (
     <View
-      className="flex flex-col bg-page"
+      className="flex flex-col"
       style={{
         backgroundColor: isDark ? "#303030" : "#f7f7f7",
         gap: type !== "plain" ? "6rpx" : "",

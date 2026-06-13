@@ -5,8 +5,8 @@ import { createContext, useCallback, useContext, useMemo, useState } from "react
 import { cn } from "@/utils/cn"
 
 interface ContentValue {
-  activeTab: string
-  onTabChange: (value: string) => void
+  activeTab: string | number
+  onTabChange: (value: string | number) => void
 }
 
 const TabsContext = createContext<ContentValue | null>(null)
@@ -45,21 +45,21 @@ const TabsContext = createContext<ContentValue | null>(null)
  */
 function Tabs({
   value: propValue,
-  defaultValue = "",
+  defaultValue,
   onChange,
   children,
   ...props
 }: Readonly<{
-  value?: string
-  defaultValue?: string
-  onChange?: (value: string) => void
+  value?: string | number
+  defaultValue?: string | number
+  onChange?: (value: string | number) => void
 } & ComponentProps<typeof View>>) {
   const isControlled = propValue !== undefined
-  const [activeTab, setActiveTab] = useState(
-    isControlled ? String(propValue) : defaultValue,
+  const [activeTab, setActiveTab] = useState<string | number>(
+    isControlled ? propValue : (defaultValue ?? ""),
   )
 
-  const handleTabChange = useCallback((value: string) => {
+  const handleTabChange = useCallback((value: string | number) => {
     if (!isControlled) {
       setActiveTab(value)
     }
@@ -67,7 +67,7 @@ function Tabs({
   }, [isControlled, onChange])
 
   const value = useMemo(() => ({
-    activeTab: isControlled ? String(propValue) : activeTab,
+    activeTab: isControlled ? propValue : activeTab,
     onTabChange: handleTabChange,
   }), [isControlled, propValue, activeTab, handleTabChange])
 
@@ -125,7 +125,7 @@ function TabTrigger({
   children,
   ...props
 }: Readonly<{
-  value: string
+  value: string | number
   asChild?: boolean
 } & ComponentProps<typeof View>>) {
   const context = useContext(TabsContext)
@@ -205,7 +205,7 @@ function TabItem({
   children,
   ...props
 }: Readonly<{
-  value: string
+  value: string | number
 } & ComponentProps<typeof View>>) {
   const context = useContext(TabsContext)
   if (!context)

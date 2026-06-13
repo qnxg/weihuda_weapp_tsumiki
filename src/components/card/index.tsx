@@ -18,12 +18,13 @@ import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
 function Card({
   className,
   children,
-}: Readonly<{
-  className?: string
-  children: ReactNode
-}>) {
+  ...props
+}: Readonly<ComponentProps<typeof View>>) {
   return (
-    <View className={cn("p bg rounded-sm flex flex-col gap", className)}>
+    <View
+      className={cn("p bg rounded-sm flex flex-col gap", className)}
+      {...props}
+    >
       {children}
     </View>
   )
