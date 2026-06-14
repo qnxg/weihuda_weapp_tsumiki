@@ -15,11 +15,11 @@ export interface GymGradeDetail {
 /**
  * @description 左右眼视力详情
  * @property {string} value - 值
- * @property {string} desc - 描述
+ * @property {string} description - 描述
  */
 export interface EyeGradeDetail {
   value: string
-  desc: string
+  description: string
 }
 
 /**
@@ -38,7 +38,7 @@ export interface EyeGrade {
  * @description 体测成绩
  * @property {string} grade - 总成绩的文字描述
  * @property {number} score - 总成绩
- * @property {string} report_desc - 体测成绩描述
+ * @property {string} report_description - 体测成绩描述
  * @property {string} report_status - 体测成绩状态
  * @property {string} report_type - 体测成绩类型
  * @property {EyeGrade} eye - 视力成绩
@@ -54,7 +54,7 @@ export interface EyeGrade {
 export interface GymGrade {
   grade: string
   score: number
-  report_desc: string
+  report_description: string
   report_status: string
   report_type: string
   eye: EyeGrade
@@ -85,7 +85,7 @@ export interface GymGradeRequest {
 /**
  * @description 体测预约项
  * @property {string} name - 预约名称
- * @property {string} desc - 预约描述
+ * @property {string} description - 预约描述
  * @property {string} show_date - 体测系统显示的预约时间
  * @property {string} time - 时间段
  * @property {string} test_type - 预约项目
@@ -94,7 +94,7 @@ export interface GymGradeRequest {
  */
 export interface GymAppointmentItem {
   name: string
-  desc: string
+  description: string
   show_date: string
   time: string
   test_type: string

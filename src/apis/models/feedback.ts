@@ -19,7 +19,7 @@ export interface FeedbackReplyItem {
  * @description 反馈项
  * @property {number} id - 反馈 ID
  * @property {string} contact - 联系方式（电子邮箱）
- * @property {string} desc - 内容
+ * @property {string} description - 内容
  * @property {string} img - 附加图片 ID
  * @property {string} created_at - 创建时间
  * @property {string} updated_at - 最后更新时间
@@ -29,7 +29,7 @@ export interface FeedbackReplyItem {
 export interface FeedbackItem {
   id: number
   contact: string | null
-  desc: string
+  description: string
   img: string | null
   created_at: string
   updated_at: string
@@ -62,13 +62,13 @@ export interface FeedbackGetResponse {
 /**
  * @description 提交问题反馈请求数据
  * @property {string} contact - 联系方式（电子邮箱）
- * @property {string} desc - 内容
+ * @property {string} description - 内容
  * @property {string} img - 附加图片 ID
  * @see https://app.apifox.com/link/project/8311217/apis/api-472582595
  */
 export interface FeedbackPostRequest {
   contact: string
-  desc: string
+  description: string
   img: string | null
 }
 
@@ -80,12 +80,12 @@ export type FeedbackPostResponse = never
 /**
  * @description 未登录提交问题反馈请求数据
  * @property {string} contact - 联系方式（电子邮箱）
- * @property {string} desc - 内容
+ * @property {string} description - 内容
  * @property {string} stu_id - 学号
  * @see https://app.apifox.com/link/project/8311217/apis/api-472582598
  */
 export interface FeedbackNoAuthRequest {
   contact: string
-  desc: string
+  description: string
   stu_id: string
 }

@@ -77,9 +77,9 @@ export type JifenGetGoodsResponse = JifenGoodsItem[]
 
 /**
  * @description 获取积分说明响应
- * @property {string} desc - 积分说明
+ * @property {string} description - 积分说明
  * @see https://app.apifox.com/link/project/8311217/apis/api-472582591
  */
 export interface JifenGetDescResponse {
-  desc: string
+  description: string
 }
