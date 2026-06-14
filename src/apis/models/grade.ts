@@ -9,7 +9,7 @@ import type { Semester } from "@/types/semester"
  * @property {number} score - 成绩
  * @property {string} course_type1 - 课程类型 1, 必修 / 选修等
  * @property {string} course_type2 - 课程类型 2, 专业基础 / 专业核心 等
- * @property {string[]} tags - 成绩标识, 正常为 null, 缓考 / 重修 等
+ * @property {string} grade_tag - 成绩标识, 正常为 null, 缓考 / 重修 等
  * @property {string} grade_type - 成绩类型, 主修 / 辅修 等
  * @property {string} jx0404id - 用于获取成绩详情的唯一 id
  */

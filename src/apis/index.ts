@@ -24,11 +24,29 @@ import type {
 import type { DormResponse, ElectricityResponse } from "@/apis/models/electricity"
 import type { EmailResponse } from "@/apis/models/email"
 import type {
+  ExamPostRequest,
+  ExamPutRequest,
+  ExamResponse,
+} from "@/apis/models/exam"
+import type {
+  FeedbackGetRequest,
+  FeedbackGetResponse,
+  FeedbackNoAuthRequest,
+  FeedbackPostRequest,
+  FeedbackPostResponse,
+} from "@/apis/models/feedback"
+import type {
   GradeDetailResponse,
   GradeRequest,
   GradeResponse,
 } from "@/apis/models/grade"
 import type {
+  GymAppointmentResponse,
+  GymGradeRequest,
+  GymGradeResponse,
+} from "@/apis/models/gym"
+import type {
+  JifenGetDescResponse,
   JifenGetGoodsResponse,
   JifenGetRecordRequest,
   JifenGetRecordResponse,
@@ -40,6 +58,11 @@ import type {
   NetflowDetailResponse,
   NetflowOrderResponse,
 } from "@/apis/models/netflow"
+import type {
+  RankCaResponse,
+  RankRequest,
+  RankResponse,
+} from "@/apis/models/rank"
 import type { SemesterRequest, SemesterResponse } from "@/apis/models/semester"
 import { request } from "@/libs/auth-request"
 
@@ -80,6 +103,14 @@ export const api = {
     getRecord: (data: JifenGetRecordRequest) => request.get<JifenGetRecordResponse>("/jifen/record", data),
     getGoods: () => request.get<JifenGetGoodsResponse>("/jifen/goods"),
     postGoods: (id: number) => request.post(`/jifen/goods/${id}`),
+    getDesc: () => request.get<JifenGetDescResponse>("/jifen/desc"),
+  },
+  rank: {
+    ca: {
+      get: () => request.get<RankCaResponse>("/rank/ca"),
+      put: () => request.put("/rank/ca"),
+    },
+    get: (data: RankRequest) => request.get<RankResponse>("/rank", data),
   },
   email: {
     get: () => request.get<EmailResponse>("/email"),
@@ -104,5 +135,20 @@ export const api = {
     get: () => request.get<MonthNetflowResponse>("/netflow"),
     getOrder: () => request.get<NetflowOrderResponse>("/netflow/order"),
     getDetail: (type: "month" | "day") => request.get<NetflowDetailResponse>("/netflow/detail", type),
+  },
+  exam: {
+    get: () => request.get<ExamResponse>("/exam"),
+    post: (data: ExamPostRequest) => request.post("/exam", data),
+    put: (customize_id: number, data: ExamPutRequest) => request.put(`/exam/${customize_id}`, data),
+    delete: (customize_id: number) => request.delete(`/exam/${customize_id}`),
+  },
+  feedback: {
+    get: (data?: FeedbackGetRequest) => request.get<FeedbackGetResponse>("/feedback", data),
+    post: (data: FeedbackPostRequest) => request.post<FeedbackPostResponse>("/feedback", data),
+    postNoAuth: (data: FeedbackNoAuthRequest) => request.post("/feedback/no_auth", data),
+  },
+  gym: {
+    grade: (data?: GymGradeRequest) => request.get<GymGradeResponse>("/gym/grade", data),
+    appointment: () => request.get<GymAppointmentResponse>("/gym/appointment"),
   },
 }
