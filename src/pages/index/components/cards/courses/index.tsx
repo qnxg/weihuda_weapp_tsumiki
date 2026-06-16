@@ -70,14 +70,15 @@ function CourseContent({
           if (tab === "tomorrow")
             return "normal"
 
-          if (dayjs().diff(dayjs(start, "HH:mm"), "minute") <= 20)
-            return "upcoming"
-
           if (dayjs().isBetween(start, end))
             return "doing"
 
           if (dayjs().isAfter(dayjs(end, "HH:mm"), "minute"))
             return "ended"
+
+          // 对于已完成课程, 以下 diff 值为负值, 因此在已完成课程检测之后检测即将开始课程
+          if (dayjs(start, "HH:mm").diff(dayjs(), "minute") <= 20)
+            return "upcoming"
 
           return "normal"
         }
