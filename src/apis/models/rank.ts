@@ -1,3 +1,5 @@
+import type { XN, XQ } from "@/types/semester"
+
 /**
  * @description 排名详情
  * @property {string} arithmetic - 算数平均成绩
@@ -46,8 +48,26 @@ export interface RankCaResponse {
 export type RankResponse = Rank
 
 /**
+ * @description 排名方案类别枚举
+ *   - 主修 / 辅修
+ */
+export type RankRequestRange = "major" | "minor"
+
+/**
+ * @description 排名数据来源枚举
+ *   - 成绩总库 / 执行方案
+ */
+export type RankRequesetDataSource = "total" | "execution"
+
+/**
+ * @description 排名显示方式枚举
+ *   - 最大成绩 / 初修成绩
+ */
+export type RankRequestDisplay = "max" | "initial"
+
+/**
  * @description 从教务系统获取排名请求数据
- * @property {number} [xn] - 学年，为学年的起始年份，空则返回全部学年
+ * @property {XN} [xn] - 学年，为学年的起始年份，空则返回全部学年
  * @property {string} [xq] - 学期枚举值，空则返回当前学年的全部学期，不支持 winter
  * @property {string} range - 课程范围
  * @property {string} data_source - 数据来源
@@ -55,9 +75,9 @@ export type RankResponse = Rank
  * @see https://app.apifox.com/link/project/8311217/apis/api-464639883
  */
 export interface RankRequest {
-  xn?: number
-  xq?: "autumn" | "spring" | "summer"
-  range: string
-  data_source: string
-  display: string
+  xn?: XN
+  xq?: Extract<XQ, "autumn" | "spring" | "summer">
+  range: RankRequestRange
+  data_source: RankRequesetDataSource
+  display: RankRequestDisplay
 }

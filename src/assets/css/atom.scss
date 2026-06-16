@@ -42,6 +42,26 @@
   background-color: $bgColor;
 }
 
+// 边框颜色
+.border-hightlight {
+  border: 1px solid $textColorHighlighted;
+}
+.border-base {
+  border: 1px solid $textColor;
+}
+.border-toned {
+  border: 1px solid $textColorToned;
+}
+.border-muted {
+  border: 1px solid $textColorMuted;
+}
+.border-reverse {
+  border: 1px solid $textColorReverse;
+}
+.border-primary {
+  border: 1px solid $primary;
+}
+
 // endregion
 
 // region 文本

@@ -72,17 +72,6 @@ const SEMESTER_NAME_MAP: Record<XQ, string> = {
 }
 
 /**
- * @description 获取学期名称
- * @example
- * ```ts
- * getXQName("autumn") // "秋季学期"
- * ```
- */
-export function getXQName(xq: XQ): string {
-  return SEMESTER_NAME_MAP[xq]
-}
-
-/**
  * @description 获取学期完整名称
  * @example
  * ```ts
