@@ -69,14 +69,14 @@ export interface GymGrade {
 
 /**
  * @description 获取体测成绩响应数据
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582600
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472963809
  */
 export type GymGradeResponse = GymGrade
 
 /**
  * @description 获取体测成绩请求数据
  * @property {number} [xn] - 学年
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582600
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472963809
  */
 export interface GymGradeRequest {
   xn?: number
@@ -90,7 +90,7 @@ export interface GymGradeRequest {
  * @property {string} time - 时间段
  * @property {string} test_type - 预约项目
  * @property {string} status - 预约状态
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582601
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472964702
  */
 export interface GymAppointmentItem {
   name: string
@@ -103,6 +103,6 @@ export interface GymAppointmentItem {
 
 /**
  * @description 获取体测预约信息响应数据
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582601
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472964702
  */
 export type GymAppointmentResponse = GymAppointmentItem[]

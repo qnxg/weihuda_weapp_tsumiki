@@ -24,7 +24,7 @@ export interface ExamScheduleItem {
 
 /**
  * @description 获取考试安排列表响应数据
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582589
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472399229
  */
 export type ExamResponse = ExamScheduleItem[]
 
@@ -37,7 +37,7 @@ export type ExamResponse = ExamScheduleItem[]
  * @property {string} date - 考试日期
  * @property {string} start_time - 开始时间
  * @property {string} end_time - 结束时间
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582590
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472400427
  */
 export interface ExamPostRequest {
   course_name: string
@@ -51,5 +51,6 @@ export interface ExamPostRequest {
 
 /**
  * @description 修改自定义考试安排请求数据
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472400932
  */
 export type ExamPutRequest = ExamPostRequest

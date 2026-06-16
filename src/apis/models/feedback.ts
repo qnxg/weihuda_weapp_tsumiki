@@ -41,7 +41,7 @@ export interface FeedbackItem {
  * @description 获取反馈列表请求数据
  * @property {number} [page] - 页码，默认为 1
  * @property {number} [size] - 每页返回数量，默认为 20
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582597
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472411023
  */
 export interface FeedbackGetRequest {
   page?: number
@@ -52,7 +52,7 @@ export interface FeedbackGetRequest {
  * @description 获取反馈列表响应数据
  * @property {number} total - 总数量
  * @property {FeedbackItem[]} items - 反馈列表
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582597
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472411023
  */
 export interface FeedbackGetResponse {
   total: number
@@ -64,7 +64,7 @@ export interface FeedbackGetResponse {
  * @property {string} contact - 联系方式（电子邮箱）
  * @property {string} description - 内容
  * @property {string} img - 附加图片 ID
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582595
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472415980
  */
 export interface FeedbackPostRequest {
   contact: string
@@ -82,7 +82,7 @@ export type FeedbackPostResponse = never
  * @property {string} contact - 联系方式（电子邮箱）
  * @property {string} description - 内容
  * @property {string} stu_id - 学号
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582598
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472416281
  */
 export interface FeedbackNoAuthRequest {
   contact: string

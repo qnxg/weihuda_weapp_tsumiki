@@ -32,7 +32,7 @@ export interface Rank {
  * @description 从可信电子凭证获取排名响应数据
  * @property {string} updated_at - 最后更新时间
  * @property {Rank} rank - 排名信息
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582587
+ * @see https://app.apifox.com/link/project/8311217/apis/api-470351063
  */
 export interface RankCaResponse {
   updated_at: string
@@ -41,7 +41,7 @@ export interface RankCaResponse {
 
 /**
  * @description 从教务系统获取排名响应数据
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582587
+ * @see https://app.apifox.com/link/project/8311217/apis/api-464639883
  */
 export type RankResponse = Rank
 
@@ -52,7 +52,7 @@ export type RankResponse = Rank
  * @property {string} range - 课程范围
  * @property {string} data_source - 数据来源
  * @property {string} display - 显示方式
- * @see https://app.apifox.com/link/project/8311217/apis/api-472582587
+ * @see https://app.apifox.com/link/project/8311217/apis/api-464639883
  */
 export interface RankRequest {
   xn?: number
