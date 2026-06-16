@@ -1,79 +1,88 @@
+$normal: #e6f4ff; // BG_COLOR[0]
+$upcoming: #fff9c9; // BG_COLOR[9]
+$doing: #defbf7; // BG_COLOR[2]
+$ended: #efefef;
+
+$normal-dark: darken($normal, 25%);
+$upcoming-dark: darken($upcoming, 25%);
+$doing-dark: darken($doing, 25%);
+$ended-dark: darken($ended, 25%);
+
+$normal-dark-2: darken($normal, 75%);
+$upcoming-dark-2: darken($upcoming, 75%);
+$doing-dark-2: darken($doing, 75%);
+$ended-dark-2: darken($ended, 75%);
+
 .card {
   &--normal {
-    // BG_COLOR[0]
-    background-color: #e6f4ff;
+    background-color: $normal;
   }
 
   &--upcoming {
-    // BG_COLOR[4]
-    background-color: #fcebcd;
+    background-color: $upcoming;
   }
 
   &--doing {
-    // BG_COLOR[2]
-    background-color: #defbf7;
+    background-color: $doing;
   }
 
   &--ended {
-    background-color: #efefef;
+    background-color: $ended;
   }
 }
 
 .header {
   &--normal {
-    // FONT_COLOR[0]
-    background-color: #08a0e2;
+    background-color: $normal-dark;
   }
 
   &--upcoming {
-    // FONT_COLOR[4]
-    background-color: #ff9900;
+    background-color: $upcoming-dark;
   }
 
   &--doing {
-    // FONT_COLOR[2]
-    background-color: #3cb3c9;
+    background-color: $doing-dark;
   }
 
   &--ended {
-    background-color: #aeaeae;
+    background-color: $ended-dark;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   .card {
     &--normal {
-      background-color: darken(#08a0e2, 25%);
+      background-color: $normal-dark-2;
     }
 
     &--upcoming {
-      background-color: darken(#ff9900, 25%);
+      background-color: $upcoming-dark-2;
     }
 
     &--doing {
-      background-color: darken(#3cb3c9, 25%);
+      background-color: $doing-dark-2;
     }
 
     &--ended {
-      background-color: darken(#aeaeae, 25%);
+      background-color: $ended-dark-2;
     }
   }
 
   .header {
     &--normal {
-      background-color: darken(#e6f4ff, 25%);
+      background-color: $normal-dark;
     }
 
     &--upcoming {
-      background-color: darken(#fcebcd, 25%);
+      background-color: $upcoming-dark;
     }
 
     &--doing {
-      background-color: darken(#defbf7, 25%);
+      background-color: $doing-dark;
     }
 
     &--ended {
-      background-color: darken(#efefef, 25%);
+      background-color: $ended-dark;
     }
   }
 }
