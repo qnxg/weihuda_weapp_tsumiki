@@ -58,14 +58,12 @@ export interface JifenGetRecordRequest {
 
 /**
  * @description 获取积分记录响应
- * @property {number} pages - 记录总页数
- * @property {number} page - 当前页码
+ * @property {number} total - 记录总数
  * @property {JifenRecordItem[]} records - 记录列表
  * @see https://app.apifox.com/link/project/8311217/apis/api-470236473
  */
 export interface JifenGetRecordResponse {
-  pages: number
-  page: number
+  total: number
   records: JifenRecordItem[]
 }
 

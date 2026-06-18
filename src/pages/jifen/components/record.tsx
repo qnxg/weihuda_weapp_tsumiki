@@ -1,41 +1,58 @@
 import type { JifenRecordItem } from "@/apis/models/jifen"
 import { View } from "@tarojs/components"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
 import { useRequest } from "@/hooks/request"
-import { useScrollContext } from "@/pages/jifen/contexts/scroll"
 import dayjs from "@/utils/dayjs"
 
-export function Record() {
-  const { isScrollToLower, setIsScrollToLower } = useScrollContext()
-
-  // 分页, 从 1 开始
+export function Record({
+  isScrollToLower,
+  onRefetchFinish,
+}: Readonly<{
+  isScrollToLower: boolean
+  onRefetchFinish: () => void
+}>) {
   const [page, setPage] = useState(1)
 
-  const { data, isLoading, refetch } = useRequest(() => api.jifen.getRecord({ page }))
+  // 追踪上一次的 page 值, 用于区分首次挂载与后续触发
+  const prevPageRef = useRef(page)
+
+  // 保存最新 list 长度, 用于在 setList 前计算 hasMore
+  const listLenRef = useRef(0)
+  const [hasMore, setHasMore] = useState(true)
+
+  const { data, isLoading } = useRequest(() => api.jifen.getRecord({ page }), [page])
 
   // 实际显示内容 (按页拼接)
   const [list, setList] = useState<JifenRecordItem[]>([])
 
-  // 请求完成后拼接列表
+  // 请求完成后追加到列表，并更新 hasMore
   useEffect(() => {
     if (isLoading || !data)
       return
 
-    // 仅页面匹配时才拼接列表
-    if (data.page === page) {
-      setList(p => [...p, ...data.records])
-    }
-  }, [data, isLoading, page])
+    // 先计算新长度, 再同步到 ref
+    const newListLen = listLenRef.current + data.records.length
+    listLenRef.current = newListLen
 
-  // 触底后触发请求
+    setList(p => [...p, ...data.records])
+    setHasMore(newListLen < data.total)
+  }, [data, isLoading])
+
+  // 处理触底加载下一页
   useEffect(() => {
-    if (!isScrollToLower || isLoading)
+    // page 刚发生变化, 说明是触底触发, 立即重置标志并退出
+    if (prevPageRef.current !== page) {
+      prevPageRef.current = page
+      onRefetchFinish()
+      return
+    }
+
+    if (!isScrollToLower || isLoading || !hasMore)
       return
 
     setPage(p => p + 1)
-    refetch().finally(() => setIsScrollToLower(false))
-  }, [isLoading, isScrollToLower, refetch, setIsScrollToLower])
+  }, [isScrollToLower, isLoading, page, hasMore, onRefetchFinish])
 
   return (
     <View className="flex flex-col gap p">

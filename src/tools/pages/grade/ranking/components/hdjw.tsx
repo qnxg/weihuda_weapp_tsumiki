@@ -1,46 +1,28 @@
-import type { ComponentProps } from "react"
 import type { RankRequest, RankResponse } from "@/apis/models/rank"
 import { Picker, View } from "@tarojs/components"
 import { hideToast, showToast } from "@tarojs/taro"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { useSemester } from "@/hooks/semester"
 import { useUser } from "@/hooks/user"
+import { HDJWSwitchButton } from "@/tools/pages/grade/ranking/components/hdjw-switch-button"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
-import { cn } from "@/utils/cn"
-import { getXNFromName, getXNName, getXQFromName, getXQName } from "../utils/xn-xq"
+import { getXNFromName, getXNName, getXQFromName, getXQName } from "@/tools/pages/grade/ranking/utils/xn-xq"
 
 interface Data {
   request: RankRequest
   response: RankResponse
 }
 
-/**
- * @description 成绩排名选项按钮
- */
-function HDJWSwitchButton({
-  active,
-  className,
-  children,
-  ...props
-}: Readonly<ComponentProps<typeof MyButton>>) {
-  return (
-    <MyButton
-      className={cn(
-        "px-sm py-xs rounded-sm",
-        active ? "text-primary border-primary" : "text-base border-base",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </MyButton>
-  )
-}
-
-export function HDJW() {
+export function HDJW({
+  isRefreshing,
+  onRefreshFinish,
+}: Readonly<{
+  isRefreshing: boolean
+  onRefreshFinish: () => void
+}>) {
   const { user } = useUser()
   const { data: semester } = useSemester()
 
@@ -148,6 +130,21 @@ export function HDJW() {
       return
     void fetchRank(form)
   }
+
+  // 受控刷新
+  useEffect(() => {
+    if (!isRefreshing)
+      return
+
+    if (!data) {
+      onRefreshFinish()
+      return
+    }
+
+    fetchRank(data.request).finally(() => {
+      onRefreshFinish()
+    })
+  }, [isRefreshing, data, fetchRank, onRefreshFinish])
 
   return (
     <View className="flex flex-col gap p">

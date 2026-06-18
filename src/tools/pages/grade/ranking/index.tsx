@@ -8,6 +8,7 @@ type TabValue = "hdjw" | "ca"
 
 export default function Ranking() {
   const [tab, setTab] = useState<TabValue>("hdjw")
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   return (
     <Page>
@@ -22,10 +23,18 @@ export default function Ranking() {
       </Tabs>
 
       <PageContent
-        onRefresh={() => Promise.resolve()}
+        isRefreshing={isRefreshing}
+        onRefresh={() => setIsRefreshing(true)}
         className="h-full"
       >
-        {tab === "hdjw" ? <HDJW /> : <CA />}
+        {tab === "hdjw"
+          ? (
+              <HDJW
+                isRefreshing={isRefreshing}
+                onRefreshFinish={() => setIsRefreshing(false)}
+              />
+            )
+          : <CA />}
       </PageContent>
     </Page>
   )

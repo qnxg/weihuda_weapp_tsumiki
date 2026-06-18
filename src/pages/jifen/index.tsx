@@ -1,4 +1,5 @@
 import { View } from "@tarojs/components"
+import { useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Page, PageContent } from "@/components/page"
@@ -7,21 +8,20 @@ import { useRequest } from "@/hooks/request"
 import { Goods } from "@/pages/jifen/components/goods"
 import { Record } from "@/pages/jifen/components/record"
 import { Rule } from "@/pages/jifen/components/rule"
-import { ScrollProvider, useScrollContext } from "@/pages/jifen/contexts/scroll"
 
-function JifenContent() {
-  const { setIsScrollToLower } = useScrollContext()
+export default function Jifen() {
+  const [isScrollToLower, setIsScrollToLower] = useState(false)
 
   const { data } = useRequest(() => api.jifen.get())
 
   return (
     <Page>
       <PageContent
-        className="px"
+        className="h-full"
         lowerThreshold={50}
         onScrollToLower={() => setIsScrollToLower(true)}
       >
-        <View className="flex flex-col gap">
+        <View className="flex flex-col gap p">
           <Card>
             <CardContent className="flex items-center justify-between p">
               <View className="flex flex-col center gap">
@@ -49,7 +49,10 @@ function JifenContent() {
                 </TabList>
                 <TabContent>
                   <TabItem value="record">
-                    <Record />
+                    <Record
+                      isScrollToLower={isScrollToLower}
+                      onRefetchFinish={() => setIsScrollToLower(false)}
+                    />
                   </TabItem>
                   <TabItem value="goods">
                     <Goods jifen={data?.jifen ?? 0} />
@@ -64,13 +67,5 @@ function JifenContent() {
         </View>
       </PageContent>
     </Page>
-  )
-}
-
-export default function Jifen() {
-  return (
-    <ScrollProvider>
-      <JifenContent />
-    </ScrollProvider>
   )
 }

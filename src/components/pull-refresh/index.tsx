@@ -65,7 +65,7 @@ const STATUS_TEXT: Record<PullStatus, string> = {
 /**
  * @description 下拉刷新组件
  * @example
- * 接受一个 Promise, 会在下拉时进入刷新状态, 触发 Promise, 并在 Promise 完成后恢复初始状态
+ * 非受控模式：接受一个 Promise, 会在下拉时进入刷新状态, 触发 Promise, 并在 Promise 完成后恢复初始状态
  * ```tsx
  * <PullRefresh
  *   className="h-full"
@@ -74,15 +74,29 @@ const STATUS_TEXT: Record<PullStatus, string> = {
  *   内容
  * </PullRefresh>
  * ```
+ * @example
+ * 受控模式：通过 isRefreshing 控制刷新状态，需要手动管理刷新状态的开启和关闭
+ * ```tsx
+ * <PullRefresh
+ *   className="h-full"
+ *   isRefreshing={isRefreshing}
+ *   onRefresh={handleRefresh}
+ * >
+ *   内容
+ * </PullRefresh>
+ * ```
  */
 function PullRefresh({
   onRefresh,
+  isRefreshing,
   children,
   ...props
 }: Readonly<{
-  onRefresh: () => Promise<unknown>
+  onRefresh?: () => void | Promise<unknown>
+  isRefreshing?: boolean
 } & ComponentProps<typeof ScrollView>>) {
   const { isDark } = getTheme()
+  const isControlled = isRefreshing !== undefined
 
   const [state, dispatch] = useReducer(reducer, {
     status: "awaiting",
@@ -90,27 +104,37 @@ function PullRefresh({
   })
 
   const onPulling = useCallback((e: BaseEventOrig) => {
+    if (isControlled)
+      return
     const dy: number = e.detail?.dy ?? 0
     dispatch({ type: "PULLING", dy })
-  }, [])
+  }, [isControlled])
 
   const handleRefresh = useCallback(async () => {
-    dispatch({ type: "REFRESH" })
+    if (!isControlled) {
+      dispatch({ type: "REFRESH" })
+    }
     try {
-      await onRefresh()
+      await onRefresh?.()
     }
     finally {
-      Taro.nextTick(() => {
-        dispatch({ type: "RESTORE" })
-      })
+      if (!isControlled) {
+        Taro.nextTick(() => {
+          dispatch({ type: "RESTORE" })
+        })
+      }
     }
-  }, [onRefresh])
+  }, [isControlled, onRefresh])
 
   const onRestore = useCallback(() => {
+    if (isControlled)
+      return
     Taro.nextTick(() => {
       dispatch({ type: "RESTORE" })
     })
-  }, [])
+  }, [isControlled])
+
+  const triggered = isControlled ? isRefreshing : state.triggered
 
   return (
     <ScrollView
@@ -121,7 +145,7 @@ function PullRefresh({
       refresherThreshold={HEAD_HEIGHT}
       refresherBackground={isDark ? "#000000" : "#fafafa"} // 同 bg-page
       refresherDefaultStyle="none"
-      refresherTriggered={state.triggered}
+      refresherTriggered={triggered}
       onRefresherPulling={onPulling}
       onRefresherRefresh={handleRefresh}
       onRefresherRestore={onRestore}
@@ -129,10 +153,10 @@ function PullRefresh({
       {...props}
     >
       <Slot name="refresher" className="w-full">
-        {state.status !== "loading" && (
+        {!isControlled && state.status !== "loading" && (
           <View className="h-sm flex center">{STATUS_TEXT[state.status]}</View>
         )}
-        {state.status === "loading" && (
+        {(isControlled ? isRefreshing : state.status === "loading") && (
           <View className="h-sm flex center gap-xs">
             <View
               className="rounded-full bg-primary loading"
