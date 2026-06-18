@@ -1,18 +1,11 @@
-import type { ReactNode } from "react"
-import { View } from "@tarojs/components"
+import type { ComponentProps, ReactNode } from "react"
+import { ScrollView, View } from "@tarojs/components"
+import { PullRefresh } from "@/components/pull-refresh"
+import { cn } from "@/utils/cn"
 import "./index.scss"
 
 /**
- * @description 页面内容组件, 提供页面基本布局样式
- * @example
- * ```tsx
- * <Page isLoading={isLoading}>
- *   纯白背景内容, 在 loading 时自动整页的动画
- *   <PageContent>
- *     淡白色带边距内容, 自动占满页面剩余高度
- *   </PageContent>
- * </Page>
- * ```
+ * @description 页面容器组件, 提供基本布局样式, 支持 loading 状态
  */
 function Page({
   children,
@@ -42,19 +35,63 @@ function Page({
   )
 }
 
+/**
+ * @description 页面内容组件
+ * @example
+ * 1. 带下拉刷新
+ * ```tsx
+ * <PageContent onRefresh={onRefresh}>
+ *   // 内容
+ * </PageContent>
+ * ```
+ * 2. 禁用滚动
+ * <PageContent fixed>
+ *   // 内容
+ * </PageContent>
+ */
 function PageContent({
+  onRefresh,
+  fixed = false,
+  className,
   children,
+  ...props
 }: Readonly<{
-  children: ReactNode
-}>) {
+  onRefresh?: (() => Promise<unknown>) | null
+  fixed?: boolean
+} & ComponentProps<typeof ScrollView>>) {
+  if (fixed) {
+    return (
+      <View className={cn("bg-page overflow-hidden", className)}>
+        {children}
+      </View>
+    )
+  }
+
+  if (onRefresh) {
+    return (
+      <View className={cn("bg-page overflow-hidden", className)}>
+        <PullRefresh
+          className="h-full"
+          onRefresh={onRefresh}
+          {...props}
+        >
+          {children}
+        </PullRefresh>
+      </View>
+    )
+  }
+
   return (
-    <View
-      className="p bg-page flex-1 overflow-hidden"
-      style={{
-        paddingBottom: "0",
-      }}
-    >
-      {children}
+    <View className={cn("bg-page overflow-hidden", className)}>
+      <ScrollView
+        className="h-full"
+        scrollY
+        enhanced
+        showScrollbar={false}
+        {...props}
+      >
+        {children}
+      </ScrollView>
     </View>
   )
 }

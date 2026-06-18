@@ -60,8 +60,8 @@ const sections: SectionItem[] = [
 export default function Toolkit() {
   return (
     <Page>
-      <PageContent>
-        <View className="flex flex-col gap">
+      <PageContent fixed className="h-full">
+        <View className="h-full p flex flex-col gap">
           {sections.map(section => (
             <Section
               key={section.title}

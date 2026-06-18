@@ -1,5 +1,5 @@
 import type { BaseEventOrig } from "@tarojs/components"
-import type { ReactNode } from "react"
+import type { ComponentProps } from "react"
 import { ScrollView, Slot, View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
 import { useCallback, useReducer } from "react"
@@ -68,7 +68,7 @@ const STATUS_TEXT: Record<PullStatus, string> = {
  * 接受一个 Promise, 会在下拉时进入刷新状态, 触发 Promise, 并在 Promise 完成后恢复初始状态
  * ```tsx
  * <PullRefresh
- *   topGap={100}
+ *   className="h-full"
  *   onRefresh={() => handleRefresh()}
  * >
  *   内容
@@ -77,13 +77,11 @@ const STATUS_TEXT: Record<PullStatus, string> = {
  */
 function PullRefresh({
   onRefresh,
-  topGap,
   children,
+  ...props
 }: Readonly<{
-  onRefresh: () => Promise<void> | void
-  topGap?: number
-  children: ReactNode
-}>) {
+  onRefresh: () => Promise<unknown>
+} & ComponentProps<typeof ScrollView>>) {
   const { isDark } = getTheme()
 
   const [state, dispatch] = useReducer(reducer, {
@@ -116,9 +114,6 @@ function PullRefresh({
 
   return (
     <ScrollView
-      style={{
-        height: topGap ? `calc(100vh - ${topGap}rpx)` : "100%",
-      }}
       scrollY
       enhanced
       showScrollbar={false}
@@ -131,6 +126,7 @@ function PullRefresh({
       onRefresherRefresh={handleRefresh}
       onRefresherRestore={onRestore}
       onRefresherAbort={onRestore}
+      {...props}
     >
       <Slot name="refresher" className="w-full">
         {state.status !== "loading" && (

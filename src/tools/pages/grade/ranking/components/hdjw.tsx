@@ -2,11 +2,10 @@ import type { ComponentProps } from "react"
 import type { RankRequest, RankResponse } from "@/apis/models/rank"
 import { Picker, View } from "@tarojs/components"
 import { hideToast, showToast } from "@tarojs/taro"
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
-import { PullRefresh } from "@/components/pull-refresh"
 import { useSemester } from "@/hooks/semester"
 import { useUser } from "@/hooks/user"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
@@ -109,7 +108,7 @@ export function HDJW() {
   }
 
   // 共用的请求函数
-  const fetchRank = async (request: RankRequest) => {
+  const fetchRank = useCallback(async (request: RankRequest) => {
     setIsLoading(true)
 
     void showToast({
@@ -141,7 +140,7 @@ export function HDJW() {
         }
       })
       .finally(() => setIsLoading(false))
-  }
+  }, [])
 
   // 查询
   const handleSubmit = () => {
@@ -150,166 +149,156 @@ export function HDJW() {
     void fetchRank(form)
   }
 
-  // 刷新
-  const handleRefresh = () => {
-    if (isLoading || !data)
-      return Promise.resolve()
-    return fetchRank(data.request)
-  }
-
   return (
-    // TabList: py-xs (16rpx) + font-xl (32rpx) + gap-xs (8rpx) + 指示器 (2rpx) ≈ 74rpx
-    <PullRefresh onRefresh={handleRefresh} topGap={74}>
-      <View className="h-full flex flex-col gap">
-        <Card>
-          {isLoading || !user
-            ? <CardContent className="flex h center">加载中...</CardContent>
-            : (
-                <CardContent className="flex flex-col gap">
-                  <View className="flex items-center">
-                    <View className="w">数据来源: </View>
-                    <View className="flex flex-1 items-center gap">
-                      <HDJWSwitchButton
-                        active={form.data_source === "total"}
-                        onClick={() => setForm(p => ({
-                          ...p,
-                          form_source: "total",
-                        }))}
-                      >
-                        成绩主库
-                      </HDJWSwitchButton>
-                      <HDJWSwitchButton
-                        active={form.data_source === "execution"}
-                        onClick={() => setForm(p => ({
-                          ...p,
-                          form_source: "execution",
-                        }))}
-                      >
-                        执行方案
-                      </HDJWSwitchButton>
-                    </View>
-                  </View>
-
-                  <View className="flex items-center">
-                    <View className="w">课程范围: </View>
-                    <View className="flex flex-1 items-center gap">
-                      <HDJWSwitchButton
-                        active={form.range === "major"}
-                        onClick={() => setForm(p => ({
-                          ...p,
-                          range: "major",
-                        }))}
-                      >
-                        主修
-                      </HDJWSwitchButton>
-                      <HDJWSwitchButton
-                        active={form.range === "minor"}
-                        onClick={() => setForm(p => ({
-                          ...p,
-                          range: "minor",
-                        }))}
-                      >
-                        辅修
-                      </HDJWSwitchButton>
-                    </View>
-                  </View>
-
-                  <View className="flex items-center">
-                    <View className="w">显示方式: </View>
-                    <View className="flex flex-1 items-center gap">
-                      <HDJWSwitchButton
-                        active={form.display === "max"}
-                        onClick={() => setForm(p => ({
-                          ...p,
-                          display: "max",
-                        }))}
-                      >
-                        最大成绩
-                      </HDJWSwitchButton>
-                      <HDJWSwitchButton
-                        active={form.display === "initial"}
-                        onClick={() => setForm(p => ({
-                          ...p,
-                          display: "initial",
-                        }))}
-                      >
-                        初修成绩
-                      </HDJWSwitchButton>
-                    </View>
-                  </View>
-
-                  <View className="flex items-center">
-                    <View className="w">时间范围:</View>
-                    <View className="flex flex-1 items-center gap">
-                      <Picker
-                        className="w-full"
-                        range={pickerRange}
-                        value={picker}
-                        mode="multiSelector"
-                        onColumnChange={(e) => {
-                          const newPicker = [...picker]
-                          newPicker[e.detail.column] = e.detail.value
-                          setPicker(newPicker)
-                        }}
-                        onChange={() => handlePickerChange()}
-                      >
-                        <View
-                          className="w-full py-xs border-base"
-                          style={{
-                            borderWidth: "0 0 1rpx 0",
-                          }}
-                        >
-                          {pickerXNRange[picker[0]]}
-                          {" "}
-                          {pickerXQRange[picker[1]]}
-                        </View>
-                      </Picker>
-                    </View>
-                  </View>
-
-                  <MyButton
-                    active
-                    className="py flex center rounded-sm"
-                    onClick={() => handleSubmit()}
-                  >
-                    查询
-                  </MyButton>
-
-                  <View className="flex center text-primary">
-                    成绩仅供参考,
-                    {" "}
-                    请以教务系统成绩为准!
-                  </View>
-                </CardContent>
-              )}
-        </Card>
-
-        {data && (
-          <>
-            <Card>
-              <CardContent className="flex flex-col">
-                <View className="flex gap">
-                  <View>
-                    {data.request.xn ? getXNName(data.request.xn) : "全部学年"}
-                  </View>
-                  <View>
-                    {data.request.xq ? getXQName(data.request.xq) : "全部学期"}
+    <View className="flex flex-col gap p">
+      <Card>
+        {isLoading || !user
+          ? <CardContent className="flex h center">加载中...</CardContent>
+          : (
+              <CardContent className="flex flex-col gap">
+                <View className="flex items-center">
+                  <View className="w">数据来源: </View>
+                  <View className="flex flex-1 items-center gap">
+                    <HDJWSwitchButton
+                      active={form.data_source === "total"}
+                      onClick={() => setForm(p => ({
+                        ...p,
+                        form_source: "total",
+                      }))}
+                    >
+                      成绩主库
+                    </HDJWSwitchButton>
+                    <HDJWSwitchButton
+                      active={form.data_source === "execution"}
+                      onClick={() => setForm(p => ({
+                        ...p,
+                        form_source: "execution",
+                      }))}
+                    >
+                      执行方案
+                    </HDJWSwitchButton>
                   </View>
                 </View>
-                <View className="flex">
-                  {data.request.data_source === "total" ? "成绩主库" : "执行方案"}
-                  {" / "}
-                  {data.request.range === "major" ? "主修" : "辅修"}
-                  {" / "}
-                  {data.request.display === "max" ? "最大成绩" : "初修成绩"}
+
+                <View className="flex items-center">
+                  <View className="w">课程范围: </View>
+                  <View className="flex flex-1 items-center gap">
+                    <HDJWSwitchButton
+                      active={form.range === "major"}
+                      onClick={() => setForm(p => ({
+                        ...p,
+                        range: "major",
+                      }))}
+                    >
+                      主修
+                    </HDJWSwitchButton>
+                    <HDJWSwitchButton
+                      active={form.range === "minor"}
+                      onClick={() => setForm(p => ({
+                        ...p,
+                        range: "minor",
+                      }))}
+                    >
+                      辅修
+                    </HDJWSwitchButton>
+                  </View>
+                </View>
+
+                <View className="flex items-center">
+                  <View className="w">显示方式: </View>
+                  <View className="flex flex-1 items-center gap">
+                    <HDJWSwitchButton
+                      active={form.display === "max"}
+                      onClick={() => setForm(p => ({
+                        ...p,
+                        display: "max",
+                      }))}
+                    >
+                      最大成绩
+                    </HDJWSwitchButton>
+                    <HDJWSwitchButton
+                      active={form.display === "initial"}
+                      onClick={() => setForm(p => ({
+                        ...p,
+                        display: "initial",
+                      }))}
+                    >
+                      初修成绩
+                    </HDJWSwitchButton>
+                  </View>
+                </View>
+
+                <View className="flex items-center">
+                  <View className="w">时间范围:</View>
+                  <View className="flex flex-1 items-center gap">
+                    <Picker
+                      className="w-full"
+                      range={pickerRange}
+                      value={picker}
+                      mode="multiSelector"
+                      onColumnChange={(e) => {
+                        const newPicker = [...picker]
+                        newPicker[e.detail.column] = e.detail.value
+                        setPicker(newPicker)
+                      }}
+                      onChange={() => handlePickerChange()}
+                    >
+                      <View
+                        className="w-full py-xs border-base"
+                        style={{
+                          borderWidth: "0 0 1rpx 0",
+                        }}
+                      >
+                        {pickerXNRange[picker[0]]}
+                        {" "}
+                        {pickerXQRange[picker[1]]}
+                      </View>
+                    </Picker>
+                  </View>
+                </View>
+
+                <MyButton
+                  active
+                  className="py flex center rounded-sm"
+                  onClick={() => handleSubmit()}
+                >
+                  查询
+                </MyButton>
+
+                <View className="flex center text-primary">
+                  成绩仅供参考,
+                  {" "}
+                  请以教务系统成绩为准!
                 </View>
               </CardContent>
-            </Card>
+            )}
+      </Card>
 
-            <RankContent data={data.response} />
-          </>
-        )}
-      </View>
-    </PullRefresh>
+      {data && (
+        <>
+          <Card>
+            <CardContent className="flex flex-col">
+              <View className="flex gap">
+                <View>
+                  {data.request.xn ? getXNName(data.request.xn) : "全部学年"}
+                </View>
+                <View>
+                  {data.request.xq ? getXQName(data.request.xq) : "全部学期"}
+                </View>
+              </View>
+              <View className="flex">
+                {data.request.data_source === "total" ? "成绩主库" : "执行方案"}
+                {" / "}
+                {data.request.range === "major" ? "主修" : "辅修"}
+                {" / "}
+                {data.request.display === "max" ? "最大成绩" : "初修成绩"}
+              </View>
+            </CardContent>
+          </Card>
+
+          <RankContent data={data.response} />
+        </>
+      )}
+    </View>
   )
 }

@@ -1,9 +1,9 @@
-import { PullRefresh } from "@/components/pull-refresh"
+import { View } from "@tarojs/components"
 
 export function CA() {
   return (
-    <PullRefresh onRefresh={() => {}}>
+    <View className="p">
       123
-    </PullRefresh>
+    </View>
   )
 }

@@ -21,7 +21,10 @@ export default function Ranking() {
         </TabList>
       </Tabs>
 
-      <PageContent>
+      <PageContent
+        onRefresh={() => Promise.resolve()}
+        className="h-full"
+      >
         {tab === "hdjw" ? <HDJW /> : <CA />}
       </PageContent>
     </Page>

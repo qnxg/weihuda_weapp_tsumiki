@@ -4,8 +4,7 @@ import type { Semester } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { useEffect, useMemo, useState } from "react"
 import { Overlay } from "@/components/overlay"
-import { Page } from "@/components/page"
-import { PullRefresh } from "@/components/pull-refresh"
+import { Page, PageContent } from "@/components/page"
 import { SETTINGS } from "@/config/setting"
 import { useCourse } from "@/hooks/course"
 import { useSemester } from "@/hooks/semester"
@@ -123,12 +122,7 @@ export default function Table() {
           <DateHeader start={semester?.start} week={week} />
         </View>
 
-        <PullRefresh
-          onRefresh={() => {}}
-          // 标题区: text-lg (28px) + py-xs (16px) = 44px
-          // 日期头行: h-xs (80px) + py-xs (16px) = 96px
-          topGap={140}
-        >
+        <PageContent className="h-full">
           <View className="flex w-full">
             {/* 左侧时间头 */}
             {/* 纵向: h * 12 + gap-4rpx */}
@@ -154,7 +148,7 @@ export default function Table() {
               }}
             />
           </View>
-        </PullRefresh>
+        </PageContent>
       </View>
 
       {/* 绝对定位层 */}

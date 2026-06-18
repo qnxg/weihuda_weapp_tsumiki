@@ -1,5 +1,5 @@
 import type { OptionItem } from "@/components/options"
-import { ScrollView, View } from "@tarojs/components"
+import { View } from "@tarojs/components"
 import Taro, { clearStorageSync, reLaunch } from "@tarojs/taro"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -68,103 +68,96 @@ export default function Profile() {
 
   return (
     <Page>
-      <PageContent>
-        <ScrollView
-          scrollY
-          enhanced
-          showScrollbar={false}
-          className="h-full"
-        >
-          <View className="h-full flex flex-col gap">
-            <Card>
-              <CardContent className="flex gap p">
-                <View className="size-sm rounded-full bg-primary flex center text-2xl text-reverse">
-                  {user ? user.name.at(0) : "U"}
-                </View>
-                <View className="flex-1 flex flex-col justify-center gap-xs">
-                  <View className="text-xl text-bold">{user ? user.name : "小程序用户"}</View>
-                  <View className="text-toned">{user ? user.stu_id : "---"}</View>
-                </View>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="flex center gap">
-                <View className="w-2xl h-md flex flex-col center">
-                  <View className="size-xs flex center text-2xl bold">{jifenData?.jifen ?? "--"}</View>
-                  <View>当前积分</View>
-                </View>
-
-                <View className="h-md bg-page" style={{ width: "6rpx" }} />
-
-                <View className="w-2xl h-md flex flex-col center">
-                  <View className="size-xs flex center text-2xl bold">{jifenData?.combo ?? "--"}</View>
-                  <View>连续签到</View>
-                </View>
-
-                <View className="h-md bg-page" style={{ width: "6rpx" }} />
-
-                <View
-                  className="w-2xl h-md flex flex-col center"
-                  onClick={() => navigate("/pages/jifen/index")}
-                >
-                  <View className="size-xs flex center">
-                    <Icon
-                      style={{
-                        width: "48rpx",
-                        height: "48rpx",
-                      }}
-                      src={JifenIcon}
-                    />
-                  </View>
-                  <View>积分中心</View>
-                </View>
-              </CardContent>
-            </Card>
-
-            <Card className="text-xl">
-              <CardContent className="px">
-                <Options items={options} />
-              </CardContent>
-            </Card>
-
-            <Card className="text-xl">
-              <CardContent className="px">
-                <Options>
-                  <Option
-                    title="清除缓存"
-                    icon={ClearIcon}
-                    size="lg"
-                    onClick={() => handleClearCache()}
-                  />
-                  <Option
-                    title="解除绑定"
-                    icon={UnbindIcon}
-                    size="lg"
-                    onClick={() => handleUnBind()}
-                  />
-                </Options>
-              </CardContent>
-            </Card>
-
-            <View className="flex flex-col center gap">
-              <View className="flex center text-muted">
-                Version
-                {" "}
-                {Taro.getAppBaseInfo().version}
+      <PageContent fixed className="h-full">
+        <View className="h-full flex flex-col gap p">
+          <Card>
+            <CardContent className="flex gap p">
+              <View className="size-sm rounded-full bg-primary flex center text-2xl text-reverse">
+                {user ? user.name.at(0) : "U"}
               </View>
-              <View className="flex center text-muted">
-                Copyright
-                {" "}
-                &copy;
-                {" "}
-                {`2017-${dayjs().year()}`}
-                {" "}
-                易千
+              <View className="flex-1 flex flex-col justify-center gap-xs">
+                <View className="text-xl text-bold">{user ? user.name : "小程序用户"}</View>
+                <View className="text-toned">{user ? user.stu_id : "---"}</View>
               </View>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="flex center gap">
+              <View className="w-2xl h-md flex flex-col center">
+                <View className="size-xs flex center text-2xl bold">{jifenData?.jifen ?? "--"}</View>
+                <View>当前积分</View>
+              </View>
+
+              <View className="h-md bg-page" style={{ width: "6rpx" }} />
+
+              <View className="w-2xl h-md flex flex-col center">
+                <View className="size-xs flex center text-2xl bold">{jifenData?.combo ?? "--"}</View>
+                <View>连续签到</View>
+              </View>
+
+              <View className="h-md bg-page" style={{ width: "6rpx" }} />
+
+              <View
+                className="w-2xl h-md flex flex-col center"
+                onClick={() => navigate("/pages/jifen/index")}
+              >
+                <View className="size-xs flex center">
+                  <Icon
+                    style={{
+                      width: "48rpx",
+                      height: "48rpx",
+                    }}
+                    src={JifenIcon}
+                  />
+                </View>
+                <View>积分中心</View>
+              </View>
+            </CardContent>
+          </Card>
+
+          <Card className="text-xl">
+            <CardContent className="px">
+              <Options items={options} />
+            </CardContent>
+          </Card>
+
+          <Card className="text-xl">
+            <CardContent className="px">
+              <Options>
+                <Option
+                  title="清除缓存"
+                  icon={ClearIcon}
+                  size="lg"
+                  onClick={() => handleClearCache()}
+                />
+                <Option
+                  title="解除绑定"
+                  icon={UnbindIcon}
+                  size="lg"
+                  onClick={() => handleUnBind()}
+                />
+              </Options>
+            </CardContent>
+          </Card>
+
+          <View className="flex flex-col center gap">
+            <View className="flex center text-muted">
+              Version
+              {" "}
+              {Taro.getAppBaseInfo().version}
+            </View>
+            <View className="flex center text-muted">
+              Copyright
+              {" "}
+              &copy;
+              {" "}
+              {`2017-${dayjs().year()}`}
+              {" "}
+              易千
             </View>
           </View>
-        </ScrollView>
+        </View>
       </PageContent>
     </Page>
   )
