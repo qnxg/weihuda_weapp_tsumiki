@@ -34,7 +34,12 @@ export default function Ranking() {
                 onRefreshFinish={() => setIsRefreshing(false)}
               />
             )
-          : <CA />}
+          : (
+              <CA
+                isRefreshing={isRefreshing}
+                onRefreshFinish={() => setIsRefreshing(false)}
+              />
+            )}
       </PageContent>
     </Page>
   )

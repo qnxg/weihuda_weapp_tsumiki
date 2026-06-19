@@ -160,7 +160,7 @@ export function HDJW({
                       active={form.data_source === "total"}
                       onClick={() => setForm(p => ({
                         ...p,
-                        form_source: "total",
+                        data_source: "total",
                       }))}
                     >
                       成绩主库
@@ -169,7 +169,7 @@ export function HDJW({
                       active={form.data_source === "execution"}
                       onClick={() => setForm(p => ({
                         ...p,
-                        form_source: "execution",
+                        data_source: "execution",
                       }))}
                     >
                       执行方案
