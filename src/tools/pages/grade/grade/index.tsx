@@ -33,6 +33,7 @@ export default function Grade() {
     xq: selectSemester,
   }), [selectYear, selectSemester])
 
+  // 获取成绩数据
   const { data, refetch } = useGrade(gradeSemester)
 
   // 实际显示数组

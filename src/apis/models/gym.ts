@@ -18,8 +18,14 @@ export interface GymGradeDetail {
  * @property {string} description - 描述
  */
 export interface EyeGradeDetail {
-  value: string
-  description: string
+  left: {
+    value: string
+    description: string
+  }
+  right: {
+    value: string
+    description: string
+  }
 }
 
 /**
