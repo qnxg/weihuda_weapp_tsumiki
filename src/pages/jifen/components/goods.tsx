@@ -1,9 +1,10 @@
 import { Image, View } from "@tarojs/components"
-import { showModal, showToast } from "@tarojs/taro"
+import { showToast } from "@tarojs/taro"
 import { api } from "@/apis"
 import { MyButton } from "@/components/my-button"
 import { useRequest } from "@/hooks/request"
 import { cn } from "@/utils/cn"
+import { showModal } from "@/utils/modal"
 
 export function Goods({
   jifen,
@@ -12,44 +13,43 @@ export function Goods({
 }>) {
   const { data, isLoading, refetch } = useRequest(() => api.jifen.getGoods())
 
-  const handleClick = async (id: number) => {
-    const res = await showModal({
-      title: "提升",
-      content: "确认兑换吗?",
-    })
-
-    if (!res.confirm)
-      return
-
-    api.jifen.postGoods(id)
-      .then(() => {
-        void showToast({
-          title: "兑换成功",
-          icon: "success",
-        })
-        void refetch()
-      })
-      .catch((err) => {
-        switch (err.code) {
-          case "GOODS_NOT_FOUND":
+  const handleClick = (id: number) => {
+    void showModal(
+      "确认兑换?",
+      "兑换后请前往 \"积分规则\" 栏目指定地点领取",
+      "default",
+      () => {
+        api.jifen.postGoods(id)
+          .then(() => {
             void showToast({
-              title: "奖品不存在",
-              icon: "none",
+              title: "兑换成功",
+              icon: "success",
             })
-            break
-          case "JIFEN_NOT_ENOUGH":
-            void showToast({
-              title: "积分不足",
-              icon: "none",
-            })
-            break
-          default:
-            void showToast({
-              title: "兑换失败",
-              icon: "none",
-            })
-        }
-      })
+            void refetch()
+          })
+          .catch((err) => {
+            switch (err.code) {
+              case "GOODS_NOT_FOUND":
+                void showToast({
+                  title: "奖品不存在",
+                  icon: "none",
+                })
+                break
+              case "JIFEN_NOT_ENOUGH":
+                void showToast({
+                  title: "积分不足",
+                  icon: "none",
+                })
+                break
+              default:
+                void showToast({
+                  title: "兑换失败",
+                  icon: "none",
+                })
+            }
+          })
+      },
+    )
   }
 
   return (

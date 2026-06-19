@@ -16,6 +16,7 @@ import MessageIcon from "@/static/profile/message.svg"
 import SettingIcon from "@/static/profile/setting.svg"
 import UnbindIcon from "@/static/profile/unbind.svg"
 import dayjs from "@/utils/dayjs"
+import { showModal } from "@/utils/modal"
 import { navigate } from "@/utils/navigate"
 import { clearAllStorage } from "@/utils/storage"
 
@@ -30,40 +31,38 @@ export default function Profile() {
   const { user } = useUser()
   const { data: jifenData } = useRequest(() => api.jifen.get())
 
-  const handleClearCache = async () => {
-    const res = await Taro.showModal({
-      title: "确认清除",
-      content: "清除后将自动返回首页",
-      confirmColor: "#ff5555",
-      cancelColor: "#328ccb",
-    })
-    if (res.confirm) {
-      clearAllStorage()
-      await Taro.showToast({
-        title: "清除成功",
-      })
-      await reLaunch({
-        url: "/pages/index/index",
-      })
-    }
+  const handleClearCache = () => {
+    void showModal(
+      "确认清除",
+      "清除后将自动返回首页",
+      "dangerous",
+      async () => {
+        clearAllStorage()
+        await Taro.showToast({
+          title: "清除成功",
+        })
+        await reLaunch({
+          url: "/pages/index/index",
+        })
+      },
+    )
   }
 
-  const handleUnBind = async () => {
-    const res = await Taro.showModal({
-      title: "确认解绑",
-      content: "解绑后会情况全部缓存, 并要求重新登录",
-      confirmColor: "#ff5555",
-      cancelColor: "#328ccb",
-    })
-    if (res.confirm) {
-      clearStorageSync()
-      await Taro.showToast({
-        title: "清除成功",
-      })
-      await reLaunch({
-        url: "/pages/index/index",
-      })
-    }
+  const handleUnBind = () => {
+    void showModal(
+      "确认解绑",
+      "解绑后会情况全部缓存, 并要求重新登录",
+      "dangerous",
+      async () => {
+        clearStorageSync()
+        await Taro.showToast({
+          title: "清除成功",
+        })
+        await reLaunch({
+          url: "/pages/index/index",
+        })
+      },
+    )
   }
 
   return (

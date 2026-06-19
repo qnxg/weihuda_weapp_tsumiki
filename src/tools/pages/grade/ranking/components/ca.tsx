@@ -1,5 +1,5 @@
 import { View } from "@tarojs/components"
-import { showModal, showToast } from "@tarojs/taro"
+import { showToast } from "@tarojs/taro"
 import { useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -7,6 +7,7 @@ import { MyButton } from "@/components/my-button"
 import { useRequest } from "@/hooks/request"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
 import dayjs from "@/utils/dayjs"
+import { showModal } from "@/utils/modal"
 
 export function CA({
   isRefreshing,
@@ -26,10 +27,7 @@ export function CA({
     setIsUpdating(true)
     api.rank.ca.put()
       .then(() => {
-        void showModal({
-          title: "成绩更新中",
-          content: "正在生成数据, 请稍后刷新查看",
-        })
+        void showModal("成绩更新中", "正在生成数据, 请稍后刷新查看")
       })
       .catch((err) => {
         switch (err.code) {

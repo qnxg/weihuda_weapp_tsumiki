@@ -9,6 +9,7 @@ import { MyButton } from "@/components/my-button"
 import { OverlayMask } from "@/components/overlay"
 import EditIcon from "@/static/table/edit.svg"
 import TrashIcon from "@/static/table/trash.svg"
+import { showModal } from "@/utils/modal"
 
 export function Detail({
   cell,
@@ -51,35 +52,42 @@ export function Detail({
     if (course.customize_id === -1)
       return
 
-    void showLoading({ title: "加载中..." })
-    api.course.delete(course.customize_id, { xn: semester.xn, xq: semester.xq })
-      .then(() => {
-        hideLoading()
-        onCustomDelete()
-      })
-      .catch((err: RequestError) => {
-        hideLoading()
+    void showModal(
+      "确认删除",
+      `删除课程 ${course.course_name}?`,
+      "dangerous",
+      () => {
+        void showLoading({ title: "加载中..." })
+        api.course.delete(course.customize_id, { xn: semester.xn, xq: semester.xq })
+          .then(() => {
+            hideLoading()
+            onCustomDelete()
+          })
+          .catch((err: RequestError) => {
+            hideLoading()
 
-        switch (err.code) {
-          case "SEMESTER_NOT_FOUND":
-            void showToast({
-              title: "学期不存在",
-              icon: "error",
-            })
-            break
-          case "COURSE_NOT_FOUND":
-            void showToast({
-              title: "课程不存在",
-              icon: "error",
-            })
-            break
-          default:
-            void showToast({
-              title: `删除失败: ${err.message}`,
-              icon: "error",
-            })
-        }
-      })
+            switch (err.code) {
+              case "SEMESTER_NOT_FOUND":
+                void showToast({
+                  title: "学期不存在",
+                  icon: "error",
+                })
+                break
+              case "COURSE_NOT_FOUND":
+                void showToast({
+                  title: "课程不存在",
+                  icon: "error",
+                })
+                break
+              default:
+                void showToast({
+                  title: `删除失败: ${err.message}`,
+                  icon: "error",
+                })
+            }
+          })
+      },
+    )
   }
 
   return (

@@ -64,6 +64,12 @@
 - 通用导航函数 `/utils/navigate.ts`: 自动区分普通页面和 tab 页面进行导航
   - 详见 [Taro - navigateTo](https://docs.taro.zone/docs/apis/route/navigateTo)
 
+- 通用弹窗函数 `/utils/modal.ts`: 基于 Taro.showModal 封装的确认框函数
+  - 支持 Promise 和回调两种调用方式
+  - `type` 参数: `"default"` 使用 primary 色 (#328ccb), `"dangerous"` 使用红色 (#ff5555)
+  - Promise 方式: `const res = await showModal(title, content, type)`, 返回 `boolean` 表示是否确认
+  - 回调方式: `showModal(title, content, type, onConfirm, onCancel)`, 无返回值
+
 - 通用存储类 `/utils/storage.ts`: 基于 Taro storage 封装的存储类, 支持过期机制, 提供 get/set/remove 方法
   - 并暴露 clearAllStorage 函数安全清除缓存(保留 token)
 
