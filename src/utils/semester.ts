@@ -1,5 +1,5 @@
-import type { Dayjs } from "dayjs"
 import type { Semester, SemesterInfo, XQ } from "@/types/semester"
+import type { Dayjs } from "@/utils/dayjs"
 import dayjs from "@/utils/dayjs"
 
 /**
@@ -29,12 +29,16 @@ export function getPrevSemester(semester: Semester): Semester {
 
 /**
  * @description 获取学期日期相关信息
+ *   - start: 学期开始日期
+ *   - end: 学期结束日期
  *   - week: 当前是第几周, 从 1 开始, 不在学期内返回 -1
  *   - passed: 已经过去的天数, 在学期开始前为负数
  *   - next: 还剩多少天, 在学期结束后为负数
  *   - isCurrent: 当前日期是否在学期内
  */
 interface GetSemesterDataInfoResult {
+  start: Dayjs
+  end: Dayjs
   week: number
   passed: number
   next: number
@@ -57,6 +61,8 @@ export function getSemesterDateInfo(
   const total = semester.weeks * 7
   const week = Math.ceil((diffDays + 1) / 7)
   return {
+    start,
+    end,
     week: week >= 1 && week <= semester.weeks ? week : -1,
     passed: diffDays,
     next: total - diffDays,
