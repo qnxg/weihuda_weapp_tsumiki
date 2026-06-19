@@ -122,7 +122,10 @@ export default function Table() {
           <DateHeader start={semester?.start} week={week} />
         </View>
 
-        <PageContent className="h-full">
+        <PageContent
+          className="h-full"
+          onRefresh={() => refetch()}
+        >
           <View className="flex w-full">
             {/* 左侧时间头 */}
             {/* 纵向: h * 12 + gap-4rpx */}

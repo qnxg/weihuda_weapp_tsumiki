@@ -215,7 +215,7 @@ interface CachedRequestOptions {
  * @property {boolean} isLoading - 是否加载中
  * @property {boolean} isUpdating - 是否更新缓存中
  * @property {boolean} isIdle - 是否空闲
- * @property {() => void} refetch - 重新发起请求
+ * @property {() => Promise<T | null>} refetch - 重新发起请求，非 idle 时 resolve null，成功时 resolve T，请求失败时 reject
  */
 interface CachedRequestResult<T> {
   status: Status
@@ -224,7 +224,7 @@ interface CachedRequestResult<T> {
   isLoading: boolean
   isUpdating: boolean
   isIdle: boolean
-  refetch: () => void
+  refetch: () => Promise<T | null>
 }
 
 /**
@@ -256,6 +256,12 @@ export function useCachedRequest<T extends object | null>(
 
   const storageRef = useRef<Storage<T> | null>(null)
 
+  // 用于 refetch 返回 Promise 的控制器
+  const promiseRef = useRef<{
+    resolve: (value: T | null) => void
+    reject: (error: RequestError) => void
+  } | null>(null)
+
   useEffect(() => {
     storageRef.current = new Storage<T>(key)
   }, [key])
@@ -263,9 +269,10 @@ export function useCachedRequest<T extends object | null>(
   // 用于更新状态机的请求函数
   const requestFn = useCallback((storage: Storage<T>) => {
     fnRef.current()
-      .then((res) => {
+      .then(async (res) => {
         dispatch({ type: "REQUEST_SUCCESS", payload: res.data })
-        return storage.set(res.data)
+        await storage.set(res.data)
+        return res.data
       })
       .then(() => {
         dispatch({ type: "CACHE_UPDATED" })
@@ -324,15 +331,44 @@ export function useCachedRequest<T extends object | null>(
   }, [execute, options?.enabled])
 
   // 重新请求, 保留数据和错误
-  const refetch = useCallback(() => {
-    if (!isIdle)
-      return
+  const refetch = useCallback((): Promise<T | null> => {
+    if (!isIdle) {
+      return Promise.resolve(null)
+    }
 
     dispatch({ type: "REFETCH" })
     const storage = storageRef.current
-    if (storage)
-      requestFn(storage)
+    if (!storage) {
+      return Promise.reject(new RequestError(-3, "STORAGE_NOT_READY", null))
+    }
+
+    // 创建新的 Promise, 等待状态机到达终态
+    const promise = new Promise<T | null>((resolve, reject) => {
+      promiseRef.current = { resolve, reject }
+    })
+
+    requestFn(storage)
+    return promise
   }, [isIdle, requestFn])
+
+  // 监听状态机到达终态时 resolve/reject Promise
+  useEffect(() => {
+    if (!promiseRef.current)
+      return
+
+    switch (state.status) {
+      case "success":
+      case "cached":
+        promiseRef.current.resolve(state.data as T)
+        break
+      case "error":
+        promiseRef.current.reject(state.error!)
+        break
+      default:
+        return
+    }
+    promiseRef.current = null
+  }, [state.status, state.data, state.error])
 
   return {
     status: state.status,
