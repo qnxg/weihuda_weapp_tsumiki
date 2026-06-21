@@ -47,7 +47,7 @@ export default function Grade() {
     if (!jx0404id) {
       void showToast({
         title: "暂无成绩详情",
-        icon: "none",
+        icon: "error",
       })
     }
 
@@ -111,68 +111,63 @@ export default function Grade() {
         className="h-full"
         onRefresh={refetch}
       >
-        <View className="p flex flex-col gap">
-          {list.length === 0
-            ? (
-                <View className="flex-1 flex flex-col center gap">
-                  <Icon className="size-xl" src={EmptyIcon} />
-                  <View>暂无成绩信息</View>
-
-                  {/* 高度占位 */}
-                  <View className="size-2xl" />
-                </View>
-              )
-            : (
-                <>
-                  <View className="text-toned text-sm">点击可查看课程具体分数组成</View>
-                  {list.map((item, index) => (
-                    <Card
-                      key={`${item.course_id}-${index}`}
-                      onClick={() => handleShowDetail(item.jx0404id)}
-                    >
-                      <CardContent className="flex items-center justify-between">
+        {list.length === 0
+          ? (
+              <View className="h-full flex flex-col center gap">
+                <Icon className="size-xl" src={EmptyIcon} />
+                <View>暂无成绩信息</View>
+              </View>
+            )
+          : (
+              <View className="p flex flex-col gap">
+                <View className="text-toned text-sm">点击可查看课程具体分数组成</View>
+                {list.map((item, index) => (
+                  <Card
+                    key={`${item.course_id}-${index}`}
+                    onClick={() => handleShowDetail(item.jx0404id)}
+                  >
+                    <CardContent className="flex items-center justify-between">
+                      <View className="flex flex-col">
                         <View className="flex flex-col">
-                          <View className="flex flex-col">
-                            <View className="text-lg">{item.course_name}</View>
-                            <View className="text-toned text-sm">{item.course_id}</View>
-                          </View>
-
-                          <View className="flex py gap-xs">
-                            {[item.course_type1, item.course_type2, item.grade_type, item.grade_tag].map((tag, index) => {
-                              if (!tag)
-                                return null
-
-                              return (
-                                <View
-                                  key={`${item.course_id}-${tag}-${index}`}
-                                  className="text-primary"
-                                >
-                                  {tag}
-                                </View>
-                              )
-                            })}
-                          </View>
+                          <View className="text-lg">{item.course_name}</View>
+                          <View className="text-toned text-sm">{item.course_id}</View>
                         </View>
 
-                        <View className="h-full flex flex-col justify-evenly">
-                          <View className="flex gap items-end">
-                            <View className="text-xl">{item.score}</View>
-                            <View>/</View>
-                            <View>{item.gpa}</View>
-                          </View>
+                        <View className="flex py gap-xs">
+                          {[item.course_type1, item.course_type2, item.grade_type, item.grade_tag].map((tag, index) => {
+                            if (!tag)
+                              return null
 
-                          <View className="text-toned text-sm">
-                            学分:
-                            {" "}
-                            {item.credit}
-                          </View>
+                            return (
+                              <View
+                                key={`${item.course_id}-${tag}-${index}`}
+                                className="text-primary"
+                              >
+                                {tag}
+                              </View>
+                            )
+                          })}
                         </View>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </>
-              )}
-        </View>
+                      </View>
+
+                      <View className="h-full flex flex-col justify-evenly">
+                        <View className="flex gap items-end">
+                          <View className="text-xl">{item.score}</View>
+                          <View>/</View>
+                          <View>{item.gpa}</View>
+                        </View>
+
+                        <View className="text-toned text-sm">
+                          学分:
+                          {" "}
+                          {item.credit}
+                        </View>
+                      </View>
+                    </CardContent>
+                  </Card>
+                ))}
+              </View>
+            )}
       </PageContent>
 
       {/* 覆盖层 */}

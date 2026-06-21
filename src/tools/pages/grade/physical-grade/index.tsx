@@ -3,6 +3,7 @@ import { View } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
+import { Icon } from "@/components/icon"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
@@ -10,6 +11,7 @@ import { FONT_COLOR } from "@/config/color"
 import { useRequest } from "@/hooks/request"
 import { useSemester } from "@/hooks/semester"
 import { useUser } from "@/hooks/user"
+import EmptyIcon from "@/static/tools/grade/physical-grade/empty.svg"
 import { Eye } from "@/tools/pages/grade/physical-grade/components/eye"
 import { formatPhysicalGrade } from "@/tools/pages/grade/physical-grade/utils/physical-grade"
 import dayjs from "@/utils/dayjs"
@@ -37,7 +39,9 @@ export default function PhysicalGrade() {
   // 获取成绩数据
   const { data, refetch } = useRequest(() => api.gym.grade({
     xn: selectYear,
-  }), [selectYear])
+  }), [selectYear], {
+    refetchClearData: false,
+  })
 
   // 实际展示内容
   const [list, setList] = useState<PhysicalGradeItem[]>([])
@@ -197,7 +201,12 @@ export default function PhysicalGrade() {
                 </View>
               </View>
             )
-          : <View className="h flex center">加载中...</View>}
+          : (
+              <View className="h-full flex flex-col center gap">
+                <Icon className="size-xl" src={EmptyIcon} />
+                <View>信息加载失败</View>
+              </View>
+            )}
       </PageContent>
 
       {data && showEye && (

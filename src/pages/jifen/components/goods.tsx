@@ -32,19 +32,19 @@ export function Goods({
               case "GOODS_NOT_FOUND":
                 void showToast({
                   title: "奖品不存在",
-                  icon: "none",
+                  icon: "error",
                 })
                 break
               case "JIFEN_NOT_ENOUGH":
                 void showToast({
                   title: "积分不足",
-                  icon: "none",
+                  icon: "error",
                 })
                 break
               default:
                 void showToast({
                   title: "兑换失败",
-                  icon: "none",
+                  icon: "error",
                 })
             }
           })

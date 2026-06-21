@@ -1,23 +1,8 @@
-import type { ComponentProps, ReactElement, ReactNode } from "react"
+import type { ComponentProps, ReactNode } from "react"
 import { ScrollView, View } from "@tarojs/components"
 import { PullRefresh } from "@/components/pull-refresh"
 import { cn } from "@/utils/cn"
 import "./index.scss"
-
-function cloneWithScrollProps(element: ReactNode, isScrollToLower?: boolean): ReactNode {
-  if (!element || typeof element !== "object")
-    return element
-  const el = element as ReactElement
-  if (!el.props)
-    return element
-  return {
-    ...el,
-    props: {
-      ...el.props,
-      isScrollToLower,
-    },
-  }
-}
 
 /**
  * @description 页面容器组件, 提供基本布局样式, 支持 loading 状态
@@ -33,7 +18,7 @@ function Page({
     <View className="relative w-screen h-screen flex flex-col bg text overflow-hidden">
       {isLoading
         ? (
-            <View className="w-full h-full flex justify-center items-center">
+            <View className="w-full h-full flex center">
               <View
                 className="relative size rounded-full spin"
                 style={{
@@ -81,9 +66,9 @@ function Page({
  * </PageContent>
  */
 function PageContent({
+  isLoading,
   onRefresh,
   isRefreshing,
-  isScrollToLower,
   onScrollReached,
   lowerThreshold,
   fixed = false,
@@ -91,24 +76,37 @@ function PageContent({
   children,
   ...props
 }: Readonly<{
-  onRefresh?: (() => void | Promise<unknown>) | null
-  isRefreshing?: boolean
-  isScrollToLower?: boolean
-  onScrollReached?: () => void
-  lowerThreshold?: number
-  fixed?: boolean
+  isLoading?: boolean // 占满高度的加载样式
+  onRefresh?: (() => void | Promise<unknown>) | null // 下拉刷新回调
+  isRefreshing?: boolean // 受控的下拉刷新状态
+  onScrollReached?: () => void // 触底回调
+  fixed?: boolean // 是否禁用滚动, 默认为 false
 } & ComponentProps<typeof ScrollView>>) {
-  if (fixed) {
+  if (isLoading) {
     return (
-      <View className={cn("bg-page overflow-hidden", className)}>
-        {cloneWithScrollProps(children, isScrollToLower)}
+      <View className="bg-page w-full h-full flex center">
+        <View
+          className="relative size rounded-full spin"
+          style={{
+            background: "conic-gradient(from 0deg, #222222, #aaaaaa)",
+            opacity: "0.5",
+          }}
+        >
+          <View className="absolute inset-xs rounded-full bg" />
+        </View>
       </View>
     )
   }
 
-  const enablePullRefresh = onRefresh || isRefreshing !== undefined
+  if (fixed) {
+    return (
+      <View className={cn("bg-page overflow-hidden", className)}>
+        {children}
+      </View>
+    )
+  }
 
-  if (enablePullRefresh) {
+  if (onRefresh || isRefreshing !== undefined) {
     return (
       <View className={cn("bg-page overflow-hidden", className)}>
         <PullRefresh
@@ -116,10 +114,10 @@ function PageContent({
           onRefresh={onRefresh ?? undefined}
           isRefreshing={isRefreshing}
           lowerThreshold={lowerThreshold}
-          onScrollToLower={isScrollToLower !== undefined ? () => onScrollReached?.() : undefined}
+          onScrollToLower={() => onScrollReached?.()}
           {...props}
         >
-          {cloneWithScrollProps(children, isScrollToLower)}
+          {children}
         </PullRefresh>
       </View>
     )
@@ -133,10 +131,10 @@ function PageContent({
         enhanced
         showScrollbar={false}
         lowerThreshold={lowerThreshold}
-        onScrollToLower={isScrollToLower !== undefined ? () => onScrollReached?.() : undefined}
+        onScrollToLower={() => onScrollReached?.()}
         {...props}
       >
-        {cloneWithScrollProps(children, isScrollToLower)}
+        {children}
       </ScrollView>
     </View>
   )

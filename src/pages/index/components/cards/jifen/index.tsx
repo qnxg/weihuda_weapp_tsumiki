@@ -50,7 +50,7 @@ export function Jifen({
           default:
             void showToast({
               title: err.message || "签到失败",
-              icon: "none",
+              icon: "error",
             })
         }
       })

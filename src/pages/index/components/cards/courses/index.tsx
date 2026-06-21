@@ -10,7 +10,6 @@ import { useCourse } from "@/hooks/course"
 import { useSemester } from "@/hooks/semester"
 import {
   formatCourses,
-  getInitCourseCards,
   mergeCourseCards,
 } from "@/pages/index/components/cards/courses/utils/course"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
@@ -42,7 +41,7 @@ function CourseContent({
   cards,
   tab,
 }: Readonly<{
-  cards: CourseCard[]
+  cards: CourseCard[] | null
   tab: TabValue
 }>) {
   if (!cards)
@@ -158,7 +157,7 @@ export function Courses({
   const [day, setDay] = useState(0)
 
   // 课程卡片
-  const [cards, setCards] = useState<CourseCard[]>(() => getInitCourseCards())
+  const [cards, setCards] = useState<CourseCard[] | null>(null)
 
   // semester 就绪后按 tab 写入显示周和显示日
   useEffect(() => {
@@ -201,7 +200,7 @@ export function Courses({
       <IndexCardContent
         className=""
         isLoading={isLoading}
-        isFailed={!course}
+        isFailed={!course || !semester}
         onRefresh={refetch}
       >
         <Tabs

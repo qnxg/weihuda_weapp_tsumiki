@@ -17,7 +17,7 @@ import EmptyIcon from "@/static/index/grade/empty.svg"
 function GradeContent({
   grade,
 }: Readonly<{
-  grade: GradeItem[]
+  grade: GradeItem[] | null
 }>) {
   if (!grade)
     return <Skeleton className="w-full" />
@@ -54,6 +54,7 @@ function GradeContent({
     </View>
   )
 }
+
 /**
  * @description 成绩查询
  */
@@ -92,10 +93,10 @@ export function Grade({
       <IndexCardContent
         className="p flex items-center justify-between text-xl"
         isLoading={isLoading}
-        isFailed={!grade}
+        isFailed={!grade || grade.length === 0}
         onRefresh={refetch}
       >
-        <GradeContent grade={grade ?? []} />
+        <GradeContent grade={grade} />
       </IndexCardContent>
     </Card>
   )

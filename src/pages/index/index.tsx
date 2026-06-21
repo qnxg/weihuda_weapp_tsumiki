@@ -18,10 +18,14 @@ function IndexContent() {
     .filter(Boolean) as CardItem[]
 
   return (
-    <Page isLoading={isLoading}>
+    <Page>
       <DateBar />
 
-      <PageContent className="h-full" onRefresh={triggerRefresh}>
+      <PageContent
+        className="h-full"
+        onRefresh={triggerRefresh}
+        isLoading={isLoading}
+      >
         <CardList cards={displayCards} />
       </PageContent>
     </Page>

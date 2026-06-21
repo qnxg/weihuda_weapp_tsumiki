@@ -107,7 +107,13 @@ export function Netflow({
                 </View>
               </>
             )
-          : <Skeleton className="w-full" />}
+          : (
+              <>
+                <Skeleton className="w-full" />
+                <Skeleton className="w-full" />
+                <Skeleton className="w-full" />
+              </>
+            )}
       </IndexCardContent>
     </Card>
   )
