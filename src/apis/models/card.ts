@@ -20,7 +20,7 @@ export interface CardInfoResponse {
  * @property {string} location - 交易地点
  * @property {string} name - 交易名称
  */
-interface CardHistoryItem {
+export interface CardHistoryItem {
   date_time: string
   journal_time: string
   status: string
@@ -32,16 +32,23 @@ interface CardHistoryItem {
 }
 
 /**
+ * @description 校园卡账单记录请求类型枚举
+ *   - recharge: 充值
+ *   - consumption: 消费
+ */
+export type CardRecordRequestType = "recharge" | "consumption"
+
+/**
  * @description 获取校园卡账单记录请求
  * @property {number} [year] - 年份, 可选
  * @property {number} [month] - 月份, 可选
- * @property {string} [type] - 交易类型, 可选, recharge 表示充值, consumption 表示消费
+ * @property {CardRecordRequestType} [type] - 交易类型, 可选, recharge 表示充值, consumption 表示消费
  * @see https://app.apifox.com/link/project/8311217/apis/api-465883014
  */
 export interface CardRecordRequest {
   year?: number
   month?: number
-  type?: "recharge" | "consumption"
+  type?: CardRecordRequestType
 }
 
 /**
