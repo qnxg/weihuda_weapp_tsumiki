@@ -55,6 +55,7 @@ import type {
 import type { IndexCardSettingRequestData, MeResponse, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
 import type {
   MonthNetflowResponse,
+  NetflowDetailRequest,
   NetflowDetailResponse,
   NetflowOrderResponse,
 } from "@/apis/models/netflow"
@@ -134,7 +135,7 @@ export const api = {
   netflow: {
     get: () => request.get<MonthNetflowResponse>("/netflow"),
     getOrder: () => request.get<NetflowOrderResponse>("/netflow/order"),
-    getDetail: (type: "month" | "day") => request.get<NetflowDetailResponse>("/netflow/detail", type),
+    getDetail: (data: NetflowDetailRequest) => request.get<NetflowDetailResponse>("/netflow/detail", data),
   },
   exam: {
     get: () => request.get<ExamResponse>("/exam"),

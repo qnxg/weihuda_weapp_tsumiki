@@ -66,6 +66,27 @@ export interface NetflowDetailItem {
 export type NetflowOrderResponse = NetflowOrderItem[]
 
 /**
+ * @description 流量明细请求类型
+ *   - month / day
+ */
+export type NetflowDetailRequestType = "month" | "day"
+
+/**
+ * @description 流量明细请求
+ * @property {NetflowDetailRequestType} type - 请求类型
+ * @property {number} year - 年
+ * @property {number} month - 月
+ * @property {number} [day] - 日 (仅 type 为 day 时需要)
+ * @see https://app.apifox.com/link/project/8311217/apis/api-471721458
+ */
+export interface NetflowDetailRequest {
+  type: NetflowDetailRequestType
+  year: number
+  month: number
+  day?: number
+}
+
+/**
  * @description 流量明细响应
  * @property {string} total - 总用量
  * @property {string} upload - 上传用量
