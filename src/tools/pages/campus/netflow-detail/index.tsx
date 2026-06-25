@@ -1,7 +1,7 @@
 import type { NetflowDetailItem, NetflowDetailRequestType } from "@/apis/models/netflow"
-import { View } from "@tarojs/components"
+import { Picker, View } from "@tarojs/components"
 import { hideToast, showToast } from "@tarojs/taro"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
@@ -11,9 +11,7 @@ import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/campus/netflow-detail/empty.svg"
-import { DayPicker } from "@/tools/pages/campus/netflow-detail/components/day-picker"
 import { Detail } from "@/tools/pages/campus/netflow-detail/components/detail"
-import { MonthPicker } from "@/tools/pages/campus/netflow-detail/components/month-picker"
 import { parseNetflowItemName } from "@/tools/pages/campus/netflow-detail/utils/detail"
 import dayjs from "@/utils/dayjs"
 
@@ -27,6 +25,9 @@ export default function NetflowDetail() {
   const [selectedYear, setSelectedYear] = useState(dayjs().year())
   const [selectedMonth, setSelectedMonth] = useState(dayjs().month() + 1)
   const [selectedDay, setSelectedDay] = useState(dayjs().date())
+
+  // picker 值
+  const picker = useMemo(() => dayjs([selectedYear, selectedMonth - 1, selectedDay]).format("YYYY-MM-DD"), [selectedYear, selectedMonth, selectedDay])
 
   // 详情弹窗
   const [activeItem, setActiveItem] = useState<NetflowDetailItem | null>(null)
@@ -79,26 +80,44 @@ export default function NetflowDetail() {
               <View className="flex-1">
                 {tab === "month"
                   ? (
-                      <MonthPicker
-                        year={selectedYear}
-                        month={selectedMonth}
-                        onChange={(year, month) => {
-                          setSelectedYear(year)
-                          setSelectedMonth(month)
+                      <Picker
+                        mode="date"
+                        fields="month"
+                        value={picker}
+                        onChange={(e) => {
+                          const newDate = dayjs(e.detail.value, "YYYY-MM")
+                          setSelectedYear(newDate.year())
+                          setSelectedMonth(newDate.month() + 1)
                         }}
-                      />
+                      >
+                        <View className="flex items-center justify-end text-primary">
+                          {selectedYear}
+                          {" 年 "}
+                          {selectedMonth}
+                          {" 月 "}
+                        </View>
+                      </Picker>
                     )
                   : (
-                      <DayPicker
-                        year={selectedYear}
-                        month={selectedMonth}
-                        day={selectedDay}
-                        onChange={(year, month, day) => {
-                          setSelectedYear(year)
-                          setSelectedMonth(month)
-                          setSelectedDay(day)
+                      <Picker
+                        mode="date"
+                        value={picker}
+                        onChange={(e) => {
+                          const newDate = dayjs(e.detail.value, "YYYY-MM-DD")
+                          setSelectedYear(newDate.year())
+                          setSelectedMonth(newDate.month() + 1)
+                          setSelectedDay(newDate.date())
                         }}
-                      />
+                      >
+                        <View className="flex items-center justify-end text-primary">
+                          {selectedYear}
+                          {" 年 "}
+                          {selectedMonth}
+                          {" 月 "}
+                          {selectedDay}
+                          {" 日"}
+                        </View>
+                      </Picker>
                     )}
               </View>
             </CardContent>

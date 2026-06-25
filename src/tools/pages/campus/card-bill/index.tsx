@@ -9,7 +9,6 @@ import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
-import { useUser } from "@/hooks/user"
 import EmptyIcon from "@/static/tools/campus/card-bill/empty.svg"
 import { Detail } from "@/tools/pages/campus/card-bill/components/detail"
 import dayjs from "@/utils/dayjs"
@@ -17,8 +16,6 @@ import dayjs from "@/utils/dayjs"
 type TabValue = CardRecordRequestType
 
 export default function CardBill() {
-  const { user } = useUser()
-
   // Tab 值
   const [tab, setTab] = useState<TabValue>("consumption")
 
@@ -26,12 +23,8 @@ export default function CardBill() {
   const [selectedYear, setSelectedYear] = useState(dayjs().year())
   const [selectedMonth, setSelectedMonth] = useState(dayjs().month() + 1)
 
-  const years = user?.enter
-    ? Array.from({ length: dayjs().year() - user.enter + 1 }).map((_, i) => dayjs().year() - i)
-    : [dayjs().year()]
-  const months = Array.from({ length: 12 }).map((_, i) => i + 1)
-
-  const [pickerValue, setPickerValue] = useState<[number, number]>([0, dayjs().month()])
+  // picker 值
+  const picker = dayjs([selectedYear, selectedMonth - 1]).format("YYYY-MM-DD")
 
   // 详情弹窗
   const [activeRecord, setActiveRecord] = useState<CardHistoryItem | null>(null)
@@ -76,17 +69,13 @@ export default function CardBill() {
               <View className="text-lg">选择年份/月份</View>
               <View className="flex-1">
                 <Picker
-                  mode="multiSelector"
-                  range={[years, months]}
-                  value={pickerValue}
-                  onColumnChange={(e) => {
-                    const newPickerValue = [...pickerValue] as [number, number]
-                    newPickerValue[e.detail.column] = e.detail.value
-                    setPickerValue(newPickerValue)
-                  }}
-                  onChange={() => {
-                    setSelectedYear(years[pickerValue[0]])
-                    setSelectedMonth(months[pickerValue[1]])
+                  mode="date"
+                  fields="month"
+                  value={picker}
+                  onChange={(e) => {
+                    const newDate = dayjs(e.detail.value, "YYYY-MM")
+                    setSelectedYear(newDate.year())
+                    setSelectedMonth(newDate.month() + 1)
                   }}
                 >
                   <View className="flex items-center justify-end text-primary">
