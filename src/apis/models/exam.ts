@@ -23,13 +23,7 @@ export interface ExamScheduleItem {
 }
 
 /**
- * @description 获取考试安排列表响应数据
- * @see https://app.apifox.com/link/project/8311217/apis/api-472399229
- */
-export type ExamResponse = ExamScheduleItem[]
-
-/**
- * @description 添加自定义考试安排请求数据
+ * @description 自定义考试安排请求体
  * @property {string} course_name - 考试名称
  * @property {string} area - 考试地点
  * @property {string} classroom - 考场
@@ -37,20 +31,31 @@ export type ExamResponse = ExamScheduleItem[]
  * @property {string} date - 考试日期
  * @property {string} start_time - 开始时间
  * @property {string} end_time - 结束时间
- * @see https://app.apifox.com/link/project/8311217/apis/api-472400427
  */
-export interface ExamPostRequest {
+export interface CustomScheduleRequest {
   course_name: string
-  area: string | null
-  classroom: string | null
-  seat: string | null
+  area: string
+  classroom: string
+  seat: string
   date: string
   start_time: string
   end_time: string
 }
 
 /**
+ * @description 获取考试安排列表响应数据
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472399229
+ */
+export type ExamResponse = ExamScheduleItem[]
+
+/**
+ * @description 添加自定义考试安排请求数据
+ * @see https://app.apifox.com/link/project/8311217/apis/api-472400427
+ */
+export type ExamPostRequest = CustomScheduleRequest
+
+/**
  * @description 修改自定义考试安排请求数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-472400932
  */
-export type ExamPutRequest = ExamPostRequest
+export type ExamPutRequest = CustomScheduleRequest
