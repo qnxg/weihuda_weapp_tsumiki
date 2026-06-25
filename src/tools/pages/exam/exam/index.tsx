@@ -5,6 +5,7 @@ import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
+import { Calender } from "@/tools/pages/exam/exam/components/calender"
 import { Custom } from "@/tools/pages/exam/exam/components/custom"
 import { Detail } from "@/tools/pages/exam/exam/components/detail"
 import { List } from "@/tools/pages/exam/exam/components/list"
@@ -52,7 +53,16 @@ export default function ExamArrange() {
       >
         {tab === "list" && (
           <List
-            data={data}
+            exams={data}
+            onShowDetail={(item) => {
+              setActiveExam(item)
+              setOverlayContentKey("detail")
+            }}
+          />
+        )}
+        {tab === "calender" && (
+          <Calender
+            exams={data}
             onShowDetail={(item) => {
               setActiveExam(item)
               setOverlayContentKey("detail")
