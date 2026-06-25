@@ -10,8 +10,7 @@ import EmptyRoomIcon from "@/static/toolkit/campus/empty-room.svg"
 import NetworkBillIcon from "@/static/toolkit/campus/network-bill.svg"
 import NetworkDetailIcon from "@/static/toolkit/campus/network-detail.svg"
 import PhysicalStandardIcon from "@/static/toolkit/campus/physical-standard.svg"
-import CustomExamIcon from "@/static/toolkit/exam/custom-exam.svg"
-import ExamArrangeIcon from "@/static/toolkit/exam/exam-arrange.svg"
+import ExamIcon from "@/static/toolkit/exam/exam.svg"
 import ExperimentArrangeIcon from "@/static/toolkit/exam/experiment-arrange.svg"
 import PhysicalAppointIcon from "@/static/toolkit/exam/physical-appoint.svg"
 import ExperimentGradeIcon from "@/static/toolkit/grade/experiment-grade.svg"
@@ -38,9 +37,8 @@ const sections: SectionItem[] = [
     title: "课程与考试",
     items: [
       { title: "实验安排", icon: ExperimentArrangeIcon, to: "/tools/pages/exam/experiment-arrange/index" },
-      { title: "考试安排", icon: ExamArrangeIcon, to: "/tools/pages/exam/exam-arrange/index" },
+      { title: "考试安排", icon: ExamIcon, to: "/tools/pages/exam/exam/index" },
       { title: "体测预约", icon: PhysicalAppointIcon, to: "/tools/pages/exam/physical-appoint/index" },
-      { title: "自定义考试", icon: CustomExamIcon, to: "/tools/pages/exam/custom-exam/index" },
     ],
   },
   {

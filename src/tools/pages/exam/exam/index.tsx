@@ -5,9 +5,9 @@ import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
-import { Custom } from "@/tools/pages/exam/exam-arrange/components/custom"
-import { Detail } from "@/tools/pages/exam/exam-arrange/components/detail"
-import { List } from "@/tools/pages/exam/exam-arrange/components/list"
+import { Custom } from "@/tools/pages/exam/exam/components/custom"
+import { Detail } from "@/tools/pages/exam/exam/components/detail"
+import { List } from "@/tools/pages/exam/exam/components/list"
 
 /**
  * @description 覆盖层内容类型
