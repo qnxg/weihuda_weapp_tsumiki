@@ -1,6 +1,6 @@
 import type { NetflowDetailItem, NetflowDetailRequestType } from "@/apis/models/netflow"
 import { Picker, View } from "@tarojs/components"
-import { hideToast, showToast } from "@tarojs/taro"
+import { hideLoading, showLoading } from "@tarojs/taro"
 import { useEffect, useMemo, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -45,13 +45,12 @@ export default function NetflowDetail() {
 
   useEffect(() => {
     if (isLoading) {
-      void showToast({
-        title: "加载中",
-        icon: "loading",
+      void showLoading({
+        title: "加载中...",
       })
     }
     else {
-      hideToast()
+      hideLoading()
     }
   }, [isLoading])
 

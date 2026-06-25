@@ -1,6 +1,6 @@
 import type { RankRequest, RankResponse } from "@/apis/models/rank"
 import { Picker, View } from "@tarojs/components"
-import { hideToast, showToast } from "@tarojs/taro"
+import { hideLoading, showLoading, showToast } from "@tarojs/taro"
 import { useCallback, useMemo, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -96,7 +96,7 @@ export function HDJW() {
           request,
           response: res.data,
         })
-        hideToast()
+        hideLoading()
       })
       .catch((err) => {
         switch (err.code) {
@@ -121,9 +121,8 @@ export function HDJW() {
     if (isLoading)
       return
 
-    void showToast({
+    void showLoading({
       title: "加载中...",
-      icon: "loading",
     })
     void fetchRank(form)
   }

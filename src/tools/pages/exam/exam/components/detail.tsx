@@ -1,7 +1,7 @@
 import type { ExamScheduleItem } from "@/apis/models/exam"
 import type { OptionItem } from "@/components/options"
 import { View } from "@tarojs/components"
-import { hideToast, showToast } from "@tarojs/taro"
+import { hideLoading, showLoading, showToast } from "@tarojs/taro"
 import { useState } from "react"
 import { api } from "@/apis"
 import { Option, Options } from "@/components/options"
@@ -40,13 +40,12 @@ export function Detail({
     const res = await showModal("确认删除", `确认删除 ${exam.course_name} 的考试安排吗?`, "dangerous")
 
     if (res) {
-      void showToast({
+      void showLoading({
         title: "删除中...",
-        icon: "loading",
       })
       api.exam.delete(exam.customize_id)
         .then(() => {
-          hideToast()
+          hideLoading()
           showToast({
             title: "已删除",
             icon: "success",

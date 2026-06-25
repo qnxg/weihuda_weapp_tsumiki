@@ -1,5 +1,5 @@
 import { View } from "@tarojs/components"
-import { hideToast, showToast } from "@tarojs/taro"
+import { hideLoading, showLoading } from "@tarojs/taro"
 import { useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -37,18 +37,17 @@ export default function Electricity() {
       return
 
     setIsUpdating(true)
-    void showToast({
-      title: "更新中",
-      icon: "loading",
+    void showLoading({
+      title: "更新中...",
     })
     api.dorm.put()
       .then(async () => {
         await refetch()
-        hideToast()
+        hideLoading()
         showModal("宿舍信息已更新", "如宿舍信息有误或无法获取, 请前往\"我的/问题反馈\"上报问题")
       })
       .catch((err) => {
-        hideToast()
+        hideLoading()
         switch (err.code) {
           case "DORM_NOT_FOUND":
             showModal("宿舍信息未找到", "请前往\"我的/问题反馈\"上报问题")
