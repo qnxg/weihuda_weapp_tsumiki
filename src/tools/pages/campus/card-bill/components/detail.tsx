@@ -1,4 +1,4 @@
-import type { CardHistoryItem } from "@/apis/models/card"
+import type { CardRecordItem } from "@/apis/models/card"
 import type { OptionItem } from "@/components/options"
 import { View } from "@tarojs/components"
 import { Options } from "@/components/options"
@@ -9,7 +9,7 @@ export function Detail({
   record,
   onClose,
 }: Readonly<{
-  record: CardHistoryItem
+  record: CardRecordItem
   onClose: () => void
 }>) {
   const options: OptionItem[] = [

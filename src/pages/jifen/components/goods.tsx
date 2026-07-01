@@ -57,7 +57,7 @@ export function Goods({
       {!data || data.length === 0
         ? <View className="h flex center text-lg">{isLoading ? "加载中" : "暂无记录"}</View>
         : data.map((item, index) => {
-            const active = item.count > 0 && jifen >= item.price && !item.in_redeem
+            const active = item.count > 0 && jifen >= item.price
 
             return (
               <View
@@ -88,11 +88,9 @@ export function Goods({
                       disabled={!active}
                       onClick={() => handleClick(item.id)}
                     >
-                      {item.in_redeem
-                        ? "兑换中"
-                        : item.count <= 0
-                          ? "已兑完"
-                          : jifen < item.price ? "积分不足" : "兑换"}
+                      {item.count <= 0
+                        ? "已兑完"
+                        : jifen < item.price ? "积分不足" : "兑换"}
                     </MyButton>
                   </View>
                 </View>

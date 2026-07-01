@@ -77,7 +77,7 @@ export function Netflow({
                   <View>
                     当前欠费:
                     {" "}
-                    {data.arrears}
+                    {data.overdue_payment}
                     元
                   </View>
                   <View>

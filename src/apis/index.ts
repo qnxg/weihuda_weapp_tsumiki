@@ -1,4 +1,6 @@
+import type { ClasstableGetRequest, ClasstableGetResponse } from "./models/classtable"
 import type { AnnouncementResponse } from "@/apis/models/announcement"
+
 import type {
   AuthLoginRequest,
   AuthLoginResponse,
@@ -6,20 +8,14 @@ import type {
   AuthPowResponse,
   AuthRefreshRequest,
   AuthRefreshResponse,
-  AuthTFAResquest,
+  AuthTFARequest,
 } from "@/apis/models/auth"
-
 import type { CardInfoResponse, CardRecordRequest, CardRecordResponse } from "@/apis/models/card"
 import type {
-  CourseDeleteRequest,
+  CourseCustomPostRequest,
+  CourseCustomPutRequest,
   CourseGetExtraRequest,
   CourseGetExtraResponse,
-  CourseGetRequest,
-  CourseGetResponse,
-  CoursePostRequest,
-  CoursePostResponse,
-  CoursePutRequest,
-  CoursePutResponse,
 } from "@/apis/models/course"
 import type { DormResponse, ElectricityResponse } from "@/apis/models/electricity"
 import type { EmailResponse } from "@/apis/models/email"
@@ -51,6 +47,7 @@ import type {
   JifenGetRecordRequest,
   JifenGetRecordResponse,
   JifenGetResponse,
+  JifenPostResponse,
 } from "@/apis/models/jifen"
 import type { IndexCardSettingRequestData, MeResponse, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
 import type {
@@ -70,11 +67,11 @@ import { request } from "@/libs/auth-request"
 export const api = {
   base: () => request.get<{ hello: string }>("/"),
   auth: {
-    login: (data: AuthLoginRequest) => request.get<AuthLoginResponse>("/auth/login", data),
-    refresh: (data: AuthRefreshRequest) => request.get<AuthRefreshResponse>("/auth/refresh", data),
+    login: (data: AuthLoginRequest) => request.post<AuthLoginResponse>("/auth/login", data),
+    refresh: (data: AuthRefreshRequest) => request.post<AuthRefreshResponse>("/auth/refresh", data),
     tfa: {
       get: () => request.get("/auth/tfa"),
-      post: (data: AuthTFAResquest) => request.post("/auth/tfa", data),
+      post: (data: AuthTFARequest) => request.post("/auth/tfa", data),
     },
     unbind: () => request.get("/auth/unbind"),
     pow: (data: AuthPowRequest) => request.get<AuthPowResponse>("/auth/pow", data),
@@ -83,24 +80,28 @@ export const api = {
     get: () => request.get<MeResponse>("/me"),
     setting: {
       get: () => request.get<MeSettingResponse>("/me/setting"),
-      getIndexCard: () => request.get<IndexCardSettingRequestData>("/me/setting/index_card_setting"),
-      getTable: () => request.get<TableSettingRequestData>("/me/setting/table_setting"),
-      putIndexCard: (data: IndexCardSettingRequestData) => request.put<IndexCardSettingRequestData>("/me/setting/index_card_setting", data),
-      putTable: (data: TableSettingRequestData) => request.put<TableSettingRequestData>("/me/setting/table_setting", data),
+      getIndexCard: () => request.get<IndexCardSettingRequestData>("/me/setting/index_card"),
+      getTable: () => request.get<TableSettingRequestData>("/me/setting/table"),
+      putIndexCard: (data: IndexCardSettingRequestData) => request.put<IndexCardSettingRequestData>("/me/setting/index_card", data),
+      putTable: (data: TableSettingRequestData) => request.put<TableSettingRequestData>("/me/setting/table", data),
     },
   },
   announcement: () => request.get<AnnouncementResponse>("/announcement"),
   semester: (data?: SemesterRequest) => request.get<SemesterResponse>("/semester", data),
+  classtable: {
+    get: (data: ClasstableGetRequest) => request.get<ClasstableGetResponse>("/classtable", data),
+  },
   course: {
-    get: (data: CourseGetRequest) => request.get<CourseGetResponse>("/course", data),
     getExtra: (data: CourseGetExtraRequest) => request.get<CourseGetExtraResponse>("/course/extra", data),
-    post: (data: CoursePostRequest) => request.post<CoursePostResponse>("/course", data),
-    put: (customize_id: number, data: CoursePutRequest) => request.put<CoursePutResponse>(`/course/${customize_id}`, data),
-    delete: (customize_id: number, data: CourseDeleteRequest) => request.delete(`/course/${customize_id}`, data),
+    custom: {
+      post: (data: CourseCustomPostRequest) => request.post("/course/custom", data),
+      put: (customize_id: number, data: CourseCustomPutRequest) => request.put(`/course/custom/${customize_id}`, data),
+      delete: (customize_id: number) => request.delete(`/course/custom/${customize_id}`),
+    },
   },
   jifen: {
     get: () => request.get<JifenGetResponse>("/jifen"),
-    post: () => request.post("/jifen"),
+    post: () => request.post<JifenPostResponse>("/jifen"),
     getRecord: (data: JifenGetRecordRequest) => request.get<JifenGetRecordResponse>("/jifen/record", data),
     getGoods: () => request.get<JifenGetGoodsResponse>("/jifen/goods"),
     postGoods: (id: number) => request.post(`/jifen/goods/${id}`),

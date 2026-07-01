@@ -215,7 +215,7 @@ interface CachedRequestOptions {
  * @property {boolean} isLoading - 是否加载中
  * @property {boolean} isUpdating - 是否更新缓存中
  * @property {boolean} isIdle - 是否空闲
- * @property {() => Promise<T | null>} refetch - 重新发起请求，非 idle 时 resolve null，成功时 resolve T，请求失败时 reject
+ * @property {() => Promise<T | null>} refetch - 重新发起请求, 非 idle 时 resolve null, 成功时 resolve T, 请求失败时 reject
  */
 interface CachedRequestResult<T> {
   status: Status

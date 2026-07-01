@@ -65,7 +65,7 @@ const STATUS_TEXT: Record<PullStatus, string> = {
 /**
  * @description 下拉刷新组件
  * @example
- * 非受控模式：接受一个 Promise, 会在下拉时进入刷新状态, 触发 Promise, 并在 Promise 完成后恢复初始状态
+ * 非受控模式: 接受一个 Promise, 会在下拉时进入刷新状态, 触发 Promise, 并在 Promise 完成后恢复初始状态
  * ```tsx
  * <PullRefresh
  *   className="h-full"
@@ -75,7 +75,7 @@ const STATUS_TEXT: Record<PullStatus, string> = {
  * </PullRefresh>
  * ```
  * @example
- * 受控模式：通过 isRefreshing 控制刷新状态，需要手动管理刷新状态的开启和关闭
+ * 受控模式: 通过 isRefreshing 控制刷新状态, 需要手动管理刷新状态的开启和关闭
  * ```tsx
  * <PullRefresh
  *   className="h-full"
@@ -143,7 +143,7 @@ function PullRefresh({
       showScrollbar={false}
       refresherEnabled
       refresherThreshold={HEAD_HEIGHT}
-      refresherBackground={isDark ? "#000000" : "#fafafa"} // 同 bg-page
+      refresherBackground={isDark ? "#000000" : "#f9f9f9"} // 同 bg-page
       refresherDefaultStyle="none"
       refresherTriggered={triggered}
       onRefresherPulling={onPulling}

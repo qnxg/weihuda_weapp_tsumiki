@@ -1,4 +1,4 @@
-import type { CourseItem } from "@/apis/models/course"
+import type { ClasstableItem } from "@/apis/models/classtable"
 import type { Status } from "@/hooks/cached-request"
 import type { Semester } from "@/types/semester"
 import { View } from "@tarojs/components"
@@ -20,7 +20,7 @@ import { TimeHeader } from "@/pages/table/components/time-header"
 import { colorCourses, formatCourses, getInitCells, mergeCells } from "@/pages/table/utils/course"
 import { getSemesterDateInfo, getSemesterName } from "@/utils/semester"
 
-export type CourseItemWithColor = CourseItem & {
+export type CourseItemWithColor = ClasstableItem & {
   bgColor: string
   color: string
 }

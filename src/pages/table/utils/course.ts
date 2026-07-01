@@ -1,4 +1,4 @@
-import type { CourseItem } from "@/apis/models/course"
+import type { ClasstableItem } from "@/apis/models/classtable"
 import type { Cell, CourseItemWithColor } from "@/pages/table"
 import { BG_COLOR, FONT_COLOR } from "@/config/color"
 
@@ -23,14 +23,14 @@ export function getInitCells(): Cell[][] {
  *   - 根据课程名称为课程进行循环染色
  *   - 先染色固定课程, 再染色自定义课程, 确保同名课程颜色一致, 不同课程颜色尽可能不同
  */
-export function colorCourses(courses: CourseItem[]): CourseItemWithColor[] {
+export function colorCourses(courses: ClasstableItem[]): CourseItemWithColor[] {
   // 获取课程名称列表并去重排序
-  const getNames = (courses: CourseItem[]) => Array.from(
+  const getNames = (courses: ClasstableItem[]) => Array.from(
     new Set(courses.map(c => c.course_name)),
   ).toSorted((a, b) => a.localeCompare(b, "zh-CN"))
 
   // 循环染色函数
-  const colorizer = (courses: CourseItem[], names: string[], start: number = 0): CourseItemWithColor[] => {
+  const colorizer = (courses: ClasstableItem[], names: string[], start: number = 0): CourseItemWithColor[] => {
     const map = new Map<string, number>(
       names.map((n, i) => [n, (i + start) % COLOR_NUM]),
     )
@@ -42,8 +42,8 @@ export function colorCourses(courses: CourseItem[]): CourseItemWithColor[] {
     }))
   }
 
-  const fixedCourses = courses.filter(c => c.customize_id === -1)
-  const customizedCourses = courses.filter(c => c.customize_id !== -1)
+  const fixedCourses = courses.filter(c => c.customize_id == null)
+  const customizedCourses = courses.filter(c => c.customize_id != null)
   const fixedCourseNames = getNames(fixedCourses)
   const customizedCourseNames = getNames(customizedCourses)
 
@@ -87,7 +87,7 @@ export function mergeCells(cells: Cell[][]): Cell[][] {
       "course_id",
       "course_name",
       "class_name",
-      "type",
+      "course_type",
       "credit",
       // "weeks", 非基本类型, 需特殊处理
       "day",

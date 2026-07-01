@@ -87,7 +87,7 @@ function OverlayMask({
 }
 
 /**
- * @description 底部弹出式弹窗组件（需外层包裹 Overlay 使用）
+ * @description 底部弹出式弹窗组件(需外层包裹 Overlay 使用)
  * @example
  * ```tsx
  * <Overlay>
