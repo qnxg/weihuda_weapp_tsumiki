@@ -18,7 +18,7 @@ export interface FeedbackReplyItem {
 /**
  * @description 反馈项
  * @property {number} id - 反馈 ID
- * @property {string} contact - 联系方式（电子邮箱）
+ * @property {string} contact - 联系方式(电子邮箱)
  * @property {string} description - 内容
  * @property {string} img - 附加图片 ID
  * @property {string} created_at - 创建时间
@@ -39,8 +39,8 @@ export interface FeedbackItem {
 
 /**
  * @description 获取反馈列表请求数据
- * @property {number} [page] - 页码，默认为 1
- * @property {number} [size] - 每页返回数量，默认为 20
+ * @property {number} [page] - 页码, 默认为 1
+ * @property {number} [size] - 每页返回数量, 默认为 20
  * @see https://app.apifox.com/link/project/8311217/apis/api-472411023
  */
 export interface FeedbackGetRequest {
@@ -61,7 +61,7 @@ export interface FeedbackGetResponse {
 
 /**
  * @description 提交问题反馈请求数据
- * @property {string} contact - 联系方式（电子邮箱）
+ * @property {string} contact - 联系方式(电子邮箱)
  * @property {string} description - 内容
  * @property {string} img - 附加图片 ID
  * @see https://app.apifox.com/link/project/8311217/apis/api-472415980
@@ -79,7 +79,7 @@ export type FeedbackPostResponse = never
 
 /**
  * @description 未登录提交问题反馈请求数据
- * @property {string} contact - 联系方式（电子邮箱）
+ * @property {string} contact - 联系方式(电子邮箱)
  * @property {string} description - 内容
  * @property {string} stu_id - 学号
  * @see https://app.apifox.com/link/project/8311217/apis/api-472416281

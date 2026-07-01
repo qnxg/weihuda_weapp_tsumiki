@@ -5,7 +5,7 @@ import type { Semester } from "@/types/semester"
  * @property {string} course_id - 课程代码
  * @property {string} course_name - 课程名称
  * @property {string} class_name - 上课班级
- * @property {string} course_type - 课程类型, 如通识必修、专业选修
+ * @property {string} course_type - 课程类型, 如通识必修, 专业选修
  * @property {number} credit - 学分
  * @property {string | null} extra - 额外备注信息
  * @property {string} area - 校区

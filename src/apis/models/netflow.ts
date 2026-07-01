@@ -69,7 +69,7 @@ export type NetflowOrderResponse = NetflowOrderItem[]
  * @description 流量明细请求
  * @property {number} year - 年
  * @property {number} month - 月
- * @property {number} [day] - 日，不提供该值则为按月查询，否则为按天查询
+ * @property {number} [day] - 日. 不提供该值则为按月查询, 否则为按天查询
  * @see https://app.apifox.com/link/project/8311217/apis/api-471721458
  */
 export interface NetflowDetailRequest {

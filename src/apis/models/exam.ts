@@ -1,6 +1,6 @@
 /**
  * @description 考试安排项
- * @property {string} course_id - 课程代码，自定义考试安排为 NULL
+ * @property {string} course_id - 课程代码, 自定义考试安排为 null
  * @property {string} course_name - 课程名称/考试名称
  * @property {string} area - 考试校区/考试地点
  * @property {string} classroom - 考试的教室/考场
@@ -8,7 +8,7 @@
  * @property {string} start_time - 开始时间
  * @property {string} end_time - 结束时间
  * @property {string} seat - 座位号
- * @property {number} customize_id - 自定义考试安排 id，非自定义考试安排为 -1
+ * @property {number} customize_id - 自定义考试安排 id, 非自定义考试安排为 -1
  */
 export interface ExamScheduleItem {
   course_id: string | null
