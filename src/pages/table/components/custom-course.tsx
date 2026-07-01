@@ -148,13 +148,10 @@ export function CustomCourse({
     }
 
     void showLoading({ title: "正在保存..." })
-    const request = course
-      ? api.course.put(course.customize_id, {
-          xn: semester.xn,
-          xq: semester.xq,
-          course: data,
-        })
-      : api.course.post({
+    const customizeId = course?.customize_id
+    const request = customizeId != null
+      ? api.course.custom.put(customizeId, data)
+      : api.course.custom.post({
           xn: semester.xn,
           xq: semester.xq,
           course: data,
@@ -228,7 +225,7 @@ export function CustomCourse({
             <Input
               placeholder="请输入教师名称"
               className="flex-1"
-              value={data.teacher}
+              value={data.teacher ?? ""}
               onInput={(e) => {
                 setData(p => ({
                   ...p,
@@ -243,7 +240,7 @@ export function CustomCourse({
             <Input
               placeholder="请输入教室位置"
               className="flex-1"
-              value={data.place}
+              value={data.place ?? ""}
               onInput={(e) => {
                 setData(p => ({
                   ...p,

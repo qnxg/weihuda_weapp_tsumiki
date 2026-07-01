@@ -64,7 +64,7 @@ export function Record({
               className="flex items-center justify-between text-lg"
             >
               <View>
-                {dayjs(item.create_at).format("YYYY-MM-DD")}
+                {dayjs(item.created_at).format("YYYY-MM-DD")}
                 {" "}
                 {item.description}
               </View>

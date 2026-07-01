@@ -1,4 +1,4 @@
-import type { CustomScheduleRequest, ExamScheduleItem } from "@/apis/models/exam"
+import type { CustomExamScheduleRequest, ExamScheduleItem } from "@/apis/models/exam"
 import { Input, Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading, showToast } from "@tarojs/taro"
 import { useState } from "react"
@@ -19,7 +19,7 @@ export function Custom({
   const title = exam ? "编辑考试内容" : "添加考试内容"
 
   // 表单值
-  const [data, setData] = useState<CustomScheduleRequest>({
+  const [data, setData] = useState<CustomExamScheduleRequest>({
     course_name: exam?.course_name ?? "",
     area: exam?.area ?? "",
     classroom: exam?.classroom ?? "",

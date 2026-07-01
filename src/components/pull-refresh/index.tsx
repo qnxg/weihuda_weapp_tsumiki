@@ -143,7 +143,7 @@ function PullRefresh({
       showScrollbar={false}
       refresherEnabled
       refresherThreshold={HEAD_HEIGHT}
-      refresherBackground={isDark ? "#000000" : "#fafafa"} // 同 bg-page
+      refresherBackground={isDark ? "#000000" : "#f9f9f9"} // 同 bg-page
       refresherDefaultStyle="none"
       refresherTriggered={triggered}
       onRefresherPulling={onPulling}

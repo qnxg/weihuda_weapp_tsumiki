@@ -49,7 +49,7 @@ export function ExtraCourses({
                   { title: "教师", content: course.teacher },
                   { title: "上课班级", content: course.class_name },
                   { title: "校区", content: course.area },
-                  { title: "课程性质", content: course.type },
+                  { title: "课程性质", content: course.course_type },
                   { title: "学分", content: course.credit },
                   { title: "人数", content: course.people },
                   { title: "备注", content: course.extra },

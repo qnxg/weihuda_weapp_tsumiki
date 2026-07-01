@@ -32,7 +32,7 @@ export interface ExamScheduleItem {
  * @property {string} start_time - 开始时间
  * @property {string} end_time - 结束时间
  */
-export interface CustomScheduleRequest {
+export interface CustomExamScheduleRequest {
   course_name: string
   area: string
   classroom: string
@@ -52,10 +52,10 @@ export type ExamResponse = ExamScheduleItem[]
  * @description 添加自定义考试安排请求数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-472400427
  */
-export type ExamPostRequest = CustomScheduleRequest
+export type ExamPostRequest = CustomExamScheduleRequest
 
 /**
  * @description 修改自定义考试安排请求数据
  * @see https://app.apifox.com/link/project/8311217/apis/api-472400932
  */
-export type ExamPutRequest = CustomScheduleRequest
+export type ExamPutRequest = CustomExamScheduleRequest

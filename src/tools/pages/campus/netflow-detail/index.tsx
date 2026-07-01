@@ -1,4 +1,4 @@
-import type { NetflowDetailItem, NetflowDetailRequestType } from "@/apis/models/netflow"
+import type { NetflowDetailItem } from "@/apis/models/netflow"
 import { Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading } from "@tarojs/taro"
 import { useEffect, useMemo, useState } from "react"
@@ -15,7 +15,7 @@ import { Detail } from "@/tools/pages/campus/netflow-detail/components/detail"
 import { parseNetflowItemName } from "@/tools/pages/campus/netflow-detail/utils/detail"
 import dayjs from "@/utils/dayjs"
 
-type TabValue = NetflowDetailRequestType
+type TabValue = "month" | "day"
 
 export default function NetflowDetail() {
   // Tab 值
@@ -34,7 +34,6 @@ export default function NetflowDetail() {
 
   const { data, isLoading, refetch } = useRequest(
     () => api.netflow.getDetail({
-      type: tab,
       year: selectedYear,
       month: selectedMonth,
       day: tab === "month" ? undefined : selectedDay,
@@ -143,10 +142,10 @@ export default function NetflowDetail() {
 
                     <Options>
                       {data.items.map((item, index) => {
-                        const { title, content } = parseNetflowItemName(item.name)
+                        const { title, content } = parseNetflowItemName(item.app)
                         return (
                           <Card
-                            key={`${item.name}-${index}`}
+                            key={`${item.app}-${index}`}
                             className="bg"
                             onClick={() => setActiveItem(item)}
                           >

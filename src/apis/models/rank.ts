@@ -57,7 +57,7 @@ export type RankRequestRange = "major" | "minor"
  * @description 排名数据来源枚举
  *   - 成绩总库 / 执行方案
  */
-export type RankRequesetDataSource = "total" | "execution"
+export type RankRequestDataSource = "total" | "execution"
 
 /**
  * @description 排名显示方式枚举
@@ -78,6 +78,6 @@ export interface RankRequest {
   xn?: XN
   xq?: Extract<XQ, "autumn" | "spring" | "summer">
   range: RankRequestRange
-  data_source: RankRequesetDataSource
+  data_source: RankRequestDataSource
   display: RankRequestDisplay
 }

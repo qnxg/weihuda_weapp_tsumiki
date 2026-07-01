@@ -49,7 +49,8 @@ export function Detail({
       return
     }
 
-    if (course.customize_id === -1)
+    const customizeId = course.customize_id
+    if (customizeId == null)
       return
 
     void showModal(
@@ -58,7 +59,7 @@ export function Detail({
       "dangerous",
       () => {
         void showLoading({ title: "加载中..." })
-        api.course.delete(course.customize_id, { xn: semester.xn, xq: semester.xq })
+        api.course.custom.delete(customizeId)
           .then(() => {
             hideLoading()
             onCustomDelete()
@@ -129,7 +130,7 @@ export function Detail({
               >
                 <View className="p flex flex-col gap">
                   <View className="flex flex-col">
-                    <View>{course.type}</View>
+                    <View>{course.course_type}</View>
                     <View>{course.course_id}</View>
                   </View>
 
@@ -177,7 +178,7 @@ export function Detail({
                     </View>
                   </View>
 
-                  {course.customize_id !== -1 && (
+                  {course.customize_id != null && (
                     <View
                       className="absolute flex flex-col items-center gap-xs"
                       style={{

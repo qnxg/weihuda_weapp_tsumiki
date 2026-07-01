@@ -1,4 +1,5 @@
-import type { CourseItem, ExtraCourseItem } from "@/apis/models/course"
+import type { ClasstableItem } from "@/apis/models/classtable"
+import type { ExtraCourseItem } from "@/apis/models/course"
 import type { Semester } from "@/types/semester"
 import { useCallback, useMemo } from "react"
 import { api } from "@/apis"
@@ -6,7 +7,7 @@ import { STORAGE } from "@/config/storage-key"
 import { useCachedRequest } from "@/hooks/cached-request"
 import { mockRequest } from "@/utils/mock-request"
 
-type CourseResult = ReturnType<typeof useCachedRequest<CourseItem[]>>
+type CourseResult = ReturnType<typeof useCachedRequest<ClasstableItem[]>>
 type ExtraCourseResult = ReturnType<typeof useCachedRequest<ExtraCourseItem[]>>
 
 /**
@@ -17,7 +18,7 @@ export function useCourse(semester: Semester | null): CourseResult {
   // 在 semester 未就绪时使用一个立即 resolve 的空请求函数, 以兼容 useCachedRequest
   // 为使类型定义更为简单, 使用 mockRequest 作为上述 "立即 resolve 的空请求函数"
   const fn = useCallback(() => semester
-    ? api.course.get(semester)
+    ? api.classtable.get(semester)
     : mockRequest([], { delay: 0 }), [semester])
 
   const key = useMemo(() => semester
