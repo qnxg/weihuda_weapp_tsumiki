@@ -1,4 +1,4 @@
-import type { CardHistoryItem, CardRecordRequestType } from "@/apis/models/card"
+import type { CardRecordItem, CardRecordRequestType } from "@/apis/models/card"
 import { Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading } from "@tarojs/taro"
 import { useEffect, useState } from "react"
@@ -27,7 +27,7 @@ export default function CardBill() {
   const picker = dayjs([selectedYear, selectedMonth - 1]).format("YYYY-MM-DD")
 
   // 详情弹窗
-  const [activeRecord, setActiveRecord] = useState<CardHistoryItem | null>(null)
+  const [activeRecord, setActiveRecord] = useState<CardRecordItem | null>(null)
 
   const { data, isLoading, refetch } = useRequest(
     () => api.card.record({ type: tab, year: selectedYear, month: selectedMonth }),

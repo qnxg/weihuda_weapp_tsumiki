@@ -47,7 +47,7 @@ export interface AuthRefreshResponse {
  * @property {string} code - 验证码
  * @see https://app.apifox.com/link/project/8311217/apis/api-461750066
  */
-export interface AuthTFAResquest {
+export interface AuthTFARequest {
   code: string
 }
 

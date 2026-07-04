@@ -12,7 +12,7 @@ export function Detail({
   item: NetflowDetailItem
   onClose: () => void
 }>) {
-  const { title, content } = parseNetflowItemName(item.name)
+  const { title, content } = parseNetflowItemName(item.app)
 
   const options: OptionItem[] = [
     { title: "应用分类", content: title },

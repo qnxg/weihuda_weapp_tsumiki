@@ -1,6 +1,6 @@
 /**
  * @description 解析流量应用名称
- * @param name - 原始名称，格式如 "分类/应用名"
+ * @param name - 原始名称, 格式如 "分类/应用名"
  */
 export function parseNetflowItemName(name: string) {
   const parts = name.split("/")

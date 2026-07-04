@@ -1,6 +1,6 @@
 /**
  * @description 本月流量信息响应
- * @property {number} arrears - 欠费
+ * @property {number} overdue_payment - 欠费
  * @property {string} total - 总用量
  * @property {string} upload - 上传用量
  * @property {string} download - 下载用量
@@ -12,7 +12,7 @@
  * @see https://app.apifox.com/link/project/8311217/apis/api-471721360
  */
 export interface MonthNetflowResponse {
-  arrears: number
+  overdue_payment: number
   total: string
   upload: string
   download: string
@@ -29,34 +29,34 @@ export interface MonthNetflowResponse {
  * @property {number} month - 月
  * @property {string} download - 下载流量
  * @property {string} upload - 上传流量
- * @property {number} over - 超出流量
+ * @property {string} over - 超出流量
  * @property {number} amount - 需缴费用
- * @property {string} update_at - 更新时间
+ * @property {string} updated_at - 更新时间
  */
 export interface NetflowOrderItem {
   year: number
   month: number
   download: string
   upload: string
-  over: number
+  over: string
   amount: number
-  update_at: string
+  updated_at: string
 }
 
 /**
  * @description 流量明细项
- * @property {string} name - 应用名称
+ * @property {string} app - 应用名称
  * @property {string} total - 总用量
  * @property {string} download - 下载用量
  * @property {string} upload - 上传用量
- * @property {string} percentage - 占比
+ * @property {number} percentage - 占比
  */
 export interface NetflowDetailItem {
-  name: string
+  app: string
   total: string
   download: string
   upload: string
-  percentage: string
+  percentage: number
 }
 
 /**
@@ -66,21 +66,13 @@ export interface NetflowDetailItem {
 export type NetflowOrderResponse = NetflowOrderItem[]
 
 /**
- * @description 流量明细请求类型
- *   - month / day
- */
-export type NetflowDetailRequestType = "month" | "day"
-
-/**
  * @description 流量明细请求
- * @property {NetflowDetailRequestType} type - 请求类型
  * @property {number} year - 年
  * @property {number} month - 月
- * @property {number} [day] - 日 (仅 type 为 day 时需要)
+ * @property {number} [day] - 日. 不提供该值则为按月查询, 否则为按天查询
  * @see https://app.apifox.com/link/project/8311217/apis/api-471721458
  */
 export interface NetflowDetailRequest {
-  type: NetflowDetailRequestType
   year: number
   month: number
   day?: number

@@ -3,13 +3,13 @@
  * @property {number} id - 记录 ID
  * @property {number} jifen - 积分变动数量
  * @property {string} description - 记录描述
- * @property {string} create_at - 记录创建时间
+ * @property {string} created_at - 记录创建时间
  */
 export interface JifenRecordItem {
   id: number
   jifen: number
   description: string
-  create_at: string
+  created_at: string
 }
 
 /**
@@ -19,8 +19,7 @@ export interface JifenRecordItem {
  * @property {string} cover - 奖品图片 URL
  * @property {number} count - 奖品数量
  * @property {number} price - 奖品价格(积分)
- * @property {string} description - 奖品描述
- * @property {boolean} in_redeem - 是否处于兑换状态 (已消费但未兑换为 true, 兑换后恢复默认 false)
+ * @property {string | null} description - 奖品描述
  */
 export interface JifenGoodsItem {
   id: number
@@ -28,8 +27,7 @@ export interface JifenGoodsItem {
   cover: string
   count: number
   price: number
-  description: string
-  in_redeem: boolean
+  description: string | null
 }
 
 /**
@@ -80,4 +78,13 @@ export type JifenGetGoodsResponse = JifenGoodsItem[]
  */
 export interface JifenGetDescResponse {
   description: string
+}
+
+/**
+ * @description 签到响应
+ * @property {number} delta - 增加积分
+ * @see https://app.apifox.com/link/project/8311217/apis/api-470228898
+ */
+export interface JifenPostResponse {
+  delta: number
 }

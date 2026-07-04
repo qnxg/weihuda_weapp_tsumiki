@@ -72,7 +72,7 @@ export default function NetflowBill() {
                       <View>
                         更新于:
                         {" "}
-                        {dayjs(item.update_at).format("YYYY-MM-DD HH:mm:ss")}
+                        {dayjs(item.updated_at).format("YYYY-MM-DD HH:mm:ss")}
                       </View>
                     </CardContent>
                   </Card>

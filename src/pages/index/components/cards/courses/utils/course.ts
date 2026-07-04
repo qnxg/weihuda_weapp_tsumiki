@@ -1,4 +1,4 @@
-import type { CourseItem } from "@/apis/models/course"
+import type { ClasstableItem } from "@/apis/models/classtable"
 import type { CourseCard } from "@/pages/index/components/cards/courses"
 
 /**
@@ -18,7 +18,7 @@ export function getInitCourseCards(): CourseCard[] {
  *   - 返回一个 CourseCard[12] 的 CourseCard 数组
  *   - 将课程列表按节次划分为 12 个元素的数组, 每个元素为一个 CourseCard
  */
-export function formatCourses(courses: CourseItem[]): CourseCard[] {
+export function formatCourses(courses: ClasstableItem[]): CourseCard[] {
   const cards = getInitCourseCards()
 
   courses.forEach((course) => {
@@ -39,12 +39,12 @@ export function formatCourses(courses: CourseItem[]): CourseCard[] {
  */
 export function mergeCourseCards(cards: CourseCard[]): CourseCard[] {
   // 判断是否为同一课程
-  const isSameCourse = (c1: CourseItem, c2: CourseItem) => {
+  const isSameCourse = (c1: ClasstableItem, c2: ClasstableItem) => {
     const keys = [
       "course_id",
       "course_name",
       "class_name",
-      "type",
+      "course_type",
       "credit",
       // "weeks", 非基本类型, 需特殊处理
       "day",
@@ -55,7 +55,7 @@ export function mergeCourseCards(cards: CourseCard[]): CourseCard[] {
       "people",
       "teacher",
       "customize_id",
-    ] as const as Array<keyof CourseItem>
+    ] as const as Array<keyof ClasstableItem>
 
     // 基本类型的逐个字段校验
     if (!keys.every(k => c1[k] === c2[k]))

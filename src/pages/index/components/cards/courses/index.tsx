@@ -1,4 +1,4 @@
-import type { CourseItem } from "@/apis/models/course"
+import type { ClasstableItem } from "@/apis/models/classtable"
 import { View } from "@tarojs/components"
 import { useEffect, useMemo, useState } from "react"
 import { Card, CardHeader } from "@/components/card"
@@ -31,7 +31,7 @@ type TabValue = "today" | "tomorrow"
 export interface CourseCard {
   start: number
   span: number
-  items: CourseItem[]
+  items: ClasstableItem[]
 }
 
 /**

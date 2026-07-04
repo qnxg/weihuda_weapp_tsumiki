@@ -38,19 +38,19 @@ function Page({
 /**
  * @description 页面内容组件
  * @example
- * 1. 带下拉刷新（非受控）
+ * 1. 带下拉刷新(非受控)
  * ```tsx
  * <PageContent onRefresh={onRefresh}>
  *   // 内容
  * </PageContent>
  * ```
- * 2. 带下拉刷新（受控）
+ * 2. 带下拉刷新(受控)
  * ```tsx
  * <PageContent isRefreshing={isRefreshing} onRefresh={handleRefresh}>
  *   // 内容
  * </PageContent>
  * ```
- * 3. 带触底刷新（受控）
+ * 3. 带触底刷新(受控)
  * ```tsx
  * <PageContent
  *   isScrollToLower={isScrollToLower}

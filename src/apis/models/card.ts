@@ -17,17 +17,17 @@ export interface CardInfoResponse {
  * @property {number} id - 交易 ID
  * @property {number} now_balance - 交易后余额
  * @property {number} amount - 交易金额, 充值为正数, 消费为负数
- * @property {string} location - 交易地点
+ * @property {string | null} location - 交易地点
  * @property {string} name - 交易名称
  */
-export interface CardHistoryItem {
+export interface CardRecordItem {
   date_time: string
   journal_time: string
   status: string
   id: number
   now_balance: number
   amount: number
-  location: string
+  location: string | null
   name: string
 }
 
@@ -40,26 +40,26 @@ export type CardRecordRequestType = "recharge" | "consumption"
 
 /**
  * @description 获取校园卡账单记录请求
- * @property {number} [year] - 年份, 可选
- * @property {number} [month] - 月份, 可选
- * @property {CardRecordRequestType} [type] - 交易类型, 可选, recharge 表示充值, consumption 表示消费
+ * @property {number} year - 年份
+ * @property {number} month - 月份
+ * @property {CardRecordRequestType} type - 交易类型, recharge 表示充值, consumption 表示消费
  * @see https://app.apifox.com/link/project/8311217/apis/api-465883014
  */
 export interface CardRecordRequest {
-  year?: number
-  month?: number
-  type?: CardRecordRequestType
+  year: number
+  month: number
+  type: CardRecordRequestType
 }
 
 /**
  * @description 获取校园卡账单记录响应
  * @property {number} total - 交易总金额, 充值为正数, 消费为负数
  * @property {number} count - 交易数量
- * @property {CardHistoryItem[]} items - 交易记录列表
+ * @property {CardRecordItem[]} records - 交易记录列表
  * @see https://app.apifox.com/link/project/8311217/apis/api-465883014
  */
 export interface CardRecordResponse {
   total: number
   count: number
-  records: CardHistoryItem[]
+  records: CardRecordItem[]
 }
