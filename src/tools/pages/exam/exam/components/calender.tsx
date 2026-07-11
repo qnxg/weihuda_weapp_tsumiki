@@ -18,8 +18,8 @@ export function Calender({
   exams: ExamScheduleItem[] | null
   onShowDetail: (exam: ExamScheduleItem) => void
 }>) {
-  // YYYY-MM-DD 格式的日期字符串
-  const [date, setDate] = useState(() => od().p("YYYY-MM-DD"))
+  // 日期字符串
+  const [date, setDate] = useState(() => od().cs("d").s)
 
   const days: OhDay[] = useMemo(() => {
     const monthStart = od(date).cs("M")
@@ -50,17 +50,16 @@ export function Calender({
                 height: "48rpx",
               }}
               src={PrevIcon}
-              onClick={() => setDate(prev => od(prev).sub("M", 1).p("YYYY-MM-DD"))}
+              onClick={() => setDate(prev => od(prev).sub("M", 1).s)}
             />
 
             <View className="flex-1">
               <Picker
                 mode="date"
                 fields="month"
-                value={date}
+                value={od(date).p("YYYY-MM-DD")}
                 onChange={(e) => {
-                  const newDate = od(e.detail.value, "YYYY-MM")
-                  setDate(newDate.p("YYYY-MM-DD"))
+                  setDate(od(e.detail.value, "YYYY-MM").s)
                 }}
               >
                 <View className="flex center text-xl text-bold">
@@ -75,7 +74,7 @@ export function Calender({
                 height: "48rpx",
               }}
               src={NextIcon}
-              onClick={() => setDate(prev => od(prev).add("M", 1).p("YYYY-MM-DD"))}
+              onClick={() => setDate(prev => od(prev).add("M", 1).s)}
             />
           </View>
 
@@ -103,7 +102,7 @@ export function Calender({
                   day.eq(od(date), "M") ? "text-hightlight" : "text-toned",
                   day.eq(od(date), "d") ? "bg-primary text-reverse" : "",
                 )}
-                onClick={() => setDate(day.p("YYYY-MM-DD"))}
+                onClick={() => setDate(day.s)}
               >
                 {day.date}
 

@@ -59,6 +59,7 @@
 
 - 时间处理函数 `/utils/ohday.ts`: 基于自研日期库 @twisuki/ohday 的日期时间处理函数, 提供全局单例 od 实例
   - `od` 对象是全局的, 支持多种输入方式, 链式调用, 不可变操作, 同时原生支持自定义格式解析
+  - 所有日期时间状态统一使用 `od().s` 的标准字符串格式存储, 初始化时通过 `.cs()` 填充缺省字段, 可保证解析简单
   - 详见 [npm - @twisuki/ohday](https://npmjs.com/package/@twisuki/ohday)
 
 - 通用导航函数 `/utils/navigate.ts`: 自动区分普通页面和 tab 页面进行导航

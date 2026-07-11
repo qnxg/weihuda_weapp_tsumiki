@@ -1,7 +1,7 @@
 import type { NetflowDetailItem } from "@/apis/models/netflow"
 import { Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading } from "@tarojs/taro"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
@@ -22,23 +22,21 @@ export default function NetflowDetail() {
   const [tab, setTab] = useState<TabValue>("month")
 
   // 选择值
-  const [selectedYear, setSelectedYear] = useState(() => od().year)
-  const [selectedMonth, setSelectedMonth] = useState(() => od().month)
-  const [selectedDay, setSelectedDay] = useState(() => od().date)
+  const [selectedDate, setSelectedDate] = useState(() => od().cs("d").s)
 
   // picker 值
-  const picker = useMemo(() => od([selectedYear, selectedMonth, selectedDay]).p("YYYY-MM-DD"), [selectedYear, selectedMonth, selectedDay])
+  const picker = od(selectedDate).p("YYYY-MM-DD")
 
   // 详情弹窗
   const [activeItem, setActiveItem] = useState<NetflowDetailItem | null>(null)
 
   const { data, isLoading, refetch } = useRequest(
     () => api.netflow.getDetail({
-      year: selectedYear,
-      month: selectedMonth,
-      day: tab === "month" ? undefined : selectedDay,
+      year: od(selectedDate).year,
+      month: od(selectedDate).month,
+      day: tab === "month" ? undefined : od(selectedDate).date,
     }),
-    [tab, selectedYear, selectedMonth, selectedDay],
+    [tab, selectedDate],
     { refetchClearData: false },
   )
 
@@ -83,15 +81,13 @@ export default function NetflowDetail() {
                         fields="month"
                         value={picker}
                         onChange={(e) => {
-                          const newDate = od(e.detail.value, "YYYY-MM")
-                          setSelectedYear(newDate.year)
-                          setSelectedMonth(newDate.month)
+                          setSelectedDate(od(e.detail.value, "YYYY-MM").s)
                         }}
                       >
                         <View className="flex items-center justify-end text-primary">
-                          {selectedYear}
+                          {od(selectedDate).year}
                           {" 年 "}
-                          {selectedMonth}
+                          {od(selectedDate).month}
                           {" 月 "}
                         </View>
                       </Picker>
@@ -101,18 +97,15 @@ export default function NetflowDetail() {
                         mode="date"
                         value={picker}
                         onChange={(e) => {
-                          const newDate = od(e.detail.value)
-                          setSelectedYear(newDate.year)
-                          setSelectedMonth(newDate.month)
-                          setSelectedDay(newDate.date)
+                          setSelectedDate(od(e.detail.value).cs("d").s)
                         }}
                       >
                         <View className="flex items-center justify-end text-primary">
-                          {selectedYear}
+                          {od(selectedDate).year}
                           {" 年 "}
-                          {selectedMonth}
+                          {od(selectedDate).month}
                           {" 月 "}
-                          {selectedDay}
+                          {od(selectedDate).date}
                           {" 日"}
                         </View>
                       </Picker>

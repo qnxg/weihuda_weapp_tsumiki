@@ -20,18 +20,17 @@ export default function CardBill() {
   const [tab, setTab] = useState<TabValue>("consumption")
 
   // 选择值
-  const [selectedYear, setSelectedYear] = useState(() => od().year)
-  const [selectedMonth, setSelectedMonth] = useState(() => od().month)
+  const [selectedDate, setSelectedDate] = useState(() => od().cs("M").s)
 
   // picker 值
-  const picker = od([selectedYear, selectedMonth]).p("YYYY-MM-DD")
+  const picker = od(selectedDate).p("YYYY-MM-DD")
 
   // 详情弹窗
   const [activeRecord, setActiveRecord] = useState<CardRecordItem | null>(null)
 
   const { data, isLoading, refetch } = useRequest(
-    () => api.card.record({ type: tab, year: selectedYear, month: selectedMonth }),
-    [tab, selectedYear, selectedMonth],
+    () => api.card.record({ type: tab, year: od(selectedDate).year, month: od(selectedDate).month }),
+    [tab, selectedDate],
     { refetchClearData: false },
   )
 
@@ -72,16 +71,14 @@ export default function CardBill() {
                   fields="month"
                   value={picker}
                   onChange={(e) => {
-                    const newDate = od(e.detail.value, "YYYY-MM")
-                    setSelectedYear(newDate.year)
-                    setSelectedMonth(newDate.month)
+                    setSelectedDate(od(e.detail.value, "YYYY-MM").s)
                   }}
                 >
                   <View className="flex items-center justify-end text-primary">
                     <View>
-                      {selectedYear}
+                      {od(selectedDate).year}
                       {" 年 "}
-                      {selectedMonth}
+                      {od(selectedDate).month}
                       {" 月 "}
                     </View>
                   </View>
