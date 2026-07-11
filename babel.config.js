@@ -6,6 +6,7 @@ module.exports = {
       framework: "react",
       ts: true,
       compiler: "vite",
+      // eslint-disable-next-line node/prefer-global/process
       useBuiltIns: process.env.TARO_ENV === "h5" ? "usage" : false,
     }],
   ],
