@@ -3,7 +3,7 @@ import type { OptionItem } from "@/components/options"
 import { View } from "@tarojs/components"
 import { Options } from "@/components/options"
 import { Popup } from "@/components/overlay"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 export function Detail({
   record,
@@ -13,8 +13,8 @@ export function Detail({
   onClose: () => void
 }>) {
   const options: OptionItem[] = [
-    { title: "交易时间", content: dayjs(record.date_time).format("YYYY-MM-DD HH:mm:ss") },
-    { title: "记账时间", content: dayjs(record.journal_time).format("YYYY-MM-DD HH:mm:ss") },
+    { title: "交易时间", content: od(record.date_time).s },
+    { title: "记账时间", content: od(record.journal_time).s },
     { title: "交易名称", content: record.name },
     { title: "交易地点", content: record.location },
     { title: "交易金额", content: `${record.amount > 0 ? "+" : ""}${record.amount.toFixed(2)}` },

@@ -13,7 +13,7 @@ import { useRequest } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/campus/netflow-detail/empty.svg"
 import { Detail } from "@/tools/pages/campus/netflow-detail/components/detail"
 import { parseNetflowItemName } from "@/tools/pages/campus/netflow-detail/utils/detail"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 type TabValue = "month" | "day"
 
@@ -22,12 +22,12 @@ export default function NetflowDetail() {
   const [tab, setTab] = useState<TabValue>("month")
 
   // 选择值
-  const [selectedYear, setSelectedYear] = useState(dayjs().year())
-  const [selectedMonth, setSelectedMonth] = useState(dayjs().month() + 1)
-  const [selectedDay, setSelectedDay] = useState(dayjs().date())
+  const [selectedYear, setSelectedYear] = useState(() => od().year)
+  const [selectedMonth, setSelectedMonth] = useState(() => od().month)
+  const [selectedDay, setSelectedDay] = useState(() => od().date)
 
   // picker 值
-  const picker = useMemo(() => dayjs([selectedYear, selectedMonth - 1, selectedDay]).format("YYYY-MM-DD"), [selectedYear, selectedMonth, selectedDay])
+  const picker = useMemo(() => od([selectedYear, selectedMonth, selectedDay]).p("YYYY-MM-DD"), [selectedYear, selectedMonth, selectedDay])
 
   // 详情弹窗
   const [activeItem, setActiveItem] = useState<NetflowDetailItem | null>(null)
@@ -83,9 +83,9 @@ export default function NetflowDetail() {
                         fields="month"
                         value={picker}
                         onChange={(e) => {
-                          const newDate = dayjs(e.detail.value, "YYYY-MM")
-                          setSelectedYear(newDate.year())
-                          setSelectedMonth(newDate.month() + 1)
+                          const newDate = od(e.detail.value, "YYYY-MM")
+                          setSelectedYear(newDate.year)
+                          setSelectedMonth(newDate.month)
                         }}
                       >
                         <View className="flex items-center justify-end text-primary">
@@ -101,10 +101,10 @@ export default function NetflowDetail() {
                         mode="date"
                         value={picker}
                         onChange={(e) => {
-                          const newDate = dayjs(e.detail.value, "YYYY-MM-DD")
-                          setSelectedYear(newDate.year())
-                          setSelectedMonth(newDate.month() + 1)
-                          setSelectedDay(newDate.date())
+                          const newDate = od(e.detail.value)
+                          setSelectedYear(newDate.year)
+                          setSelectedMonth(newDate.month)
+                          setSelectedDay(newDate.date)
                         }}
                       >
                         <View className="flex items-center justify-end text-primary">

@@ -1,17 +1,17 @@
 import { View } from "@tarojs/components"
 import { SCHEDULES } from "@/config/schedule"
 import { cn } from "@/utils/cn"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 /**
  * @description 左侧时间表头
  */
 export function TimeHeader() {
-  const now = dayjs()
+  const now = od()
   const current = SCHEDULES.find((schedule) => {
-    const start = dayjs(schedule.start, "HH:mm")
-    const end = dayjs(schedule.end, "HH:mm")
-    return now.isBetween(start, end, null, "[]")
+    const start = od(schedule.start)
+    const end = od(schedule.end)
+    return now.bt(start, end.add("ms", 1))
   })?.index
 
   return (

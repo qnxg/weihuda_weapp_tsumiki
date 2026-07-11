@@ -1,5 +1,5 @@
+import type { OhDay } from "@twisuki/ohday"
 import type { ExamScheduleItem } from "@/apis/models/exam"
-import type { Dayjs } from "@/utils/dayjs"
 import { Picker, View } from "@tarojs/components"
 import { useMemo, useState } from "react"
 import { Card, CardContent } from "@/components/card"
@@ -9,7 +9,7 @@ import NextIcon from "@/static/tools/exam/exam-arrange/next.svg"
 import PrevIcon from "@/static/tools/exam/exam-arrange/prev.svg"
 import { ExamCard } from "@/tools/pages/exam/exam/components/exam-card"
 import { cn } from "@/utils/cn"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 export function Calender({
   exams,
@@ -19,14 +19,16 @@ export function Calender({
   onShowDetail: (exam: ExamScheduleItem) => void
 }>) {
   // YYYY-MM-DD 格式的日期字符串
-  const [date, setDate] = useState(() => dayjs().format("YYYY-MM-DD"))
+  const [date, setDate] = useState(() => od().p("YYYY-MM-DD"))
 
-  const days: Dayjs[] = useMemo(() => {
-    const start = dayjs(date).startOf("month").day(0)
-    const end = dayjs(date).endOf("month").day(6)
+  const days: OhDay[] = useMemo(() => {
+    const monthStart = od(date).cs("M")
+    const start = monthStart.sub("d", monthStart.day)
+    const monthEnd = od(date).ce("M")
+    const end = monthEnd.add("d", 6 - monthEnd.day)
 
-    const days: Dayjs[] = []
-    for (let day = start; day.isBefore(end) || day.isSame(end); day = day.add(1, "day")) {
+    const days: OhDay[] = []
+    for (let day = start; day.le(end); day = day.add("d", 1)) {
       days.push(day)
     }
 
@@ -34,7 +36,7 @@ export function Calender({
   }, [date])
 
   const todayExams = useMemo(() => exams
-    ? exams.filter(item => dayjs(item.date, "YYYY-MM-DD").isSame(dayjs(date), "day"))
+    ? exams.filter(item => item.date && od(item.date).eq(od(date), "d"))
     : [], [exams, date])
 
   return (
@@ -48,7 +50,7 @@ export function Calender({
                 height: "48rpx",
               }}
               src={PrevIcon}
-              onClick={() => setDate(prev => dayjs(prev).subtract(1, "month").format("YYYY-MM-DD"))}
+              onClick={() => setDate(prev => od(prev).sub("M", 1).p("YYYY-MM-DD"))}
             />
 
             <View className="flex-1">
@@ -57,12 +59,12 @@ export function Calender({
                 fields="month"
                 value={date}
                 onChange={(e) => {
-                  const newDate = dayjs(e.detail.value, "YYYY-MM")
-                  setDate(newDate.format("YYYY-MM-DD"))
+                  const newDate = od(e.detail.value, "YYYY-MM")
+                  setDate(newDate.p("YYYY-MM-DD"))
                 }}
               >
                 <View className="flex center text-xl text-bold">
-                  {dayjs(date).format("YYYY-MM")}
+                  {od(date).p("YYYY-MM")}
                 </View>
               </Picker>
             </View>
@@ -73,7 +75,7 @@ export function Calender({
                 height: "48rpx",
               }}
               src={NextIcon}
-              onClick={() => setDate(prev => dayjs(prev).add(1, "month").format("YYYY-MM-DD"))}
+              onClick={() => setDate(prev => od(prev).add("M", 1).p("YYYY-MM-DD"))}
             />
           </View>
 
@@ -95,18 +97,18 @@ export function Calender({
 
             {days.map(day => (
               <View
-                key={day.format("YYYY-MM-DD")}
+                key={day.p("YYYY-MM-DD")}
                 className={cn(
                   "relative size-xs flex center rounded-sm",
-                  day.isSame(dayjs(date), "month") ? "text-hightlight" : "text-toned",
-                  day.isSame(dayjs(date), "day") ? "bg-primary text-reverse" : "",
+                  day.eq(od(date), "M") ? "text-hightlight" : "text-toned",
+                  day.eq(od(date), "d") ? "bg-primary text-reverse" : "",
                 )}
-                onClick={() => setDate(day.format("YYYY-MM-DD"))}
+                onClick={() => setDate(day.p("YYYY-MM-DD"))}
               >
-                {day.date()}
+                {day.date}
 
                 {/* 当日有考试标记 */}
-                {exams?.some(item => dayjs(item.date, "YYYY-MM-DD").isSame(day, "day")) && (
+                {exams?.some(item => item.date && od(item.date).eq(day, "d")) && (
                   <View
                     className="absolute rounded-full"
                     style={{

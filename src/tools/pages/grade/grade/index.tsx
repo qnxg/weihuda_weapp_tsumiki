@@ -13,7 +13,7 @@ import { useSemester } from "@/hooks/semester"
 import { useUser } from "@/hooks/user"
 import EmptyIcon from "@/static/tools/grade/grade/empty.svg"
 import { Detail } from "@/tools/pages/grade/grade/components/detail"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 export default function Grade() {
   const { user } = useUser()
@@ -24,7 +24,7 @@ export default function Grade() {
   const semesters: XQ[] = ["autumn", "spring", "summer"]
 
   // 选择值
-  const [selectYear, setSelectYear] = useState<XN>(() => dayjs().year())
+  const [selectYear, setSelectYear] = useState<XN>(() => od().year)
   const [selectSemester, setSelectSemester] = useState<XQ>("autumn")
 
   // 构造学期参数

@@ -1,7 +1,7 @@
-import type { Dayjs } from "@/utils/dayjs"
+import type { OhDay } from "@twisuki/ohday"
 import { View } from "@tarojs/components"
 import { cn } from "@/utils/cn"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 const WEEK_DAYS = ["日", "一", "二", "三", "四", "五", "六"]
 
@@ -18,14 +18,14 @@ export function DateHeader({
   week?: number
 }>) {
   // 当 start 与 week 为默认值时, header 自动显示本周
-  const now = dayjs()
-  const semesterStart = start ? dayjs(start) : dayjs()
-  const weekStart = semesterStart.add(week - 1, "week").startOf("week")
+  const now = od()
+  const semesterStart = start ? od(start) : od()
+  const weekStart = semesterStart.add("d", (week - 1) * 7).sub("d", semesterStart.add("d", (week - 1) * 7).day).cs("d")
 
-  const days: Dayjs[] = []
+  const days: OhDay[] = []
 
   for (let i = 0; i < 7; i++) {
-    days.push(weekStart.add(i, "day"))
+    days.push(weekStart.add("d", i))
   }
 
   return (
@@ -37,14 +37,14 @@ export function DateHeader({
     >
       {days.map(day => (
         <View
-          key={day.format("YYYY-MM-DD")}
+          key={day.p("YYYY-MM-DD")}
           className={cn(
             "h-xs flex-1 flex flex-col items-center justify-center",
-            day.isSame(now, "day") ? "text-primary" : "",
+            day.eq(now, "d") ? "text-primary" : "",
           )}
         >
-          <View>{`周${WEEK_DAYS[day.day()]}`}</View>
-          <View>{`${day.month() + 1}/${day.date()}`}</View>
+          <View>{`周${WEEK_DAYS[day.day]}`}</View>
+          <View>{`${day.month}/${day.date}`}</View>
         </View>
       ))}
     </View>

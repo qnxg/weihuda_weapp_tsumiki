@@ -1,8 +1,8 @@
 import Taro from "@tarojs/taro"
 import { LABEL } from "@/config/logger-label"
 import { STORAGE } from "@/config/storage-key"
-import dayjs from "@/utils/dayjs"
 import { logger } from "@/utils/logger"
+import { od } from "@/utils/ohday"
 
 /**
  * @description 实际存储结构
@@ -46,7 +46,7 @@ export class Storage<T> {
           const stored = res.data as StorageData<T>
           if (stored?.update_at) {
             if (stored.expired !== null) {
-              const diff = dayjs().diff(dayjs(stored.update_at, "YYYY-MM-DD HH:mm:ss"))
+              const diff = od().diff(od(stored.update_at))
               if (diff > stored.expired) {
                 logger.warn(LABEL.lib.storage.EXPIRED, `${this.key}: expired`)
                 resolve(undefined)
@@ -72,7 +72,7 @@ export class Storage<T> {
   async set(value: T): Promise<void> {
     const storageData: StorageData<T> = {
       data: value,
-      update_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      update_at: od().s,
       expired: null,
     }
 

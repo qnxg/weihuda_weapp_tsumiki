@@ -14,7 +14,7 @@ import { useUser } from "@/hooks/user"
 import EmptyIcon from "@/static/tools/grade/physical-grade/empty.svg"
 import { Eye } from "@/tools/pages/grade/physical-grade/components/eye"
 import { formatPhysicalGrade } from "@/tools/pages/grade/physical-grade/utils/physical-grade"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 /**
  * @description 用于轴和卡片展示的内容
@@ -34,7 +34,7 @@ export default function PhysicalGrade() {
 
   // Tab 值
   const [years, setYears] = useState<XN[]>([])
-  const [selectYear, setSelectYear] = useState<XN>(() => dayjs().year())
+  const [selectYear, setSelectYear] = useState<XN>(() => od().year)
 
   // 获取成绩数据
   const { data, refetch } = useRequest(() => api.gym.grade({

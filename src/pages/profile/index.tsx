@@ -15,9 +15,9 @@ import JifenIcon from "@/static/profile/jifen.svg"
 import MessageIcon from "@/static/profile/message.svg"
 import SettingIcon from "@/static/profile/setting.svg"
 import UnbindIcon from "@/static/profile/unbind.svg"
-import dayjs from "@/utils/dayjs"
 import { showModal } from "@/utils/modal"
 import { navigate } from "@/utils/navigate"
+import { od } from "@/utils/ohday"
 import { clearAllStorage } from "@/utils/storage"
 
 const options: OptionItem[] = [
@@ -151,7 +151,7 @@ export default function Profile() {
               {" "}
               &copy;
               {" "}
-              {`2017-${dayjs().year()}`}
+              {`2017-${od().year}`}
               {" "}
               易千
             </View>

@@ -1,6 +1,6 @@
+import type { OhDay } from "@twisuki/ohday"
 import type { Semester, SemesterInfo, XQ } from "@/types/semester"
-import type { Dayjs } from "@/utils/dayjs"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 /**
  * @description 获取下一学期的标识符
@@ -37,8 +37,8 @@ export function getPrevSemester(semester: Semester): Semester {
  *   - isCurrent: 当前日期是否在学期内
  */
 interface GetSemesterDataInfoResult {
-  start: Dayjs
-  end: Dayjs
+  start: OhDay
+  end: OhDay
   week: number
   passed: number
   next: number
@@ -48,16 +48,16 @@ interface GetSemesterDataInfoResult {
 /**
  * @description 获取学期日期相关信息
  * @param {SemesterInfo} semester 学期信息
- * @param {Dayjs | string} [date] 日期, 默认为当前时间
+ * @param {OhDay | string} [date] 日期, 默认为当前时间
  */
 export function getSemesterDateInfo(
   semester: SemesterInfo,
-  date?: Dayjs | string,
+  date?: OhDay | string,
 ): GetSemesterDataInfoResult {
-  const current = date ? dayjs(date) : dayjs()
-  const start = dayjs(semester.start)
-  const end = start.add(semester.weeks * 7, "day")
-  const diffDays = current.diff(start, "day")
+  const current = date ? od(date) : od()
+  const start = od(semester.start)
+  const end = start.add("d", semester.weeks * 7)
+  const diffDays = current.diff(start, "d")
   const total = semester.weeks * 7
   const week = Math.ceil((diffDays + 1) / 7)
   return {
@@ -66,7 +66,7 @@ export function getSemesterDateInfo(
     week: week >= 1 && week <= semester.weeks ? week : -1,
     passed: diffDays,
     next: total - diffDays,
-    isCurrent: current.isBetween(start, end, "day", "[]"),
+    isCurrent: current.bt(start, end.add("d", 1), "d"),
   }
 }
 

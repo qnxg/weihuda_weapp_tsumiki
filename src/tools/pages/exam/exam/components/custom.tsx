@@ -5,7 +5,7 @@ import { useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 export function Custom({
   exam,
@@ -23,9 +23,9 @@ export function Custom({
     course_name: exam?.course_name ?? "",
     area: exam?.area ?? "",
     classroom: exam?.classroom ?? "",
-    date: exam?.date ?? dayjs().format("YYYY-MM-DD"),
-    start_time: exam?.start_time ?? dayjs().format("HH:mm"),
-    end_time: exam?.end_time ?? dayjs().format("HH:mm"),
+    date: exam?.date ?? od().p("YYYY-MM-DD"),
+    start_time: exam?.start_time ?? od().p("HH:mm"),
+    end_time: exam?.end_time ?? od().p("HH:mm"),
     seat: exam?.seat ?? "",
   })
 

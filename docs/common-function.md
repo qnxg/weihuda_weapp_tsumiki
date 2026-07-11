@@ -57,9 +57,9 @@
 - 类名拼接函数 `/utils/cn.ts`: shadcn 风格的 className 合并函数
   - 详见 [GitHub - lukeed/clsx](https://github.com/lukeed/clsx)
 
-- 时间处理函数 `/utils/dayjs.ts`: 基于 dayjs 的时间处理函数, 全局安装了 customParseFormat 和 isBetween 插件
-  - `dayjs` 对象是全局的, 因此一次插件安装, 整个进程可用, 尽管有些地方不需要使用插件, 但统一使用安装插件的 dayjs 不影响性能
-  - 详见 [GitHub - iamkun/dayjs](https://github.com/iamkun/dayjs)
+- 时间处理函数 `/utils/ohday.ts`: 基于自研日期库 @twisuki/ohday 的日期时间处理函数, 提供全局单例 od 实例
+  - `od` 对象是全局的, 支持多种输入方式, 链式调用, 不可变操作, 同时原生支持自定义格式解析
+  - 详见 [npm - @twisuki/ohday](https://npmjs.com/package/@twisuki/ohday)
 
 - 通用导航函数 `/utils/navigate.ts`: 自动区分普通页面和 tab 页面进行导航
   - 详见 [Taro - navigateTo](https://docs.taro.zone/docs/apis/route/navigateTo)

@@ -3,7 +3,7 @@ import { View } from "@tarojs/components"
 import { useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
 import { useRequest } from "@/hooks/request"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 export function Record({
   isScrollToLower,
@@ -64,7 +64,7 @@ export function Record({
               className="flex items-center justify-between text-lg"
             >
               <View>
-                {dayjs(item.created_at).format("YYYY-MM-DD")}
+                {od(item.created_at).p("YYYY-MM-DD")}
                 {" "}
                 {item.description}
               </View>

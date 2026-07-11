@@ -7,8 +7,8 @@ import { MyButton } from "@/components/my-button"
 import { PageContent } from "@/components/page"
 import { useRequest } from "@/hooks/request"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
-import dayjs from "@/utils/dayjs"
 import { showModal } from "@/utils/modal"
+import { od } from "@/utils/ohday"
 
 export function CA() {
   const { data, isLoading, refetch } = useRequest(() => api.rank.ca.get(), [], {
@@ -56,7 +56,7 @@ export function CA() {
             <View className="flex items-center">
               最后更新于:
               {" "}
-              {data ? dayjs(data.updated_at).format("YYYY-MM-DD HH:mm") : "暂无数据"}
+              {data ? od(data.updated_at).p("YYYY-MM-DD HH:mm") : "暂无数据"}
             </View>
             <MyButton
               active

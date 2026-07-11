@@ -8,7 +8,7 @@ import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useSemester } from "@/hooks/semester"
 import EmptyIcon from "@/static/tools/campus/calender/empty.svg"
 import { cn } from "@/utils/cn"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 import { getSemesterDateInfo, getSemesterName } from "@/utils/semester"
 
 export default function Calender() {
@@ -73,9 +73,9 @@ export default function Calender() {
                     <View className="flex flex-col gap-sm">
                       <View className="text-xl">{getSemesterName(data)}</View>
                       <View className="text-toned text-sm">
-                        {getSemesterDateInfo(data).start.format("YYYY.M.D")}
+                        {getSemesterDateInfo(data).start.p("YYYY.M.D")}
                         {" - "}
-                        {getSemesterDateInfo(data).end.format("YYYY.M.D")}
+                        {getSemesterDateInfo(data).end.p("YYYY.M.D")}
                       </View>
                     </View>
 
@@ -124,19 +124,19 @@ export default function Calender() {
                       >
                         {Array.from({ length: data.weeks }).map((_, week) =>
                           Array.from({ length: 7 }).map((_, day) => {
-                            const start = dayjs(data.start)
-                            const date = start.add(day + 7 * week, "day")
+                            const start = od(data.start)
+                            const date = start.add("d", day + 7 * week)
                             return (
                               <View
                                 key={`${week}-${day}`}
                                 className={cn(
                                   "flex center text-lg",
-                                  date.date() === 1 && "text-hightlight",
-                                  (date.month() - start.month()) % 2 === 1 && "bg-page",
-                                  dayjs().isSame(date, "day") && "bg-primary text-reverse",
+                                  date.date === 1 && "text-hightlight",
+                                  (date.month - start.month) % 2 === 1 && "bg-page",
+                                  od().eq(date, "d") && "bg-primary text-reverse",
                                 )}
                               >
-                                {date.date() === 1 ? `${date.month() + 1}月` : date.date()}
+                                {date.date === 1 ? `${date.month}月` : date.date}
                               </View>
                             )
                           }))}

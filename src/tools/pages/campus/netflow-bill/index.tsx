@@ -7,7 +7,7 @@ import { useRequest } from "@/hooks/request"
 import DownloadIcon from "@/static/tools/campus/netflow-bill/download.svg"
 import UploadIcon from "@/static/tools/campus/netflow-bill/upload.svg"
 import EmptyIcon from "@/static/tools/campus/netflow-detail/empty.svg"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 export default function NetflowBill() {
   const { data, isLoading, refetch } = useRequest(
@@ -72,7 +72,7 @@ export default function NetflowBill() {
                       <View>
                         更新于:
                         {" "}
-                        {dayjs(item.updated_at).format("YYYY-MM-DD HH:mm:ss")}
+                        {od(item.updated_at).s}
                       </View>
                     </CardContent>
                   </Card>

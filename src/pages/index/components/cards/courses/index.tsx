@@ -18,7 +18,7 @@ import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CoursesIcon from "@/static/index/courses.svg"
 import EmptyIcon from "@/static/index/courses/empty.svg"
 import { cn } from "@/utils/cn"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 import { getSemesterDateInfo } from "@/utils/semester"
 import "./index.scss"
 
@@ -69,14 +69,14 @@ function CourseContent({
           if (tab === "tomorrow")
             return "normal"
 
-          if (dayjs().isBetween(start, end))
+          if (od().bt(start, end))
             return "doing"
 
-          if (dayjs().isAfter(dayjs(end, "HH:mm"), "minute"))
+          if (od().gt(od(end), "m"))
             return "ended"
 
           // 对于已完成课程, 以下 diff 值为负值, 因此在已完成课程检测之后检测即将开始课程
-          if (dayjs(start, "HH:mm").diff(dayjs(), "minute") <= 20)
+          if (od(start).diff(od(), "m") <= 20)
             return "upcoming"
 
           return "normal"
@@ -162,10 +162,10 @@ export function Courses({
   // semester 就绪后按 tab 写入显示周和显示日
   useEffect(() => {
     if (semester) {
-      const date = dayjs().add(tab === "today" ? 0 : 1, "day")
+      const date = od().add("d", tab === "today" ? 0 : 1)
       const { week: newWeek } = getSemesterDateInfo(semester, date)
       setWeek(newWeek)
-      setDay(date.day())
+      setDay(date.day)
     }
   }, [semester, tab])
 

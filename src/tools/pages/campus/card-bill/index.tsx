@@ -11,7 +11,7 @@ import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useRequest } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/campus/card-bill/empty.svg"
 import { Detail } from "@/tools/pages/campus/card-bill/components/detail"
-import dayjs from "@/utils/dayjs"
+import { od } from "@/utils/ohday"
 
 type TabValue = CardRecordRequestType
 
@@ -20,11 +20,11 @@ export default function CardBill() {
   const [tab, setTab] = useState<TabValue>("consumption")
 
   // 选择值
-  const [selectedYear, setSelectedYear] = useState(dayjs().year())
-  const [selectedMonth, setSelectedMonth] = useState(dayjs().month() + 1)
+  const [selectedYear, setSelectedYear] = useState(() => od().year)
+  const [selectedMonth, setSelectedMonth] = useState(() => od().month)
 
   // picker 值
-  const picker = dayjs([selectedYear, selectedMonth - 1]).format("YYYY-MM-DD")
+  const picker = od([selectedYear, selectedMonth]).p("YYYY-MM-DD")
 
   // 详情弹窗
   const [activeRecord, setActiveRecord] = useState<CardRecordItem | null>(null)
@@ -72,9 +72,9 @@ export default function CardBill() {
                   fields="month"
                   value={picker}
                   onChange={(e) => {
-                    const newDate = dayjs(e.detail.value, "YYYY-MM")
-                    setSelectedYear(newDate.year())
-                    setSelectedMonth(newDate.month() + 1)
+                    const newDate = od(e.detail.value, "YYYY-MM")
+                    setSelectedYear(newDate.year)
+                    setSelectedMonth(newDate.month)
                   }}
                 >
                   <View className="flex items-center justify-end text-primary">
@@ -119,7 +119,7 @@ export default function CardBill() {
                       <CardContent className="flex flex-col gap-sm">
                         <View className="flex justify-between items-center">
                           <View className="text-lg text-primary">
-                            {dayjs(record.date_time).format("YYYY-MM-DD HH:mm:ss")}
+                            {od(record.date_time).s}
                           </View>
                           <View className="text-lg font-bold text-hightlight">
                             {tab === "recharge" ? "+" : "-"}
