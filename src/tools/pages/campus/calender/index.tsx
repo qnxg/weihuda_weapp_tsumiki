@@ -125,7 +125,7 @@ export default function Calender() {
                         {Array.from({ length: data.weeks }).map((_, week) =>
                           Array.from({ length: 7 }).map((_, day) => {
                             const start = od(data.start)
-                            const date = start.add("d", day + 7 * week)
+                            const date = start.add("w", week).add("d", day)
                             return (
                               <View
                                 key={`${week}-${day}`}

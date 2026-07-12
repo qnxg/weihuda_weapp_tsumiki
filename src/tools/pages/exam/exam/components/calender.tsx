@@ -22,10 +22,8 @@ export function Calender({
   const [date, setDate] = useState(() => od().cs("d").s)
 
   const days: OhDay[] = useMemo(() => {
-    const monthStart = od(date).cs("M")
-    const start = monthStart.sub("d", monthStart.day)
-    const monthEnd = od(date).ce("M")
-    const end = monthEnd.add("d", 6 - monthEnd.day)
+    const start = od(date).cs("M").cs("w")
+    const end = od(date).ce("M").ce("w")
 
     const days: OhDay[] = []
     for (let day = start; day.le(end); day = day.add("d", 1)) {

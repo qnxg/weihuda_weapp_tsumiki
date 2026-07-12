@@ -20,7 +20,7 @@ export function DateHeader({
   // 当 start 与 week 为默认值时, header 自动显示本周
   const now = od()
   const semesterStart = start ? od(start) : od()
-  const weekStart = semesterStart.add("d", (week - 1) * 7).sub("d", semesterStart.add("d", (week - 1) * 7).day).cs("d")
+  const weekStart = semesterStart.add("w", week - 1).cs("w")
 
   const days: OhDay[] = []
 

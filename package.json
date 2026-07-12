@@ -40,7 +40,7 @@
     "@tarojs/runtime": "4.1.11",
     "@tarojs/shared": "4.1.11",
     "@tarojs/taro": "4.1.11",
-    "@twisuki/ohday": "^1.0.2",
+    "@twisuki/ohday": "^1.0.3",
     "clsx": "^2.1.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"

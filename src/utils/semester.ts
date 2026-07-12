@@ -59,7 +59,7 @@ export function getSemesterDateInfo(
   const end = start.add("d", semester.weeks * 7)
   const diffDays = current.diff(start, "d")
   const total = semester.weeks * 7
-  const week = Math.ceil((diffDays + 1) / 7)
+  const week = current.diff(start, "w") + 1
   return {
     start,
     end,

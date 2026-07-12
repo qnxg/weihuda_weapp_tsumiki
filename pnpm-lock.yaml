@@ -39,8 +39,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@tarojs/components@4.1.11(@tarojs/helper@4.1.11)(@types/react@18.3.29)(postcss@8.5.15)(rollup@3.30.0))(@tarojs/helper@4.1.11)(@tarojs/shared@4.1.11)(@types/react@18.3.29)(postcss@8.5.15)(rollup@3.30.0)
       '@twisuki/ohday':
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^1.0.3
+        version: 1.0.3
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -2233,8 +2233,8 @@ packages:
   '@ts-morph/common@0.27.0':
     resolution: {integrity: sha512-Wf29UqxWDpc+i61k3oIOzcUfQt79PIT9y/MWfAGlrkjg6lBC1hwDECLXPVJAhWjiGbfBCxZd65F/LIZF3+jeJQ==}
 
-  '@twisuki/ohday@1.0.2':
-    resolution: {integrity: sha512-YC1i9sqOfollF6GbqWHfWesjcz/rjyzvNKc2qtkasnp7YVHyj+C8RB1U2J1G4ut1zVtzOJRJNcwj177macp4Eg==}
+  '@twisuki/ohday@1.0.3':
+    resolution: {integrity: sha512-jnhupYascO7D9Ae7zra4/dr13rhAer2AI3j8FKtkgEwadTW87V3vxe7fRKNoZg1O2jjtULKCEgPmnDDLvROjFg==}
 
   '@types/archy@0.0.31':
     resolution: {integrity: sha512-v+dxizsFVyXgD3EpFuqT9YjdEjbJmPxNf1QIX9ohZOhxh1ZF2yhqv3vYaeum9lg3VghhxS5S0a6yldN9J9lPEQ==}
@@ -8274,7 +8274,7 @@ snapshots:
       minimatch: 10.2.5
       path-browserify: 1.0.1
 
-  '@twisuki/ohday@1.0.2': {}
+  '@twisuki/ohday@1.0.3': {}
 
   '@types/archy@0.0.31': {}
 

@@ -7,7 +7,7 @@ const WEEK_DAYS = ["日", "一", "二", "三", "四", "五", "六"]
 
 export function DateBar() {
   const now = od()
-  const weekStart = now.sub("d", now.day).cs("d")
+  const weekStart = now.cs("w")
 
   const days: OhDay[] = []
 
