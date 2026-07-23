@@ -116,11 +116,11 @@
 
 此类复杂功能需要 `context` 与 `hook` 相配合, 详见 [状态管理](./state-manager.md)
 
-### 用户信息 user
+### 鉴权 auth
 
-- context: `/contexts/user.tsx`
-- hook: `/hooks/user.ts`
-- type: `/types/user.ts`
+- context: `/contexts/auth.tsx`
+- hook: `/hooks/auth.ts`
+- type: `/types/auth.ts`
 - 其他工具函数: `utils/parse-sex.ts`
 
 用于获取并全局共享用户信息, mount 时获取一次用户信息, 并提供 `更新信息` 和 `删除用户` 的方法

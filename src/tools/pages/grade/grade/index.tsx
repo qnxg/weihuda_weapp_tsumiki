@@ -8,15 +8,15 @@ import { Icon } from "@/components/icon"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
+import { useAuth } from "@/hooks/auth"
 import { useGrade } from "@/hooks/grade"
 import { useSemester } from "@/hooks/semester"
-import { useUser } from "@/hooks/user"
 import EmptyIcon from "@/static/tools/grade/grade/empty.svg"
 import { Detail } from "@/tools/pages/grade/grade/components/detail"
 import { od } from "@/utils/ohday"
 
 export default function Grade() {
-  const { user } = useUser()
+  const { user } = useAuth()
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
 
   // Tab 值

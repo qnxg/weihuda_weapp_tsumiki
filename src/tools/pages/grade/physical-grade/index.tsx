@@ -8,9 +8,9 @@ import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { FONT_COLOR } from "@/config/color"
+import { useAuth } from "@/hooks/auth"
 import { useRequest } from "@/hooks/request"
 import { useSemester } from "@/hooks/semester"
-import { useUser } from "@/hooks/user"
 import EmptyIcon from "@/static/tools/grade/physical-grade/empty.svg"
 import { Eye } from "@/tools/pages/grade/physical-grade/components/eye"
 import { formatPhysicalGrade } from "@/tools/pages/grade/physical-grade/utils/physical-grade"
@@ -29,7 +29,7 @@ export interface PhysicalGradeItem {
 }
 
 export default function PhysicalGrade() {
-  const { user } = useUser()
+  const { user } = useAuth()
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
 
   // Tab 值

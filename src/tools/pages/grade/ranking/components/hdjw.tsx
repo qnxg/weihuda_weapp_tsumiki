@@ -7,8 +7,8 @@ import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { PageContent } from "@/components/page"
+import { useAuth } from "@/hooks/auth"
 import { useSemester } from "@/hooks/semester"
-import { useUser } from "@/hooks/user"
 import EmptyIcon from "@/static/tools/grade/ranking/empty.svg"
 import { HDJWSwitchButton } from "@/tools/pages/grade/ranking/components/hdjw-switch-button"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
@@ -20,7 +20,7 @@ interface Data {
 }
 
 export function HDJW() {
-  const { user } = useUser()
+  const { user } = useAuth()
   const { data: semester } = useSemester()
 
   // 请求表单数据

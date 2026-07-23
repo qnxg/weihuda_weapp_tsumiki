@@ -197,7 +197,7 @@ useEffect(() => {
 
 对于复杂状态和状态共享, 本项目采用 `状态业务分离` 的方案, 即 context 中仅定义最基本的状态变量和操作函数, 其他复杂的业务逻辑放置到 hook 中, 以实现状态业务分离
 
-以 `user` 为例, `contexts/user.tsx` 仅定义了 `user` 状态变量和 `setUser` 操作函数, 其他复杂的业务逻辑如 `fetchUser` 等放置到 `hooks/user.ts` 中
+以 `auth` 为例, `contexts/auth.tsx` 仅定义了 `user` 状态变量和 `setUser` 操作函数, 其他复杂的业务逻辑如 `updateUser` 等放置到 `hooks/auth.ts` 中
 
 > 注意: context 需保持尽量简单, 但也要保证导出内容稳定, 例如 `semester` 的 `contexts/semester.tsx` 中, 由于定义的数据模型为数组, 直接操作会触发更新, 因此这里需要暴露封装好的稳定的操作函数
 

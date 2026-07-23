@@ -4,7 +4,7 @@ import { Picker, Switch, View } from "@tarojs/components"
 import { useState } from "react"
 import { Popup } from "@/components/overlay"
 import { LABEL } from "@/config/logger-label"
-import { useUser } from "@/hooks/user"
+import { useAuth } from "@/hooks/auth"
 import { logger } from "@/utils/logger"
 import { getPrevSemester, getSemesterFromName, getSemesterName } from "@/utils/semester"
 
@@ -29,7 +29,7 @@ export function CourseOptions({
   onTableSettingChange: (setting: TableSetting) => void
   onClose: () => void
 }>) {
-  const { user } = useUser()
+  const { user } = useAuth()
 
   // 根据当前学期和用户信息生成学期选择范围, 最多包含 20 个学期(防止死循环)
   const getPickerSemesterRange = () => {

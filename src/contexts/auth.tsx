@@ -1,15 +1,15 @@
 import type { ReactNode } from "react"
-import type { UserInfo } from "@/types/user"
+import type { UserInfo } from "@/types/auth"
 import { createContext, useContext, useMemo, useState } from "react"
 
-interface UserContextValue {
+interface AuthContextValue {
   user: UserInfo | null
   setUser: (user: UserInfo | null) => void
 }
 
-const UserContext = createContext<UserContextValue | null>(null)
+const AuthContext = createContext<AuthContextValue | null>(null)
 
-export function UserProvider({
+export function AuthProvider({
   children,
 }: Readonly<{
   children: ReactNode
@@ -22,16 +22,16 @@ export function UserProvider({
   }), [user])
 
   return (
-    <UserContext.Provider value={value}>
+    <AuthContext.Provider value={value}>
       {children}
-    </UserContext.Provider>
+    </AuthContext.Provider>
   )
 }
 
-export function useUserContext() {
-  const context = useContext(UserContext)
+export function useAuthContext() {
+  const context = useContext(AuthContext)
   if (!context) {
-    throw new Error("useUserContext must be used within a UserProvider")
+    throw new Error("useAuthContext must be used within a AuthProvider")
   }
   return context
 }

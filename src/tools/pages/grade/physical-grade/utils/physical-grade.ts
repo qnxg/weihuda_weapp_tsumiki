@@ -1,6 +1,6 @@
 import type { GymGrade, GymGradeDetail } from "@/apis/models/gym"
 import type { PhysicalGradeItem } from "@/tools/pages/grade/physical-grade"
-import type { Sex } from "@/types/user"
+import type { Sex } from "@/types/auth"
 
 // 保证类型为 GymGrade 字段, 且对应字段为 GymGradeDetail 类型
 type GymGradeDetailKeys = {
