@@ -5,7 +5,7 @@ import { useAuthContext } from "@/contexts/auth"
 import { navigate } from "@/utils/navigate"
 import { parseSex } from "@/utils/parse-sex"
 
-const LOGIN_PAGE = "/pages/login/index"
+const AUTH_PAGE = "/pages/auth/index"
 
 /**
  * @property {UserInfo | null} user - 当前用户信息, 未登录或未加载时为 null
@@ -48,7 +48,7 @@ export function useAuth(): AuthHookResult {
 
   const clearUser = useCallback(() => {
     setUser(null)
-    navigate(LOGIN_PAGE)
+    navigate(AUTH_PAGE)
   }, [setUser])
 
   return {

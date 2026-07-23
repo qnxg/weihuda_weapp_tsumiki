@@ -5,6 +5,7 @@ export default defineAppConfig({
     "pages/table/index",
     "pages/profile/index",
     // 非 tab 页
+    "pages/auth/index",
     "pages/disclaimers/index",
     "pages/feedback/index",
     "pages/jifen/index",
