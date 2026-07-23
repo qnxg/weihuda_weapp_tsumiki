@@ -2,6 +2,7 @@ import type { UserInfo } from "@/types/auth"
 import { useCallback, useEffect } from "react"
 import { api } from "@/apis"
 import { useAuthContext } from "@/contexts/auth"
+import { unlockAuthPrompts } from "@/libs/auth-bridge"
 import { navigate } from "@/utils/navigate"
 import { parseSex } from "@/utils/parse-sex"
 
@@ -11,11 +12,13 @@ const AUTH_PAGE = "/pages/auth/index"
  * @property {UserInfo | null} user - 当前用户信息, 未登录或未加载时为 null
  * @property {() => Promise<UserInfo | null>} updateUser - 重新获取用户信息并更新 state, 返回用户信息
  * @property {() => void} clearUser - 清除用户信息并跳转登录页
+ * @property {() => void} unlockPrompts - 解锁鉴权弹窗会话锁, 供下拉刷新 / 鉴权成功调用
  */
 export interface AuthHookResult {
   user: UserInfo | null
   updateUser: () => Promise<UserInfo | null>
   clearUser: () => void
+  unlockPrompts: () => void
 }
 
 /**
@@ -51,9 +54,14 @@ export function useAuth(): AuthHookResult {
     navigate(AUTH_PAGE)
   }, [setUser])
 
+  const unlockPrompts = useCallback(() => {
+    unlockAuthPrompts()
+  }, [])
+
   return {
     user,
     updateUser,
     clearUser,
+    unlockPrompts,
   }
 }

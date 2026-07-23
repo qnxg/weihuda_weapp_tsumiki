@@ -3,6 +3,7 @@ import type { ComponentProps } from "react"
 import { ScrollView, Slot, View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
 import { useCallback, useReducer } from "react"
+import { unlockAuthPrompts } from "@/libs/auth-bridge"
 import { getTheme } from "@/utils/theme"
 import "./index.scss"
 
@@ -111,6 +112,8 @@ function PullRefresh({
   }, [isControlled])
 
   const handleRefresh = useCallback(async () => {
+    // 解锁健全弹窗锁
+    unlockAuthPrompts()
     if (!isControlled) {
       dispatch({ type: "REFRESH" })
     }

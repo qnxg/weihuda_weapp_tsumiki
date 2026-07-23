@@ -15,6 +15,7 @@ export const LABEL = {
   },
   util: {
     auth_request: "Auth Request",
+    auth: "Auth Error Handler",
     parse_sex: "Parse Sex",
   },
   hook: {

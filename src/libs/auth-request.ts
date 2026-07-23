@@ -1,16 +1,9 @@
 import type { RequestOptions } from "@/libs/request"
 import type { RequestMethod, Response } from "@/types/request"
 import { LABEL } from "@/config/logger-label"
-import { STORAGE } from "@/config/storage-key"
 import { request } from "@/libs/request"
-import { RequestError } from "@/types/request"
+import { accessTokenStorage, handleLoginLost, handleTFA } from "@/utils/auth"
 import { logger } from "@/utils/logger"
-import { Storage } from "@/utils/storage"
-
-/**
- * @description token 存储实例
- */
-export const tokenStorage = new Storage<string>(STORAGE.token.access_token)
 
 /**
  * @description 自动携带鉴权头并处理鉴权错误的请求函数
@@ -28,7 +21,7 @@ async function authRequest<T extends object | null>(
 ): Promise<Response<T>> {
   const { businessErrorInterceptor, ...restOptions } = options
 
-  const token = await tokenStorage.get()
+  const token = await accessTokenStorage.get()
   if (!token) {
     logger.warn(LABEL.util.auth_request, "未找到 token.")
   }
@@ -39,15 +32,13 @@ async function authRequest<T extends object | null>(
       Authorization: `Bearer ${token ?? ""}`,
       ...restOptions.header,
     },
-    businessErrorInterceptor: (config, error) => {
+    businessErrorInterceptor: async (config, error) => {
       if (error.statusCode === 401) {
         switch (error.code) {
           case "AUTH_TOKEN_INVALID":
-            logger.error(LABEL.util.auth_request, "Token 无效.")
-            return new RequestError(0, "AUTH_TOKEN_INVALID", "Token 无效.")
+            return handleLoginLost<T>(error, url, data, method, restOptions)
           case "TFA":
-            logger.error(LABEL.util.auth_request, "需要进行双因子验证.")
-            return new RequestError(0, "TFA", "需要进行双因子验证.")
+            return handleTFA(error)
         }
       }
       return businessErrorInterceptor?.(config, error)

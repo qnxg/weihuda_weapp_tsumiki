@@ -17,9 +17,9 @@ import { logger } from "@/utils/logger"
  * @property {((config: RequestConfig, error: RequestError) => void) | null} [onBusinessError=null] - 业务错误回调
  * @property {((config: RequestConfig, response: T) => void) | null} [onSuccess=null] - 请求成功回调
  * @property {((config: RequestConfig, response: T | null, err: any) => void) | null} [onSettled=null] - 请求结束回调
- * @property {((config: RequestConfig, error: RequestError) => RequestError | void) | null} [businessErrorInterceptor=null] - 业务错误拦截器
+ * @property {((config: RequestConfig, error: RequestError) => Response<T> | RequestError | void | Promise<Response<T> | RequestError | void>) | null} [businessErrorInterceptor=null] - 业务错误拦截器, 支持异步; 返回 Response 则作为成功结果恢复返回, 返回 RequestError 则替换错误抛出
  */
-export interface RequestOptions<T> {
+export interface RequestOptions<T extends object | null = null> {
   header?: Header
   timeout?: number
   onFetch?: ((config: RequestConfig) => void) | null
@@ -29,7 +29,7 @@ export interface RequestOptions<T> {
   onBusinessError?: ((config: RequestConfig, error: RequestError) => void) | null
   onSuccess?: ((config: RequestConfig, response: T) => void) | null
   onSettled?: ((config: RequestConfig, response: T | null, err: any) => void) | null
-  businessErrorInterceptor?: ((config: RequestConfig, error: RequestError) => RequestError | void) | null
+  businessErrorInterceptor?: ((config: RequestConfig, error: RequestError) => Response<T> | RequestError | void | Promise<Response<T> | RequestError | void>) | null
 }
 
 const BASE_URL = ENV.BASE_URL
@@ -106,10 +106,16 @@ export async function request<T extends object | null = null>(
     onBusinessError?.(config, error)
 
     if (businessErrorInterceptor) {
-      const intercepted = businessErrorInterceptor(config, error)
-      // 拦截器返回 RequestError, 用新的 error 继续抛出
-      if (intercepted !== undefined) {
+      const intercepted = await businessErrorInterceptor(config, error)
+      if (intercepted instanceof RequestError) {
+        // 拦截器返回 RequestError, 用新的 error 继续抛出
         error = intercepted
+      }
+      else if (intercepted !== undefined) {
+        // 拦截器返回 Response, 作为成功结果恢复返回
+        onSuccess?.(config, intercepted.data)
+        onSettled?.(config, intercepted.data, null)
+        return intercepted
       }
     }
 
