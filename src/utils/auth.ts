@@ -1,4 +1,4 @@
-import type { AuthRefreshResponse } from "@/apis/models/auth"
+import type { AuthRefreshResponse, AuthTFAErrorData } from "@/apis/models/auth"
 import type { RequestOptions } from "@/libs/request"
 import type { RequestError, RequestMethod, Response } from "@/types/request"
 import { LABEL } from "@/config/logger-label"
@@ -85,11 +85,24 @@ export async function handleLoginLost<T extends object | null>(
 }
 
 /**
+ * @description 从 401 TFA 错误数据中安全提取手机号, 取不到返回空串
+ */
+function extractTFAPhone(data: unknown): string {
+  if (typeof data === "object" && data !== null && "phone" in data) {
+    const { phone } = data as AuthTFAErrorData
+    if (typeof phone === "string") {
+      return phone
+    }
+  }
+  return ""
+}
+
+/**
  * @description TFA 处理: 通知 auth-bridge 弹窗引导前往验证码页 (会话锁去重), 抛出原错误
  */
 export function handleTFA(error: RequestError): never {
   logger.error(LABEL.util.auth, "需要进行双因子验证")
-  promptTFA()
+  promptTFA(extractTFAPhone(error.data))
   throw error
 }
 

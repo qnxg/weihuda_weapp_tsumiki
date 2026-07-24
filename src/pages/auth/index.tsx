@@ -31,7 +31,9 @@ export default function Auth() {
       </Tabs>
 
       <PageContent fixed className="h-full">
-        {tab === "login" ? <Login /> : <TFA />}
+        {tab === "login"
+          ? <Login />
+          : <TFA phone={router.params.phone ?? ""} />}
       </PageContent>
     </Page>
   )

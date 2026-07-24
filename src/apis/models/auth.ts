@@ -52,6 +52,14 @@ export interface AuthTFARequest {
 }
 
 /**
+ * @description 401 code:"TFA" 错误携带的数据
+ * @property {string} phone - 11 位手机号 (字符串), 中间四位可能为 ****
+ */
+export interface AuthTFAErrorData {
+  phone: string
+}
+
+/**
  * @description 工作量证明请求
  * @property {string} stu_id - 学号
  * @see https://app.apifox.com/link/project/8311217/apis/api-462316739

@@ -33,18 +33,21 @@ export function promptLoginLost(): void {
 
 /**
  * @description 提示需要双因子认证, 引导前往验证码页. 已上锁则静默跳过
+ * @param {string} phone - 401 TFA 下发的手机号, 透传至验证码页只读展示
  */
-export function promptTFA(): void {
+export function promptTFA(phone: string): void {
   if (tfaLocked) {
     return
   }
   tfaLocked = true
 
+  const url = `${TFA_PAGE}&phone=${encodeURIComponent(phone)}`
+
   void showModal(
     "需要验证",
     "该操作需要双因子认证, 是否前往验证?",
     "default",
-    () => navigate(TFA_PAGE),
+    () => navigate(url),
   )
 }
 
