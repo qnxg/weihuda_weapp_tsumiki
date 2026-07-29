@@ -118,22 +118,38 @@ export function Male() {
 
           <LevelCell level="excellent" span={3}>优秀</LevelCell>
           {[[100, 24.9, 25.1], [95, 23.1, 23.3], [90, 21.3, 21.5]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`0-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`0-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
 
           <LevelCell level="good" span={2}>良好</LevelCell>
           {[[85, 19.5, 19.9], [80, 21.3, 21.5]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`1-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`1-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
 
           <LevelCell level="pass" span={10}>及格</LevelCell>
           {[[78, 16.3, 16.8], [76, 14.9, 15.4], [74, 13.5, 14.0], [72, 12.1, 12.6], [70, 10.7, 11.2], [68, 9.3, 9.8], [66, 7.9, 8.4], [64, 6.5, 7.0], [62, 5.1, 5.6], [60, 3.7, 4.2]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`2-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`2-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
 
           <LevelCell level="fail" span={5}>不及格</LevelCell>
           {[[50, 2.7, 3.2], [40, 1.7, 2.2], [30, 0.7, 1.2], [20, -0.3, 0.2], [10, -1.3, -0.8]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`3-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`3-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
         </Table>
         <View>单位: 厘米</View>
@@ -151,22 +167,38 @@ export function Male() {
 
           <LevelCell level="excellent" span={3}>优秀</LevelCell>
           {[[100, 6.7, 6.6], [95, 6.8, 6.7], [90, 6.9, 6.8]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`0-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`0-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
 
           <LevelCell level="good" span={2}>良好</LevelCell>
           {[[85, 7.0, 6.9], [80, 7.1, 7.0]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`1-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`1-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
 
           <LevelCell level="pass" span={10}>及格</LevelCell>
           {[[78, 7.3, 7.2], [76, 7.5, 7.4], [74, 7.7, 7.6], [72, 7.9, 7.8], [70, 8.1, 8.0], [68, 8.3, 8.2], [66, 8.5, 8.4], [64, 8.7, 8.6], [62, 8.9, 8.8], [60, 9.1, 9.0]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`2-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`2-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
 
           <LevelCell level="fail" span={5}>不及格</LevelCell>
           {[[50, 9.3, 9.2], [40, 9.5, 9.4], [30, 9.7, 9.6], [20, 9.9, 9.8], [10, 10.1, 10.0]].map((row, i) =>
-            row.map((cell, j) => <TableCell key={`3-${i}-${j}`}>{cell}</TableCell>),
+            row.map((cell, j) => (
+              <TableCell key={`3-${i}-${j}`}>
+                {j > 0 ? cell.toFixed(1) : cell}
+              </TableCell>
+            )),
           )}
         </Table>
         <View>单位: 秒</View>

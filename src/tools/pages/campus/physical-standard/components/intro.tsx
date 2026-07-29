@@ -21,7 +21,7 @@ const LEVELS = [
 
 export function Intro() {
   return (
-    <View className="flex flex-col gap-lg">
+    <View className="flex flex-col" style={{ gap: "32rpx" }}>
       <View className="flex flex-col gap-sm">
         <View className="text-2xl text-highlight text-bold">体质测试有哪些项目?</View>
         <Table
