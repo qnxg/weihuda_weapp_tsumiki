@@ -72,7 +72,7 @@ export default function Electricity() {
                 {electricityData && (
                   <Card>
                     <CardContent className="flex flex-col gap">
-                      <View className="text-hightlight text-bold">当前电量</View>
+                      <View className="text-highlight text-bold">当前电量</View>
                       <View className="flex items-end text-primary">
                         {electricityData.balance.at(-1) && electricityData.balance.at(-1) === "度"
                           ? (
@@ -90,7 +90,7 @@ export default function Electricity() {
                 {dormData && (
                   <Card>
                     <CardContent className="flex flex-col gap">
-                      <View className="text-hightlight text-bold">宿舍信息</View>
+                      <View className="text-highlight text-bold">宿舍信息</View>
                       <View>
                         {dormData.park}
                         {dormData.build}

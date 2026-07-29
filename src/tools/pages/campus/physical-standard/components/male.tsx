@@ -6,7 +6,7 @@ export function Male() {
   return (
     <View className="flex flex-col gap p">
       <View className="flex flex-col">
-        <View className="text-xl text-hightlight text-bold flex justify-center">
+        <View className="text-xl text-highlight text-bold flex justify-center">
           男生体重指数(BMI)评分表(单位:kg/m²)
         </View>
         <Table cols={3}>
@@ -42,7 +42,7 @@ export function Male() {
       </View>
 
       <View className="flex flex-col">
-        <View className="text-xl text-hightlight text-bold flex justify-center">
+        <View className="text-xl text-highlight text-bold flex justify-center">
           男生肺活量评分表(单位:毫升)
         </View>
         <Table cols={4}>
@@ -74,7 +74,7 @@ export function Male() {
       </View>
 
       <View className="flex flex-col">
-        <View className="text-xl text-hightlight text-bold flex justify-center">
+        <View className="text-xl text-highlight text-bold flex justify-center">
           男生立定跳远评分表(单位:厘米)
         </View>
         <Table cols={4}>
@@ -106,7 +106,7 @@ export function Male() {
       </View>
 
       <View className="flex flex-col">
-        <View className="text-xl text-hightlight text-bold flex justify-center">
+        <View className="text-xl text-highlight text-bold flex justify-center">
           男生坐位体前屈评分表(单位:厘米)
         </View>
         <Table cols={4}>
@@ -138,7 +138,7 @@ export function Male() {
       </View>
 
       <View className="flex flex-col">
-        <View className="text-xl text-hightlight text-bold flex justify-center">
+        <View className="text-xl text-highlight text-bold flex justify-center">
           男生50米跑评分表(单位:秒)
         </View>
         <Table cols={4}>
@@ -170,7 +170,7 @@ export function Male() {
       </View>
 
       <View className="flex flex-col">
-        <View className="text-xl text-hightlight text-bold flex justify-center">
+        <View className="text-xl text-highlight text-bold flex justify-center">
           男生1000米跑评分表(单位:分'秒")
         </View>
         <Table cols={4}>
@@ -248,7 +248,7 @@ export function Male() {
       </View>
 
       <View className="flex flex-col">
-        <View className="text-xl text-hightlight text-bold flex justify-center">
+        <View className="text-xl text-highlight text-bold flex justify-center">
           男生引体向上评分表(单位:次)
         </View>
         <Table cols={4}>

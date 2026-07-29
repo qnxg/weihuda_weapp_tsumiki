@@ -97,7 +97,7 @@ export function Calender({
                 key={day.p("YYYY-MM-DD")}
                 className={cn(
                   "relative size-xs flex center rounded-sm",
-                  day.eq(od(date), "M") ? "text-hightlight" : "text-toned",
+                  day.eq(od(date), "M") ? "text-highlight" : "text-toned",
                   day.eq(od(date), "d") ? "bg-primary text-reverse" : "",
                 )}
                 onClick={() => setDate(day.s)}

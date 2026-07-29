@@ -71,7 +71,7 @@ function CardTitle({
   children: ReactNode
 }>) {
   return (
-    <View className="flex-1 text-hightlight">
+    <View className="flex-1 text-highlight">
       {children}
     </View>
   )
