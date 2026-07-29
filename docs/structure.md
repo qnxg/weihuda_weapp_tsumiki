@@ -121,7 +121,7 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 - 考试安排 `exam/exam`: 考试安排查询
 - 体测预约 `exam/physical-appoint`: 体测预约 (尚未完成)
 - 校历查看 `campus/calender`: 校历查看
-- 体测标准 `campus/physical-standard`: 体测标准介绍 (正常进行)
+- 体测标准 `campus/physical-standard`: 体测标准介绍
 - 空教室查询 `campus/empty-room`: 空教室查询 (尚未完成)
 - 校园卡账单 `campus/card-bill`: 校园卡消费账单
 - 校园网账单 `campus/netflow-bill`: 校园网流量账单
