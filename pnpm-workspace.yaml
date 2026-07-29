@@ -1,6 +1,13 @@
 shellEmulator: true
 
 trustPolicy: no-downgrade
+# vite/rollup/@vitejs/plugin-legacy 在 Taro 4.1.11 兼容范围内均无 provenance，
+# 带证明的版本要跨大版本才有，会破坏构建；此处放行发布超过 30 天的老版本。
+# 单独发布的新未证明包仍会被拦截。semver 可升到带证明的 7.x，用 overrides 处理。
+trustPolicyIgnoreAfter: 43200
+
+overrides:
+  semver: ^7.5.4
 
 allowBuilds:
   "@parcel/watcher": true
