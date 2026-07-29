@@ -64,3 +64,39 @@ export function TableHeaderCell({
     />
   )
 }
+
+/** 等级背景色: 优秀/正常, 良好/低体重, 及格/超重, 不及格/肥胖 */
+const LEVEL_BG = {
+  excellent: "#c8e6c9",
+  good: "#bbdefb",
+  pass: "#ffe0b2",
+  fail: "#ffcdd2",
+} as const
+
+type LevelKey = keyof typeof LEVEL_BG
+
+/**
+ * @description 等级单元格, 按等级上色, 可选跨行
+ */
+export function LevelCell({
+  level,
+  span,
+  className,
+  style,
+  ...props
+}: Readonly<{
+  level: LevelKey
+  span?: number
+} & ComponentProps<typeof View>>) {
+  return (
+    <TableCell
+      className={className}
+      style={{
+        backgroundColor: LEVEL_BG[level],
+        ...(span ? { gridRow: `span ${span}` } : {}),
+        ...(style as CSSProperties),
+      }}
+      {...props}
+    />
+  )
+}
