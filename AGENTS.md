@@ -73,6 +73,8 @@ pnpm fix      # eslint . --fix, 自动修复
 - 提交信息遵循 Conventional Commits (见 `commitlint.config.mjs`), 描述用中文, 如 `feat(体测标准): 完成体测标准介绍页和男生页`.
 - 分支命名格式为 `title/scope/description-author-MMDD`: `title` 为 Conventional Commits 类型 (`feat` / `fix` 等), `scope` 为改动范围 (可省略), `description` 为简短描述, `author` 为作者, `MMDD` 为月日. 如 `fix/index/card-setting-twisuki-0729`, `refactor/api-caiwen-0701`.
 - 除非明确要求, 不直接提交到 `main`; 仅在用户要求时才创建提交.
+- 分支开发时若需与主分支同步, 尽可能使用 rebase 而非 merge, 保持提交历史线性.
+- 合并 PR 时使用压缩提交 (squash merge), 并在合并后删除源分支.
 - 谨慎处理 `.env` 等可能含密钥的文件, 不提交.
 
 ## 依赖与供应链
