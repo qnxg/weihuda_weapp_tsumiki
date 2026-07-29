@@ -96,3 +96,41 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 
 - `contexts/setting.tsx` - 合理命名, 设置相关的 React Context
 - `contexts/setting-context.tsx` - 冗长命名, context 信息重复
+
+## 页面汇总
+
+### 主包 `src/pages/`
+
+- 首页 `index`: 小程序首页, 以卡片形式展示常用信息
+- 工具箱 `toolkit`: 各类工具页入口聚合
+- 课表 `table`: 课表展示与管理
+- 我的 `profile`: 个人中心
+- 登录 `auth`: 账号密码登录与双因子认证
+- 免责声明 `disclaimers`: 免责声明 (尚未完成)
+- 反馈 `feedback`: 意见反馈 (尚未完成)
+- 积分中心 `jifen`: 积分查询与兑换
+- 消息盒子 `message`: 消息通知 (尚未完成)
+
+### Tools 分包 `src/tools/pages/`
+
+- 成绩查询 `grade/grade`: 教务系统成绩查询
+- 成绩排名 `grade/ranking`: 教务系统与可信电子凭证排名
+- 实验成绩 `grade/experiment-grade`: 大物实验成绩 (尚未完成)
+- 体测成绩 `grade/physical-grade`: 体测成绩查询
+- 实验安排 `exam/experiment-arrange`: 大物实验安排 (尚未完成)
+- 考试安排 `exam/exam`: 考试安排查询
+- 体测预约 `exam/physical-appoint`: 体测预约 (尚未完成)
+- 校历查看 `campus/calender`: 校历查看
+- 体测标准 `campus/physical-standard`: 体测标准介绍 (正常进行)
+- 空教室查询 `campus/empty-room`: 空教室查询 (尚未完成)
+- 校园卡账单 `campus/card-bill`: 校园卡消费账单
+- 校园网账单 `campus/netflow-bill`: 校园网流量账单
+- 流量详情 `campus/netflow-detail`: 校园网流量详情
+- 电费查询 `campus/electricity`: 宿舍电费查询
+
+### Setting 分包 `src/setting/pages/`
+
+- 小程序设置 `index`: 设置页入口 (尚未完成)
+- 首页卡片 `index-card`: 首页卡片设置 (尚未完成)
+- 大物平台绑定 `lab-bind`: 大物实验平台账号绑定 (尚未完成)
+- 课表设置 `class-table`: 课表相关设置 (尚未完成)

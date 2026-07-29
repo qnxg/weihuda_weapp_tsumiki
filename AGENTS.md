@@ -31,6 +31,10 @@ pnpm fix      # eslint . --fix, 自动修复
 - `docs/common-function.md` — 通用组件 / 函数 / Hook 清单
 - `docs/index.md` — 文档总入口
 
+改动通用内容 (`src/components/`, `src/utils/`, `src/libs/`, `src/hooks/`, `src/contexts/` 等) 后, 须同步更新 `docs/common-function.md`, 保持清单与实际导出一致: 新增 / 删除对应条目, 变更职责时更新描述.
+
+新增 / 删除页面, 或推进页面完成度后, 须同步更新 `docs/structure.md` 的 `页面汇总`: 未完成的页面在描述后标注 `(尚未完成)`, 开发中的标注 `(正常进行)`, 已完成则不加标注.
+
 ## 目录约定 (`按页聚合`)
 
 - 全局通用内容放 `src/components/`, `src/contexts/`, `src/hooks/`, `src/utils/`, `src/libs/`, `src/apis/`, `src/config/`, `src/types/`.
@@ -48,7 +52,7 @@ pnpm fix      # eslint . --fix, 自动修复
 
 - ESLint 采用 `@antfu/eslint-config` (见 `eslint.config.mjs`): 双引号, 2 空格缩进, 无分号, 启用 react 规则.
 - 禁止 `console.log`; 需要日志时使用 `src/utils/logger.ts` 的 `logger`.
-- 注释与文档用中文, 公共类型 / 函数 / Hook 使用 JSDoc (`@description` / `@property` / `@example`), 参照 `src/hooks/auth.ts`, `src/components/card/index.tsx`.
+- 注释与文档用中文, 公共类型 / 函数 / Hook 使用 JSDoc / TSDoc (`@description` / `@property` / `@example`), 参照 `src/hooks/auth.ts`, `src/components/card/index.tsx`.
 - 标点统一用半角 (`,` `.` `;` `:` `(` `)`), 不用中文全角标点 (`，` `。` `；` `：` `（` `）`), 中文文本中同样如此; 半角标点后跟一个空格, 如 `全局通用内容放 src/components/, 以实现按页聚合.` 斜杠分隔的并列项两侧留空格, 如 `light / dark / auto`.
 - 优先复用 `docs/common-function.md` 列出的通用组件与函数, 不重复造轮子.
 
