@@ -4,7 +4,7 @@ import { Table, TableCell } from "./table"
 
 export function Male() {
   return (
-    <View className="flex flex-col gap p">
+    <View className="flex flex-col gap">
       <View className="flex flex-col">
         <View className="text-xl text-hightlight text-bold flex justify-center">
           男生体重指数(BMI)评分表(单位:kg/m²)
