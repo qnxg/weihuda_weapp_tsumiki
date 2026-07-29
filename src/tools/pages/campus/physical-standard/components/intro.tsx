@@ -23,7 +23,7 @@ export function Intro() {
   return (
     <View className="flex flex-col gap-lg">
       <View className="flex flex-col gap-sm">
-        <View className="text-2xl text-hightlight text-bold">体质测试有哪些项目?</View>
+        <View className="text-2xl text-highlight text-bold">体质测试有哪些项目?</View>
         <Table
           cols={2}
           style={{ gridTemplateColumns: "1fr max-content" }}
@@ -38,7 +38,7 @@ export function Intro() {
       </View>
 
       <View className="flex flex-col gap-sm">
-        <View className="text-2xl text-hightlight text-bold">体质测试分数评定等级</View>
+        <View className="text-2xl text-highlight text-bold">体质测试分数评定等级</View>
         <Table cols={2}>
           <TableHeaderCell>等级</TableHeaderCell>
           <TableHeaderCell>分数</TableHeaderCell>
@@ -50,9 +50,9 @@ export function Intro() {
       </View>
 
       <View className="flex flex-col gap-sm">
-        <View className="text-2xl text-hightlight text-bold">体质测试分数说明</View>
+        <View className="text-2xl text-highlight text-bold">体质测试分数说明</View>
         <View className="flex flex-col gap-xs">
-          <View className="text-hightlight text-bold">分数构成</View>
+          <View className="text-highlight text-bold">分数构成</View>
           <View>
             1.
             {" "}
@@ -78,7 +78,7 @@ export function Intro() {
           </View>
         </View>
         <View className="flex flex-col gap-xs">
-          <View className="text-hightlight text-bold">加分项</View>
+          <View className="text-highlight text-bold">加分项</View>
           <View>
             男生加分指标:
             {" "}
@@ -95,7 +95,7 @@ export function Intro() {
           </View>
         </View>
         <View className="flex flex-col gap-xs">
-          <View className="text-hightlight text-bold">毕业成绩</View>
+          <View className="text-highlight text-bold">毕业成绩</View>
           <View>
             学生毕业时的成绩和等级,
             {" "}

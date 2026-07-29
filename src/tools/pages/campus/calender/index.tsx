@@ -131,7 +131,7 @@ export default function Calender() {
                                 key={`${week}-${day}`}
                                 className={cn(
                                   "flex center text-lg",
-                                  date.date === 1 && "text-hightlight",
+                                  date.date === 1 && "text-highlight",
                                   (date.month - start.month) % 2 === 1 && "bg-page",
                                   od().eq(date, "d") && "bg-primary text-reverse",
                                 )}

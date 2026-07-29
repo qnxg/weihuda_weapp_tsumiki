@@ -118,7 +118,7 @@ export default function CardBill() {
                           <View className="text-lg text-primary">
                             {od(record.date_time).s}
                           </View>
-                          <View className="text-lg font-bold text-hightlight">
+                          <View className="text-lg font-bold text-highlight">
                             {tab === "recharge" ? "+" : "-"}
                             {record.amount.toFixed(2)}
                           </View>

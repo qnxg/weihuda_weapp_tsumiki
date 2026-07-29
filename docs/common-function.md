@@ -52,7 +52,19 @@
   - 本请求函数将分层处理错误, 对于网络错误和服务器错误, 直接记录日志, 不暴露给下一层处理; 仅正常的业务错误才会暴露
   - 本函数保证抛出的错误均为 `RequestError` 类型, 方便统一处理
 
-- 带鉴权的请求函数 `/libs/auth-request.ts`: 基于通用请求函数封装, 自动处理鉴权相关逻辑, 如 token 携带, 401 错误处理等
+- 带鉴权的请求函数 `/libs/auth-request.ts`: 基于通用请求函数封装, 自动携带鉴权头并拦截 401, 分发到 `utils/auth.ts` 处理; 对外仍暴露 `request` (提供 get/post/put/delete 快捷方法)
+  - 与 `libs/request.ts` (底层请求) 和 `utils/auth.ts` (鉴权处理) 构成三层请求体系
+
+- 鉴权处理函数 `/utils/auth.ts`: 承载 token 存储与 401 恢复逻辑, 供 `auth-request.ts` 调用
+  - `accessTokenStorage` / `refreshTokenStorage`: 两个 token 的存储实例
+  - `refreshAccessToken`: 单飞刷新 access_token, 并发 401 只发起一次 `/auth/refresh`, 失败返回 null
+  - `handleLoginLost`: token 失效时先静默刷新并透明重试原请求, 刷新失败则引导登录
+  - `handleTFA`: 需要双因子认证时引导前往验证码页
+  - `clearTokens`: 清除本地 token, 用于登出 / 登录丢失
+
+- 鉴权弹窗桥接函数 `/libs/auth-bridge.ts`: 解耦请求层与页面导航, 提供鉴权引导弹窗
+  - `promptLoginLost` / `promptTFA`: 弹窗引导前往登录 / 验证码页, 各自带会话锁去重, 已上锁则静默跳过
+  - `unlockAuthPrompts`: 解锁两把会话锁, 供下拉刷新 / 鉴权成功等用户主动动作调用
 
 - 类名拼接函数 `/utils/cn.ts`: shadcn 风格的 className 合并函数
   - 详见 [GitHub - lukeed/clsx](https://github.com/lukeed/clsx)
@@ -108,6 +120,8 @@
 
 - 课程钩子 `hooks/course.ts`: 带缓存的课程数据请求钩子
   - 由于缓存请求 hook `useCachedRequest` 要求传入稳定的 `请求 Promise`, 但课程相关请求依赖学期参数, 本钩子兼容了学期未就绪的情况
+  - `useCourse`: 课表课程钩子
+  - `useExtraCourse`: 无课表课程钩子
 
 - 成绩钩子 `hooks/grade.ts`: 成绩数据请求钩子
   - 同课程钩子, 兼容学期未就绪的情况
@@ -121,7 +135,7 @@
 - context: `/contexts/auth.tsx`
 - hook: `/hooks/auth.ts`
 - type: `/types/auth.ts`
-- 其他工具函数: `utils/parse-sex.ts`
+- 其他工具函数: `utils/parse-sex.ts`, `utils/auth.ts`, `libs/auth-bridge.ts`
 
 用于获取并全局共享用户信息, mount 时获取一次用户信息, 并提供 `更新信息` 和 `删除用户` 的方法
 

@@ -32,7 +32,7 @@ export default function NetflowBill() {
                   >
                     <CardContent className="flex flex-col gap">
                       <View className="flex items-center justify-between">
-                        <View className="text-bold text-hightlight text-lg">
+                        <View className="text-bold text-highlight text-lg">
                           {item.year}
                           -
                           {item.month}

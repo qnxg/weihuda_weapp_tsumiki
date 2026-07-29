@@ -64,7 +64,7 @@ export function CountDown({
                   {String(next).padStart(3, "0").split("").map((num, index) => (
                     <View
                       key={index}
-                      className="text-2xl text-hightlight text-bold p bg-page rounded-sm"
+                      className="text-2xl text-highlight text-bold p bg-page rounded-sm"
                       style={{
                         backgroundColor: isDark ? "#303030" : "#f7f7f7",
                       }}

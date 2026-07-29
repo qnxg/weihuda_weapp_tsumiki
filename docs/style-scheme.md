@@ -20,7 +20,7 @@
 
 #### 文本颜色 `.text`
 
-- `text-hightlight`: 高亮文本颜色, 较基础颜色更强烈 (深浅默认颜色相反)
+- `text-highlight`: 高亮文本颜色, 较基础颜色更强烈 (深浅默认颜色相反)
 - `text-base`: 基础文本颜色 (浅色模式为深色文本, 深色模式相反)
 - `text-toned`: 柔和文本颜色, 较基础颜色更浅 (深浅默认颜色相反)
 - `text-muted`: 次要文本颜色, 较柔和颜色更浅 (深浅默认颜色相反)
@@ -38,7 +38,7 @@
 
 #### 边框颜色 `.border`
 
-- `border-hightlight`: 高亮边框
+- `border-highlight`: 高亮边框
 - `border-base`: 基础边框
 - `border-toned`: 柔和边框
 - `border-muted`: 次要边框
