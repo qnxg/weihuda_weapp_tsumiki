@@ -33,20 +33,45 @@ export function Table({
   )
 }
 
+const CELL_COLOR: Record<string, string> = {
+  green: "#c8e6c9",
+  blue: "#bbdefb",
+  orange: "#ffe0b2",
+  red: "#ffcdd2",
+}
+
+type CellColor = keyof typeof CELL_COLOR
+
 /**
- * @description 表格单元格, 默认铺 bg 底色 + 内边距 + 居中, className 可覆盖
+ * @description 表格单元格, 默认铺 bg 底色 + 内边距 + 居中, className 可覆盖, 可传入 color 染色, span 跨行
  */
 export function TableCell({
+  color,
+  span,
   className,
+  style,
   ...props
-}: Readonly<ComponentProps<typeof View>>) {
-  return <View className={cn("bg px py-sm flex center", className)} {...props} />
+}: Readonly<{
+  color?: CellColor
+  span?: number
+} & ComponentProps<typeof View>>) {
+  return (
+    <View
+      className={cn("bg px py-sm flex center", className)}
+      style={{
+        ...(color ? { backgroundColor: CELL_COLOR[color] } : {}),
+        ...(span ? { gridRow: `span ${span}` } : {}),
+        ...(style as CSSProperties),
+      }}
+      {...props}
+    />
+  )
 }
 
 /**
  * @description 表格表头单元格, 加深背景以区分数据行
  */
-export function TableHeaderCell({
+export function TableHead({
   className,
   style,
   ...props
@@ -58,42 +83,6 @@ export function TableHeaderCell({
       className={cn("text-bold", className)}
       style={{
         backgroundColor: isDark ? "#303030" : "#eeeeee",
-        ...(style as CSSProperties),
-      }}
-      {...props}
-    />
-  )
-}
-
-/** 等级背景色: 优秀/正常, 良好/低体重, 及格/超重, 不及格/肥胖 */
-const LEVEL_BG = {
-  excellent: "#c8e6c9",
-  good: "#bbdefb",
-  pass: "#ffe0b2",
-  fail: "#ffcdd2",
-} as const
-
-type LevelKey = keyof typeof LEVEL_BG
-
-/**
- * @description 等级单元格, 按等级上色, 可选跨行
- */
-export function LevelCell({
-  level,
-  span,
-  className,
-  style,
-  ...props
-}: Readonly<{
-  level: LevelKey
-  span?: number
-} & ComponentProps<typeof View>>) {
-  return (
-    <TableCell
-      className={className}
-      style={{
-        backgroundColor: LEVEL_BG[level],
-        ...(span ? { gridRow: `span ${span}` } : {}),
         ...(style as CSSProperties),
       }}
       {...props}

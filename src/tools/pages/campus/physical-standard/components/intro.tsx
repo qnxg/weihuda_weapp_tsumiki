@@ -1,5 +1,5 @@
 import { View } from "@tarojs/components"
-import { Table, TableCell, TableHeaderCell } from "./table"
+import { Table, TableCell, TableHead } from "./table"
 
 const ITEMS = [
   { name: "体重指数 (BMI)", weight: "15" },
@@ -21,15 +21,15 @@ const LEVELS = [
 
 export function Intro() {
   return (
-    <View className="flex flex-col" style={{ gap: "32rpx" }}>
+    <View className="flex flex-col gap">
       <View className="flex flex-col gap-sm">
         <View className="text-2xl text-highlight text-bold">体质测试有哪些项目?</View>
         <Table
           cols={2}
           style={{ gridTemplateColumns: "1fr max-content" }}
         >
-          <TableHeaderCell className="justify-start">单项指标</TableHeaderCell>
-          <TableHeaderCell>权重 (%)</TableHeaderCell>
+          <TableHead className="justify-start">单项指标</TableHead>
+          <TableHead>权重 (%)</TableHead>
           {ITEMS.flatMap(item => [
             <TableCell key={`${item.name}-name`} className="justify-start">{item.name}</TableCell>,
             <TableCell key={`${item.name}-weight`}>{item.weight}</TableCell>,
@@ -40,8 +40,8 @@ export function Intro() {
       <View className="flex flex-col gap-sm">
         <View className="text-2xl text-highlight text-bold">体质测试分数评定等级</View>
         <Table cols={2}>
-          <TableHeaderCell>等级</TableHeaderCell>
-          <TableHeaderCell>分数</TableHeaderCell>
+          <TableHead>等级</TableHead>
+          <TableHead>分数</TableHead>
           {LEVELS.flatMap(item => [
             <TableCell key={`${item.level}-level`}>{item.level}</TableCell>,
             <TableCell key={`${item.level}-score`}>{item.score}</TableCell>,
