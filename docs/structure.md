@@ -134,3 +134,22 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 - 首页卡片 `index-card`: 首页卡片设置 (尚未完成)
 - 大物平台绑定 `lab-bind`: 大物实验平台账号绑定 (尚未完成)
 - 课表设置 `class-table`: 课表相关设置 (尚未完成)
+
+## 其他
+
+### 静态资源
+
+图标等静态资源统一放在 `src/static/`, 其内部结构与页面结构保持一致, 遵循 `按页聚合` 原则:
+
+- 页面专用图标放在与页面路径同构的子目录下, 即 `src/static/<页面路径>/`. 例如课表页 `src/pages/table/` 的图标在 `src/static/table/`, 课表设置页 `src/setting/pages/class-table/` 的图标在 `src/static/setting/class-table/`.
+- 首页卡片等多层级页面同理逐层对应, 如 `src/static/index/courses/` 对应首页课程卡片.
+- 跨页面共享的资源单独归类: `src/static/common/` 放通用图标 (如 `to.svg`, `close.svg`), `src/static/tab/` 放 TabBar 图标.
+- 即使多个页面复用同一图标, 也各自在对应目录保留一份副本 (而非跨页面直接引用), 以维持 `按页聚合` 的结构一致性.
+
+图标经 `@/static/*` 路径别名以 ES Module 方式导入, 再传入 `src/components/icon/` 的 `Icon` 组件渲染:
+
+```tsx
+import EditIcon from "@/static/setting/class-table/edit.svg"
+
+<Icon src={EditIcon} />
+```
