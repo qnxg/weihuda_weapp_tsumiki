@@ -130,10 +130,10 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 
 ### Setting 分包 `src/setting/pages/`
 
-- 小程序设置 `index`: 设置页入口 (尚未完成)
+- 小程序设置 `index`: 设置页入口
 - 首页卡片 `index-card`: 首页卡片设置 (尚未完成)
 - 大物平台绑定 `lab-bind`: 大物实验平台账号绑定 (尚未完成)
-- 课表设置 `class-table`: 课表相关设置 (尚未完成)
+- 课表设置 `class-table`: 课表相关设置
 
 ## 其他
 

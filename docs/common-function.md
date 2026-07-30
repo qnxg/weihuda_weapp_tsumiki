@@ -88,6 +88,7 @@
 
 - 通用存储类 `/utils/storage.ts`: 基于 Taro storage 封装的存储类, 支持过期机制, 提供 get/set/remove 方法
   - 并暴露 clearAllStorage 函数安全清除缓存(保留 token)
+  - 以及 clearStorageByPrefix 函数按前缀清除某一类带动态后缀的缓存
 
 - 主题获取函数 `/utils/theme.ts`: 获取当前主题, 返回 theme 和 isDark 计算属性
   - 注意: 在模拟器中直接切换主题, 该函数不会立即响应, 这是微信相关问题
