@@ -153,3 +153,5 @@ import EditIcon from "@/static/setting/class-table/edit.svg"
 
 <Icon src={EditIcon} />
 ```
+
+> 注: Taro weapp 构建会把 import 的图标以 base64 内联进所属 JS chunk, 天然跟随代码分包, 不影响主包体积, 因此静态资源无需单独分包.
