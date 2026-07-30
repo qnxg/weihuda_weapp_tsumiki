@@ -1,0 +1,39 @@
+name: reviewer
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# 仅授予必要权限: 读代码, 写 PR 评论
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    name: AI Review
+    runs-on: ubuntu-latest
+    # 跳过 fork 发起的 PR: public 库不向 fork 注入 secrets, 无 key 时直接跳过
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: MiniMax M3 Review
+        uses: anthropics/claude-code-action@v1
+        env:
+          # 复用 Claude Code CLI 的 Anthropic 兼容协议, 将其整体指向 MiniMax M3
+          ANTHROPIC_BASE_URL: https://api.minimaxi.com/anthropic
+          ANTHROPIC_MODEL: MiniMax-M3
+        with:
+          anthropic_api_key: ${{ secrets.MINIMAX_API_KEY }}
+          prompt: |
+            请以中文 review 本 PR 的代码改动, 使用半角标点.
+            本项目规范以仓库根目录 AGENTS.md 与 docs/ 为权威来源, review 时须对照:
+            - 样式方案: 原子类 (cn 拼接) > 内联 style > SCSS 兜底的分层优先级, 勿硬编码主题色.
+            - 命名约定: 非结构化命名, 按路径分类, 文件仅以 Feature 命名.
+            - 目录约定: 按页聚合, 通用内容放 src 顶层对应目录, 页面专用放该页目录.
+            - 状态管理: Context 只放基本状态与 setter, 复杂逻辑下沉 Hook.
+            - 代码风格: 双引号, 2 空格, 无分号; 禁止 console.log, 用 logger.
+            只指出实质问题 (bug, 规范冲突, 可维护性), 不啰嗦, 不复述改动.
