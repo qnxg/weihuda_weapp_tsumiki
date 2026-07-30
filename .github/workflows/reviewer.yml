@@ -27,13 +27,22 @@ jobs:
           ANTHROPIC_BASE_URL: https://api.minimaxi.com/anthropic
           ANTHROPIC_MODEL: MiniMax-M3
         with:
+          # 显式用内置 GITHUB_TOKEN 发评论, 避免走官方 Claude Code App (未安装且不匹配 MiniMax)
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.MINIMAX_API_KEY }}
+          # 放开发评论所需工具: 行内评论走 MCP, 总结走 gh pr comment
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*)"
           prompt: |
             请以中文 review 本 PR 的代码改动, 使用半角标点.
-            本项目规范以仓库根目录 AGENTS.md 与 docs/ 为权威来源, review 时须对照:
-            - 样式方案: 原子类 (cn 拼接) > 内联 style > SCSS 兜底的分层优先级, 勿硬编码主题色.
-            - 命名约定: 非结构化命名, 按路径分类, 文件仅以 Feature 命名.
-            - 目录约定: 按页聚合, 通用内容放 src 顶层对应目录, 页面专用放该页目录.
-            - 状态管理: Context 只放基本状态与 setter, 复杂逻辑下沉 Hook.
-            - 代码风格: 双引号, 2 空格, 无分号; 禁止 console.log, 用 logger.
+            发现问题时用 mcp__github_inline_comment__create_inline_comment 在对应文件行发行内评论;
+            review 结束后用 gh pr comment 发一条总体小结 (发现的问题数与整体评价).
+            若确无问题, 也用 gh pr comment 发一条通过说明.
+            本项目规范以仓库根目录 AGENTS.md 与 docs/ 为权威来源, review 时须依次对照:
+            - 提交与分支: 提交信息遵循 Conventional Commits 且描述用中文; 分支命名为 title/scope/description-author-MMDD; 不直接提交 main, 同步主分支优先 rebase.
+            - 目录约定: 按页聚合, 通用内容放 src 顶层对应目录 (components / hooks / utils 等), 页面专用内容放该页目录; 页面即路由文件夹不可嵌套, 新增页面须注册到 app.config.ts.
+            - 状态管理: Context 只放基本状态与 setter, 复杂逻辑下沉对应 Hook; Provider 的 value 用 useMemo 稳定, 消费用 useXxxContext 并做未挂载兜底; 用到原值的 setState 须函数式更新.
+            - 样式方案: 遵循原子类 (cn 拼接) > 内联 style > SCSS 兜底的分层优先级, 勿硬编码主题色, 需要伪元素时用真实 DOM 承载.
+            - 代码风格: 双引号, 2 空格缩进, 无分号; 禁止 console.log, 用 logger; 公共类型 / 函数 / Hook 写 JSDoc.
+            以上仅为要点, 具体细则以 AGENTS.md 为准.
             只指出实质问题 (bug, 规范冲突, 可维护性), 不啰嗦, 不复述改动.
