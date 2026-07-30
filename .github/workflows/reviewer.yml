@@ -4,11 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-# 仅授予必要权限: 读代码, 写 PR 评论, 换取 OIDC token (action 生成访问令牌所需)
+# 仅授予必要权限: 读代码, 写 PR 评论
 permissions:
   contents: read
   pull-requests: write
-  id-token: write
 
 jobs:
   review:
@@ -28,6 +27,8 @@ jobs:
           ANTHROPIC_BASE_URL: https://api.minimaxi.com/anthropic
           ANTHROPIC_MODEL: MiniMax-M3
         with:
+          # 显式用内置 GITHUB_TOKEN 发评论, 避免走官方 Claude Code App (未安装且不匹配 MiniMax)
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.MINIMAX_API_KEY }}
           prompt: |
             请以中文 review 本 PR 的代码改动, 使用半角标点.
