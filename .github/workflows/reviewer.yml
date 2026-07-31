@@ -50,6 +50,7 @@ jobs:
             --allowedTools "Bash(gh workflow view:*)"
             --allowedTools "Bash(gh workflow list:*)"
           prompt: |
+            这是 PR #${{ github.event.pull_request.number }} (head: ${{ github.event.pull_request.head.ref }} -> base: ${{ github.event.pull_request.base.ref }}).
             请以中文 review 本 PR 的代码改动, 使用半角标点.
             发现问题时用 mcp__github_inline_comment__create_inline_comment 在对应文件行发行内评论;
             review 结束后用 gh pr comment 发一条总体小结 (发现的问题数与整体评价).
