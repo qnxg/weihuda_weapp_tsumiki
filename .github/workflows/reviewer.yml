@@ -4,10 +4,11 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-# 仅授予必要权限: 读代码, 写 PR 评论
+# 仅授予必要权限: 读代码, 写 PR 评论, 上传诊断 artifact
 permissions:
   contents: read
   pull-requests: write
+  actions: write
 
 jobs:
   review:
@@ -46,3 +47,16 @@ jobs:
             - 代码风格: 双引号, 2 空格缩进, 无分号; 禁止 console.log, 用 logger; 公共类型 / 函数 / Hook 写 JSDoc.
             以上仅为要点, 具体细则以 AGENTS.md 为准.
             只指出实质问题 (bug, 规范冲突, 可维护性), 不啰嗦, 不复述改动.
+
+      # 上传 Claude Code 会话记录供后续排查
+      # if: always() 用于确保 action 失败时依然上传
+      - name: Upload Claude session logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-session-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/claude-execution-output.json
+            /home/runner/.claude/projects/
+          retention-days: 7
+          if-no-files-found: warn
