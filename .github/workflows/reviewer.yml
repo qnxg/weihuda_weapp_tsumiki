@@ -31,9 +31,24 @@ jobs:
           # 显式用内置 GITHUB_TOKEN 发评论, 避免走官方 Claude Code App (未安装且不匹配 MiniMax)
           github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.MINIMAX_API_KEY }}
-          # 放开发评论所需工具: 行内评论走 MCP, 总结走 gh pr comment
+          # 放行工具:
+          # - 行内评论 MCP
+          # - 普通 PR 评论 gh pr comment
+          # - 其他只读 gh 命令
           claude_args: |
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*)"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment"
+            --allowedTools "Bash(gh pr comment:*)"
+            --allowedTools "Bash(gh pr view:*)"
+            --allowedTools "Bash(gh pr diff:*)"
+            --allowedTools "Bash(gh pr list:*)"
+            --allowedTools "Bash(gh pr status:*)"
+            --allowedTools "Bash(gh pr checks:*)"
+            --allowedTools "Bash(gh issue view:*)"
+            --allowedTools "Bash(gh issue list:*)"
+            --allowedTools "Bash(gh run view:*)"
+            --allowedTools "Bash(gh run list:*)"
+            --allowedTools "Bash(gh workflow view:*)"
+            --allowedTools "Bash(gh workflow list:*)"
           prompt: |
             请以中文 review 本 PR 的代码改动, 使用半角标点.
             发现问题时用 mcp__github_inline_comment__create_inline_comment 在对应文件行发行内评论;
