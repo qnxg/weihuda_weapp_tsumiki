@@ -116,7 +116,7 @@ const IMPORTANT_KEYS = [STORAGE.token.access_token, STORAGE.token.refresh_token]
 
 /**
  * @description 按前缀清除本地存储, 用于清除某一类带动态后缀的缓存
- * @param {string[]} prefixes - 需要清除的存储键前缀
+ * @param {...string[]} prefixes - 需要清除的存储键前缀
  */
 export function clearStorageByPrefix(...prefixes: string[]) {
   const keys = Taro.getStorageInfoSync().keys.filter(k => prefixes.some(p => k.startsWith(p)))
