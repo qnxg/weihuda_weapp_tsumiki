@@ -22,6 +22,9 @@
   - `Option`: 单个操作选项组件
   - `Options`: 操作列表容器组件, 支持 divided/underline/wrapped/plain 四种样式类型
 
+- Checkbox 组件 `/checkbox`: checkbox 样式的多选条目
+  - `Checkbox`: 左侧方框指示选中态, 支持 label / description
+
 - 遮罩组件 `/overlay`: 全屏遮罩层组件
   - `Overlay`: 遮罩层组件, 全屏 fixed 定位
   - `OverlayMask`: 带遮罩内容展示组件, 支持 loading 状态和 top/center/bottom 三种定位模式
