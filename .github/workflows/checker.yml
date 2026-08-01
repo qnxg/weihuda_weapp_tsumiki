@@ -1,7 +1,10 @@
-name: CI
+name: checker
 
 on:
+  # 仅 main 的 push (即 PR 合并) 跑一次, 验证合并 commit
+  # 功能分支的验证由 pull_request 覆盖, 避免重复
   push:
+    branches: [main]
   pull_request:
 
 jobs:
