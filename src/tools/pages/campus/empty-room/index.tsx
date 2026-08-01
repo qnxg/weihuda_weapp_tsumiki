@@ -135,6 +135,7 @@ export default function EmptyRoom() {
                 >
                   <Option
                     size="xl"
+                    className="px-xs"
                     title={<View className="text-muted">日期</View>}
                     content={<PickerValue value={dateDisplay} />}
                   />
@@ -150,6 +151,7 @@ export default function EmptyRoom() {
                 >
                   <Option
                     size="xl"
+                    className="px-xs"
                     title={<View className="text-muted">楼栋</View>}
                     content={<PickerValue value={building.name} />}
                   />
@@ -158,6 +160,7 @@ export default function EmptyRoom() {
                 <Option
                   size="xl"
                   layout="vertical"
+                  className="px-xs"
                   title={<View className="text-muted">节次</View>}
                   content={(
                     <View className="flex flex-col gap px">

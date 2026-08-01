@@ -62,12 +62,7 @@ function Option({
         className={cn("bg flex flex-col gap", sizeClass, className)}
         onClick={() => handleClick()}
       >
-        <View
-          className="flex items-center gap"
-          style={{
-            paddingLeft: "4px",
-          }}
-        >
+        <View className="flex items-center gap">
           {icon && (
             <Icon
               src={icon}
@@ -93,12 +88,7 @@ function Option({
       )}
       onClick={() => handleClick()}
     >
-      <View
-        className="flex items-center gap"
-        style={{
-          paddingLeft: "4px",
-        }}
-      >
+      <View className="flex items-center gap">
         {icon && (
           <Icon
             src={icon}
