@@ -4,10 +4,11 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-# 仅授予必要权限: 读代码, 写 PR 评论
+# 仅授予必要权限: 读代码, 写 PR 评论, 上传诊断 artifact
 permissions:
   contents: read
   pull-requests: write
+  actions: write
 
 jobs:
   review:
@@ -30,10 +31,26 @@ jobs:
           # 显式用内置 GITHUB_TOKEN 发评论, 避免走官方 Claude Code App (未安装且不匹配 MiniMax)
           github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.MINIMAX_API_KEY }}
-          # 放开发评论所需工具: 行内评论走 MCP, 总结走 gh pr comment
+          # 放行工具:
+          # - 行内评论 MCP
+          # - 普通 PR 评论 gh pr comment
+          # - 其他只读 gh 命令
           claude_args: |
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*)"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment"
+            --allowedTools "Bash(gh pr comment:*)"
+            --allowedTools "Bash(gh pr view:*)"
+            --allowedTools "Bash(gh pr diff:*)"
+            --allowedTools "Bash(gh pr list:*)"
+            --allowedTools "Bash(gh pr status:*)"
+            --allowedTools "Bash(gh pr checks:*)"
+            --allowedTools "Bash(gh issue view:*)"
+            --allowedTools "Bash(gh issue list:*)"
+            --allowedTools "Bash(gh run view:*)"
+            --allowedTools "Bash(gh run list:*)"
+            --allowedTools "Bash(gh workflow view:*)"
+            --allowedTools "Bash(gh workflow list:*)"
           prompt: |
+            这是 PR #${{ github.event.pull_request.number }} (head: ${{ github.event.pull_request.head.ref }} -> base: ${{ github.event.pull_request.base.ref }}).
             请以中文 review 本 PR 的代码改动, 使用半角标点.
             发现问题时用 mcp__github_inline_comment__create_inline_comment 在对应文件行发行内评论;
             review 结束后用 gh pr comment 发一条总体小结 (发现的问题数与整体评价).
@@ -46,3 +63,16 @@ jobs:
             - 代码风格: 双引号, 2 空格缩进, 无分号; 禁止 console.log, 用 logger; 公共类型 / 函数 / Hook 写 JSDoc.
             以上仅为要点, 具体细则以 AGENTS.md 为准.
             只指出实质问题 (bug, 规范冲突, 可维护性), 不啰嗦, 不复述改动.
+
+      # 上传 Claude Code 会话记录供后续排查
+      # if: always() 用于确保 action 失败时依然上传
+      - name: Upload Claude session logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-session-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/claude-execution-output.json
+            /home/runner/.claude/projects/
+          retention-days: 7
+          if-no-files-found: warn
