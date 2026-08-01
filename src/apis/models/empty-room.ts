@@ -3,13 +3,13 @@
  * @property {string} room_name - 教室名称
  * @property {string} room_type - 教室类型
  * @property {number} seat_count - 教室座位数
- * @property {string} exam_seat_count - 考试座位数
+ * @property {number} exam_seat_count - 考试座位数
  */
 export interface EmptyRoomItem {
   room_name: string
   room_type: string
   seat_count: number
-  exam_seat_count: string
+  exam_seat_count: number
 }
 
 /**
