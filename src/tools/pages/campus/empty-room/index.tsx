@@ -24,14 +24,16 @@ import { od } from "@/utils/ohday"
  * - 若已晚于最后一节结束时间, 则不预选
  */
 function getDefaultMajorPeriods(now = od()): number[] {
+  const at = (time: string) => od(time, "HH:mm")
+
   // 尚未结束的大节次 (正在进行或尚未开始)
-  const candidates = MAJOR_PERIODS.filter(period => now.le(od(period.end), "m"))
+  const candidates = MAJOR_PERIODS.filter(period => now.le(at(period.end), "m"))
   if (candidates.length === 0)
     return []
 
   const ongoing = candidates.find((period) => {
-    const start = od(period.start)
-    const end = od(period.end)
+    const start = at(period.start)
+    const end = at(period.end)
     return now.bt(start, end.add("ms", 1))
   })
   if (ongoing)
@@ -39,8 +41,8 @@ function getDefaultMajorPeriods(now = od()): number[] {
 
   // 选尚未开始且开始时间离现在最近的一节
   const upcoming = candidates.reduce((nearest, period) => {
-    const nearestDiff = od(nearest.start).diff(now, "m")
-    const periodDiff = od(period.start).diff(now, "m")
+    const nearestDiff = at(nearest.start).diff(now, "m")
+    const periodDiff = at(period.start).diff(now, "m")
     return periodDiff < nearestDiff ? period : nearest
   })
 
