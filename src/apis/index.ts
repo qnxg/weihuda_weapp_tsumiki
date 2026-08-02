@@ -19,7 +19,6 @@ import type {
 } from "@/apis/models/course"
 import type { DormResponse, ElectricityResponse } from "@/apis/models/electricity"
 import type { EmailResponse } from "@/apis/models/email"
-import type { EmptyRoomRequest, EmptyRoomResponse } from "@/apis/models/empty-room"
 import type {
   ExamPostRequest,
   ExamPutRequest,
@@ -153,8 +152,5 @@ export const api = {
   gym: {
     grade: (data?: GymGradeRequest) => request.get<GymGradeResponse>("/gym/grade", data),
     appointment: () => request.get<GymAppointmentResponse>("/gym/appointment"),
-  },
-  emptyRoom: {
-    get: (data: EmptyRoomRequest) => request.get<EmptyRoomResponse>("/empty_room", data),
   },
 }
