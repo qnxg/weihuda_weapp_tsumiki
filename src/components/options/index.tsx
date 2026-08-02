@@ -6,7 +6,8 @@ import { cn } from "@/utils/cn"
 import { navigate } from "@/utils/navigate"
 import { getTheme } from "@/utils/theme"
 
-type Size = "sm" | "md" | "lg"
+type Size = "sm" | "md" | "lg" | "xl"
+type Layout = "horizontal" | "vertical"
 
 export interface OptionItem {
   title: string | ReactNode
@@ -14,6 +15,13 @@ export interface OptionItem {
   content?: string | ReactNode
   to?: string
   size?: Size
+  /**
+   * @description 布局方式
+   * - horizontal: 标题左, 内容右 (默认)
+   * - vertical: 标题上, 内容下
+   */
+  layout?: Layout
+  className?: string
   onClick?: () => void
 }
 
@@ -23,6 +31,8 @@ function Option({
   content,
   to,
   size = "md",
+  layout = "horizontal",
+  className,
   onClick,
 }: Readonly<OptionItem>) {
   const handleClick = () => {
@@ -31,17 +41,50 @@ function Option({
     onClick?.()
   }
 
-  const iconSize = size === "sm"
-    ? "32rpx"
-    : size === "md" ? "40rpx" : "48rpx"
+  const ICON_SIZE_MAP: Record<Size, string> = {
+    sm: "32rpx",
+    md: "40rpx",
+    lg: "48rpx",
+    xl: "56rpx",
+  }
+  const iconSize = ICON_SIZE_MAP[size]
+
+  const sizeClass = cn(
+    size === "sm" && "py-sm",
+    size === "md" && "py-md",
+    size === "lg" && "py-lg",
+    size === "xl" && "py-xl",
+  )
+
+  if (layout === "vertical") {
+    return (
+      <View
+        className={cn("bg flex flex-col gap", sizeClass, className)}
+        onClick={() => handleClick()}
+      >
+        <View className="flex items-center gap">
+          {icon && (
+            <Icon
+              src={icon}
+              style={{
+                width: iconSize,
+                height: iconSize,
+              }}
+            />
+          )}
+          {title}
+        </View>
+        {content != null && <View>{content}</View>}
+      </View>
+    )
+  }
 
   return (
     <View
       className={cn(
         "flex items-center justify-between bg",
-        size === "sm" && "py-sm",
-        size === "md" && "py-md",
-        size === "lg" && "py-lg",
+        sizeClass,
+        className,
       )}
       onClick={() => handleClick()}
     >
@@ -118,6 +161,8 @@ function Options({
           content={option.content}
           to={option.to}
           size={option.size}
+          layout={option.layout}
+          className={option.className}
           onClick={option.onClick}
         />
       ))}
