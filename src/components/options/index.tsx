@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { ComponentProps, ReactNode } from "react"
 import { View } from "@tarojs/components"
 import { Icon } from "@/components/icon"
 import ToIcon from "@/static/common/to.svg"
@@ -34,7 +34,8 @@ function Option({
   layout = "horizontal",
   className,
   onClick,
-}: Readonly<OptionItem>) {
+  ...props
+}: Readonly<OptionItem & ComponentProps<typeof View>>) {
   const handleClick = () => {
     if (to)
       navigate(to)
@@ -87,6 +88,7 @@ function Option({
         className,
       )}
       onClick={() => handleClick()}
+      {...props}
     >
       <View className="flex items-center gap">
         {icon && (
