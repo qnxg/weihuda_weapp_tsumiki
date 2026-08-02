@@ -32,7 +32,6 @@ export const SCHEDULES: ScheduleItem[] = [
 /**
  * @description 大节次信息
  * @property {number} index - 大节次序号, 从 1 开始
- * @property {string} label - 展示名称
  * @property {string} start - 开始时间, HH:mm
  * @property {string} end - 结束时间, HH:mm
  * @see https://github.com/qnxg/hnu_query/blob/main/docs/hdjw/time.md
