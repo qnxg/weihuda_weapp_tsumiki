@@ -284,17 +284,9 @@ export default function EmptyRoom() {
                     </View>
                   )
                 : (
-                    <View className="rounded-sm overflow-hidden bg">
-                      <View
-                        className="flex flex-col center gap"
-                        style={{
-                          paddingTop: "80px",
-                          paddingBottom: "80px",
-                        }}
-                      >
-                        <Icon className="size-xl" src={EmptyIcon} />
-                        <View className="text-toned">该条件下暂无空教室</View>
-                      </View>
+                    <View className="h-3xl rounded-sm overflow-hidden bg flex flex-col center gap">
+                      <Icon className="size-xl" src={EmptyIcon} />
+                      <View className="text-toned">该条件下暂无空教室</View>
                     </View>
                   )}
             </View>
