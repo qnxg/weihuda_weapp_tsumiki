@@ -1,5 +1,5 @@
 import type { UserInfo } from "@/types/auth"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { api } from "@/apis"
 import { useAuthContext } from "@/contexts/auth"
 import { unlockAuthPrompts } from "@/libs/auth-bridge"
@@ -10,12 +10,14 @@ const AUTH_PAGE = "/pages/auth/index"
 
 /**
  * @property {UserInfo | null} user - 当前用户信息, 未登录或未加载时为 null
+ * @property {boolean} isLoading - 用户信息是否正在加载
  * @property {() => Promise<UserInfo | null>} updateUser - 重新获取用户信息并更新 state, 返回用户信息
  * @property {() => void} clearUser - 清除用户信息并跳转登录页
  * @property {() => void} unlockPrompts - 解锁鉴权弹窗会话锁, 供下拉刷新 / 鉴权成功调用
  */
 export interface AuthHookResult {
   user: UserInfo | null
+  isLoading: boolean
   updateUser: () => Promise<UserInfo | null>
   clearUser: () => void
   unlockPrompts: () => void
@@ -26,8 +28,10 @@ export interface AuthHookResult {
  */
 export function useAuth(): AuthHookResult {
   const { user, setUser } = useAuthContext()
+  const [isLoading, setIsLoading] = useState(() => user === null)
 
   const updateUser = useCallback(async () => {
+    setIsLoading(true)
     return api.me.get()
       .then((res) => {
         const data = res.data
@@ -41,11 +45,15 @@ export function useAuth(): AuthHookResult {
         return userInfo
       })
       .catch(() => null)
+      .finally(() => setIsLoading(false))
   }, [setUser])
 
   useEffect(() => {
     if (user === null) {
       void updateUser()
+    }
+    else {
+      setIsLoading(false)
     }
   }, [setUser, updateUser, user])
 
@@ -60,6 +68,7 @@ export function useAuth(): AuthHookResult {
 
   return {
     user,
+    isLoading,
     updateUser,
     clearUser,
     unlockPrompts,

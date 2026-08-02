@@ -1,30 +1,34 @@
 import { View } from "@tarojs/components"
-import { showToast } from "@tarojs/taro"
-import { useState } from "react"
+import { hideLoading, showLoading, showToast } from "@tarojs/taro"
+import { useCallback, useState } from "react"
 import { api } from "@/apis"
-import { Card, CardContent } from "@/components/card"
+import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { PageContent } from "@/components/page"
 import { useRequest } from "@/hooks/request"
+import EmptyIcon from "@/static/tools/grade/ranking/empty.svg"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
-import { showModal } from "@/utils/modal"
 import { od } from "@/utils/ohday"
 
 export function CA() {
-  const { data, isLoading, refetch } = useRequest(() => api.rank.ca.get(), [], {
-    refetchClearData: false,
+  const [bootstrapped, setBootstrapped] = useState(false)
+  const onSettled = useCallback(() => {
+    setBootstrapped(true)
+  }, [])
+  const { data, refetch, clearData } = useRequest(() => api.rank.ca.get(), [], {
+    refetchClearData: true,
+    onSettled,
   })
-  const [isUpdating, setIsUpdating] = useState(false)
 
-  // 更新成绩
+  // 触发后端重新生成数据
   const handleClick = () => {
-    if (isUpdating)
-      return
+    void showLoading({
+      title: "加载中...",
+    })
 
-    setIsUpdating(true)
     api.rank.ca.put()
       .then(() => {
-        void showModal("成绩更新中", "正在生成数据, 请稍后刷新查看")
+        clearData()
       })
       .catch((err) => {
         switch (err.code) {
@@ -41,35 +45,48 @@ export function CA() {
             })
         }
       })
-      .finally(() => setIsUpdating(false))
+      .finally(() => {
+        hideLoading()
+      })
   }
 
   return (
     <PageContent
-      isLoading={isLoading && !data}
+      isLoading={!bootstrapped}
       onRefresh={() => refetch()}
       className="h-full"
     >
-      <View className="flex flex-col gap p">
-        <Card>
-          <CardContent className="flex items-center justify-between">
-            <View className="flex items-center">
-              最后更新于:
-              {" "}
-              {data ? od(data.updated_at).p("YYYY-MM-DD HH:mm") : "暂无数据"}
-            </View>
-            <MyButton
-              active
-              className="py-xs px-xl rounded-sm"
-              onClick={() => handleClick()}
-            >
-              {data ? "更新" : "生成"}
-            </MyButton>
-          </CardContent>
-        </Card>
+      {data
+        ? (
+            <View className="flex flex-col gap p">
+              <View className="flex items-center justify-between px">
+                <View className="flex items-center">
+                  最后更新于:
+                  {" "}
+                  {od(data.updated_at).p("YYYY-MM-DD HH:mm")}
+                </View>
+                <MyButton
+                  active
+                  className="py-md rounded-sm text-lg"
+                  style={{
+                    paddingLeft: "36px",
+                    paddingRight: "36px",
+                  }}
+                  onClick={() => handleClick()}
+                >
+                  更新
+                </MyButton>
+              </View>
 
-        {data && <RankContent data={data.rank} />}
-      </View>
+              <RankContent data={data.rank} />
+            </View>
+          )
+        : (
+            <View className="h-full flex flex-col center gap">
+              <Icon className="size-xl" src={EmptyIcon} />
+              <View>正在生成数据, 请稍后刷新查看</View>
+            </View>
+          )}
     </PageContent>
   )
 }
