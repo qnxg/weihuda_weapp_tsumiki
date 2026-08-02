@@ -1,5 +1,3 @@
-import { od } from "@/utils/ohday"
-
 /**
  * @description 教学楼信息
  * @property {string} id - 教学楼 id
@@ -12,7 +10,7 @@ export interface Building {
 }
 
 /**
- * @description 教学楼列表, 来源 hnu_query 楼栋文档
+ * @description 教学楼列表, 主要用于空教室查询
  */
 export const BUILDINGS: Building[] = [
   { id: "106", name: "综合楼" },
@@ -69,82 +67,3 @@ export const BUILDINGS: Building[] = [
   { id: "W13417fe0000WH", name: "艺术教育中心" },
   { id: "126", name: "南校区体育馆" },
 ]
-
-/**
- * @description 大节次信息
- * @property {number} index - 大节次序号, 从 1 开始
- * @property {string} label - 展示名称
- * @property {string} start - 开始时间, HH:mm
- * @property {string} end - 结束时间, HH:mm
- * @see https://github.com/qnxg/hnu_query/blob/main/docs/hdjw/time.md
- */
-export interface MajorPeriod {
-  index: number
-  label: string
-  start: string
-  end: string
-}
-
-/**
- * @description 大节次列表, 接口 time 参数按大节次传值
- */
-export const MAJOR_PERIODS: MajorPeriod[] = [
-  { index: 1, label: "第 1 大节", start: "08:00", end: "09:40" },
-  { index: 2, label: "第 2 大节", start: "10:00", end: "11:40" },
-  { index: 3, label: "第 3 大节", start: "14:30", end: "16:00" },
-  { index: 4, label: "第 4 大节", start: "16:10", end: "17:40" },
-  { index: 5, label: "第 5 大节", start: "19:00", end: "21:35" },
-  { index: 6, label: "第 6 大节", start: "21:35", end: "22:20" },
-]
-
-/**
- * @description 将 HH:mm 转为当日分钟数
- */
-function toMinutes(time: string): number {
-  const [hour, minute] = time.split(":").map(Number)
-  return hour * 60 + minute
-}
-
-/**
- * @description 根据当前时间预选大节次
- * - 处于某大节次时间段内时选中该大节
- * - 处于课间时选中下一即将开始的大节
- * - 早于第一节时选中第 1 大节
- * - 晚于最后一节时选中第 6 大节
- */
-export function getDefaultMajorPeriods(now = od()): number[] {
-  const current = now.hour * 60 + now.minute
-
-  const currentPeriod = MAJOR_PERIODS.find((period) => {
-    const start = toMinutes(period.start)
-    const end = toMinutes(period.end)
-    return current >= start && current <= end
-  })
-  if (currentPeriod)
-    return [currentPeriod.index]
-
-  const nextPeriod = MAJOR_PERIODS.find(period => current < toMinutes(period.start))
-  if (nextPeriod)
-    return [nextPeriod.index]
-
-  return [MAJOR_PERIODS.at(-1)!.index]
-}
-
-/**
- * @description 将大节次序号列表格式化为接口 time 参数
- */
-export function formatMajorPeriods(periods: number[]): string {
-  return [...periods].sort((a, b) => a - b).join(",")
-}
-
-/**
- * @description 将大节次序号列表格式化为展示文案, 如 "第 1 / 2 大节"
- */
-export function formatMajorPeriodLabel(periods: number[]): string {
-  const sorted = [...periods].sort((a, b) => a - b)
-  if (sorted.length === 0)
-    return ""
-  if (sorted.length === 1)
-    return `第 ${sorted[0]} 大节`
-  return `第 ${sorted.join(" / ")} 大节`
-}

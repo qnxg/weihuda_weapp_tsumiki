@@ -9,16 +9,62 @@ import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { Option, Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
+import { BUILDINGS } from "@/config/buildings"
+import {
+  MAJOR_PERIODS,
+} from "@/config/schedule"
 import ToIcon from "@/static/common/to.svg"
 import EmptyIcon from "@/static/tools/campus/empty-room/empty.svg"
-import {
-  BUILDINGS,
-  formatMajorPeriodLabel,
-  formatMajorPeriods,
-  getDefaultMajorPeriods,
-  MAJOR_PERIODS,
-} from "@/tools/pages/campus/empty-room/config"
 import { od } from "@/utils/ohday"
+
+/**
+ * @description 根据当前时间预选大节次
+ * - 优先选中正在进行的大节
+ * - 否则选中尚未开始且离当前时间最近的大节
+ * - 若已晚于最后一节结束时间, 则不预选
+ */
+function getDefaultMajorPeriods(now = od()): number[] {
+  // 尚未结束的大节次 (正在进行或尚未开始)
+  const candidates = MAJOR_PERIODS.filter(period => now.le(od(period.end), "m"))
+  if (candidates.length === 0)
+    return []
+
+  const ongoing = candidates.find((period) => {
+    const start = od(period.start)
+    const end = od(period.end)
+    return now.bt(start, end.add("ms", 1))
+  })
+  if (ongoing)
+    return [ongoing.index]
+
+  // 选尚未开始且开始时间离现在最近的一节
+  const upcoming = candidates.reduce((nearest, period) => {
+    const nearestDiff = od(nearest.start).diff(now, "m")
+    const periodDiff = od(period.start).diff(now, "m")
+    return periodDiff < nearestDiff ? period : nearest
+  })
+
+  return [upcoming.index]
+}
+
+/**
+ * @description 将大节次序号列表格式化为接口 time 参数
+ */
+function formatMajorPeriods(periods: number[]): string {
+  return [...periods].sort((a, b) => a - b).join(",")
+}
+
+/**
+ * @description 将大节次序号列表格式化为展示文案, 如 "第 1 / 2 大节"
+ */
+function formatMajorPeriodLabel(periods: number[]): string {
+  const sorted = [...periods].sort((a, b) => a - b)
+  if (sorted.length === 0)
+    return ""
+  if (sorted.length === 1)
+    return `第 ${sorted[0]} 大节`
+  return `第 ${sorted.join(" / ")} 大节`
+}
 
 interface QueryResult {
   request: EmptyRoomRequest
@@ -168,7 +214,7 @@ export default function EmptyRoom() {
                         <Checkbox
                           key={period.index}
                           checked={periods.includes(period.index)}
-                          label={period.label}
+                          label={`第 ${period.index} 大节`}
                           description={`${period.start} - ${period.end}`}
                           onClick={() => togglePeriod(period.index)}
                         />
