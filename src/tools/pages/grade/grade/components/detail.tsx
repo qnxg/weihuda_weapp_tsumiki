@@ -50,7 +50,7 @@ export function Detail({
               className="py flex items-center justify-between bg"
             >
               <View className="flex flex-col gap">
-                <View className="text-lg">{item.name}</View>
+                <View className="text-xl">{item.name}</View>
                 <View className="text-sm text-toned">{item.percentage}</View>
               </View>
               <View className="text-xl">{item.score}</View>

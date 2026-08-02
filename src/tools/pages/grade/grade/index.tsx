@@ -3,7 +3,6 @@ import type { Semester, XN, XQ } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { showToast } from "@tarojs/taro"
 import { useEffect, useMemo, useState } from "react"
-import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
@@ -13,7 +12,18 @@ import { useGrade } from "@/hooks/grade"
 import { useSemester } from "@/hooks/semester"
 import EmptyIcon from "@/static/tools/grade/grade/empty.svg"
 import { Detail } from "@/tools/pages/grade/grade/components/detail"
+import { Tag } from "@/tools/pages/grade/grade/components/tag"
 import { od } from "@/utils/ohday"
+
+// 会被高亮的标签类型
+const IMPORTANT_TYPE1 = ["必修"]
+const IMPORTANT_TYPE2 = [
+  "专业课",
+  "专业基础",
+  "学类核心",
+  "学门核心",
+  "专业核心",
+]
 
 export default function Grade() {
   const { user } = useAuth()
@@ -49,6 +59,7 @@ export default function Grade() {
         title: "暂无成绩详情",
         icon: "error",
       })
+      return
     }
 
     setJX0404id(jx0404id)
@@ -70,10 +81,10 @@ export default function Grade() {
     if (!enter || !now || enter > now)
       return
 
-    const newYears = Array.from({ length: now - enter + 1 }).map((_, i) => enter + i as XN)
+    const newYears = Array.from({ length: now - enter + 1 }).map((_, i) => (now - i) as XN)
     setYears(newYears)
     setSelectYear(now)
-    setSelectSemester(semester.xq)
+    setSelectSemester(semester.xq === "winter" ? "autumn" : semester.xq)
   }, [user, semester])
 
   return (
@@ -122,49 +133,69 @@ export default function Grade() {
               <View className="p flex flex-col gap">
                 <View className="text-toned text-sm">点击可查看课程具体分数组成</View>
                 {list.map((item, index) => (
-                  <Card
+                  <View
                     key={`${item.course_id}-${index}`}
+                    className="p-xl bg rounded-sm flex flex-col gap-sm"
                     onClick={() => handleShowDetail(item.jx0404id)}
                   >
-                    <CardContent className="flex items-center justify-between">
-                      <View className="flex flex-col">
-                        <View className="flex flex-col">
-                          <View className="text-lg">{item.course_name}</View>
-                          <View className="text-toned text-sm">{item.course_id}</View>
+                    {/* 课程名 + 成绩 */}
+                    <View className="flex justify-between items-start">
+                      <View
+                        className="flex flex-col"
+                        style={{ maxWidth: "80%" }}
+                      >
+                        <View className="text-xl">
+                          {item.course_name}
                         </View>
-
-                        <View className="flex py gap-xs">
-                          {[item.course_type1, item.course_type2, item.grade_type, item.grade_tag].map((tag, index) => {
-                            if (!tag)
-                              return null
-
-                            return (
-                              <View
-                                key={`${item.course_id}-${tag}-${index}`}
-                                className="text-primary"
-                              >
-                                {tag}
-                              </View>
-                            )
-                          })}
+                        <View className="text-sm text-muted">
+                          {item.course_id}
                         </View>
                       </View>
 
-                      <View className="h-full flex flex-col justify-evenly">
-                        <View className="flex gap items-end">
-                          <View className="text-xl">{item.score}</View>
-                          <View>/</View>
-                          <View>{item.gpa}</View>
+                      <View className="flex items-end">
+                        <View className="text-xl">
+                          {item.score}
                         </View>
-
-                        <View className="text-toned text-sm">
-                          学分:
+                        <View className="text-md">
                           {" "}
-                          {item.credit}
+                          /
+                          {" "}
+                          {item.gpa == null ? "-" : item.gpa.toFixed(1)}
                         </View>
                       </View>
-                    </CardContent>
-                  </Card>
+                    </View>
+
+                    {/* 标签 + 学分 */}
+                    <View className="flex justify-between items-center">
+                      <View className="flex gap-xs">
+                        {item.grade_tag && (
+                          <Tag theme="warning">
+                            {item.grade_tag}
+                          </Tag>
+                        )}
+                        {item.course_type1 && (
+                          <Tag
+                            theme={IMPORTANT_TYPE1.includes(item.course_type1) ? "primary" : "default"}
+                          >
+                            {item.course_type1}
+                          </Tag>
+                        )}
+                        {item.course_type2 && (
+                          <Tag
+                            theme={IMPORTANT_TYPE2.includes(item.course_type2) ? "primary" : "default"}
+                          >
+                            {item.course_type2}
+                          </Tag>
+                        )}
+                      </View>
+
+                      <View className="text-md text-muted">
+                        学分:
+                        {" "}
+                        {item.credit}
+                      </View>
+                    </View>
+                  </View>
                 ))}
               </View>
             )}
