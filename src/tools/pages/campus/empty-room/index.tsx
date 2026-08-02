@@ -53,14 +53,14 @@ function getDefaultMajorPeriods(now = od()): number[] {
  * @description 将大节次序号列表格式化为接口 time 参数
  */
 function formatMajorPeriods(periods: number[]): string {
-  return [...periods].sort((a, b) => a - b).join(",")
+  return periods.toSorted((a, b) => a - b).join(",")
 }
 
 /**
  * @description 将大节次序号列表格式化为展示文案, 如 "第 1 / 2 大节"
  */
 function formatMajorPeriodLabel(periods: number[]): string {
-  const sorted = [...periods].sort((a, b) => a - b)
+  const sorted = periods.toSorted((a, b) => a - b)
   if (sorted.length === 0)
     return ""
   if (sorted.length === 1)
