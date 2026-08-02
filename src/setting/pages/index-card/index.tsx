@@ -49,29 +49,29 @@ export default function IndexCard() {
           </Card>
 
           {/* 按钮区: 横向 4 按钮 */}
-          <View className="flex gap-sm">
+          <View className="flex items-center justify-center gap">
             <MyButton
               active
-              className="flex-1 rounded-md py-sm text-center text-md"
+              className="flex-1 flex center rounded-md py-sm text-md"
               disabled={isUpdating}
               onClick={() => void handleSave()}
             >
               {isUpdating ? "保存中" : "保存"}
             </MyButton>
             <MyButton
-              className="flex-1 rounded-md py-sm text-center text-md"
+              className="flex-1 flex center bg rounded-md py-sm text-md"
               onClick={selectAll}
             >
               全选
             </MyButton>
             <MyButton
-              className="flex-1 rounded-md py-sm text-center text-md"
+              className="flex-1 flex center bg rounded-md py-sm text-md"
               onClick={deselectAll}
             >
               全不选
             </MyButton>
             <MyButton
-              className="flex-1 rounded-md py-sm text-center text-md"
+              className="flex-1 flex center bg rounded-md py-sm text-md"
               onClick={resetToDefault}
             >
               重置为默认
