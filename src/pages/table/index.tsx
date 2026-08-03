@@ -197,9 +197,7 @@ export default function Table() {
               onWeekChange={(week) => {
                 setWeek(week)
               }}
-              onTableSettingChange={(setting) => {
-                void updateTableSetting(setting)
-              }}
+              onTableSettingChange={setting => updateTableSetting(setting)}
               onClose={() => {
                 setOverlayContentKey(null)
               }}

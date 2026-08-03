@@ -1,5 +1,6 @@
 import { Switch, View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
+import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/card"
 import { Option, Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
@@ -15,17 +16,40 @@ export default function ClassTable() {
 
   const tableSetting = settings.tableSetting
 
-  const handleToggleDisplay = () => {
+  // context 权威值
+  const contextChecked = tableSetting?.setting.displayNotCurrentWeekCourses ?? false
+  // 本地乐观镜像, 点击后立即反馈, 避免受控 Switch 等待异步 API 返回时回弹
+  const [checked, setChecked] = useState(contextChecked)
+
+  // 权威值变化时 (加载完成 / 保存成功) 同步本地镜像
+  useEffect(() => {
+    setChecked(contextChecked)
+  }, [contextChecked])
+
+  const handleToggleDisplay = async () => {
     if (!tableSetting)
       return
 
-    void updateTableSetting({
-      ...tableSetting,
-      setting: {
-        ...tableSetting.setting,
-        displayNotCurrentWeekCourses: !tableSetting.setting.displayNotCurrentWeekCourses,
-      },
-    })
+    const next = !checked
+    // 乐观更新, 立即反馈
+    setChecked(next)
+    try {
+      await updateTableSetting({
+        ...tableSetting,
+        setting: {
+          ...tableSetting.setting,
+          displayNotCurrentWeekCourses: next,
+        },
+      })
+    }
+    catch {
+      // 失败回滚
+      setChecked(!next)
+      void Taro.showToast({
+        title: "保存失败",
+        icon: "error",
+      })
+    }
   }
 
   const handleClearCache = () => {
@@ -64,9 +88,9 @@ export default function ClassTable() {
                       style={{
                         transform: "scale(0.8)",
                       }}
-                      checked={tableSetting?.setting.displayNotCurrentWeekCourses ?? false}
+                      checked={checked}
                       disabled={isUpdating}
-                      onChange={() => handleToggleDisplay()}
+                      onChange={() => void handleToggleDisplay()}
                     />
                   )}
                 />
