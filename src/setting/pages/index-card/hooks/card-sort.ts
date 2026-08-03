@@ -1,8 +1,8 @@
 import type { IndexCardSetting } from "@/types/setting"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { CARD_METAS } from "@/config/card"
 import { SETTINGS } from "@/config/setting"
 import { useSetting } from "@/hooks/setting"
-import { cards as allCards } from "@/pages/index/components/cards"
 
 /**
  * @description 排序列表中的单个卡片项
@@ -42,7 +42,7 @@ export interface CardSortHookResult {
 
 // 所有可用卡片的 key 与 name 的映射
 const CARD_NAME_MAP: Record<string, string> = Object.fromEntries(
-  allCards.map(c => [c.key, c.name]),
+  CARD_METAS.map(c => [c.key, c.name]),
 )
 
 // 默认配置中的卡片顺序
@@ -51,7 +51,7 @@ const DEFAULT_ORDER: string[] = SETTINGS.indexCardSetting!.setting.cards
 // 所有卡片的 key 列表, 按默认顺序排列 (含默认未启用的)
 const ALL_CARD_KEYS: string[] = [
   ...DEFAULT_ORDER,
-  ...allCards.map(c => c.key).filter(k => !DEFAULT_ORDER.includes(k)),
+  ...CARD_METAS.map(c => c.key).filter(k => !DEFAULT_ORDER.includes(k)),
 ]
 
 // 根据 API 返回的启用的卡片 keys, 构建初始排序列表
