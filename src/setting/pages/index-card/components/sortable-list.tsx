@@ -1,6 +1,6 @@
 import type { BaseEventOrig } from "@tarojs/components"
 import type { CSSProperties } from "react"
-import type { CardSortItem } from "../hooks/useCardSort"
+import type { CardSortItem } from "../hooks/card-sort"
 import { View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
 import { useCallback, useRef, useState } from "react"

@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { Page, PageContent } from "@/components/page"
 import { SortableList } from "./components/sortable-list"
-import { useCardSort } from "./hooks/useCardSort"
+import { useCardSort } from "./hooks/card-sort"
 
 export default function IndexCard() {
   const {
