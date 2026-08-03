@@ -123,12 +123,13 @@ export function SortableList({
     return {}
   }, [dragIndex, targetIndex, dragOffset])
 
-  let enabledSeq = 0
-
   return (
     <Options>
       {items.map((item, index) => {
-        const displayIndex = item.enabled ? ++enabledSeq : null
+        // 启用项序号 = 其之前的启用项数 + 1; 禁用项为 null. 纯从自身位置推导, 不依赖遍历顺序
+        const displayIndex = item.enabled
+          ? items.slice(0, index).filter(i => i.enabled).length + 1
+          : null
 
         return (
           <Option
