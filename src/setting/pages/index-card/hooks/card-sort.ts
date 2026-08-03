@@ -83,15 +83,20 @@ function buildInitialItems(enabledKeys: string[]): CardSortItem[] {
 export function useCardSort(): CardSortHookResult {
   const { settings, isLoading: isSettingLoading, isUpdating: isSettingUpdating, updateIndexCardSetting } = useSetting()
 
-  const [items, setItems] = useState<CardSortItem[]>(() => {
-    const enabledKeys = settings.indexCardSetting?.setting.cards ?? DEFAULT_ORDER
-    return buildInitialItems(enabledKeys)
-  })
+  // mount 时若 context 已就绪, initializer 直接用真实值算好 items, 首帧即正确
+  const [items, setItems] = useState<CardSortItem[]>(() =>
+    buildInitialItems(settings.indexCardSetting?.setting.cards ?? DEFAULT_ORDER),
+  )
 
   const [isSaving, setIsSaving] = useState(false)
-  const initializedRef = useRef(false)
 
-  // 当 settings 加载完成后, 初始化 items
+  // 标记 items 是否已由真实 context 值初始化过, 初值取 mount 时 context 是否就绪. 用途有二:
+  //   1. context 延迟就绪 (app 首次启动) 时, 由下方 effect 补一次初始化; mount 时已就绪则 initializer 已完成, effect 跳过, 避免冗余 setItems;
+  //   2. save 成功后 updateIndexCardSetting 会回写 context 触发本 effect,
+  //      此时必须跳过, 否则会用服务器值覆盖用户当前的本地排序编辑.
+  const initializedRef = useRef(!!settings.indexCardSetting)
+
+  // context 延迟就绪时补齐一次初始化 (mount 时已就绪则由 initializer 完成, 此处跳过)
   useEffect(() => {
     if (initializedRef.current) {
       return
