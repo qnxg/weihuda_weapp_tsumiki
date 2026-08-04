@@ -1,8 +1,37 @@
-import type { EyeGrade } from "@/apis/models/gym"
-import type { OptionItem } from "@/components/options"
+import type { EyeGrade, EyeGradeDetail } from "@/apis/models/gym"
 import { View } from "@tarojs/components"
 import { Options } from "@/components/options"
 import { Popup } from "@/components/overlay"
+
+/**
+ * @description 格式化单眼视力展示文案
+ */
+function formatEyeSide(side: EyeGradeDetail["left"]) {
+  return `${side.value ?? "--"} (${side.description})`
+}
+
+/**
+ * @description 视力分组区块
+ */
+function EyeSection({
+  title,
+  detail,
+}: Readonly<{
+  title: string
+  detail: EyeGradeDetail
+}>) {
+  return (
+    <View className="flex flex-col gap-sm">
+      <View className="text-bold">{title}</View>
+      <Options
+        items={[
+          { title: "左眼", content: formatEyeSide(detail.left) },
+          { title: "右眼", content: formatEyeSide(detail.right) },
+        ]}
+      />
+    </View>
+  )
+}
 
 export function Eye({
   data,
@@ -11,15 +40,6 @@ export function Eye({
   data: EyeGrade
   onClose: () => void
 }>) {
-  const options: OptionItem[] = [
-    { title: "左裸眼视力", content: `${data.sight.left.value ?? "--"} ${data.sight.left.description}` },
-    { title: "右裸眼视力", content: `${data.sight.right.value ?? "--"} ${data.sight.right.description}` },
-    { title: "左眼串镜", content: `${data.mirror.left.value ?? "--"} ${data.mirror.left.description}` },
-    { title: "右眼串镜", content: `${data.mirror.right.value ?? "--"} ${data.mirror.right.description}` },
-    { title: "左眼屈光不正", content: `${data.ametropia.left.value ?? "--"} ${data.ametropia.left.description}` },
-    { title: "右眼屈光不正", content: `${data.ametropia.right.value ?? "--"} ${data.ametropia.right.description}` },
-  ]
-
   return (
     <Popup
       isLoading={false}
@@ -27,7 +47,9 @@ export function Eye({
       title="视力详情"
     >
       <View className="p flex flex-col gap">
-        <Options items={options} />
+        <EyeSection title="裸眼视力" detail={data.sight} />
+        <EyeSection title="串镜" detail={data.mirror} />
+        <EyeSection title="屈光不正" detail={data.ametropia} />
       </View>
     </Popup>
   )
