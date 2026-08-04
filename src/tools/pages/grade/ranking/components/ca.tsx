@@ -16,7 +16,6 @@ export function CA() {
     setBootstrapped(true)
   }, [])
   const { data, refetch, clearData } = useRequest(() => api.rank.ca.get(), [], {
-    refetchClearData: true,
     onSettled,
   })
 
