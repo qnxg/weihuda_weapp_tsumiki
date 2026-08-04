@@ -52,9 +52,6 @@ export function useAuth(): AuthHookResult {
     if (user === null) {
       void updateUser()
     }
-    else {
-      setIsLoading(false)
-    }
   }, [setUser, updateUser, user])
 
   const clearUser = useCallback(() => {
