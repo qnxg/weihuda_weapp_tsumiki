@@ -1,5 +1,7 @@
 import type { ReactNode } from "react"
+import type { CardMeta } from "@/config/card"
 
+import { CARD_METAS } from "@/config/card"
 import { CampusCard } from "@/pages/index/components/cards/campus-card"
 import { CountDown } from "@/pages/index/components/cards/count-down"
 import { Courses } from "@/pages/index/components/cards/courses"
@@ -10,20 +12,24 @@ import { Jifen } from "@/pages/index/components/cards/jifen"
 import { Netflow } from "@/pages/index/components/cards/netflow"
 import { Tasks } from "@/pages/index/components/cards/tasks"
 
-export interface CardItem {
-  name: string
-  key: string
+export interface CardItem extends CardMeta {
   content: ReactNode
 }
 
-export const cards: CardItem[] = [
-  { name: "积分", key: "jifen", content: <Jifen cardKey="jifen" /> },
-  { name: "课程", key: "courses", content: <Courses cardKey="courses" /> },
-  { name: "流量", key: "netflow", content: <Netflow cardKey="netflow" /> },
-  { name: "电量", key: "electricity", content: <Electricity cardKey="electricity" /> },
-  { name: "校园卡余额", key: "campus_card", content: <CampusCard cardKey="campus_card" /> },
-  { name: "近期待办", key: "tasks", content: <Tasks cardKey="tasks" /> },
-  { name: "假期倒计时", key: "count_down", content: <CountDown cardKey="count_down" /> },
-  { name: "校园邮箱", key: "email", content: <Email cardKey="email" /> },
-  { name: "成绩查询", key: "grade", content: <Grade cardKey="grade" /> },
-]
+// 各卡片 key 到渲染内容的映射, key / name 元数据统一由 @/config/card 维护
+const CARD_CONTENTS: Record<string, ReactNode> = {
+  jifen: <Jifen cardKey="jifen" />,
+  courses: <Courses cardKey="courses" />,
+  netflow: <Netflow cardKey="netflow" />,
+  electricity: <Electricity cardKey="electricity" />,
+  campus_card: <CampusCard cardKey="campus_card" />,
+  tasks: <Tasks cardKey="tasks" />,
+  count_down: <CountDown cardKey="count_down" />,
+  email: <Email cardKey="email" />,
+  grade: <Grade cardKey="grade" />,
+}
+
+export const cards: CardItem[] = CARD_METAS.map(meta => ({
+  ...meta,
+  content: CARD_CONTENTS[meta.key],
+}))
