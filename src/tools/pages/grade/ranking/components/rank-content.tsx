@@ -11,7 +11,10 @@ function RankRow({
   detail: RankDetail | null
   field: "arithmetic" | "weighted" | "gpa"
 }>) {
-  const grade = detail?.[field]
+  let grade = detail?.[field]
+  if (grade != null && field === "gpa") {
+    grade = Number(grade).toFixed(1)
+  }
   const rankStr = detail?.[`${field}_rank`]
   const [rank, total] = rankStr?.split("/").map(Number) ?? []
   const percent = total ? `${((total - (rank ?? 0)) / total * 100).toFixed(2)}%` : undefined
