@@ -4,6 +4,10 @@ import { Card, CardContent, CardTitle } from "@/components/card"
 
 /**
  * @description 解析排名字符串 "排名/总人数", 两部分均为整数才算成功
+ * @returns 解析成功返回 `{ rank, total, percent }`, 失败返回 `null`
+ * - rank: 当前排名
+ * - total: 总人数
+ * - percent: 排名百分比文案, 如 "95.00%"
  */
 function parseRank(rankStr: string | null | undefined) {
   if (!rankStr)
