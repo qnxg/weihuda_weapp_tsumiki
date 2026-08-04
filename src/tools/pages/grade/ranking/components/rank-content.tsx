@@ -2,6 +2,29 @@ import type { Rank, RankDetail } from "@/apis/models/rank"
 import { View } from "@tarojs/components"
 import { Card, CardContent, CardTitle } from "@/components/card"
 
+/**
+ * @description 解析排名字符串 "排名/总人数", 两部分均为整数才算成功
+ */
+function parseRank(rankStr: string | null | undefined) {
+  if (!rankStr)
+    return null
+
+  const [rankPart, totalPart, ...rest] = rankStr.split("/")
+  if (!rankPart || !totalPart || rest.length > 0)
+    return null
+
+  const rank = Number(rankPart)
+  const total = Number(totalPart)
+  if (!Number.isInteger(rank) || !Number.isInteger(total) || total <= 0)
+    return null
+
+  return {
+    rank,
+    total,
+    percent: `${((total - rank) / total * 100).toFixed(2)}%`,
+  }
+}
+
 function RankRow({
   label,
   detail,
@@ -15,11 +38,9 @@ function RankRow({
   if (grade != null && field === "gpa") {
     grade = Number(grade).toFixed(1)
   }
-  const rankStr = detail?.[`${field}_rank`]
-  const [rank, total] = rankStr?.split("/").map(Number) ?? []
-  const percent = total ? `${((total - (rank ?? 0)) / total * 100).toFixed(2)}%` : undefined
+  const rankInfo = parseRank(detail?.[`${field}_rank`])
 
-  if (!grade && !rankStr)
+  if (!grade && !rankInfo)
     return null
 
   return (
@@ -33,17 +54,17 @@ function RankRow({
           <View className="text-xl text-primary text-bold">{grade}</View>
         </View>
       )}
-      {rankStr && (
+      {rankInfo && (
         <View className="flex-1 flex items-end gap">
           <View>排名: </View>
           <View className="flex items-end">
-            <View className="text-xl text-primary text-bold">{rank}</View>
+            <View className="text-xl text-primary text-bold">{rankInfo.rank}</View>
             <View className="text-lg text-primary">
               /
-              {total}
+              {rankInfo.total}
             </View>
             {/** 小程序往往会丢掉文本节点开头的普通空格, 改成不换行空格更稳妥. */}
-            <View>{`\u00A0(${percent})`}</View>
+            <View>{`\u00A0(${rankInfo.percent})`}</View>
           </View>
         </View>
       )}
