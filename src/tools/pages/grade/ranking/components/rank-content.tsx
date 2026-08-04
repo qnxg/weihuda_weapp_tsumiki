@@ -31,13 +31,10 @@ function RankRow({
   field,
 }: Readonly<{
   label: string
-  detail: RankDetail | null
+  detail: RankDetail
   field: "arithmetic" | "weighted" | "gpa"
 }>) {
-  let grade = detail?.[field]
-  if (grade != null && field === "gpa") {
-    grade = Number(grade).toFixed(1)
-  }
+  const grade = (detail[field] != null && field === "gpa") ? Number(detail[field]).toFixed(1) : detail[field]
   const rankInfo = parseRank(detail?.[`${field}_rank`])
 
   if (!grade && !rankInfo)
