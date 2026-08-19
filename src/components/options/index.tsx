@@ -4,7 +4,6 @@ import { Icon } from "@/components/icon"
 import ToIcon from "@/static/common/to.svg"
 import { cn } from "@/utils/cn"
 import { navigate } from "@/utils/navigate"
-import { getTheme } from "@/utils/theme"
 
 type Size = "sm" | "md" | "lg" | "xl"
 type Layout = "horizontal" | "vertical"
@@ -143,13 +142,10 @@ function Options({
   type?: "divided" | "underline" | "wrapped" | "plain"
   children?: ReactNode
 }>) {
-  const { isDark } = getTheme()
-
   return (
     <View
-      className="flex flex-col"
+      className="flex flex-col bg-subtle"
       style={{
-        backgroundColor: isDark ? "#303030" : "#f7f7f7",
         gap: type !== "plain" ? "2rpx" : "",
         paddingTop: type === "wrapped" ? "2rpx" : "",
         paddingBottom: type === "underline" || type === "wrapped" ? "2rpx" : "",
