@@ -34,6 +34,8 @@
 - `bg-primary`: 主要背景色, 用于强调/选中状态 (为主题蓝色)
 - `bg-transparent`: 透明背景
 - `bg-shadow`: 遮罩背景色, 用于弹窗/底部弹出等场景
+- `bg-subtle`: 柔和表面背景色 (浅色 `#f7f7f7`, 深色 `#303030`), 用于 skeleton / options / count-down 等弱化底色场景
+- `bg-divider`: 分割线背景色 (浅色 `#eeeeee`, 深色 `#3a3a3a`), 用于需要弱分割的容器底色
 - `bg`: 同 `bg-base` 的简写
 
 #### 边框颜色 `.border`
@@ -44,6 +46,7 @@
 - `border-muted`: 次要边框
 - `border-reverse`: 反转边框
 - `border-primary`: 主题色边框
+- `border-divider`: 分割线边框 (浅色 `#eeeeee`, 深色 `#3a3a3a`), 用于表格线 / 课程格边框
 
 ### 文本
 
@@ -87,7 +90,7 @@
 
 ### 间距
 
-间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl` (无后缀时默认 `md`)
+间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `3xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl` (无后缀时默认 `md`)
 
 #### Padding
 

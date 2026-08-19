@@ -38,6 +38,12 @@
 .bg-shadow {
   background-color: $bgColorShadow;
 }
+.bg-subtle {
+  background-color: $bgColorSubtle;
+}
+.bg-divider {
+  background-color: $bgColorDivider;
+}
 .bg {
   background-color: $bgColor;
 }
@@ -60,6 +66,9 @@
 }
 .border-primary {
   border: 1px solid $primary;
+}
+.border-divider {
+  border: 1px solid $borderColorDivider;
 }
 
 // endregion
@@ -214,8 +223,8 @@
 // region 间距
 
 // p
-.p-2xs {
-  padding: $spacing2XS;
+.p-3xs {
+  padding: $spacing3XS;
 }
 .p-xs {
   padding: $spacingXS;
@@ -240,9 +249,9 @@
 }
 
 // px
-.px-2xs {
-  padding-left: $spacing2XS;
-  padding-right: $spacing2XS;
+.px-3xs {
+  padding-left: $spacing3XS;
+  padding-right: $spacing3XS;
 }
 .px-xs {
   padding-left: $spacingXS;
@@ -274,9 +283,9 @@
 }
 
 // py
-.py-2xs {
-  padding-top: $spacing2XS;
-  padding-bottom: $spacing2XS;
+.py-3xs {
+  padding-top: $spacing3XS;
+  padding-bottom: $spacing3XS;
 }
 .py-xs {
   padding-top: $spacingXS;
@@ -308,8 +317,8 @@
 }
 
 // m
-.m-2xs {
-  margin: $spacing2XS;
+.m-3xs {
+  margin: $spacing3XS;
 }
 .m-xs {
   margin: $spacingXS;
@@ -334,9 +343,9 @@
 }
 
 // mx
-.mx-2xs {
-  margin-left: $spacing2XS;
-  margin-right: $spacing2XS;
+.mx-3xs {
+  margin-left: $spacing3XS;
+  margin-right: $spacing3XS;
 }
 .mx-xs {
   margin-left: $spacingXS;
@@ -368,9 +377,9 @@
 }
 
 // my
-.my-2xs {
-  margin-top: $spacing2XS;
-  margin-bottom: $spacing2XS;
+.my-3xs {
+  margin-top: $spacing3XS;
+  margin-bottom: $spacing3XS;
 }
 .my-xs {
   margin-top: $spacingXS;
@@ -402,8 +411,8 @@
 }
 
 // gap
-.gap-2xs {
-  gap: $spacing2XS;
+.gap-3xs {
+  gap: $spacing3XS;
 }
 .gap-xs {
   gap: $spacingXS;
@@ -428,11 +437,11 @@
 }
 
 // inset
-.inset-2xs {
-  top: $spacing2XS;
-  right: $spacing2XS;
-  bottom: $spacing2XS;
-  left: $spacing2XS;
+.inset-3xs {
+  top: $spacing3XS;
+  right: $spacing3XS;
+  bottom: $spacing3XS;
+  left: $spacing3XS;
 }
 .inset-xs {
   top: $spacingXS;

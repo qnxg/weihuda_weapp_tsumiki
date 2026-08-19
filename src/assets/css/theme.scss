@@ -9,6 +9,9 @@ page {
   --bg-color-page: #f9f9f9;
   --bg-color-shadow: #00000088;
   --bg-color: #ffffff;
+  --bg-color-subtle: #f7f7f7;
+  --bg-color-divider: #eeeeee;
+  --border-color-divider: #eeeeee;
 
   @media (prefers-color-scheme: dark) {
     --text-color-highlighted: #ffffff;
@@ -20,5 +23,8 @@ page {
     --bg-color-page: #000000;
     --bg-color-shadow: #00000088;
     --bg-color: #242424;
+    --bg-color-subtle: #303030;
+    --bg-color-divider: #3a3a3a;
+    --border-color-divider: #3a3a3a;
   }
 }
