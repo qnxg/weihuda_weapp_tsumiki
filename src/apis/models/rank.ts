@@ -31,15 +31,20 @@ export interface Rank {
 }
 
 /**
- * @description 从可信电子凭证获取排名响应数据
+ * @description 可信电子凭证排名数据
  * @property {string} updated_at - 最后更新时间
  * @property {Rank} rank - 排名信息
- * @see https://app.apifox.com/link/project/8311217/apis/api-470351063
  */
-export interface RankCaResponse {
+export interface RankCaData {
   updated_at: string
   rank: Rank
 }
+
+/**
+ * @description 从可信电子凭证获取排名响应. 为 null 说明后端正在生成数据
+ * @see https://app.apifox.com/link/project/8311217/apis/api-470351063
+ */
+export type RankCaResponse = RankCaData | null
 
 /**
  * @description 从教务系统获取排名响应数据

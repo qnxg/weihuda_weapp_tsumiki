@@ -113,7 +113,7 @@
 ## 通用钩子函数
 
 - 请求钩子 `/hooks/request.ts`: TanStack Query 风格的请求封装
-  - 接收 `请求 Promise` / `依赖数组` / `配置项`, 返回 `数据` / `错误` / `加载状态` 等
+  - 接收 `请求 Promise` / `依赖数组` / `配置项`, 返回 `数据` / `错误` / `加载状态` / `refetch` / `clearData` 等
 
 - 存储钩子 `/hooks/storage.ts`: 对通用存储类 `/utils/storage.ts` 中各个 Promise 的封装
   - 接收存储键, 返回 `存储值` / `错误` / `加载状态` 等, 同时提供 `set` / `remove` 方法
@@ -141,7 +141,7 @@
 - type: `/types/auth.ts`
 - 其他工具函数: `utils/parse-sex.ts`, `utils/auth.ts`, `libs/auth-bridge.ts`
 
-用于获取并全局共享用户信息, mount 时获取一次用户信息, 并提供 `更新信息` 和 `删除用户` 的方法
+用于获取并全局共享用户信息, mount 时获取一次用户信息, 并提供 `更新信息` 和 `删除用户` 的方法; hook 暴露 `isLoading` 表示用户信息是否正在加载
 
 ### 设置 setting
 
