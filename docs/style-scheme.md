@@ -47,7 +47,7 @@
 
 ### 文本
 
-#### 文本大小 `.text-`: `sm`, `md`, `lg`, `xl`, `2xl`
+#### 文本大小 `.text-`: `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`
 
 #### 其他样式
 
@@ -83,11 +83,11 @@
 - `hidden`: 隐藏 (`display: none`)
 - `opacity`: 透明 (`opacity: 0`)
 
-#### 圆角 `.rounded`: `sm`, `md`, `lg`, `xl`, `full` (无后缀时默认 `md`)
+#### 圆角 `.rounded`: `xs`, `sm`, `md`, `lg`, `xl`, `full` (无后缀时默认 `md`)
 
 ### 间距
 
-间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `xs`, `sm`, `md`, `lg`, `xl` (无后缀时默认 `md`)
+间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl` (无后缀时默认 `md`)
 
 #### Padding
 

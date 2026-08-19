@@ -13,6 +13,8 @@ $bgColorShadow: var(--bg-color-shadow);
 $bgColor: var(--bg-color);
 
 // 字体大小
+$font4XL: 48px;
+$font3XL: 40px;
 $font2XL: 36px;
 $fontXL: 32px;
 $fontLG: 28px;
@@ -24,13 +26,16 @@ $roundedXL: 24px;
 $roundedLG: 20px;
 $roundedMD: 16px;
 $roundedSM: 12px;
+$roundedXS: 10px;
 
 // 间距 (用于 padding, margin, gap 等)
+$spacing2XL: 36px;
 $spacingXL: 24px;
 $spacingLG: 20px;
 $spacingMD: 16px;
 $spacingSM: 12px;
 $spacingXS: 8px;
+$spacing3XS: 4px;
 
 // 尺寸 (用于宽高等)
 $size3XL: 200px;

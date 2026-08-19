@@ -82,6 +82,12 @@
 .text-2xl {
   font-size: $font2XL;
 }
+.text-3xl {
+  font-size: $font3XL;
+}
+.text-4xl {
+  font-size: $font4XL;
+}
 
 // 文本样式
 .text-bold {
@@ -181,6 +187,9 @@
 }
 
 // 圆角
+.rounded-xs {
+  border-radius: $roundedXS;
+}
 .rounded-sm {
   border-radius: $roundedSM;
 }
@@ -205,6 +214,9 @@
 // region 间距
 
 // p
+.p-2xs {
+  padding: $spacing2XS;
+}
 .p-xs {
   padding: $spacingXS;
 }
@@ -220,11 +232,18 @@
 .p-xl {
   padding: $spacingXL;
 }
+.p-2xl {
+  padding: $spacing2XL;
+}
 .p {
   padding: $spacingLG;
 }
 
 // px
+.px-2xs {
+  padding-left: $spacing2XS;
+  padding-right: $spacing2XS;
+}
 .px-xs {
   padding-left: $spacingXS;
   padding-right: $spacingXS;
@@ -245,12 +264,20 @@
   padding-left: $spacingXL;
   padding-right: $spacingXL;
 }
+.px-2xl {
+  padding-left: $spacing2XL;
+  padding-right: $spacing2XL;
+}
 .px {
   padding-left: $spacingLG;
   padding-right: $spacingLG;
 }
 
 // py
+.py-2xs {
+  padding-top: $spacing2XS;
+  padding-bottom: $spacing2XS;
+}
 .py-xs {
   padding-top: $spacingXS;
   padding-bottom: $spacingXS;
@@ -271,12 +298,19 @@
   padding-top: $spacingXL;
   padding-bottom: $spacingXL;
 }
+.py-2xl {
+  padding-top: $spacing2XL;
+  padding-bottom: $spacing2XL;
+}
 .py {
   padding-top: $spacingLG;
   padding-bottom: $spacingLG;
 }
 
 // m
+.m-2xs {
+  margin: $spacing2XS;
+}
 .m-xs {
   margin: $spacingXS;
 }
@@ -292,11 +326,18 @@
 .m-xl {
   margin: $spacingXL;
 }
+.m-2xl {
+  margin: $spacing2XL;
+}
 .m {
   margin: $spacingLG;
 }
 
 // mx
+.mx-2xs {
+  margin-left: $spacing2XS;
+  margin-right: $spacing2XS;
+}
 .mx-xs {
   margin-left: $spacingXS;
   margin-right: $spacingXS;
@@ -317,12 +358,20 @@
   margin-left: $spacingXL;
   margin-right: $spacingXL;
 }
+.mx-2xl {
+  margin-left: $spacing2XL;
+  margin-right: $spacing2XL;
+}
 .mx {
   margin-left: $spacingLG;
   margin-right: $spacingLG;
 }
 
 // my
+.my-2xs {
+  margin-top: $spacing2XS;
+  margin-bottom: $spacing2XS;
+}
 .my-xs {
   margin-top: $spacingXS;
   margin-bottom: $spacingXS;
@@ -343,12 +392,19 @@
   margin-top: $spacingXL;
   margin-bottom: $spacingXL;
 }
+.my-2xl {
+  margin-top: $spacing2XL;
+  margin-bottom: $spacing2XL;
+}
 .my {
   margin-top: $spacingLG;
   margin-bottom: $spacingLG;
 }
 
 // gap
+.gap-2xs {
+  gap: $spacing2XS;
+}
 .gap-xs {
   gap: $spacingXS;
 }
@@ -364,11 +420,20 @@
 .gap-xl {
   gap: $spacingXL;
 }
+.gap-2xl {
+  gap: $spacing2XL;
+}
 .gap {
   gap: $spacingLG;
 }
 
 // inset
+.inset-2xs {
+  top: $spacing2XS;
+  right: $spacing2XS;
+  bottom: $spacing2XS;
+  left: $spacing2XS;
+}
 .inset-xs {
   top: $spacingXS;
   right: $spacingXS;
@@ -398,6 +463,12 @@
   right: $spacingXL;
   bottom: $spacingXL;
   left: $spacingXL;
+}
+.inset-2xl {
+  top: $spacing2XL;
+  right: $spacing2XL;
+  bottom: $spacing2XL;
+  left: $spacing2XL;
 }
 .inset-0 {
   top: 0;
@@ -512,7 +583,7 @@
   height: $size3XL;
 }
 .h-fit {
-  width: fit-content;
+  height: fit-content;
 }
 .h-full {
   height: 100%;
