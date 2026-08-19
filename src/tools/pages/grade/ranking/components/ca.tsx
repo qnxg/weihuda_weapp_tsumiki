@@ -12,15 +12,21 @@ import { od } from "@/utils/ohday"
 
 export function CA() {
   const [bootstrapped, setBootstrapped] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
   const onSettled = useCallback(() => {
     setBootstrapped(true)
   }, [])
   const { data, refetch, clearData } = useRequest(() => api.rank.ca.get(), [], {
+    refetchClearData: false,
     onSettled,
   })
 
   // 触发后端重新生成数据
   const handleClick = () => {
+    if (isUpdating)
+      return
+
+    setIsUpdating(true)
     void showLoading({
       title: "加载中...",
     })
@@ -45,6 +51,7 @@ export function CA() {
         }
       })
       .finally(() => {
+        setIsUpdating(false)
         hideLoading()
       })
   }
@@ -66,6 +73,7 @@ export function CA() {
                 </View>
                 <MyButton
                   active
+                  disabled={isUpdating}
                   className="py-md rounded-sm text-lg"
                   style={{
                     paddingLeft: "36px",
