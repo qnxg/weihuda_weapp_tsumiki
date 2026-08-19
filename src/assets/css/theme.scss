@@ -13,6 +13,37 @@ page {
   --bg-color-divider: #eeeeee;
   --border-color-divider: #eeeeee;
 
+  // 状态色 (深浅一致)
+  --text-color-success: #00aa00;
+  --text-color-danger: #dd0000;
+  // warning 当前无消费方, 预留
+  --text-color-warning: #ff9900;
+  --bg-color-success: #00aa00;
+  --bg-color-danger: #dd0000;
+  --bg-color-warning: #ff9900;
+
+  // 按色名预设色 (浅色模式, 深色模式待定)
+  --bg-color-blue: #e6f4ff;
+  --bg-color-orange: #fdebdd;
+  --bg-color-cyan: #defbf7;
+  --bg-color-purple: #eeedff;
+  --bg-color-amber: #fcebcd;
+  --bg-color-pink: #ffeff0;
+  --bg-color-indigo: #eaf2ff;
+  --bg-color-magenta: #ffeef8;
+  --bg-color-violet: #faedff;
+  --bg-color-gold: #fff9c9;
+  --text-color-blue: #08a0e2;
+  --text-color-orange: #e97055;
+  --text-color-cyan: #3cb3c9;
+  --text-color-purple: #7d7cdd;
+  --text-color-amber: #ff9900;
+  --text-color-pink: #dd5d75;
+  --text-color-indigo: #5d8ff8;
+  --text-color-magenta: #ec6db8;
+  --text-color-violet: #b769df;
+  --text-color-gold: #cba715;
+
   @media (prefers-color-scheme: dark) {
     --text-color-highlighted: #ffffff;
     --text-color: #dadada;
@@ -26,5 +57,8 @@ page {
     --bg-color-subtle: #303030;
     --bg-color-divider: #3a3a3a;
     --border-color-divider: #3a3a3a;
+
+    // 状态色深浅一致, 不需覆写
+    // TODO: 按色名预设色深色模式 hex 待定, 当前沿用浅色 hex, 深色模式视觉会怪
   }
 }

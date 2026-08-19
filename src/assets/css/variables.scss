@@ -15,6 +15,36 @@ $bgColorDivider: var(--bg-color-divider);
 $borderColorDivider: var(--border-color-divider);
 $bgColor: var(--bg-color);
 
+// 状态色 (深浅一致)
+$textColorSuccess: var(--text-color-success);
+$textColorDanger: var(--text-color-danger);
+$textColorWarning: var(--text-color-warning);
+$bgColorSuccess: var(--bg-color-success);
+$bgColorDanger: var(--bg-color-danger);
+$bgColorWarning: var(--bg-color-warning);
+
+// 按色名预设色
+$bgColorBlue: var(--bg-color-blue);
+$bgColorOrange: var(--bg-color-orange);
+$bgColorCyan: var(--bg-color-cyan);
+$bgColorPurple: var(--bg-color-purple);
+$bgColorAmber: var(--bg-color-amber);
+$bgColorPink: var(--bg-color-pink);
+$bgColorIndigo: var(--bg-color-indigo);
+$bgColorMagenta: var(--bg-color-magenta);
+$bgColorViolet: var(--bg-color-violet);
+$bgColorGold: var(--bg-color-gold);
+$textColorBlue: var(--text-color-blue);
+$textColorOrange: var(--text-color-orange);
+$textColorCyan: var(--text-color-cyan);
+$textColorPurple: var(--text-color-purple);
+$textColorAmber: var(--text-color-amber);
+$textColorPink: var(--text-color-pink);
+$textColorIndigo: var(--text-color-indigo);
+$textColorMagenta: var(--text-color-magenta);
+$textColorViolet: var(--text-color-violet);
+$textColorGold: var(--text-color-gold);
+
 // 字体大小
 $font4XL: 48px;
 $font3XL: 40px;

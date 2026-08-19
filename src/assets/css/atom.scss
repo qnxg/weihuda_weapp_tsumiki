@@ -21,6 +21,45 @@
 .text-primary {
   color: $primary;
 }
+.text-success {
+  color: $textColorSuccess;
+}
+.text-danger {
+  color: $textColorDanger;
+}
+.text-warning {
+  color: $textColorWarning;
+}
+.text-blue {
+  color: $textColorBlue;
+}
+.text-orange {
+  color: $textColorOrange;
+}
+.text-cyan {
+  color: $textColorCyan;
+}
+.text-purple {
+  color: $textColorPurple;
+}
+.text-amber {
+  color: $textColorAmber;
+}
+.text-pink {
+  color: $textColorPink;
+}
+.text-indigo {
+  color: $textColorIndigo;
+}
+.text-magenta {
+  color: $textColorMagenta;
+}
+.text-violet {
+  color: $textColorViolet;
+}
+.text-gold {
+  color: $textColorGold;
+}
 
 // 背景颜色
 .bg-base {
@@ -43,6 +82,45 @@
 }
 .bg-divider {
   background-color: $bgColorDivider;
+}
+.bg-success {
+  background-color: $bgColorSuccess;
+}
+.bg-danger {
+  background-color: $bgColorDanger;
+}
+.bg-warning {
+  background-color: $bgColorWarning;
+}
+.bg-blue {
+  background-color: $bgColorBlue;
+}
+.bg-orange {
+  background-color: $bgColorOrange;
+}
+.bg-cyan {
+  background-color: $bgColorCyan;
+}
+.bg-purple {
+  background-color: $bgColorPurple;
+}
+.bg-amber {
+  background-color: $bgColorAmber;
+}
+.bg-pink {
+  background-color: $bgColorPink;
+}
+.bg-indigo {
+  background-color: $bgColorIndigo;
+}
+.bg-magenta {
+  background-color: $bgColorMagenta;
+}
+.bg-violet {
+  background-color: $bgColorViolet;
+}
+.bg-gold {
+  background-color: $bgColorGold;
 }
 .bg {
   background-color: $bgColor;

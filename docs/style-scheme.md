@@ -26,6 +26,10 @@
 - `text-muted`: 次要文本颜色, 较柔和颜色更浅 (深浅默认颜色相反)
 - `text-reverse`: 反转文本颜色, 适用于有色背景下的文本 (浅色模式为白色, 深色模式为黑色)
 - `text-primary`: 主要文本颜色, 适用于强调文本 (为主题蓝色)
+- `text-success`: 成功状态色 (`#00aa00`, 深浅一致)
+- `text-danger`: 危险状态色 (`#dd0000`, 深浅一致)
+- `text-warning`: 警告状态色 (`#ff9900`, 深浅一致, 当前无消费方, 预留)
+- `text-blue` / `text-orange` / `text-cyan` / `text-purple` / `text-amber` / `text-pink` / `text-indigo` / `text-magenta` / `text-violet` / `text-gold`: 按色名预设色 (与 `config/color.ts` 的 `FONT_COLOR` 同源)
 
 #### 背景颜色 `.bg`
 
@@ -36,6 +40,10 @@
 - `bg-shadow`: 遮罩背景色, 用于弹窗/底部弹出等场景
 - `bg-subtle`: 柔和表面背景色 (浅色 `#f7f7f7`, 深色 `#303030`), 用于 skeleton / options / count-down 等弱化底色场景
 - `bg-divider`: 分割线背景色 (浅色 `#eeeeee`, 深色 `#3a3a3a`), 用于需要弱分割的容器底色
+- `bg-success`: 成功状态色 (`#00aa00`, 深浅一致)
+- `bg-danger`: 危险状态色 (`#dd0000`, 深浅一致)
+- `bg-warning`: 警告状态色 (`#ff9900`, 深浅一致, 当前无消费方, 预留)
+- `bg-blue` / `bg-orange` / `bg-cyan` / `bg-purple` / `bg-amber` / `bg-pink` / `bg-indigo` / `bg-magenta` / `bg-violet` / `bg-gold`: 按色名预设色 (与 `config/color.ts` 的 `BG_COLOR` 同源)
 - `bg`: 同 `bg-base` 的简写
 
 #### 边框颜色 `.border`
