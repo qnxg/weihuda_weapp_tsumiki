@@ -71,10 +71,23 @@ $spacingXS: 8px;
 $spacing3XS: 4px;
 
 // 尺寸 (用于宽高等)
-$size3XL: 200px;
-$size2XL: 180px;
-$sizeXL: 160px;
-$sizeLG: 140px;
-$sizeMD: 120px;
-$sizeSM: 100px;
-$sizeXS: 80px;
+// Small 组
+$sizeSmallXS: 16px;
+$sizeSmallSM: 20px;
+$sizeSmallMD: 24px;
+$sizeSmallLG: 28px;
+$sizeSmallXL: 32px;
+
+// Medium 组
+$sizeMediumXS: 40px;
+$sizeMediumSM: 48px;
+$sizeMediumMD: 56px;
+$sizeMediumLG: 64px;
+$sizeMediumXL: 80px;
+
+// Large 组
+$sizeLargeXS: 100px;
+$sizeLargeSM: 120px;
+$sizeLargeMD: 140px;
+$sizeLargeLG: 160px;
+$sizeLargeXL: 200px;

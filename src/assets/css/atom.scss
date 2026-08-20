@@ -572,68 +572,286 @@
 
 //endregion
 
-// region 尺寸
+// region 尺寸 (Small)
 
 // size
+.size-s-xs {
+  width: $sizeSmallXS;
+  height: $sizeSmallXS;
+}
+.size-s-sm {
+  width: $sizeSmallSM;
+  height: $sizeSmallSM;
+}
+.size-s-md {
+  width: $sizeSmallMD;
+  height: $sizeSmallMD;
+}
+.size-s-lg {
+  width: $sizeSmallLG;
+  height: $sizeSmallLG;
+}
+.size-s-xl {
+  width: $sizeSmallXL;
+  height: $sizeSmallXL;
+}
+.size-s {
+  width: $sizeSmallMD;
+  height: $sizeSmallMD;
+}
+
+// w
+.w-s-xs {
+  width: $sizeSmallXS;
+}
+.w-s-sm {
+  width: $sizeSmallSM;
+}
+.w-s-md {
+  width: $sizeSmallMD;
+}
+.w-s-lg {
+  width: $sizeSmallLG;
+}
+.w-s-xl {
+  width: $sizeSmallXL;
+}
+.w-s {
+  width: $sizeSmallMD;
+}
+
+// h
+.h-s-xs {
+  height: $sizeSmallXS;
+}
+.h-s-sm {
+  height: $sizeSmallSM;
+}
+.h-s-md {
+  height: $sizeSmallMD;
+}
+.h-s-lg {
+  height: $sizeSmallLG;
+}
+.h-s-xl {
+  height: $sizeSmallXL;
+}
+.h-s {
+  height: $sizeSmallMD;
+}
+
+//endregion
+
+// region 尺寸 (Medium)
+
+// size
+.size-m-xs {
+  width: $sizeMediumXS;
+  height: $sizeMediumXS;
+}
+.size-m-sm {
+  width: $sizeMediumSM;
+  height: $sizeMediumSM;
+}
+.size-m-md {
+  width: $sizeMediumMD;
+  height: $sizeMediumMD;
+}
+.size-m-lg {
+  width: $sizeMediumLG;
+  height: $sizeMediumLG;
+}
+.size-m-xl {
+  width: $sizeMediumXL;
+  height: $sizeMediumXL;
+}
+.size-m {
+  width: $sizeMediumMD;
+  height: $sizeMediumMD;
+}
+
 .size-xs {
-  width: $sizeXS;
-  height: $sizeXS;
+  width: $sizeMediumXS;
+  height: $sizeMediumXS;
 }
 .size-sm {
-  width: $sizeSM;
-  height: $sizeSM;
+  width: $sizeMediumSM;
+  height: $sizeMediumSM;
 }
 .size-md {
-  width: $sizeMD;
-  height: $sizeMD;
+  width: $sizeMediumMD;
+  height: $sizeMediumMD;
 }
 .size-lg {
-  width: $sizeLG;
-  height: $sizeLG;
+  width: $sizeMediumLG;
+  height: $sizeMediumLG;
 }
 .size-xl {
-  width: $sizeXL;
-  height: $sizeXL;
-}
-.size-2xl {
-  width: $size2XL;
-  height: $size2XL;
-}
-.size-3xl {
-  width: $size3XL;
-  height: $size3XL;
+  width: $sizeMediumXL;
+  height: $sizeMediumXL;
 }
 .size {
-  width: $sizeMD;
-  height: $sizeMD;
+  width: $sizeMediumMD;
+  height: $sizeMediumMD;
 }
+
+// w
+.w-m-xs {
+  width: $sizeMediumXS;
+}
+.w-m-sm {
+  width: $sizeMediumSM;
+}
+.w-m-md {
+  width: $sizeMediumMD;
+}
+.w-m-lg {
+  width: $sizeMediumLG;
+}
+.w-m-xl {
+  width: $sizeMediumXL;
+}
+.w-m {
+  width: $sizeMediumMD;
+}
+
+.w-xs {
+  width: $sizeMediumXS;
+}
+.w-sm {
+  width: $sizeMediumSM;
+}
+.w-md {
+  width: $sizeMediumMD;
+}
+.w-lg {
+  width: $sizeMediumLG;
+}
+.w-xl {
+  width: $sizeMediumXL;
+}
+.w {
+  width: $sizeMediumMD;
+}
+
+// h
+.h-m-xs {
+  height: $sizeMediumXS;
+}
+.h-m-sm {
+  height: $sizeMediumSM;
+}
+.h-m-md {
+  height: $sizeMediumMD;
+}
+.h-m-lg {
+  height: $sizeMediumLG;
+}
+.h-m-xl {
+  height: $sizeMediumXL;
+}
+.h-m {
+  height: $sizeMediumMD;
+}
+
+.h-xs {
+  height: $sizeMediumXS;
+}
+.h-sm {
+  height: $sizeMediumSM;
+}
+.h-md {
+  height: $sizeMediumMD;
+}
+.h-lg {
+  height: $sizeMediumLG;
+}
+.h-xl {
+  height: $sizeMediumXL;
+}
+.h {
+  height: $sizeMediumMD;
+}
+
+//endregion
+
+// region 尺寸 (Large)
+
+// size
+.size-l-xs {
+  width: $sizeLargeXS;
+  height: $sizeLargeXS;
+}
+.size-l-sm {
+  width: $sizeLargeSM;
+  height: $sizeLargeSM;
+}
+.size-l-md {
+  width: $sizeLargeMD;
+  height: $sizeLargeMD;
+}
+.size-l-lg {
+  width: $sizeLargeLG;
+  height: $sizeLargeLG;
+}
+.size-l-xl {
+  width: $sizeLargeXL;
+  height: $sizeLargeXL;
+}
+.size-l {
+  width: $sizeLargeMD;
+  height: $sizeLargeMD;
+}
+
+// w
+.w-l-xs {
+  width: $sizeLargeXS;
+}
+.w-l-sm {
+  width: $sizeLargeSM;
+}
+.w-l-md {
+  width: $sizeLargeMD;
+}
+.w-l-lg {
+  width: $sizeLargeLG;
+}
+.w-l-xl {
+  width: $sizeLargeXL;
+}
+.w-l {
+  width: $sizeLargeMD;
+}
+
+// h
+.h-l-xs {
+  height: $sizeLargeXS;
+}
+.h-l-sm {
+  height: $sizeLargeSM;
+}
+.h-l-md {
+  height: $sizeLargeMD;
+}
+.h-l-lg {
+  height: $sizeLargeLG;
+}
+.h-l-xl {
+  height: $sizeLargeXL;
+}
+.h-l {
+  height: $sizeLargeMD;
+}
+
+//endregion
+
+// region 尺寸 (补充)
+
 .fit {
   width: fit-content;
   height: fit-content;
 }
 
-// w
-.w-xs {
-  width: $sizeXS;
-}
-.w-sm {
-  width: $sizeSM;
-}
-.w-md {
-  width: $sizeMD;
-}
-.w-lg {
-  width: $sizeLG;
-}
-.w-xl {
-  width: $sizeXL;
-}
-.w-2xl {
-  width: $size2XL;
-}
-.w-3xl {
-  width: $size3XL;
-}
 .w-fit {
   width: fit-content;
 }
@@ -643,32 +861,7 @@
 .w-screen {
   width: 100vw;
 }
-.w {
-  width: $sizeMD;
-}
 
-// h
-.h-xs {
-  height: $sizeXS;
-}
-.h-sm {
-  height: $sizeSM;
-}
-.h-md {
-  height: $sizeMD;
-}
-.h-lg {
-  height: $sizeLG;
-}
-.h-xl {
-  height: $sizeXL;
-}
-.h-2xl {
-  height: $size2XL;
-}
-.h-3xl {
-  height: $size3XL;
-}
 .h-fit {
   height: fit-content;
 }
@@ -678,8 +871,5 @@
 .h-screen {
   height: 100vh;
 }
-.h {
-  height: $sizeMD;
-}
 
-// endregion
+//endregion
