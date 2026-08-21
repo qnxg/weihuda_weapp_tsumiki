@@ -52,7 +52,7 @@ export function Tasks({
                 {data.tasks}
               </View>
             )
-          : <Skeleton className="w-full h" />}
+          : <Skeleton className="w-full h-l-sm" />}
       </IndexCardContent>
     </Card>
   )

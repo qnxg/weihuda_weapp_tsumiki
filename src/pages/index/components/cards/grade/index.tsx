@@ -34,12 +34,7 @@ function GradeContent({
           className="flex items-center gap"
         >
           <View className="w text-md ellipsis">{item.course_name}</View>
-          <View
-            className="flex-1 bg-page rounded-full overflow-hidden"
-            style={{
-              height: "16rpx",
-            }}
-          >
+          <View className="flex-1 bg-page rounded-full overflow-hidden h-s-xs">
             <View
               className="bg-primary"
               style={{
@@ -48,7 +43,7 @@ function GradeContent({
               }}
             />
           </View>
-          <View className="flex center text-md text-toned w-xs">{item.score}</View>
+          <View className="flex center text-md text-toned w-xl">{item.score}</View>
         </View>
       ))}
     </View>

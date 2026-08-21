@@ -114,7 +114,7 @@ export default function Grade() {
         {list.length === 0
           ? (
               <View className="h-full flex flex-col center gap">
-                <Icon className="size-xl" src={EmptyIcon} />
+                <Icon className="size-l-lg" src={EmptyIcon} />
                 <View>暂无成绩信息</View>
               </View>
             )

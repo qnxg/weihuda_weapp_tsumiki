@@ -7,7 +7,7 @@ import { unlockAuthPrompts } from "@/libs/auth-bridge"
 import { getTheme } from "@/utils/theme"
 import "./index.scss"
 
-const HEAD_HEIGHT = 50 // 同 h-sm
+const HEAD_HEIGHT = 50 // 同 h-l-xs
 
 type PullStatus = "awaiting" | "pulling" | "loosing" | "loading"
 
@@ -157,12 +157,12 @@ function PullRefresh({
     >
       <Slot name="refresher" className="w-full">
         {!isControlled && state.status !== "loading" && (
-          <View className="h-sm flex center">{STATUS_TEXT[state.status]}</View>
+          <View className="h-l-xs flex center">{STATUS_TEXT[state.status]}</View>
         )}
         {(isControlled ? isRefreshing : state.status === "loading") && (
-          <View className="h-sm flex center gap-xs">
+          <View className="h-l-xs flex center gap-xs">
             <View
-              className="rounded-full bg-primary loading"
+              className="size-s-xs rounded-full bg-primary loading"
               style={{
                 width: "16rpx",
                 height: "16rpx",
@@ -170,7 +170,7 @@ function PullRefresh({
               }}
             />
             <View
-              className="rounded-full bg-primary loading"
+              className="size-s-xs rounded-full bg-primary loading"
               style={{
                 width: "16rpx",
                 height: "16rpx",
@@ -178,7 +178,7 @@ function PullRefresh({
               }}
             />
             <View
-              className="rounded-full bg-primary loading"
+              className="size-s-xs rounded-full bg-primary loading"
               style={{
                 width: "16rpx",
                 height: "16rpx",

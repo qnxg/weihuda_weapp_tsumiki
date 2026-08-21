@@ -77,11 +77,8 @@ function PickerValue({
     <View className="flex items-center gap-xs">
       <View className="ellipsis">{value}</View>
       <Icon
+        className="size-s-lg"
         src={ToIcon}
-        style={{
-          width: "28rpx",
-          height: "28rpx",
-        }}
       />
     </View>
   )
@@ -193,7 +190,7 @@ export function HDJW() {
       {!isBootstrapReady
         ? (
             <View className="h-full flex flex-col center gap">
-              <Icon className="size-xl" src={EmptyIcon} />
+              <Icon className="size-l-lg" src={EmptyIcon} />
               <View>信息加载失败</View>
             </View>
           )

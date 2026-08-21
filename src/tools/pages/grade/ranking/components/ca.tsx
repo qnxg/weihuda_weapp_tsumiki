@@ -90,7 +90,7 @@ export function CA() {
           )
         : (
             <View className="h-full flex flex-col center gap">
-              <Icon className="size-xl" src={EmptyIcon} />
+              <Icon className="size-l-lg" src={EmptyIcon} />
               <View>正在生成数据, 请稍后刷新查看</View>
             </View>
           )}

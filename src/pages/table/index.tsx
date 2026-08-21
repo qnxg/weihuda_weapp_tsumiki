@@ -115,7 +115,7 @@ export default function Table() {
       <View className="flex-1 flex flex-col overflow-hidden">
         <View className="w-full flex">
           {/* 左上角空白 */}
-          <View className="w-xs" />
+          <View className="w-xl" />
 
           {/* 顶部日期头 */}
           {/* 横向: w-full + justify-evenly + gap-4rpx */}

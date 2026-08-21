@@ -151,10 +151,7 @@ function Popup({
           <View>{title}</View>
           <View onClick={() => handleClose()}>
             <Icon
-              style={{
-                width: "32rpx",
-                height: "32rpx",
-              }}
+              className="size-s-xl"
               src={CloseIcon}
             />
           </View>

@@ -57,10 +57,7 @@ export function ExamCard({
           <View className="flex items-center gap text-toned text-sm">
             <View className="flex items-center">
               <Icon
-                style={{
-                  width: "24rpx",
-                  height: "24rpx",
-                }}
+                className="size-s"
                 src={MapPinIcon}
               />
               {exam.area}

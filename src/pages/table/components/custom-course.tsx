@@ -202,7 +202,7 @@ export function CustomCourse({
       <Card>
         <CardContent className="p">
           <View className="flex items-center">
-            <View className="w">课程*</View>
+            <View className="w-l-sm">课程*</View>
             <Input
               placeholder="请输入课程名称(必填)"
               className="flex-1"
@@ -221,7 +221,7 @@ export function CustomCourse({
       <Card>
         <CardContent className="p flex flex-col gap">
           <View className="flex items-center">
-            <View className="w">教师</View>
+            <View className="w-l-sm">教师</View>
             <Input
               placeholder="请输入教师名称"
               className="flex-1"
@@ -236,7 +236,7 @@ export function CustomCourse({
           </View>
 
           <View className="flex items-center">
-            <View className="w">教室</View>
+            <View className="w-l-sm">教室</View>
             <Input
               placeholder="请输入教室位置"
               className="flex-1"
@@ -256,7 +256,7 @@ export function CustomCourse({
       <Card>
         <CardContent className="p flex flex-col gap">
           <View className="flex items-center">
-            <View className="w">周次*</View>
+            <View className="w-l-sm">周次*</View>
             <View className="flex-1 flex flex-col gap">
               <View
                 className="gap"
@@ -268,10 +268,8 @@ export function CustomCourse({
                 {Array.from({ length: weeks }).map((_, i) => (
                   <View
                     key={i}
-                    className="flex center rounded-full"
+                    className="size-sm flex center rounded-full"
                     style={{
-                      width: "48rpx",
-                      height: "48rpx",
                       // 同 primary
                       border: "2rpx solid #328ccb",
                       backgroundColor: data.weeks.includes(i + 1) ? "#328ccb" : "transparent",
@@ -318,7 +316,7 @@ export function CustomCourse({
       <Card>
         <CardContent className="p flex flex-col gap">
           <View className="flex items-center">
-            <View className="w">节次*</View>
+            <View className="w-l-sm">节次*</View>
             <View className="flex-1">
               <Picker
                 range={CUSTOM_COURSE_PICKER_RANGE}

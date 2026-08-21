@@ -72,14 +72,11 @@ export function Jifen({
       <CardContent className="flex items-center justify-between">
         <View className="flex items-center gap">
           <Icon
-            style={{
-              width: "48rpx",
-              height: "48rpx",
-            }}
+            className="size-sm"
             src={JifenIcon}
           />
           {isLoading
-            ? <Skeleton className="w-xl" />
+            ? <Skeleton className="w-l-lg" />
             : (
                 <View className="text-xl">
                   当前积分:

@@ -200,10 +200,7 @@ export function Detail({
                         <Icon
                           theme="light"
                           src={TrashIcon}
-                          style={{
-                            width: "32rpx",
-                            height: "32rpx",
-                          }}
+                          className="size-s-xl"
                         />
                         <View>删除</View>
                       </MyButton>
@@ -218,10 +215,7 @@ export function Detail({
                         <Icon
                           theme="light"
                           src={EditIcon}
-                          style={{
-                            width: "32rpx",
-                            height: "32rpx",
-                          }}
+                          className="size-s-xl"
                         />
                         <View>编辑</View>
                       </MyButton>

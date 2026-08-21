@@ -135,12 +135,7 @@ export default function PhysicalGrade() {
                         </View>
                       )}
                     </View>
-                    <View
-                      className="flex rounded-full bg-page overflow-hidden"
-                      style={{
-                        height: "16rpx",
-                      }}
-                    >
+                    <View className="flex rounded-full bg-page overflow-hidden h-s-xs">
                       {list.map((item, index) => (
                         <View
                           key={`${item.name}-${index}`}
@@ -203,7 +198,7 @@ export default function PhysicalGrade() {
             )
           : (
               <View className="h-full flex flex-col center gap">
-                <Icon className="size-xl" src={EmptyIcon} />
+                <Icon className="size-l-lg" src={EmptyIcon} />
                 <View>信息加载失败</View>
               </View>
             )}

@@ -39,7 +39,7 @@ export function DateHeader({
         <View
           key={day.p("YYYY-MM-DD")}
           className={cn(
-            "h-xs flex-1 flex flex-col items-center justify-center",
+            "h-xl flex-1 flex flex-col items-center justify-center",
             day.eq(now, "d") ? "text-primary" : "",
           )}
         >

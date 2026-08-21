@@ -20,10 +20,10 @@ export function Menu({
 
   return (
     <View
-      className="absolute size-xs flex center rounded-full bg-primary"
+      className="absolute size-xl flex center rounded-full bg-primary"
       onClick={() => setIsActive(!isActive)}
       style={{
-        // size-xs 一半大小
+        // size-xl 一半大小
         bottom: "40rpx",
         right: "40rpx",
       }}
@@ -32,7 +32,7 @@ export function Menu({
         theme="dark"
         src={isActive ? CloseIcon : MoreIcon}
         style={{
-          // size-xs 一半大小
+          // size-xl 一半大小
           width: "40rpx",
           height: "40rpx",
         }}
@@ -40,7 +40,7 @@ export function Menu({
 
       {/* 子按钮 */}
       <View
-        className="absolute size-xs flex center rounded-full bg-primary"
+        className="absolute size-xl flex center rounded-full bg-primary"
         onClick={(e) => {
           e.stopPropagation()
           if (!isActive)
@@ -49,7 +49,7 @@ export function Menu({
         }}
         style={{
           top: "0",
-          // 同 size-xs
+          // 同 size-xl
           left: "-80rpx",
           transform: isActive ? "translateX(-100%)" : "",
           opacity: isActive ? "1" : "0",
@@ -59,15 +59,11 @@ export function Menu({
         <Icon
           theme="dark"
           src={AddIcon}
-          style={{
-            // size-xs 一半大小
-            width: "40rpx",
-            height: "40rpx",
-          }}
+          className="size-xs"
         />
       </View>
       <View
-        className="absolute size-xs flex center rounded-full bg-primary"
+        className="absolute size-xl flex center rounded-full bg-primary"
         onClick={(e) => {
           e.stopPropagation()
           if (!isActive)
@@ -75,7 +71,7 @@ export function Menu({
           onOptionsButtonClick()
         }}
         style={{
-          // 同 size-xs, 斜向 sqrt(2) / 2 倍
+          // 同 size-xl, 斜向 sqrt(2) / 2 倍
           top: "-64rpx",
           left: "-64rpx",
           transform: isActive ? "translate(-50%, -50%)" : "",
@@ -86,15 +82,11 @@ export function Menu({
         <Icon
           theme="dark"
           src={SettingIcon}
-          style={{
-            // size-xs 一半大小
-            width: "40rpx",
-            height: "40rpx",
-          }}
+          className="size-xs"
         />
       </View>
       <View
-        className="absolute size-xs flex center rounded-full bg-primary"
+        className="absolute size-xl flex center rounded-full bg-primary"
         onClick={(e) => {
           e.stopPropagation()
           if (!isActive)
@@ -102,7 +94,7 @@ export function Menu({
           onExtraButtonClick()
         }}
         style={{
-          // 同 size-xs
+          // 同 size-xl
           top: "-80rpx",
           left: "0",
           transform: isActive ? "translateY(-100%)" : "",
@@ -113,11 +105,7 @@ export function Menu({
         <Icon
           theme="dark"
           src={ExtraIcon}
-          style={{
-            // size-xs 一半大小
-            width: "40rpx",
-            height: "40rpx",
-          }}
+          className="size-xs"
         />
       </View>
     </View>

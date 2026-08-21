@@ -96,21 +96,19 @@ function CourseContent({
           >
             {/* 前置 header 装饰 */}
             <View
-              className={cn("absolute", `header--${status}`)}
+              className={cn("w-s-xs absolute", `header--${status}`)}
               style={{
-                // 同 px-md
-                width: "16rpx",
                 height: "100%",
                 left: "0",
                 top: "0",
               }}
             />
 
-            <View className="size-xs flex flex-col gap-sm center">
+            <View className="size-xl flex flex-col gap-sm center">
               <View className="text-lg">{start}</View>
               <View>{end}</View>
             </View>
-            <View className="h-xs flex-1 flex flex-col gap-sm justify-center">
+            <View className="h-xl flex-1 flex flex-col gap-sm justify-center">
               <View className="text-lg">{course.course_name}</View>
               <View>
                 第
@@ -231,12 +229,7 @@ export function Courses({
                 </TabList>
               )
             : (
-                <Skeleton
-                  className="w-full"
-                  style={{
-                    height: "48rpx",
-                  }}
-                />
+                <Skeleton className="w-full h-sm" />
               )}
           <TabContent className="w-full py flex center">
             <CourseContent cards={cards} tab={tab} />
