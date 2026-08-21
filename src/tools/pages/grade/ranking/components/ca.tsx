@@ -74,11 +74,7 @@ export function CA() {
                 <MyButton
                   active
                   disabled={isUpdating}
-                  className="py-md rounded-sm text-lg"
-                  style={{
-                    paddingLeft: "36px",
-                    paddingRight: "36px",
-                  }}
+                  className="py-md px-2xl rounded-sm text-lg"
                   onClick={() => handleClick()}
                 >
                   更新
