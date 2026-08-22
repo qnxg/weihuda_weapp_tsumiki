@@ -41,12 +41,14 @@ export interface RequestHookOptions<T extends object | null> {
  * @property {RequestError | null} error - 请求失败时的错误对象, 成功或未请求时为 null
  * @property {boolean} isLoading - 请求是否正在进行中
  * @property {() => Promise<Response<T>>} refetch - 重新发起请求的函数
+ * @property {() => void} clearData - 将 data 置为 null
  */
 interface RequestResult<T extends object | null> {
   data: T | null
   error: RequestError | null
   isLoading: boolean
   refetch: () => Promise<Response<T>>
+  clearData: () => void
 }
 
 /**
@@ -135,6 +137,10 @@ export function useRequest<T extends object | null>(
       })
   }, [refetchClearData, refetchClearError, onRefetch, onSettled, onSuccess, onError])
 
+  const clearData = useCallback(() => {
+    setData(null)
+  }, [])
+
   useEffect(() => {
     void run()
       .catch((err) => {
@@ -154,5 +160,6 @@ export function useRequest<T extends object | null>(
     error,
     isLoading,
     refetch: run,
+    clearData,
   }
 }

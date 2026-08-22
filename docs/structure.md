@@ -121,8 +121,8 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 - 考试安排 `exam/exam`: 考试安排查询
 - 体测预约 `exam/physical-appoint`: 体测预约 (尚未完成)
 - 校历查看 `campus/calender`: 校历查看
+- 空教室查询 `campus/empty-room`: 空教室查询
 - 体测标准 `campus/physical-standard`: 体测标准介绍
-- 空教室查询 `campus/empty-room`: 空教室查询 (尚未完成)
 - 校园卡账单 `campus/card-bill`: 校园卡消费账单
 - 校园网账单 `campus/netflow-bill`: 校园网流量账单
 - 流量详情 `campus/netflow-detail`: 校园网流量详情
@@ -130,10 +130,10 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 
 ### Setting 分包 `src/setting/pages/`
 
-- 小程序设置 `index`: 设置页入口 (尚未完成)
-- 首页卡片 `index-card`: 首页卡片设置 (尚未完成)
+- 小程序设置 `index`: 设置页入口
+- 首页卡片 `index-card`: 首页卡片设置
 - 大物平台绑定 `lab-bind`: 大物实验平台账号绑定 (尚未完成)
-- 课表设置 `class-table`: 课表相关设置 (尚未完成)
+- 课表设置 `class-table`: 课表相关设置
 
 ## 其他
 

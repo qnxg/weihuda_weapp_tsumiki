@@ -1,7 +1,8 @@
 import type { Semester } from "@/types/semester"
 import type { TableSetting } from "@/types/setting"
 import { Picker, Switch, View } from "@tarojs/components"
-import { useState } from "react"
+import Taro from "@tarojs/taro"
+import { useEffect, useState } from "react"
 import { Popup } from "@/components/overlay"
 import { LABEL } from "@/config/logger-label"
 import { useAuth } from "@/hooks/auth"
@@ -26,7 +27,7 @@ export function CourseOptions({
   tableSetting: TableSetting
   onSemesterChange: (semester: Semester) => void
   onWeekChange: (week: number) => void
-  onTableSettingChange: (setting: TableSetting) => void
+  onTableSettingChange: (setting: TableSetting) => Promise<void>
   onClose: () => void
 }>) {
   const { user } = useAuth()
@@ -65,6 +66,16 @@ export function CourseOptions({
   // 用于学期 / 星期的 Picker 组件
   const [picker, setPicker] = useState([0, week - 1])
 
+  // context 权威值
+  const contextChecked = tableSetting.setting!.displayNotCurrentWeekCourses
+  // 本地乐观镜像, 点击后立即反馈, 避免受控 Switch 等待异步 API 返回时回弹
+  const [checked, setChecked] = useState(contextChecked)
+
+  // 权威值变化时 (保存成功) 同步本地镜像
+  useEffect(() => {
+    setChecked(contextChecked)
+  }, [contextChecked])
+
   // 应用 picker 变化
   const handlePickerChange = () => {
     if (!semester)
@@ -78,10 +89,28 @@ export function CourseOptions({
   }
 
   // 应用 setting 变化
-  const handleSettingChange = () => {
-    const newTableSetting = { ...tableSetting }
-    newTableSetting.setting.displayNotCurrentWeekCourses = !tableSetting.setting!.displayNotCurrentWeekCourses
-    onTableSettingChange(newTableSetting)
+  const handleSettingChange = async () => {
+    const next = !checked
+    // 乐观更新, 立即反馈
+    setChecked(next)
+    try {
+      // 不可变更新, 避免原地突变 context 中的原对象
+      await onTableSettingChange({
+        ...tableSetting,
+        setting: {
+          ...tableSetting.setting,
+          displayNotCurrentWeekCourses: next,
+        },
+      })
+    }
+    catch {
+      // 失败回滚
+      setChecked(!next)
+      void Taro.showToast({
+        title: "保存失败",
+        icon: "error",
+      })
+    }
   }
 
   return (
@@ -129,9 +158,9 @@ export function CourseOptions({
               style={{
                 transform: "scale(0.8)",
               }}
-              checked={tableSetting.setting!.displayNotCurrentWeekCourses}
+              checked={checked}
               disabled={!enable}
-              onChange={() => handleSettingChange()}
+              onChange={() => void handleSettingChange()}
             />
           </View>
         </View>

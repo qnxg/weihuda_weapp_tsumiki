@@ -22,6 +22,9 @@
   - `Option`: 单个操作选项组件
   - `Options`: 操作列表容器组件, 支持 divided/underline/wrapped/plain 四种样式类型
 
+- Checkbox 组件 `/checkbox`: checkbox 样式的多选条目
+  - `Checkbox`: 左侧方框指示选中态, 支持 label / description
+
 - 遮罩组件 `/overlay`: 全屏遮罩层组件
   - `Overlay`: 遮罩层组件, 全屏 fixed 定位
   - `OverlayMask`: 带遮罩内容展示组件, 支持 loading 状态和 top/center/bottom 三种定位模式
@@ -85,6 +88,7 @@
 
 - 通用存储类 `/utils/storage.ts`: 基于 Taro storage 封装的存储类, 支持过期机制, 提供 get/set/remove 方法
   - 并暴露 clearAllStorage 函数安全清除缓存(保留 token)
+  - 以及 clearStorageByPrefix 函数按前缀清除某一类带动态后缀的缓存
 
 - 主题获取函数 `/utils/theme.ts`: 获取当前主题, 返回 theme 和 isDark 计算属性
   - 注意: 在模拟器中直接切换主题, 该函数不会立即响应, 这是微信相关问题
@@ -109,7 +113,7 @@
 ## 通用钩子函数
 
 - 请求钩子 `/hooks/request.ts`: TanStack Query 风格的请求封装
-  - 接收 `请求 Promise` / `依赖数组` / `配置项`, 返回 `数据` / `错误` / `加载状态` 等
+  - 接收 `请求 Promise` / `依赖数组` / `配置项`, 返回 `数据` / `错误` / `加载状态` / `refetch` / `clearData` 等
 
 - 存储钩子 `/hooks/storage.ts`: 对通用存储类 `/utils/storage.ts` 中各个 Promise 的封装
   - 接收存储键, 返回 `存储值` / `错误` / `加载状态` 等, 同时提供 `set` / `remove` 方法
@@ -137,7 +141,7 @@
 - type: `/types/auth.ts`
 - 其他工具函数: `utils/parse-sex.ts`, `utils/auth.ts`, `libs/auth-bridge.ts`
 
-用于获取并全局共享用户信息, mount 时获取一次用户信息, 并提供 `更新信息` 和 `删除用户` 的方法
+用于获取并全局共享用户信息, mount 时获取一次用户信息, 并提供 `更新信息` 和 `删除用户` 的方法; hook 暴露 `isLoading` 表示用户信息是否正在加载
 
 ### 设置 setting
 

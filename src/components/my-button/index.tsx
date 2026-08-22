@@ -34,7 +34,7 @@ function MyButton({
 }: Readonly<{
   active?: boolean | null // 按钮的激活状态, true表示激活, false表示非激活, null表示默认状态
   to?: string // 点击按钮后导航到的路径
-  disabled?: boolean // 是否禁用按钮，默认为 false
+  disabled?: boolean // 是否禁用按钮, 默认为 false
   onClick?: () => void
   children?: ReactNode
   className?: string
