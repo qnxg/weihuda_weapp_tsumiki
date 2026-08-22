@@ -90,7 +90,7 @@ export function Jifen({
             ? (
                 <MyButton
                   className={cn(
-                    "w-lg py-sm flex center rounded-sm",
+                    "w-l py-sm flex center rounded-sm",
                     (isChecking || data.is_checked) ? "bg-page text-base" : "bg-primary text-reverse",
                   )}
                   onClick={() => handleClick()}

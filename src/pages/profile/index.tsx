@@ -84,14 +84,14 @@ export default function Profile() {
           <Card>
             <CardContent className="flex center gap">
               <View className="w-l-xl h-l-sm flex flex-col center">
-                <View className="size-xs flex center text-2xl bold">{jifenData?.jifen ?? "--"}</View>
+                <View className="size-xl flex center text-2xl bold">{jifenData?.jifen ?? "--"}</View>
                 <View>当前积分</View>
               </View>
 
               <View className="h-l-sm bg-page" style={{ width: "6rpx" }} />
 
               <View className="w-l-xl h-l-sm flex flex-col center">
-                <View className="size-xs flex center text-2xl bold">{jifenData?.combo ?? "--"}</View>
+                <View className="size-xl flex center text-2xl bold">{jifenData?.combo ?? "--"}</View>
                 <View>连续签到</View>
               </View>
 
