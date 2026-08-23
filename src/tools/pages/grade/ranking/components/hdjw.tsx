@@ -195,7 +195,7 @@ export function HDJW() {
             </View>
           )
         : (
-            <View className="flex flex-col p gap-xl">
+            <View className="flex flex-col p gap-3xl">
               <Card>
                 <CardContent className="flex flex-col gap-sm">
                   <View className="bold text-lg">筛选</View>

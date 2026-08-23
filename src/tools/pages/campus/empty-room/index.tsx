@@ -166,7 +166,7 @@ export default function EmptyRoom() {
           ? () => fetchRooms(result.request, result.buildingName, result.periodLabel)
           : null}
       >
-        <View className="flex flex-col p gap-xl">
+        <View className="flex flex-col p gap-3xl">
           <Card>
             <CardContent className="flex flex-col gap-sm">
               <View className="bold text-lg">筛选</View>
