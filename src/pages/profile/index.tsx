@@ -71,7 +71,7 @@ export default function Profile() {
         <View className="h-full flex flex-col gap p">
           <Card>
             <CardContent className="flex gap p">
-              <View className="size-sm rounded-full bg-primary flex center text-2xl text-reverse">
+              <View className="size-l-xs rounded-full bg-primary flex center text-2xl text-reverse">
                 {user ? user.name.at(0) : "U"}
               </View>
               <View className="flex-1 flex flex-col justify-center gap-xs">
@@ -83,30 +83,27 @@ export default function Profile() {
 
           <Card>
             <CardContent className="flex center gap">
-              <View className="w-2xl h-md flex flex-col center">
-                <View className="size-xs flex center text-2xl bold">{jifenData?.jifen ?? "--"}</View>
+              <View className="w-l-xl h-l-sm flex flex-col center">
+                <View className="size-xl flex center text-2xl bold">{jifenData?.jifen ?? "--"}</View>
                 <View>当前积分</View>
               </View>
 
-              <View className="h-md bg-page" style={{ width: "6rpx" }} />
+              <View className="h-l-sm bg-page" style={{ width: "6rpx" }} />
 
-              <View className="w-2xl h-md flex flex-col center">
-                <View className="size-xs flex center text-2xl bold">{jifenData?.combo ?? "--"}</View>
+              <View className="w-l-xl h-l-sm flex flex-col center">
+                <View className="size-xl flex center text-2xl bold">{jifenData?.combo ?? "--"}</View>
                 <View>连续签到</View>
               </View>
 
-              <View className="h-md bg-page" style={{ width: "6rpx" }} />
+              <View className="h-l-sm bg-page" style={{ width: "6rpx" }} />
 
               <View
-                className="w-2xl h-md flex flex-col center"
+                className="w-l-xl h-l-sm flex flex-col center"
                 onClick={() => navigate("/pages/jifen/index")}
               >
-                <View className="size-xs flex center">
+                <View className="size-xl flex center">
                   <Icon
-                    style={{
-                      width: "48rpx",
-                      height: "48rpx",
-                    }}
+                    className="size-sm"
                     src={JifenIcon}
                   />
                 </View>

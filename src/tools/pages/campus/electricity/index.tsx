@@ -110,7 +110,7 @@ export default function Electricity() {
             )
           : (
               <View className="h-full flex flex-col center gap py-xl">
-                <Icon className="size-xl" src={EmptyIcon} />
+                <Icon className="size-l-lg" src={EmptyIcon} />
                 <View className="text-toned">未找到相关记录</View>
               </View>
             )}

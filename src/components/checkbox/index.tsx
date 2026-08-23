@@ -35,23 +35,18 @@ function Checkbox({
     >
       <View
         className={cn(
-          "rounded-sm flex center",
+          "size-s-xl rounded-sm flex center",
           checked ? "bg-primary border-primary" : "border-base",
         )}
         style={{
-          width: "32rpx",
-          height: "32rpx",
           flexShrink: 0,
         }}
       >
         {checked && (
           <Icon
+            className="size-s-lg"
             theme="light"
             src={CheckIcon}
-            style={{
-              width: "28rpx",
-              height: "28rpx",
-            }}
           />
         )}
       </View>

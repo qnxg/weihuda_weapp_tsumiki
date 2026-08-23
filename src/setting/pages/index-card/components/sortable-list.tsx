@@ -140,12 +140,10 @@ export function SortableList({
                 {/* 左侧圆形按钮: 内含序号, 大小与 Option size="md" 图标一致 */}
                 <View
                   className={cn(
-                    "flex items-center justify-center rounded-full",
+                    "size-xs flex items-center justify-center rounded-full",
                     item.enabled ? "bg-primary text-reverse border-primary" : "bg-transparent text-base border-base",
                   )}
                   style={{
-                    width: "40rpx",
-                    height: "40rpx",
                     transition: "background-color 0.15s, border-color 0.15s",
                   }}
                   onClick={(e) => {
@@ -174,11 +172,8 @@ export function SortableList({
               >
                 {item.enabled && (
                   <Icon
+                    className="size-xs"
                     src={GridDotsIcon}
-                    style={{
-                      width: "40rpx",
-                      height: "40rpx",
-                    }}
                   />
                 )}
               </View>

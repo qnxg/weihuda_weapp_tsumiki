@@ -61,8 +61,8 @@ export function CampusCard({
             )
           : (
               <>
-                <Skeleton className="w-2xl" />
-                <Skeleton className="w-2xl" />
+                <Skeleton className="w-l-xl" />
+                <Skeleton className="w-l-xl" />
               </>
             )}
       </IndexCardContent>

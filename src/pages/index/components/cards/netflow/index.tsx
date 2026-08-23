@@ -52,20 +52,14 @@ export function Netflow({
                   <View className="flex center">
                     {data.download}
                     <Icon
-                      style={{
-                        width: "48rpx",
-                        height: "48rpx",
-                      }}
+                      className="size-sm"
                       src={DownloadIcon}
                     />
                   </View>
                   <View className="flex center">
                     {data.upload}
                     <Icon
-                      style={{
-                        width: "48rpx",
-                        height: "48rpx",
-                      }}
+                      className="size-sm"
                       src={UploadIcon}
                     />
                   </View>
@@ -88,10 +82,9 @@ export function Netflow({
                   </View>
                 </View>
                 <View className="flex items-center justify-between">
-                  <View className="w-xl">免费流量: </View>
+                  <View className="w-l-lg">免费流量: </View>
                   <View
-                    className="flex-1 rounded-full bg-page overflow-hidden"
-                    style={{ height: "16rpx" }}
+                    className="flex-1 rounded-full bg-page overflow-hidden h-s-xs"
                   >
                     <View
                       className="h-full bg-primary"
@@ -100,7 +93,7 @@ export function Netflow({
                       }}
                     />
                   </View>
-                  <View className="w flex items-center justify-end text-toned">
+                  <View className="w-l-sm flex items-center justify-end text-toned">
                     {data.base_usage}
                     G
                   </View>

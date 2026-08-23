@@ -93,7 +93,7 @@ function RankCard({
               <RankRow label="绩点" detail={detail} field="gpa" />
             </CardContent>
           )
-        : <CardContent className="h flex center">暂无数据</CardContent>}
+        : <CardContent className="h-l-sm flex center">暂无数据</CardContent>}
     </Card>
   )
 }

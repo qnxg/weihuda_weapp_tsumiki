@@ -56,10 +56,7 @@ function CardIcon({
 }>) {
   return (
     <Icon
-      style={{
-        width: "1.5rem",
-        height: "1.5rem",
-      }}
+      className="size-sm"
       src={src}
     />
   )

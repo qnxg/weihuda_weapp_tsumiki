@@ -71,7 +71,7 @@ function OverlayMask({
         ? (
             <View className="w-full h-full flex center">
               <View
-                className="relative size rounded-full spin"
+                className="relative size-l-sm rounded-full spin"
                 style={{
                   background: "conic-gradient(from 0deg, #222222, #aaaaaa)",
                   opacity: "0.5",
@@ -151,10 +151,7 @@ function Popup({
           <View>{title}</View>
           <View onClick={() => handleClose()}>
             <Icon
-              style={{
-                width: "32rpx",
-                height: "32rpx",
-              }}
+              className="size-s-xl"
               src={CloseIcon}
             />
           </View>
