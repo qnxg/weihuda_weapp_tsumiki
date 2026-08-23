@@ -93,7 +93,7 @@ export function Netflow({
                       }}
                     />
                   </View>
-                  <View className="w flex items-center justify-end text-toned">
+                  <View className="w-l-sm flex items-center justify-end text-toned">
                     {data.base_usage}
                     G
                   </View>

@@ -20,7 +20,7 @@ function Page({
         ? (
             <View className="w-full h-full flex center">
               <View
-                className="relative size rounded-full spin"
+                className="relative size-l-sm rounded-full spin"
                 style={{
                   background: "conic-gradient(from 0deg, #222222, #aaaaaa)",
                   opacity: "0.5",
@@ -86,7 +86,7 @@ function PageContent({
     return (
       <View className="bg-page w-full h-full flex center">
         <View
-          className="relative size rounded-full spin"
+          className="relative size-l-sm rounded-full spin"
           style={{
             background: "conic-gradient(from 0deg, #222222, #aaaaaa)",
             opacity: "0.5",

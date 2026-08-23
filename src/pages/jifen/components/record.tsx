@@ -57,7 +57,7 @@ export function Record({
   return (
     <View className="flex flex-col gap p">
       {list.length === 0
-        ? <View className="h flex center text-lg">{isLoading ? "加载中" : "暂无记录"}</View>
+        ? <View className="h-l-sm flex center text-lg">{isLoading ? "加载中" : "暂无记录"}</View>
         : list.map((item, index) => (
             <View
               key={`${item.id}-${index}`}

@@ -45,7 +45,7 @@ function CourseContent({
   tab: TabValue
 }>) {
   if (!cards)
-    return <Skeleton className="w-full h" />
+    return <Skeleton className="w-full h-l-sm" />
 
   if (cards.map(card => card.items).flat().length === 0) {
     return (

@@ -33,7 +33,7 @@ function GradeContent({
           key={`${item.course_name}-${index}`}
           className="flex items-center gap"
         >
-          <View className="w text-md ellipsis">{item.course_name}</View>
+          <View className="w-l-sm text-md ellipsis">{item.course_name}</View>
           <View className="flex-1 bg-page rounded-full overflow-hidden h-s-xs">
             <View
               className="bg-primary"

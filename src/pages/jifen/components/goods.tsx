@@ -55,7 +55,7 @@ export function Goods({
   return (
     <View className="flex flex-col gap">
       {!data || data.length === 0
-        ? <View className="h flex center text-lg">{isLoading ? "加载中" : "暂无记录"}</View>
+        ? <View className="h-l-sm flex center text-lg">{isLoading ? "加载中" : "暂无记录"}</View>
         : data.map((item, index) => {
             const active = item.count > 0 && jifen >= item.price
 
