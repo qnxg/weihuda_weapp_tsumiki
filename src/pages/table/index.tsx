@@ -128,7 +128,7 @@ export default function Table() {
         >
           <View className="flex w-full">
             {/* 左侧时间头 */}
-            {/* 纵向: h * 12 + gap-4rpx */}
+            {/* 纵向: h-l-sm * 12 + gap-4rpx */}
             <TimeHeader />
 
             {/* 表格区 */}

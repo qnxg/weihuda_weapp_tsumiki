@@ -40,7 +40,7 @@ export function TableContent({
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(7, 1fr)",
-        // 同 h
+        // 同 h-l-sm
         gridTemplateRows: "repeat(12, 120rpx)",
       }}
       onTouchStart={e => handleTouchStart(e)}
