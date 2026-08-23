@@ -322,6 +322,9 @@
 .p-2xl {
   padding: $spacing2XL;
 }
+.p-3xl {
+  padding: $spacing3XL;
+}
 .p {
   padding: $spacingLG;
 }
@@ -354,6 +357,10 @@
 .px-2xl {
   padding-left: $spacing2XL;
   padding-right: $spacing2XL;
+}
+.px-3xl {
+  padding-left: $spacing3XL;
+  padding-right: $spacing3XL;
 }
 .px {
   padding-left: $spacingLG;
@@ -389,6 +396,10 @@
   padding-top: $spacing2XL;
   padding-bottom: $spacing2XL;
 }
+.py-3xl {
+  padding-top: $spacing3XL;
+  padding-bottom: $spacing3XL;
+}
 .py {
   padding-top: $spacingLG;
   padding-bottom: $spacingLG;
@@ -415,6 +426,9 @@
 }
 .m-2xl {
   margin: $spacing2XL;
+}
+.m-3xl {
+  margin: $spacing3XL;
 }
 .m {
   margin: $spacingLG;
@@ -448,6 +462,10 @@
 .mx-2xl {
   margin-left: $spacing2XL;
   margin-right: $spacing2XL;
+}
+.mx-3xl {
+  margin-left: $spacing3XL;
+  margin-right: $spacing3XL;
 }
 .mx {
   margin-left: $spacingLG;
@@ -483,6 +501,10 @@
   margin-top: $spacing2XL;
   margin-bottom: $spacing2XL;
 }
+.my-3xl {
+  margin-top: $spacing3XL;
+  margin-bottom: $spacing3XL;
+}
 .my {
   margin-top: $spacingLG;
   margin-bottom: $spacingLG;
@@ -509,6 +531,9 @@
 }
 .gap-2xl {
   gap: $spacing2XL;
+}
+.gap-3xl {
+  gap: $spacing3XL;
 }
 .gap {
   gap: $spacingLG;
@@ -556,6 +581,12 @@
   right: $spacing2XL;
   bottom: $spacing2XL;
   left: $spacing2XL;
+}
+.inset-3xl {
+  top: $spacing3XL;
+  right: $spacing3XL;
+  bottom: $spacing3XL;
+  left: $spacing3XL;
 }
 .inset-0 {
   top: 0;

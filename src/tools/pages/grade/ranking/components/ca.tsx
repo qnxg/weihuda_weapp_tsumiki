@@ -74,7 +74,7 @@ export function CA() {
                 <MyButton
                   active
                   disabled={isUpdating}
-                  className="py-md px-2xl rounded-sm text-lg"
+                  className="py-sm px-3xl rounded-sm text-md"
                   onClick={() => handleClick()}
                 >
                   更新

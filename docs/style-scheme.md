@@ -98,7 +98,7 @@
 
 ### 间距
 
-间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl` (无后缀时默认 `md`)
+间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl` (无后缀时默认 `md`)
 
 #### Padding
 
