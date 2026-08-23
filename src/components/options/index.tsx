@@ -41,13 +41,13 @@ function Option({
     onClick?.()
   }
 
-  const ICON_SIZE_MAP: Record<Size, string> = {
-    sm: "32rpx",
-    md: "40rpx",
-    lg: "48rpx",
-    xl: "56rpx",
+  const ICON_SIZE_CLASS_MAP: Record<Size, string> = {
+    sm: "size-s-xl",
+    md: "size-xs",
+    lg: "size-sm",
+    xl: "size-md",
   }
-  const iconSize = ICON_SIZE_MAP[size]
+  const iconSizeClass = ICON_SIZE_CLASS_MAP[size]
 
   const sizeClass = cn(
     size === "sm" && "py-sm",
@@ -66,10 +66,7 @@ function Option({
           {icon && (
             <Icon
               src={icon}
-              style={{
-                width: iconSize,
-                height: iconSize,
-              }}
+              className={iconSizeClass}
             />
           )}
           {title}
@@ -93,10 +90,7 @@ function Option({
         {icon && (
           <Icon
             src={icon}
-            style={{
-              width: iconSize,
-              height: iconSize,
-            }}
+            className={iconSizeClass}
           />
         )}
         {title}
@@ -106,10 +100,7 @@ function Option({
         {!content && (to || onClick) && (
           <Icon
             src={ToIcon}
-            style={{
-              width: iconSize,
-              height: iconSize,
-            }}
+            className={iconSizeClass}
           />
         )}
       </View>

@@ -30,6 +30,7 @@ export function Menu({
       }}
     >
       <Icon
+        // 外层 size-xl 的一半 (40 = 0.5 * 80)
         className="size-xs"
         theme="dark"
         src={isActive ? CloseIcon : MoreIcon}
@@ -58,6 +59,7 @@ export function Menu({
         <Icon
           theme="dark"
           src={AddIcon}
+          // 外层 size-xl 的一半 (40 = 0.5 * 80)
           className="size-xs"
         />
       </View>
@@ -73,7 +75,7 @@ export function Menu({
           onOptionsButtonClick()
         }}
         style={{
-          // 同 size-xl, 斜向 sqrt(2) / 2 倍
+          // 同 size-xl, 斜向约 sqrt(2) / 2 倍
           top: "-64rpx",
           left: "-64rpx",
           transform: isActive ? "translate(-50%, -50%)" : "",
@@ -83,6 +85,7 @@ export function Menu({
         <Icon
           theme="dark"
           src={SettingIcon}
+          // 外层 size-xl 的一半 (40 = 0.5 * 80)
           className="size-xs"
         />
       </View>
@@ -108,6 +111,7 @@ export function Menu({
         <Icon
           theme="dark"
           src={ExtraIcon}
+          // 外层 size-xl 的一半 (40 = 0.5 * 80)
           className="size-xs"
         />
       </View>
