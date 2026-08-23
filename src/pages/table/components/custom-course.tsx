@@ -10,6 +10,7 @@ import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { LABEL } from "@/config/logger-label"
+import { cn } from "@/utils/cn"
 import { logger } from "@/utils/logger"
 
 const CUSTOM_COURSE_PICKER_RANGE = [
@@ -268,12 +269,14 @@ export function CustomCourse({
                 {Array.from({ length: weeks }).map((_, i) => (
                   <View
                     key={i}
-                    className="size-sm flex center rounded-full"
+                    className={cn(
+                      "size-sm flex center rounded-full",
+                      data.weeks.includes(i + 1) ? "text-reverse" : "text-primary",
+                    )}
                     style={{
                       // 同 primary
                       border: "2rpx solid #328ccb",
                       backgroundColor: data.weeks.includes(i + 1) ? "#328ccb" : "transparent",
-                      color: data.weeks.includes(i + 1) ? "#ffffff" : "#328ccb",
                     }}
                     onClick={() => {
                       setData(p => ({

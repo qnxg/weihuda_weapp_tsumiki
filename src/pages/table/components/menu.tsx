@@ -6,6 +6,7 @@ import CloseIcon from "@/static/table/close.svg"
 import ExtraIcon from "@/static/table/extra.svg"
 import MoreIcon from "@/static/table/more.svg"
 import SettingIcon from "@/static/table/setting.svg"
+import { cn } from "@/utils/cn"
 
 export function Menu({
   onAddButtonClick,
@@ -29,18 +30,17 @@ export function Menu({
       }}
     >
       <Icon
+        className="size-xs"
         theme="dark"
         src={isActive ? CloseIcon : MoreIcon}
-        style={{
-          // size-xl 一半大小
-          width: "40rpx",
-          height: "40rpx",
-        }}
       />
 
       {/* 子按钮 */}
       <View
-        className="absolute size-xl flex center rounded-full bg-primary"
+        className={cn(
+          "absolute size-xl flex center rounded-full bg-primary",
+          !isActive && "opacity",
+        )}
         onClick={(e) => {
           e.stopPropagation()
           if (!isActive)
@@ -52,7 +52,6 @@ export function Menu({
           // 同 size-xl
           left: "-80rpx",
           transform: isActive ? "translateX(-100%)" : "",
-          opacity: isActive ? "1" : "0",
           transition: "transform 0.2s, opacity 0.2s",
         }}
       >
@@ -63,7 +62,10 @@ export function Menu({
         />
       </View>
       <View
-        className="absolute size-xl flex center rounded-full bg-primary"
+        className={cn(
+          "absolute size-xl flex center rounded-full bg-primary",
+          !isActive && "opacity",
+        )}
         onClick={(e) => {
           e.stopPropagation()
           if (!isActive)
@@ -75,7 +77,6 @@ export function Menu({
           top: "-64rpx",
           left: "-64rpx",
           transform: isActive ? "translate(-50%, -50%)" : "",
-          opacity: isActive ? "1" : "0",
           transition: "transform 0.2s, opacity 0.2s",
         }}
       >
@@ -86,7 +87,10 @@ export function Menu({
         />
       </View>
       <View
-        className="absolute size-xl flex center rounded-full bg-primary"
+        className={cn(
+          "absolute size-xl flex center rounded-full bg-primary",
+          !isActive && "opacity",
+        )}
         onClick={(e) => {
           e.stopPropagation()
           if (!isActive)
@@ -98,7 +102,6 @@ export function Menu({
           top: "-80rpx",
           left: "0",
           transform: isActive ? "translateY(-100%)" : "",
-          opacity: isActive ? "1" : "0",
           transition: "transform 0.2s, opacity 0.2s",
         }}
       >

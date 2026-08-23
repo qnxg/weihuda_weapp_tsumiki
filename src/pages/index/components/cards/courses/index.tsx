@@ -96,9 +96,8 @@ function CourseContent({
           >
             {/* 前置 header 装饰 */}
             <View
-              className={cn("w-s-xs absolute", `header--${status}`)}
+              className={cn("w-s-xs h-full absolute", `header--${status}`)}
               style={{
-                height: "100%",
                 left: "0",
                 top: "0",
               }}

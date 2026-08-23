@@ -164,24 +164,18 @@ function PullRefresh({
             <View
               className="size-s-xs rounded-full bg-primary loading"
               style={{
-                width: "16rpx",
-                height: "16rpx",
                 animationDelay: "0s",
               }}
             />
             <View
               className="size-s-xs rounded-full bg-primary loading"
               style={{
-                width: "16rpx",
-                height: "16rpx",
                 animationDelay: "0.2s",
               }}
             />
             <View
               className="size-s-xs rounded-full bg-primary loading"
               style={{
-                width: "16rpx",
-                height: "16rpx",
                 animationDelay: "0.4s",
               }}
             />

@@ -29,12 +29,7 @@ export function DateHeader({
   }
 
   return (
-    <View
-      className="flex-1 py-xs flex items-center justify-evenly"
-      style={{
-        gap: "4rpx",
-      }}
-    >
+    <View className="flex-1 py-xs flex items-center justify-evenly gap-2xs">
       {days.map(day => (
         <View
           key={day.p("YYYY-MM-DD")}
