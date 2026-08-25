@@ -8,8 +8,8 @@ import { Option, Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
 import { useAuth } from "@/hooks/auth"
 import { useQuery } from "@/hooks/request"
+import AboutIcon from "@/static/profile/about.svg"
 import ClearIcon from "@/static/profile/clear.svg"
-import DisclaimersIcon from "@/static/profile/disclaimers.svg"
 import FeedbackIcon from "@/static/profile/feedback.svg"
 import JifenIcon from "@/static/profile/jifen.svg"
 import MessageIcon from "@/static/profile/message.svg"
@@ -24,7 +24,7 @@ const options: OptionItem[] = [
   { title: "小程序设置", icon: SettingIcon, to: "/setting/pages/index/index", size: "lg" },
   { title: "消息盒子", icon: MessageIcon, to: "/pages/message/index", size: "lg" },
   { title: "我要反馈", icon: FeedbackIcon, to: "/pages/feedback/index", size: "lg" },
-  { title: "免责声明", icon: DisclaimersIcon, to: "/pages/disclaimers/index", size: "lg" },
+  { title: "关于", icon: AboutIcon, to: "/about/pages/index/index", size: "lg" },
 ]
 
 export default function Profile() {

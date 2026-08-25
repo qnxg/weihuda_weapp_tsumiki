@@ -108,7 +108,6 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 - 课表 `table`: 课表展示与管理
 - 我的 `profile`: 个人中心
 - 登录 `auth`: 账号密码登录与双因子认证
-- 免责声明 `disclaimers`: 免责声明
 - 反馈 `feedback`: 意见反馈 (尚未完成)
 - 积分中心 `jifen`: 积分查询与兑换
 - 消息盒子 `message`: 消息通知 (尚未完成)
@@ -140,7 +139,7 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 ### About 分包 `src/about/pages/`
 
 - 关于 `index`: 关于 (尚未完成)
-- 免责声明 `disclaimers`: 免责声明 (尚未完成, 等迁移时改)
+- 免责声明 `disclaimers`: 免责声明
 - 开源致谢 `credit`: 开源致谢 (尚未完成)
 
 ## 其他
