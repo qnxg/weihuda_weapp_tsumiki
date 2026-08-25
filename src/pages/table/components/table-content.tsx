@@ -36,13 +36,12 @@ export function TableContent({
 
   return (
     <View
-      className="flex-1 h-full"
+      className="flex-1 h-full gap-2xs"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(7, 1fr)",
-        // 同 h
+        // 同 h-l-sm
         gridTemplateRows: "repeat(12, 120rpx)",
-        gap: "4rpx",
       }}
       onTouchStart={e => handleTouchStart(e)}
       onTouchEnd={e => handleTouchEnd(e)}

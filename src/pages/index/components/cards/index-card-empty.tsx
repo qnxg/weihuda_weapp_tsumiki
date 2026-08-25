@@ -10,7 +10,7 @@ export function IndexCardEmpty({
 }>) {
   return (
     <View className="w-full flex flex-col items-center gap text-md">
-      <Icon className="size-sm" src={icon} />
+      <Icon className="size-l-xs" src={icon} />
       <View>{text}</View>
     </View>
   )

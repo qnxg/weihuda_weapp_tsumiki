@@ -21,7 +21,7 @@ export function DateBar() {
         <View
           key={day.p("YYYY-MM-DD")}
           className={cn(
-            "size-xs flex flex-col items-center justify-center rounded-sm",
+            "size-xl flex flex-col items-center justify-center rounded-sm",
             day.eq(now, "d") ? "bg-primary text-reverse" : "",
           )}
         >

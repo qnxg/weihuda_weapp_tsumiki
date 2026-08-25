@@ -55,7 +55,7 @@ export function Goods({
   return (
     <View className="flex flex-col gap">
       {!data || data.length === 0
-        ? <View className="h flex center text-lg">{isLoading ? "加载中" : "暂无记录"}</View>
+        ? <View className="h-l-sm flex center text-lg">{isLoading ? "加载中" : "暂无记录"}</View>
         : data.map((item, index) => {
             const active = item.count > 0 && jifen >= item.price
 
@@ -64,14 +64,14 @@ export function Goods({
                 key={`${item.id}-${index}`}
                 className="flex gap"
               >
-                <View className="size-xl flex center">
+                <View className="size-l-lg flex center">
                   <Image
                     mode="aspectFit"
-                    className="size-xl"
+                    className="size-l-lg"
                     src={item.cover}
                   />
                 </View>
-                <View className="flex-1 h-sm flex flex-col justify-between">
+                <View className="flex-1 h-l-xs flex flex-col justify-between">
                   <View className="text-lg">{item.name}</View>
                   <View className="text-toned text-sm">{item.description}</View>
                   <View className="flex items-end justify-between">
@@ -82,7 +82,7 @@ export function Goods({
                     </View>
                     <MyButton
                       className={cn(
-                        "w-lg py-xs flex center rounded-sm",
+                        "w-l py-xs flex center rounded-sm",
                         active ? "bg-primary text-reverse" : "bg-page text-base",
                       )}
                       disabled={!active}

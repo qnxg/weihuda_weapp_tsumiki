@@ -43,10 +43,7 @@ export function Calender({
         <CardContent className="flex flex-col gap">
           <View className="flex items-center justify-between">
             <Icon
-              style={{
-                width: "48rpx",
-                height: "48rpx",
-              }}
+              className="size-sm"
               src={PrevIcon}
               onClick={() => setDate(prev => od(prev).sub("M", 1).s)}
             />
@@ -67,10 +64,7 @@ export function Calender({
             </View>
 
             <Icon
-              style={{
-                width: "48rpx",
-                height: "48rpx",
-              }}
+              className="size-sm"
               src={NextIcon}
               onClick={() => setDate(prev => od(prev).add("M", 1).s)}
             />
@@ -86,7 +80,7 @@ export function Calender({
             {(["日", "一", "二", "三", "四", "五", "六"] as const).map(item => (
               <View
                 key={item}
-                className="size-xs flex center text-toned"
+                className="size-xl flex center text-toned"
               >
                 {item}
               </View>
@@ -96,7 +90,7 @@ export function Calender({
               <View
                 key={day.p("YYYY-MM-DD")}
                 className={cn(
-                  "relative size-xs flex center rounded-sm",
+                  "relative size-xl flex center rounded-sm",
                   day.eq(od(date), "M") ? "text-highlight" : "text-toned",
                   day.eq(od(date), "d") ? "bg-primary text-reverse" : "",
                 )}
@@ -107,9 +101,8 @@ export function Calender({
                 {/* 当日有考试标记 */}
                 {exams?.some(item => item.date && od(item.date).eq(day, "d")) && (
                   <View
-                    className="absolute rounded-full"
+                    className="w-s-xl absolute rounded-full"
                     style={{
-                      width: "32rpx",
                       height: "4rpx",
                       bottom: "16rpx",
                       left: "50%",

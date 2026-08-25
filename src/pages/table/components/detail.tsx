@@ -108,14 +108,13 @@ export function Detail({
           >
             {/* 详情卡片 */}
             <View
-              className="px py-sm rounded-sm text-reverse text-lg"
+              className="absolute px py-sm rounded-sm text-reverse text-lg"
               style={{
                 width: "360rpx",
                 left: "55rpx",
                 right: "55rpx",
                 top: "200rpx",
                 bottom: "200rpx",
-                position: "absolute",
                 // 此处文本较浅, 背景色使用原前景色
                 backgroundColor: course.weeks.includes(week) ? course.color : "#aeaeae",
               }}
@@ -134,12 +133,7 @@ export function Detail({
                     <View>{course.course_id}</View>
                   </View>
 
-                  <View
-                    style={{
-                    // 同 2 被 text-2xl
-                      fontSize: "48rpx",
-                    }}
-                  >
+                  <View className="text-4xl">
                     {course.course_name}
                   </View>
 
@@ -200,10 +194,7 @@ export function Detail({
                         <Icon
                           theme="light"
                           src={TrashIcon}
-                          style={{
-                            width: "32rpx",
-                            height: "32rpx",
-                          }}
+                          className="size-s-xl"
                         />
                         <View>删除</View>
                       </MyButton>
@@ -218,10 +209,7 @@ export function Detail({
                         <Icon
                           theme="light"
                           src={EditIcon}
-                          style={{
-                            width: "32rpx",
-                            height: "32rpx",
-                          }}
+                          className="size-s-xl"
                         />
                         <View>编辑</View>
                       </MyButton>

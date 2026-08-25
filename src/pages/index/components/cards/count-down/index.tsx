@@ -7,7 +7,6 @@ import { IndexCardContent } from "@/pages/index/components/cards/index-card-cont
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CountDownIcon from "@/static/index/count-down.svg"
 import { getSemesterDateInfo } from "@/utils/semester"
-import { getTheme } from "@/utils/theme"
 
 /**
  * @description 假期倒计时
@@ -17,8 +16,6 @@ export function CountDown({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { isDark } = getTheme()
-
   const { onCardFinish } = useCardLoading()
 
   const { data, isLoading } = useSemester()
@@ -64,10 +61,7 @@ export function CountDown({
                   {String(next).padStart(3, "0").split("").map((num, index) => (
                     <View
                       key={index}
-                      className="text-2xl text-highlight text-bold p bg-page rounded-sm"
-                      style={{
-                        backgroundColor: isDark ? "#303030" : "#f7f7f7",
-                      }}
+                      className="text-2xl text-highlight text-bold p bg-subtle rounded-sm"
                     >
                       {num}
                     </View>

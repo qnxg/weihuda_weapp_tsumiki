@@ -46,20 +46,14 @@ export default function NetflowBill() {
                         <View className="flex center">
                           {item.download}
                           <Icon
-                            style={{
-                              width: "48rpx",
-                              height: "48rpx",
-                            }}
+                            className="size-sm"
                             src={DownloadIcon}
                           />
                         </View>
                         <View className="flex center">
                           {item.upload}
                           <Icon
-                            style={{
-                              width: "48rpx",
-                              height: "48rpx",
-                            }}
+                            className="size-sm"
                             src={UploadIcon}
                           />
                         </View>
@@ -86,7 +80,7 @@ export default function NetflowBill() {
             )
           : (
               <View className="h-full flex flex-col center gap py-xl">
-                <Icon className="size-xl" src={EmptyIcon} />
+                <Icon className="size-l-lg" src={EmptyIcon} />
                 <View className="text-toned">未找到相关记录</View>
               </View>
             )}

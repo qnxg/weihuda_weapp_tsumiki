@@ -86,11 +86,8 @@ function PickerValue({
     <View className="flex items-center gap-xs">
       <View className="ellipsis">{value}</View>
       <Icon
+        className="size-s-lg"
         src={ToIcon}
-        style={{
-          width: "28rpx",
-          height: "28rpx",
-        }}
       />
     </View>
   )
@@ -169,7 +166,7 @@ export default function EmptyRoom() {
           ? () => fetchRooms(result.request, result.buildingName, result.periodLabel)
           : null}
       >
-        <View className="flex flex-col p gap-xl">
+        <View className="flex flex-col p gap-3xl">
           <Card>
             <CardContent className="flex flex-col gap-sm">
               <View className="bold text-lg">筛选</View>
@@ -285,7 +282,7 @@ export default function EmptyRoom() {
                       className="rounded-sm overflow-hidden bg flex flex-col center gap"
                       style={{ height: "380rpx" }}
                     >
-                      <Icon className="size-xl" src={EmptyIcon} />
+                      <Icon className="size-l-lg" src={EmptyIcon} />
                       <View className="text-toned">该条件下暂无空教室</View>
                     </View>
                   )}
