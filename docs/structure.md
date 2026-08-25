@@ -6,6 +6,8 @@
 
 ```plain text
 ├── src/                          # 源代码目录
+│   ├── about/                  # 关于页 (Taro 分包)
+│   │   └── pages/
 │   ├── apis/                     # API 接口层
 │   │   ├── index.ts              # API 统一导出
 │   │   └── models/               # API 数据模型
@@ -134,6 +136,12 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 - 首页卡片 `index-card`: 首页卡片设置
 - 大物平台绑定 `lab-bind`: 大物实验平台账号绑定 (尚未完成)
 - 课表设置 `class-table`: 课表相关设置
+
+### About 分包 `src/about/pages/`
+
+- 关于 `index`: 关于 (尚未完成)
+- 免责声明 `disclaimers`: 免责声明 (尚未完成, 等迁移时改)
+- 开源致谢 `credit`: 开源致谢 (尚未完成)
 
 ## 其他
 

@@ -40,6 +40,14 @@ export default defineAppConfig({
         "pages/class-table/index",
       ],
     },
+    {
+      root: "about",
+      pages: [
+        "pages/index/index",
+        "pages/disclaimers/index",
+        "pages/credit/index",
+      ],
+    },
   ],
   darkmode: true,
   themeLocation: "theme.json",
