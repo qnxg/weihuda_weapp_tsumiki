@@ -14,8 +14,8 @@ import { useSemester } from "@/hooks/semester"
 import EmptyIcon from "@/static/tools/grade/physical-grade/empty.svg"
 import { Eye } from "@/tools/pages/grade/physical-grade/components/eye"
 import { formatPhysicalGrade } from "@/tools/pages/grade/physical-grade/utils/physical-grade"
+import { cn } from "@/utils/cn"
 import { od } from "@/utils/ohday"
-import { getTheme } from "@/utils/theme"
 
 /**
  * @description 用于构成条和卡片展示的内容
@@ -31,7 +31,6 @@ export interface PhysicalGradeItem {
 
 export default function PhysicalGrade() {
   const { user } = useAuth()
-  const { isDark } = getTheme()
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
 
   // Tab 值
@@ -111,7 +110,7 @@ export default function PhysicalGrade() {
                         </View>
                       )}
                     </View>
-                    <View className="flex rounded-full bg-page overflow-hidden h-s-xs">
+                    <View className="flex rounded-full bg-page overflow-hidden h-s-xl">
                       {list.map((item, index) => (
                         <View
                           key={`${item.name}-${index}`}
@@ -124,13 +123,7 @@ export default function PhysicalGrade() {
                       ))}
                     </View>
 
-                    <View
-                      className="flex flex-col"
-                      style={{
-                        gap: "2rpx",
-                        backgroundColor: isDark ? "#303030" : "#f7f7f7",
-                      }}
-                    >
+                    <View className="flex flex-col bg-subtle gap-2xs">
                       {[
                         {
                           title: "类型",
@@ -200,10 +193,10 @@ export default function PhysicalGrade() {
                         <View className="flex items-center justify-between">
                           <View className="text-bold text-lg">{item.name}</View>
                           <View
-                            className="text-reverse text-sm py-xs px rounded-full"
-                            style={{
-                              backgroundColor: item.color === "red" ? "#dd0000" : "#00aa00",
-                            }}
+                            className={cn(
+                              "text-reverse text-sm py-xs px rounded-full",
+                              item.color === "red" ? "bg-danger" : "bg-success",
+                            )}
                           >
                             {item.rank}
                           </View>
