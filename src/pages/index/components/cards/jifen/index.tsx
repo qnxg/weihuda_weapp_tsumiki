@@ -72,14 +72,11 @@ export function Jifen({
       <CardContent className="flex items-center justify-between">
         <View className="flex items-center gap">
           <Icon
-            style={{
-              width: "48rpx",
-              height: "48rpx",
-            }}
+            className="size-sm"
             src={JifenIcon}
           />
           {isLoading
-            ? <Skeleton className="w-xl" />
+            ? <Skeleton className="w-l-lg" />
             : (
                 <View className="text-xl">
                   当前积分:
@@ -93,7 +90,7 @@ export function Jifen({
             ? (
                 <MyButton
                   className={cn(
-                    "w-lg py-sm flex center rounded-sm",
+                    "w-l-md py-sm flex center rounded-sm",
                     (isChecking || data.is_checked) ? "bg-page text-base" : "bg-primary text-reverse",
                   )}
                   onClick={() => handleClick()}

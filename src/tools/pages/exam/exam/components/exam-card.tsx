@@ -41,10 +41,9 @@ export function ExamCard({
         >
           {/* 中部分割条, 由于定位问题, 只能放到这里 */}
           <View
-            className="absolute rounded-full"
+            className="absolute h-full rounded-full"
             style={{
               width: "8rpx",
-              height: "100%",
               left: "0",
               top: "0",
               transform: "translateX(-50%)",
@@ -57,10 +56,7 @@ export function ExamCard({
           <View className="flex items-center gap text-toned text-sm">
             <View className="flex items-center">
               <Icon
-                style={{
-                  width: "24rpx",
-                  height: "24rpx",
-                }}
+                className="size-s"
                 src={MapPinIcon}
               />
               {exam.area}

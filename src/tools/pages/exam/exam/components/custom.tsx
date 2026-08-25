@@ -74,7 +74,7 @@ export function Custom({
       <Card>
         <CardContent className="p">
           <View className="flex items-center">
-            <View className="w">名称*</View>
+            <View className="w-l-sm">名称*</View>
             <Input
               placeholder="请输入考试名称(必填)"
               className="flex-1"
@@ -93,7 +93,7 @@ export function Custom({
       <Card>
         <CardContent className="p">
           <View className="flex items-center">
-            <View className="w">地点</View>
+            <View className="w-l-sm">地点</View>
             <Input
               placeholder="请输入考试地点"
               className="flex-1"
@@ -108,7 +108,7 @@ export function Custom({
           </View>
 
           <View className="flex items-center">
-            <View className="w">考场</View>
+            <View className="w-l-sm">考场</View>
             <Input
               placeholder="请输入考场位置"
               className="flex-1"
@@ -123,7 +123,7 @@ export function Custom({
           </View>
 
           <View className="flex items-center">
-            <View className="w">座位号</View>
+            <View className="w-l-sm">座位号</View>
             <Input
               placeholder="请输入座位号"
               className="flex-1"
@@ -142,7 +142,7 @@ export function Custom({
       <Card>
         <CardContent className="p flex flex-col gap">
           <View className="flex items-center">
-            <View className="w">日期*</View>
+            <View className="w-l-sm">日期*</View>
             <View className="flex-1">
               <Picker
                 mode="date"
@@ -160,7 +160,7 @@ export function Custom({
           </View>
 
           <View className="flex items-center">
-            <View className="w">时间*</View>
+            <View className="w-l-sm">时间*</View>
             <View className="flex-1 flex gap">
               <Picker
                 mode="time"

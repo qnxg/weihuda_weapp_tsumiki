@@ -15,7 +15,7 @@ export function List({
   if (!exams || exams.length === 0) {
     return (
       <View className="h-full flex flex-col center gap py-xl">
-        <Icon className="size-xl" src={EmptyIcon} />
+        <Icon className="size-l-lg" src={EmptyIcon} />
         <View className="text-toned">暂无考试信息</View>
       </View>
     )

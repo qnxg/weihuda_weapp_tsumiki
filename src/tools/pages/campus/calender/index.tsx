@@ -148,7 +148,7 @@ export default function Calender() {
             )
           : (
               <View className="h-full flex flex-col center gap">
-                <Icon className="size-xl" src={EmptyIcon} />
+                <Icon className="size-l-lg" src={EmptyIcon} />
                 <View>信息加载失败</View>
               </View>
             )}

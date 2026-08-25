@@ -31,7 +31,7 @@ export function Login() {
       <Card>
         <CardContent className="p flex flex-col gap">
           <View className="flex items-center">
-            <View className="w">学号*</View>
+            <View className="w-l-sm">学号*</View>
             <Input
               placeholder="请输入学号(必填)"
               className="flex-1"
@@ -43,7 +43,7 @@ export function Login() {
           </View>
 
           <View className="flex items-center">
-            <View className="w">密码*</View>
+            <View className="w-l-sm">密码*</View>
             <Input
               password
               placeholder="请输入密码(必填)"

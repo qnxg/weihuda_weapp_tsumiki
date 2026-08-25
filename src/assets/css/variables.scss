@@ -10,9 +10,44 @@ $textColorReverse: var(--text-color-reverse);
 $bgColorPrimary: var(--bg-color-primary);
 $bgColorPage: var(--bg-color-page);
 $bgColorShadow: var(--bg-color-shadow);
+$bgColorSubtle: var(--bg-color-subtle);
+$bgColorDivider: var(--bg-color-divider);
+$borderColorDivider: var(--border-color-divider);
 $bgColor: var(--bg-color);
 
+// 状态色 (深浅一致)
+$textColorSuccess: var(--text-color-success);
+$textColorDanger: var(--text-color-danger);
+$textColorWarning: var(--text-color-warning);
+$bgColorSuccess: var(--bg-color-success);
+$bgColorDanger: var(--bg-color-danger);
+$bgColorWarning: var(--bg-color-warning);
+
+// 按色名预设色
+$bgColorBlue: var(--bg-color-blue);
+$bgColorOrange: var(--bg-color-orange);
+$bgColorCyan: var(--bg-color-cyan);
+$bgColorPurple: var(--bg-color-purple);
+$bgColorAmber: var(--bg-color-amber);
+$bgColorPink: var(--bg-color-pink);
+$bgColorIndigo: var(--bg-color-indigo);
+$bgColorMagenta: var(--bg-color-magenta);
+$bgColorViolet: var(--bg-color-violet);
+$bgColorGold: var(--bg-color-gold);
+$textColorBlue: var(--text-color-blue);
+$textColorOrange: var(--text-color-orange);
+$textColorCyan: var(--text-color-cyan);
+$textColorPurple: var(--text-color-purple);
+$textColorAmber: var(--text-color-amber);
+$textColorPink: var(--text-color-pink);
+$textColorIndigo: var(--text-color-indigo);
+$textColorMagenta: var(--text-color-magenta);
+$textColorViolet: var(--text-color-violet);
+$textColorGold: var(--text-color-gold);
+
 // 字体大小
+$font4XL: 48px;
+$font3XL: 40px;
 $font2XL: 36px;
 $fontXL: 32px;
 $fontLG: 28px;
@@ -24,19 +59,36 @@ $roundedXL: 24px;
 $roundedLG: 20px;
 $roundedMD: 16px;
 $roundedSM: 12px;
+$roundedXS: 10px;
 
 // 间距 (用于 padding, margin, gap 等)
+$spacing3XL: 48px;
+$spacing2XL: 36px;
 $spacingXL: 24px;
 $spacingLG: 20px;
 $spacingMD: 16px;
 $spacingSM: 12px;
 $spacingXS: 8px;
+$spacing2XS: 4px;
 
 // 尺寸 (用于宽高等)
-$size3XL: 200px;
-$size2XL: 180px;
-$sizeXL: 160px;
-$sizeLG: 140px;
-$sizeMD: 120px;
-$sizeSM: 100px;
-$sizeXS: 80px;
+// Small 组
+$sizeSmallXS: 16px;
+$sizeSmallSM: 20px;
+$sizeSmallMD: 24px;
+$sizeSmallLG: 28px;
+$sizeSmallXL: 32px;
+
+// Medium 组
+$sizeMediumXS: 40px;
+$sizeMediumSM: 48px;
+$sizeMediumMD: 56px;
+$sizeMediumLG: 64px;
+$sizeMediumXL: 80px;
+
+// Large 组
+$sizeLargeXS: 100px;
+$sizeLargeSM: 120px;
+$sizeLargeMD: 140px;
+$sizeLargeLG: 160px;
+$sizeLargeXL: 180px;

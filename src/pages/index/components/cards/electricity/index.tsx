@@ -75,8 +75,8 @@ export function Electricity({
             )
           : (
               <>
-                <Skeleton className="w-2xl" />
-                <Skeleton className="w-2xl" />
+                <Skeleton className="w-l-xl" />
+                <Skeleton className="w-l-xl" />
               </>
             )}
       </IndexCardContent>

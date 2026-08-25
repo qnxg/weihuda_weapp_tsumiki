@@ -26,6 +26,10 @@
 - `text-muted`: 次要文本颜色, 较柔和颜色更浅 (深浅默认颜色相反)
 - `text-reverse`: 反转文本颜色, 适用于有色背景下的文本 (浅色模式为白色, 深色模式为黑色)
 - `text-primary`: 主要文本颜色, 适用于强调文本 (为主题蓝色)
+- `text-success`: 成功状态色 (`#00aa00`, 深浅一致)
+- `text-danger`: 危险状态色 (`#dd0000`, 深浅一致)
+- `text-warning`: 警告状态色 (`#ff9900`, 深浅一致, 当前无消费方, 预留)
+- `text-blue` / `text-orange` / `text-cyan` / `text-purple` / `text-amber` / `text-pink` / `text-indigo` / `text-magenta` / `text-violet` / `text-gold`: 按色名预设色 (与 `config/color.ts` 的 `FONT_COLOR` 同源)
 
 #### 背景颜色 `.bg`
 
@@ -34,6 +38,12 @@
 - `bg-primary`: 主要背景色, 用于强调/选中状态 (为主题蓝色)
 - `bg-transparent`: 透明背景
 - `bg-shadow`: 遮罩背景色, 用于弹窗/底部弹出等场景
+- `bg-subtle`: 柔和表面背景色 (浅色 `#f7f7f7`, 深色 `#303030`), 用于 skeleton / options / count-down 等弱化底色场景
+- `bg-divider`: 分割线背景色 (浅色 `#eeeeee`, 深色 `#3a3a3a`), 用于需要弱分割的容器底色
+- `bg-success`: 成功状态色 (`#00aa00`, 深浅一致)
+- `bg-danger`: 危险状态色 (`#dd0000`, 深浅一致)
+- `bg-warning`: 警告状态色 (`#ff9900`, 深浅一致, 当前无消费方, 预留)
+- `bg-blue` / `bg-orange` / `bg-cyan` / `bg-purple` / `bg-amber` / `bg-pink` / `bg-indigo` / `bg-magenta` / `bg-violet` / `bg-gold`: 按色名预设色 (与 `config/color.ts` 的 `BG_COLOR` 同源)
 - `bg`: 同 `bg-base` 的简写
 
 #### 边框颜色 `.border`
@@ -44,10 +54,11 @@
 - `border-muted`: 次要边框
 - `border-reverse`: 反转边框
 - `border-primary`: 主题色边框
+- `border-divider`: 分割线边框 (浅色 `#eeeeee`, 深色 `#3a3a3a`), 用于表格线 / 课程格边框
 
 ### 文本
 
-#### 文本大小 `.text-`: `sm`, `md`, `lg`, `xl`, `2xl`
+#### 文本大小 `.text-`: `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`
 
 #### 其他样式
 
@@ -83,11 +94,11 @@
 - `hidden`: 隐藏 (`display: none`)
 - `opacity`: 透明 (`opacity: 0`)
 
-#### 圆角 `.rounded`: `sm`, `md`, `lg`, `xl`, `full` (无后缀时默认 `md`)
+#### 圆角 `.rounded`: `xs`, `sm`, `md`, `lg`, `xl`, `full` (无后缀时默认 `md`)
 
 ### 间距
 
-间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `xs`, `sm`, `md`, `lg`, `xl` (无后缀时默认 `md`)
+间距支持 `padding`、`margin`、`gap`、`inset` 四类, 每种均按方向分为全向、水平 (`x`)、垂直 (`y`) 三种, 并提供以下 token: `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl` (无后缀时默认 `md`)
 
 #### Padding
 
@@ -112,19 +123,15 @@
 
 ### 尺寸
 
-尺寸分为 `size` (等宽等高)、`w` (宽度)、`h` (高度) 三类, 提供以下 token: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl` (无后缀时默认 `md`)
+尺寸分为 `size` (等宽等高), `w` (宽度), `h` (高度) 三类, 每一类分 `s`, `m`, `l` 三组, 每组有 `xs`, `sm`, `md`, `lg`, `xl` 五档
+
+其中档位无 token 时默认值为 `-md`, 组别无 token 时默认值为 `-m`
 
 #### 特殊值 (仅 `w` / `h`)
 
 - `full`: 100%
 - `screen`: 100vw / 100vh
 - `fit`: fit-content
-
-#### 简写
-
-- `size-*`: 等宽等高
-- `w-*`: 仅宽度
-- `h-*`: 仅高度
 
 ## 内联样式
 

@@ -34,7 +34,7 @@ export function Section({
             onClick={() => navigate(item.to)}
           >
             <Icon
-              className="size"
+              className="size-l-sm"
               src={item.icon}
             />
             <View>{item.title}</View>

@@ -108,12 +108,12 @@ export function TFA({
           </View>
 
           <View className="flex items-center">
-            <View className="w">手机号</View>
+            <View className="w-l-sm">手机号</View>
             <View className="flex-1">{phone}</View>
           </View>
 
           <View className="flex items-center gap">
-            <View className="w">验证码*</View>
+            <View className="w-l-sm">验证码*</View>
             <Input
               type="number"
               placeholder="请输入验证码(必填)"

@@ -2,7 +2,7 @@ import type { ComponentProps } from "react"
 import { MyButton } from "@/components/my-button"
 import { cn } from "@/utils/cn"
 
-export function HDJWSwitchButton({
+export function SwitchButton({
   active,
   className,
   children,
@@ -12,7 +12,7 @@ export function HDJWSwitchButton({
     <MyButton
       className={cn(
         "px-sm py-xs rounded-sm",
-        active ? "text-primary border-primary" : "text-base border-base",
+        active ? "text-primary border-primary" : "text-muted border-muted",
         className,
       )}
       {...props}
