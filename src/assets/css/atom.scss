@@ -21,9 +21,6 @@
 .text-primary {
   color: $primary;
 }
-.text-warning {
-  color: $warning;
-}
 
 // 背景颜色
 .bg-base {
@@ -34,9 +31,6 @@
 }
 .bg-primary {
   background-color: $bgColorPrimary;
-}
-.bg-warning {
-  background-color: $bgColorWarning;
 }
 .bg-transparent {
   background-color: transparent;
@@ -66,9 +60,6 @@
 }
 .border-primary {
   border: 1px solid $primary;
-}
-.border-warning {
-  border: 1px solid $warning;
 }
 
 // endregion

@@ -26,14 +26,12 @@
 - `text-muted`: 次要文本颜色, 较柔和颜色更浅 (深浅默认颜色相反)
 - `text-reverse`: 反转文本颜色, 适用于有色背景下的文本 (浅色模式为白色, 深色模式为黑色)
 - `text-primary`: 主要文本颜色, 适用于强调文本 (为主题蓝色)
-- `text-warning`: 警告文本颜色 (为警告橙色)
 
 #### 背景颜色 `.bg`
 
 - `bg-base`: 基础背景色 (浅色模式浅色, 深色模式深色)
 - `bg-page`: 页面背景色, 较基础背景更强烈, 用于页面背景
 - `bg-primary`: 主要背景色, 用于强调/选中状态 (为主题蓝色)
-- `bg-warning`: 警告背景色, 用于警告标签等浅色底
 - `bg-transparent`: 透明背景
 - `bg-shadow`: 遮罩背景色, 用于弹窗/底部弹出等场景
 - `bg`: 同 `bg-base` 的简写
@@ -46,7 +44,6 @@
 - `border-muted`: 次要边框
 - `border-reverse`: 反转边框
 - `border-primary`: 主题色边框
-- `border-warning`: 警告色边框
 
 ### 文本
 
