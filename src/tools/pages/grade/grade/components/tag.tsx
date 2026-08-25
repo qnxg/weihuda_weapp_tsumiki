@@ -20,17 +20,11 @@ export function Tag({
     <View
       className={cn(
         "text-sm px-sm py-xs rounded-sm",
-        theme === "primary" && "text-primary",
+        theme === "primary" && "text-primary bg-blue",
         theme === "default" && "text-base bg-page",
+        theme === "warning" && "text-orange bg-orange",
         className,
       )}
-      style={
-        theme === "primary"
-          ? { backgroundColor: "rgba(50, 140, 203, 0.12)" }
-          : theme === "warning"
-            ? { color: "#ed7b2f", backgroundColor: "rgba(237, 123, 47, 0.12)" }
-            : undefined
-      }
       {...props}
     >
       {children}

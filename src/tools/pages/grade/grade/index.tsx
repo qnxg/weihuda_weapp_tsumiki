@@ -136,7 +136,6 @@ export default function Grade() {
                 {list.map((item, index) => (
                   <Card
                     key={`${item.course_id}-${index}`}
-                    style={{ padding: "24rpx" }}
                     onClick={() => handleShowDetail(item.jx0404id)}
                   >
                     <CardContent className="flex flex-col gap-sm">
