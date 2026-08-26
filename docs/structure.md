@@ -138,7 +138,7 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 
 ### About 分包 `src/about/pages/`
 
-- 关于 `index`: 关于 (尚未完成)
+- 关于 `index`: 关于
 - 免责声明 `disclaimers`: 免责声明
 - 开源致谢 `credit`: 开源致谢 (尚未完成)
 

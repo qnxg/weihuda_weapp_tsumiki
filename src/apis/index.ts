@@ -1,4 +1,5 @@
 import type { ClasstableGetRequest, ClasstableGetResponse } from "./models/classtable"
+import type { AboutResponse } from "@/apis/models/about"
 import type { AnnouncementResponse } from "@/apis/models/announcement"
 
 import type {
@@ -68,6 +69,7 @@ import { request } from "@/libs/auth-request"
 
 export const api = {
   base: () => request.get<{ hello: string }>("/"),
+  about: () => request.get<AboutResponse>("/about"),
   auth: {
     login: (data: AuthLoginRequest) => request.post<AuthLoginResponse>("/auth/login", data),
     refresh: (data: AuthRefreshRequest) => request.post<AuthRefreshResponse>("/auth/refresh", data),
