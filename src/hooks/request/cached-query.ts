@@ -51,9 +51,9 @@ export function useCachedQuery<T extends object | null>(
   // 内部调 useQuery, 仅包装 onSuccess 写 storage; 其余 options 透传
   const queryResult = useQuery(fn, deps, {
     ...options,
-    onSuccess: (data) => {
-      void storage.set(data).catch(() => {})
-      options.onSuccess?.(data)
+    onSuccess: (res) => {
+      void storage.set(res.data).catch(() => {})
+      options.onSuccess?.(res)
     },
   })
 

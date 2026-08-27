@@ -1,3 +1,4 @@
+import type { Response } from "@/types/request"
 import { useCallback, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
 import { RequestError } from "@/types/request"
@@ -13,11 +14,11 @@ import { logger } from "@/utils/logger"
 export type MutationStatus = "idle" | "pending" | "error" | "success"
 
 /**
- * @description mutation 函数; 接收 vars, 返回 Promise<T>
+ * @description mutation 函数; 接收 vars, 返回 Promise<Response<T>>
  * @template T - 响应数据类型, 约束 object | null
  * @template TVariables - mutate 传入参数类型
  */
-export type MutationFunction<T extends object | null, TVariables> = (vars: TVariables) => Promise<T>
+export type MutationFunction<T extends object | null, TVariables> = (vars: TVariables) => Promise<Response<T>>
 
 /**
  * @description useMutation 配置项
@@ -25,29 +26,29 @@ export type MutationFunction<T extends object | null, TVariables> = (vars: TVari
  * @template TVariables - mutate 传入参数类型, 默认 void
  * @template TContext - onMutate 返回值透传类型, 默认 unknown
  * @property {(vars: TVariables) => TContext | Promise<TContext> | undefined} [onMutate] - mutate 前回调; 返回值经 context 透传给后续回调
- * @property {(data: T, vars: TVariables, context: TContext | undefined) => void} [onSuccess] - 成功回调
+ * @property {(res: Response<T>, vars: TVariables, context: TContext | undefined) => void} [onSuccess] - 成功回调
  * @property {(err: RequestError, vars: TVariables, context: TContext | undefined) => void} [onError] - 失败回调
- * @property {(data: T | null, err: RequestError | null, vars: TVariables, context: TContext | undefined) => void} [onSettled] - 结束回调, 不论成败
+ * @property {(res: Response<T> | null, err: RequestError | null, vars: TVariables, context: TContext | undefined) => void} [onSettled] - 结束回调, 不论成败
  */
 export interface UseMutationOptions<T extends object | null, TVariables = void, TContext = unknown> {
   onMutate?: (vars: TVariables) => TContext | Promise<TContext> | undefined
-  onSuccess?: (data: T, vars: TVariables, context: TContext | undefined) => void
+  onSuccess?: (res: Response<T>, vars: TVariables, context: TContext | undefined) => void
   onError?: (err: RequestError, vars: TVariables, context: TContext | undefined) => void
-  onSettled?: (data: T | null, err: RequestError | null, vars: TVariables, context: TContext | undefined) => void
+  onSettled?: (res: Response<T> | null, err: RequestError | null, vars: TVariables, context: TContext | undefined) => void
 }
 
 /**
  * @description mutate 调用时的一次性回调; 用于覆盖 options 中的对应回调
  * @template T - 响应数据类型
  * @template TVariables - mutate 传入参数类型
- * @property {(data: T, vars: TVariables) => void} [onSuccess] - 一次性成功回调
+ * @property {(res: Response<T>, vars: TVariables) => void} [onSuccess] - 一次性成功回调
  * @property {(err: RequestError, vars: TVariables) => void} [onError] - 一次性失败回调
- * @property {(data: T | null, err: RequestError | null, vars: TVariables) => void} [onSettled] - 一次性结束回调
+ * @property {(res: Response<T> | null, err: RequestError | null, vars: TVariables) => void} [onSettled] - 一次性结束回调
  */
 export interface MutationCallbacks<T extends object | null, TVariables = void> {
-  onSuccess?: (data: T, vars: TVariables) => void
+  onSuccess?: (res: Response<T>, vars: TVariables) => void
   onError?: (err: RequestError, vars: TVariables) => void
-  onSettled?: (data: T | null, err: RequestError | null, vars: TVariables) => void
+  onSettled?: (res: Response<T> | null, err: RequestError | null, vars: TVariables) => void
 }
 
 /**
@@ -106,7 +107,7 @@ function makeInitialState<T extends object | null, TVariables, TContext>(): Muta
  * @property {boolean} isSuccess - 是否 `status === "success"`
  * @property {TContext | undefined} context - onMutate 返回值, 透传给后续回调; reset 后为 undefined
  * @property {(variables: TVariables, opts?: MutationCallbacks<T, TVariables>) => void} mutate - fire-and-forget 触发; 错误走 options.onError 与 opts.onError, 不抛
- * @property {(variables: TVariables) => Promise<T>} mutateAsync - await 触发; 错误 reject
+ * @property {(variables: TVariables) => Promise<Response<T>>} mutateAsync - await 触发; 错误 reject
  * @property {() => void} reset - 清空 mutation state 回 idle
  */
 export interface UseMutationResult<T extends object | null, TVariables = void, TContext = unknown> {
@@ -119,7 +120,7 @@ export interface UseMutationResult<T extends object | null, TVariables = void, T
   isSuccess: boolean
   context: TContext | undefined
   mutate: (variables: TVariables, opts?: MutationCallbacks<T, TVariables>) => void
-  mutateAsync: (variables: TVariables) => Promise<T>
+  mutateAsync: (variables: TVariables) => Promise<Response<T>>
   reset: () => void
 }
 
@@ -152,7 +153,7 @@ export function useMutation<T extends object | null, TVariables = void, TContext
   // 用 .then(noop, noop) 把结果/错误都吞掉, 让链上各 promise 永远 resolve, 不阻断后续 mutate
   const inflightRef = useRef<Promise<void> | null>(null)
 
-  const mutateAsync = useCallback(async (vars: TVariables): Promise<T> => {
+  const mutateAsync = useCallback(async (vars: TVariables): Promise<Response<T>> => {
     // 串行: 等前一次完成 (不论成败, 都用 .then(noop, noop) 吞过 reject)
     if (inflightRef.current) {
       await inflightRef.current
@@ -161,8 +162,7 @@ export function useMutation<T extends object | null, TVariables = void, TContext
     // onMutate 阶段: 计算 context; 抛错则整体 mutation 失败, 不调用 fn
     let context: TContext | undefined
     try {
-      const ret = await Promise.resolve(optionsRef.current.onMutate?.(vars))
-      context = ret
+      context = await optionsRef.current.onMutate?.(vars)
     }
     catch (err) {
       if (!(err instanceof RequestError)) {
@@ -194,7 +194,8 @@ export function useMutation<T extends object | null, TVariables = void, TContext
     // 实际 mutation 执行
     const promise = (async () => {
       try {
-        const data = await fnRef.current(vars)
+        const res = await fnRef.current(vars)
+        const data = res.data
         setState(prev => ({
           ...prev,
           status: "success",
@@ -203,9 +204,9 @@ export function useMutation<T extends object | null, TVariables = void, TContext
           variables: vars,
           context,
         }))
-        optionsRef.current.onSuccess?.(data, vars, context)
-        optionsRef.current.onSettled?.(data, null, vars, context)
-        return data
+        optionsRef.current.onSuccess?.(res, vars, context)
+        optionsRef.current.onSettled?.(res, null, vars, context)
+        return res
       }
       catch (err) {
         if (!(err instanceof RequestError)) {
@@ -232,9 +233,9 @@ export function useMutation<T extends object | null, TVariables = void, TContext
 
   const mutate = useCallback((vars: TVariables, opts?: MutationCallbacks<T, TVariables>): void => {
     void mutateAsync(vars)
-      .then((data) => {
-        opts?.onSuccess?.(data, vars)
-        opts?.onSettled?.(data, null, vars)
+      .then((res) => {
+        opts?.onSuccess?.(res, vars)
+        opts?.onSettled?.(res, null, vars)
       })
       .catch((err: unknown) => {
         const myError = err instanceof RequestError

@@ -1,4 +1,5 @@
 import type { Reducer } from "react"
+import type { Response } from "@/types/request"
 import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
 import { RequestError } from "@/types/request"
@@ -23,7 +24,7 @@ export type FetchStatus = "fetching" | "idle"
  * @description 取数函数; 不接收取消信号 (无 AbortSignal), 与 useRequest 一致采用悬空式取消
  * @template T - 响应数据类型, 约束 object | null
  */
-export type QueryFunction<T extends object | null> = () => Promise<T>
+export type QueryFunction<T extends object | null> = () => Promise<Response<T>>
 
 /**
  * @description `placeholderData` 的 `keepPreviousData` 占位符
@@ -38,17 +39,17 @@ export type KeepPreviousData = typeof KEEP_PREVIOUS_DATA
  * @property {boolean} [enabled=true] - 是否自动执行; 为 false 时不自动 fetch, 仅 refetch 触发
  * @property {T | (() => T)} [initialData] - 预填充数据, 仅本次挂载的初始 state 生效, 不持久化
  * @property {T | ((prev: T | null) => T) | KeepPreviousData} [placeholderData] - 占位数据, 不入 state, 仅渲染
- * @property {(data: T) => void} [onSuccess] - 成功回调
+ * @property {(res: Response<T>) => void} [onSuccess] - 成功回调
  * @property {(err: RequestError) => void} [onError] - 失败回调
- * @property {(data: T | null, err: RequestError | null) => void} [onSettled] - 结束回调, 不论成败
+ * @property {(res: Response<T> | null, err: RequestError | null) => void} [onSettled] - 结束回调, 不论成败
  */
 export interface UseQueryOptions<T extends object | null> {
   enabled?: boolean
   initialData?: T | (() => T)
   placeholderData?: T | ((prev: T | null) => T) | KeepPreviousData
-  onSuccess?: (data: T) => void
+  onSuccess?: (res: Response<T>) => void
   onError?: (err: RequestError) => void
-  onSettled?: (data: T | null, err: RequestError | null) => void
+  onSettled?: (res: Response<T> | null, err: RequestError | null) => void
 }
 
 /**
@@ -170,7 +171,7 @@ function placeholderReducer<T extends object | null>(
  * @property {boolean} isLoadingError - 是否首次加载失败 (`isError && failureCount <= 1`)
  * @property {boolean} isRefetchError - 是否非首次失败 (`isError && failureCount > 1`)
  * @property {boolean} isPlaceholderData - 当前 data 是否来自 placeholderData
- * @property {() => Promise<void>} refetch - 主动重新触发 fetch, 等待 inflight 完成
+ * @property {() => Promise<Response<T>>} refetch - 主动重新触发 fetch, 等待 inflight 完成
  */
 export interface UseQueryResult<T extends object | null> {
   data: T | null
@@ -185,7 +186,7 @@ export interface UseQueryResult<T extends object | null> {
   isLoadingError: boolean
   isRefetchError: boolean
   isPlaceholderData: boolean
-  refetch: () => Promise<void>
+  refetch: () => Promise<Response<T>>
 }
 
 /**
@@ -248,17 +249,19 @@ export function useQuery<T extends object | null>(
   }, [state.status, state.dataUpdatedAt, state.errorUpdatedAt])
 
   // 触发 fetch; 实例级, 不复用 inflight
-  const run = useCallback(async (): Promise<void> => {
+  const run = useCallback(async (): Promise<Response<T>> => {
     countRef.current += 1
     const currentCount = countRef.current
 
     setState(prev => ({ ...prev, fetchStatus: "fetching" }))
 
     try {
-      const data = await fnRef.current()
+      const res = await fnRef.current()
       // 实例级取消检查: 计数被改动说明本次 fetch 已被新 fetch / 卸载取代, 静默丢弃结果
       if (currentCount !== countRef.current)
-        return
+        return res
+
+      const data = res.data
 
       setState({
         status: "success",
@@ -272,12 +275,13 @@ export function useQuery<T extends object | null>(
 
       const currentOnSuccess = optionsRef.current.onSuccess
       const currentOnSettled = optionsRef.current.onSettled
-      currentOnSuccess?.(data)
-      currentOnSettled?.(data, null)
+      currentOnSuccess?.(res)
+      currentOnSettled?.(res, null)
+      return res
     }
     catch (err) {
       if (currentCount !== countRef.current)
-        return
+        throw err instanceof RequestError ? err : new RequestError(-2, "REQUEST_HOOK_ERROR", null)
 
       if (!(err instanceof RequestError)) {
         logger.error(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
@@ -299,6 +303,7 @@ export function useQuery<T extends object | null>(
       const currentOnSettled = optionsRef.current.onSettled
       currentOnError?.(myError)
       currentOnSettled?.(null, myError)
+      throw myError
     }
   }, [])
 
@@ -306,14 +311,20 @@ export function useQuery<T extends object | null>(
     if (!enabled)
       return
     void run()
+      .catch((err) => {
+        if (!(err instanceof RequestError)) {
+          logger.fatal(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
+        }
+      })
+
     return () => {
       // 卸载或 deps 变化时, 让进行中的 fetch 静默丢弃结果
       countRef.current += 1
     }
   }, [enabled, deps, run])
 
-  const refetch = useCallback(async (): Promise<void> => {
-    await run()
+  const refetch = useCallback(async (): Promise<Response<T>> => {
+    return run()
   }, [run])
 
   // 渲染用 data: placeholder 优先于 state data
