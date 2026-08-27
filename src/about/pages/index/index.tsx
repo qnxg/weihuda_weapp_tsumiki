@@ -3,11 +3,13 @@ import { View } from "@tarojs/components"
 import Taro, { showToast } from "@tarojs/taro"
 import { useState } from "react"
 import { useTyping } from "@/about/pages/index/hooks/typing"
+import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
 import { ABOUT_DEFAULTS } from "@/config/about"
+import { useRequest } from "@/hooks/request"
 import CreditIcon from "@/static/about/index/credit.svg"
 import DisclaimersIcon from "@/static/about/index/disclaimers.svg"
 import HomepageIcon from "@/static/about/index/homepage.svg"
@@ -20,8 +22,11 @@ import "./index.scss"
 export default function Index() {
   const version = Taro.getAppBaseInfo().version
 
+  const { data } = useRequest(() => api.about())
+
+  const slogans = data?.slogans?.length ? data.slogans : ABOUT_DEFAULTS.slogans
   const [index, setIndex] = useState(0)
-  const slogan = ABOUT_DEFAULTS.slogans[index % ABOUT_DEFAULTS.slogans.length]
+  const slogan = slogans[index % slogans.length]
   const { displayed } = useTyping(slogan, {
     initialDelay: 5,
     typingSpeed: 100,
