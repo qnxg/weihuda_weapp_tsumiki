@@ -5,7 +5,7 @@ import { api } from "@/apis"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { PageContent } from "@/components/page"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/grade/ranking/empty.svg"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
 import { od } from "@/utils/ohday"
@@ -16,8 +16,7 @@ export function CA() {
   const onSettled = useCallback(() => {
     setBootstrapped(true)
   }, [])
-  const { data, refetch, clearData } = useRequest(() => api.rank.ca.get(), [], {
-    refetchClearData: false,
+  const { data, refetch } = useQuery(() => api.rank.ca.get(), [], {
     onSettled,
   })
 
@@ -32,9 +31,6 @@ export function CA() {
     })
 
     api.rank.ca.put()
-      .then(() => {
-        clearData()
-      })
       .catch((err) => {
         switch (err.code) {
           case "NOT_SUPPORTED":

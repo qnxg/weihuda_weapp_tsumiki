@@ -10,7 +10,7 @@ import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { FONT_COLOR } from "@/config/color"
 import { useAuth } from "@/hooks/auth"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { useSemester } from "@/hooks/semester"
 import EmptyIcon from "@/static/tools/grade/physical-grade/empty.svg"
 import { Eye } from "@/tools/pages/grade/physical-grade/components/eye"
@@ -39,11 +39,9 @@ export default function PhysicalGrade() {
   const [selectYear, setSelectYear] = useState<XN>(() => od().year)
 
   // 获取成绩数据
-  const { data, refetch } = useRequest(() => api.gym.grade({
+  const { data, refetch } = useQuery(() => api.gym.grade({
     xn: selectYear,
-  }), [selectYear], {
-    refetchClearData: false,
-  })
+  }), [selectYear])
 
   // 实际展示内容
   const [list, setList] = useState<PhysicalGradeItem[]>([])

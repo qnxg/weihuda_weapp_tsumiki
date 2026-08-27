@@ -2,7 +2,7 @@ import { View } from "@tarojs/components"
 import { useEffect } from "react"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import TasksIcon from "@/static/index/tasks.svg"
@@ -18,7 +18,7 @@ export function Tasks({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() =>
+  const { data, isLoading, refetch } = useQuery(() =>
     mockRequest({ tasks: 10 }, { errorRate: 0.2 }),
   )
 

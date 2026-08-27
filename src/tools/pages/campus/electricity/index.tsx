@@ -6,21 +6,25 @@ import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { Page, PageContent } from "@/components/page"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/campus/electricity/empty.svg"
 import { showModal } from "@/utils/modal"
 
 export default function Electricity() {
-  const { data: electricityData, isLoading: isElectricityLoading, refetch: electricityRefetch } = useRequest(
+  const {
+    data: electricityData,
+    isLoading: isElectricityLoading,
+    refetch: electricityRefetch,
+  } = useQuery(
     () => api.electricity.get(),
-    [],
-    { refetchClearData: false },
   )
 
-  const { data: dormData, isLoading: dormLoading, refetch: dormRefetch } = useRequest(
+  const {
+    data: dormData,
+    isLoading: dormLoading,
+    refetch: dormRefetch,
+  } = useQuery(
     () => api.dorm.get(),
-    [],
-    { refetchClearData: false },
   )
 
   const isLoading = isElectricityLoading || dormLoading

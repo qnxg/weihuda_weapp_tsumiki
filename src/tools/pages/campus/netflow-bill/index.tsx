@@ -3,17 +3,15 @@ import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { Page, PageContent } from "@/components/page"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import DownloadIcon from "@/static/tools/campus/netflow-bill/download.svg"
 import UploadIcon from "@/static/tools/campus/netflow-bill/upload.svg"
 import EmptyIcon from "@/static/tools/campus/netflow-detail/empty.svg"
 import { od } from "@/utils/ohday"
 
 export default function NetflowBill() {
-  const { data, isLoading, refetch } = useRequest(
+  const { data, isLoading, refetch } = useQuery(
     () => api.netflow.getOrder(),
-    [],
-    { refetchClearData: false },
   )
 
   return (

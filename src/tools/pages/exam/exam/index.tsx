@@ -4,7 +4,7 @@ import { api } from "@/apis"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { Calender } from "@/tools/pages/exam/exam/components/calender"
 import { Custom } from "@/tools/pages/exam/exam/components/custom"
 import { Detail } from "@/tools/pages/exam/exam/components/detail"
@@ -20,10 +20,8 @@ type OverlayContentKey = "detail" | "custom"
 type TabValue = "list" | "calender"
 
 export default function ExamArrange() {
-  const { data, isLoading, refetch } = useRequest(
+  const { data, isLoading, refetch } = useQuery(
     () => api.exam.get(),
-    [],
-    { refetchClearData: false },
   )
 
   const [tab, setTab] = useState<TabValue>("list")

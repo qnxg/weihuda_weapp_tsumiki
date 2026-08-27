@@ -2,7 +2,7 @@ import type { JifenRecordItem } from "@/apis/models/jifen"
 import { View } from "@tarojs/components"
 import { useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { od } from "@/utils/ohday"
 
 export function Record({
@@ -21,7 +21,7 @@ export function Record({
   const listLenRef = useRef(0)
   const [hasMore, setHasMore] = useState(true)
 
-  const { data, isLoading } = useRequest(() => api.jifen.getRecord({ page }), [page])
+  const { data, isLoading } = useQuery(() => api.jifen.getRecord({ page }), [page])
 
   // 实际显示内容 (按页拼接)
   const [list, setList] = useState<JifenRecordItem[]>([])

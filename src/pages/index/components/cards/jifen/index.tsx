@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { Skeleton } from "@/components/skeleton"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import JifenIcon from "@/static/index/jifen.svg"
 import { cn } from "@/utils/cn"
@@ -21,7 +21,7 @@ export function Jifen({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() => api.jifen.get())
+  const { data, isLoading, refetch } = useQuery(() => api.jifen.get())
 
   const [isChecking, setIsChecking] = useState(false)
 

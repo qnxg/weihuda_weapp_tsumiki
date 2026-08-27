@@ -8,7 +8,7 @@ import { Icon } from "@/components/icon"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/campus/card-bill/empty.svg"
 import { Detail } from "@/tools/pages/campus/card-bill/components/detail"
 import { od } from "@/utils/ohday"
@@ -28,10 +28,9 @@ export default function CardBill() {
   // 详情弹窗
   const [activeRecord, setActiveRecord] = useState<CardRecordItem | null>(null)
 
-  const { data, isLoading, refetch } = useRequest(
+  const { data, isLoading, refetch } = useQuery(
     () => api.card.record({ type: tab, year: od(selectedDate).year, month: od(selectedDate).month }),
     [tab, selectedDate],
-    { refetchClearData: false },
   )
 
   useEffect(() => {

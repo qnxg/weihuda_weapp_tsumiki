@@ -2,7 +2,7 @@ import { Image, View } from "@tarojs/components"
 import { showToast } from "@tarojs/taro"
 import { api } from "@/apis"
 import { MyButton } from "@/components/my-button"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { cn } from "@/utils/cn"
 import { showModal } from "@/utils/modal"
 
@@ -11,7 +11,7 @@ export function Goods({
 }: Readonly<{
   jifen: number
 }>) {
-  const { data, isLoading, refetch } = useRequest(() => api.jifen.getGoods())
+  const { data, isLoading, refetch } = useQuery(() => api.jifen.getGoods())
 
   const handleClick = (id: number) => {
     void showModal(

@@ -4,7 +4,7 @@ import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Page, PageContent } from "@/components/page"
 import { TabContent, TabItem, TabList, Tabs, TabTrigger } from "@/components/tabs"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { Goods } from "@/pages/jifen/components/goods"
 import { Record } from "@/pages/jifen/components/record"
 import { Rule } from "@/pages/jifen/components/rule"
@@ -12,7 +12,7 @@ import { Rule } from "@/pages/jifen/components/rule"
 export default function Jifen() {
   const [isScrollToLower, setIsScrollToLower] = useState(false)
 
-  const { data } = useRequest(() => api.jifen.get())
+  const { data } = useQuery(() => api.jifen.get())
 
   return (
     <Page>

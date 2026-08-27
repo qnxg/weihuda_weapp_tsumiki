@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { api } from "@/apis"
 import { Options } from "@/components/options"
 import { Popup } from "@/components/overlay"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 
 export function Detail({
   jx0404id,
@@ -12,7 +12,7 @@ export function Detail({
   jx0404id: string
   onClose: () => void
 }>) {
-  const { data, isLoading } = useRequest(() => api.grade.getDetail(jx0404id))
+  const { data, isLoading } = useQuery(() => api.grade.getDetail(jx0404id))
 
   const list = useMemo(() => {
     if (!data)

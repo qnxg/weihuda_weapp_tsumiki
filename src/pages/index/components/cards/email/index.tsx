@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import EmailIcon from "@/static/index/email.svg"
@@ -18,7 +18,7 @@ export function Email({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, error, refetch } = useRequest(() => api.email.get())
+  const { data, isLoading, error, refetch } = useQuery(() => api.email.get())
 
   const [message, setMessage] = useState("")
 

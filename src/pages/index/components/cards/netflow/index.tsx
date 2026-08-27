@@ -4,7 +4,7 @@ import { api } from "@/apis"
 import { Card, CardHeader } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { Skeleton } from "@/components/skeleton"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import DownloadIcon from "@/static/index/netflow/download.svg"
@@ -19,7 +19,7 @@ export function Netflow({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() => api.netflow.get())
+  const { data, isLoading, refetch } = useQuery(() => api.netflow.get())
 
   useEffect(() => {
     registerCard(cardKey, refetch)

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo } from "react"
 import { api } from "@/apis"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import ElectricityIcon from "@/static/index/electricity.svg"
@@ -18,8 +18,21 @@ export function Electricity({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data: dormData, isLoading: isDormLoading, refetch: dormRefetch } = useRequest(() => api.dorm.get())
-  const { data: electricityData, isLoading: isElectricityLoading, refetch: electricityRefetch } = useRequest(() => api.electricity.get())
+  const {
+    data: dormData,
+    isLoading: isDormLoading,
+    refetch: dormRefetch,
+  } = useQuery(
+    () => api.dorm.get(),
+  )
+
+  const {
+    data: electricityData,
+    isLoading: isElectricityLoading,
+    refetch: electricityRefetch,
+  } = useQuery(
+    () => api.electricity.get(),
+  )
 
   const isLoading = useMemo(() => (
     isDormLoading || isElectricityLoading
