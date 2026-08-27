@@ -1,5 +1,5 @@
 import type { ClasstableItem } from "@/apis/models/classtable"
-import type { QueryStatus } from "@/hooks/request/query"
+import type { CachedQueryStatus } from "@/hooks/request/cached-query"
 import type { Semester } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { useEffect, useMemo, useState } from "react"
@@ -44,13 +44,13 @@ export interface Cell {
  */
 type OverlayContentKey = "detail" | "options" | "extra" | "custom"
 
-function getStatusText(status: QueryStatus, isPlaceholderData: boolean): string {
-  if (status === "success")
-    return ""
-  if (status === "error")
-    return isPlaceholderData ? "(同步失败)" : "(加载失败)"
-  // pending
-  return isPlaceholderData ? "(同步中)" : "(加载中)"
+const STATUS_TEXT: Record<CachedQueryStatus, string> = {
+  pending: "(加载中)",
+  waiting: "(同步中)",
+  updating: "(同步中)",
+  success: "",
+  cached: "(同步失败)",
+  error: "(加载失败)",
 }
 
 export default function Table() {
@@ -59,7 +59,7 @@ export default function Table() {
 
   const { data: semester, isLoading: isSemesterLoading } = useSemester(displaySemester ?? undefined)
   const { settings, isLoading: isSettingLoading, isUpdating, updateTableSetting } = useSetting()
-  const { data: course, status, isPlaceholderData, refetch } = useCourse(semester)
+  const { data: course, status, refetch } = useCourse(semester)
 
   const isLoading = useMemo(() => (
     isSemesterLoading || isSettingLoading
@@ -107,7 +107,7 @@ export default function Table() {
       <View className="w-full flex items-center justify-center text-lg py-xs">
         <View>
           {semester && `${getSemesterName(semester)} - 第${week}周`}
-          {semester ? getStatusText(status, isPlaceholderData) : "学期信息加载失败"}
+          {semester ? STATUS_TEXT[status] : "学期信息加载失败"}
         </View>
       </View>
 
