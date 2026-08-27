@@ -1,6 +1,6 @@
 import type { OptionItem } from "@/components/options"
 import { View } from "@tarojs/components"
-import Taro, { showToast } from "@tarojs/taro"
+import Taro, { setClipboardData } from "@tarojs/taro"
 import { useState } from "react"
 import { useTyping } from "@/about/pages/index/hooks/typing"
 import { api } from "@/apis"
@@ -16,6 +16,7 @@ import HomepageIcon from "@/static/about/index/homepage.svg"
 import LogoIcon from "@/static/about/index/icon.svg"
 import JoinIcon from "@/static/about/index/join.svg"
 import VersionIcon from "@/static/about/index/version.svg"
+import { showModal } from "@/utils/modal"
 import { od } from "@/utils/ohday"
 import "./index.scss"
 
@@ -25,6 +26,9 @@ export default function Index() {
   const { data } = useRequest(() => api.about())
 
   const slogans = data?.slogans?.length ? data.slogans : ABOUT_DEFAULTS.slogans
+  const home = data?.home || ABOUT_DEFAULTS.home
+  const join = data?.join || ABOUT_DEFAULTS.join
+
   const [index, setIndex] = useState(0)
   const slogan = slogans[index % slogans.length]
   const { displayed } = useTyping(slogan, {
@@ -37,19 +41,17 @@ export default function Index() {
     setIndex(p => p + 1)
   }
 
-  const handleOpenLink = (_url: string) => {
-    void showToast({
-      title: "即将跳转",
-      icon: "success",
-    })
+  const handleOpenLink = async (title: string, url: string) => {
+    await setClipboardData({ data: url })
+    void showModal(title, "链接已复制, 请粘贴到浏览器打开")
   }
 
   const options: OptionItem[] = [
     { title: "当前版本", icon: VersionIcon, content: version, size: "lg" },
     { title: "开源致谢", icon: CreditIcon, to: "/about/pages/credit/index", size: "lg" },
     { title: "免责声明", icon: DisclaimersIcon, to: "/about/pages/disclaimers/index", size: "lg" },
-    { title: "官网", icon: HomepageIcon, onClick: () => handleOpenLink(ABOUT_DEFAULTS.home), size: "lg" },
-    { title: "招新", icon: JoinIcon, onClick: () => handleOpenLink(ABOUT_DEFAULTS.join), size: "lg" },
+    { title: "官网", icon: HomepageIcon, onClick: () => void handleOpenLink("易千官网", home), size: "lg" },
+    { title: "招新", icon: JoinIcon, onClick: () => void handleOpenLink("易千招新", join), size: "lg" },
   ]
 
   return (
