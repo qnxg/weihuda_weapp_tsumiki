@@ -1,7 +1,8 @@
 import type { OptionItem } from "@/components/options"
 import { View } from "@tarojs/components"
 import Taro, { showToast } from "@tarojs/taro"
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useTyping } from "@/about/pages/index/hooks/typing"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { Options } from "@/components/options"
@@ -20,7 +21,12 @@ export default function Index() {
   const version = Taro.getAppBaseInfo().version
 
   const [index, setIndex] = useState(0)
-  const [slogan, setSlogan] = useState("")
+  const slogan = ABOUT_DEFAULTS.slogans[index % ABOUT_DEFAULTS.slogans.length]
+  const { displayed } = useTyping(slogan, {
+    initialDelay: 5,
+    typingSpeed: 100,
+    deletingSpeed: 50,
+  })
 
   const handleClick = () => {
     setIndex(p => p + 1)
@@ -41,22 +47,6 @@ export default function Index() {
     { title: "招新", icon: JoinIcon, onClick: () => handleOpenLink(ABOUT_DEFAULTS.join), size: "lg" },
   ]
 
-  useEffect(() => {
-    let i = -5 // 页面加载时的启动延时
-    const timer = setInterval(() => {
-      i++
-      const content = ABOUT_DEFAULTS.slogans[index % ABOUT_DEFAULTS.slogans.length]
-      if (i >= content.length) {
-        setSlogan(content)
-        clearInterval(timer)
-        return
-      }
-      setSlogan(content.slice(0, i > 0 ? i : 0))
-    }, 100)
-
-    return () => clearInterval(timer)
-  }, [index])
-
   return (
     <Page>
       <PageContent fixed className="h-full">
@@ -73,7 +63,7 @@ export default function Index() {
               >
                 <View style={{ animation: "rockLeft 3s ease-in-out infinite" }}>&lt;</View>
                 {" "}
-                {slogan}
+                {displayed}
                 {" "}
                 <View style={{ animation: "rockRight 3s ease-in-out infinite" }}>/&gt;</View>
               </View>
