@@ -20,7 +20,7 @@ import { od } from "@/utils/ohday"
 import "./index.scss"
 
 export default function Index() {
-  const version = Taro.getAppBaseInfo().version
+  const version = Taro.getAccountInfoSync().miniProgram.version
 
   const { data } = useRequest(() => api.about())
 
