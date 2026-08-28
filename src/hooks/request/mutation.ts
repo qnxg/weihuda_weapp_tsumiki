@@ -150,14 +150,22 @@ export function useMutation<T extends object | null, TVariables = void, TContext
   const [state, setState] = useState<MutationState<T, TVariables, TContext>>(makeInitialState)
 
   // 串行 inflight 链: 同实例的 mutate 串行执行, 第二次 mutate 会等第一次完成
+  // inflightRef 在闸口后立刻用占位 deferred promise 占位 (保证 onMutate 阶段也串行);
+  // 真实 promise 创建后替换占位并 resolve 占位, 让后续 mutate await 的是真实 promise
   // 用 .then(noop, noop) 把结果/错误都吞掉, 让链上各 promise 永远 resolve, 不阻断后续 mutate
   const inflightRef = useRef<Promise<void> | null>(null)
 
   const mutateAsync = useCallback(async (vars: TVariables): Promise<Response<T>> => {
-    // 串行: 等前一次完成 (不论成败, 都用 .then(noop, noop) 吞过 reject)
+    // 闸口: 等前一次完成 (不论成败, 都用 .then(noop, noop) 吞过 reject)
     if (inflightRef.current) {
       await inflightRef.current
     }
+
+    // 立即占位: 阻止并发的 mutate 通过闸口, 保证 onMutate 也串行
+    let resolvePlaceholder!: () => void
+    inflightRef.current = new Promise<void>((resolve) => {
+      resolvePlaceholder = resolve
+    })
 
     // onMutate 阶段: 计算 context; 抛错则整体 mutation 失败, 不调用 fn
     let context: TContext | undefined
@@ -180,6 +188,8 @@ export function useMutation<T extends object | null, TVariables = void, TContext
       }))
       optionsRef.current.onError?.(myError, vars, undefined)
       optionsRef.current.onSettled?.(null, myError, vars, undefined)
+      // 释放占位, 让后续 mutate 可以进来
+      resolvePlaceholder()
       throw myError
     }
 
@@ -228,6 +238,8 @@ export function useMutation<T extends object | null, TVariables = void, TContext
 
     // inflight 链: 把结果/错误都吞掉, 让后续 mutate 不被 reject 阻断
     inflightRef.current = promise.then(() => undefined, () => undefined)
+    // 释放占位, 让闸口外等待的 mutate 拿到真实 promise 后释放
+    resolvePlaceholder()
     return promise
   }, [])
 
