@@ -19,7 +19,7 @@ export function Jifen({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, onCardFinish } = useCardLoading()
+  const { registerCard, unregisterCard } = useCardLoading()
 
   const { data, isLoading, refetch } = useQuery(() => api.jifen.get())
 
@@ -60,13 +60,8 @@ export function Jifen({
 
   useEffect(() => {
     registerCard(cardKey, refetch)
-  }, [registerCard, refetch, cardKey])
-
-  useEffect(() => {
-    if (!isLoading) {
-      onCardFinish(cardKey)
-    }
-  }, [isLoading, onCardFinish, cardKey])
+    return () => unregisterCard(cardKey)
+  }, [registerCard, unregisterCard, cardKey, refetch])
 
   return (
     <Card>

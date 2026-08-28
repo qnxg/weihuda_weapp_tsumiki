@@ -169,3 +169,10 @@
 - 其他工具函数: `utils/semester.ts`
 
 用于获取并全局共享学期信息, mount 时自动请求指定学期信息并缓存当前学期信息
+
+### 首页卡片加载 card-loading
+
+- context: `/pages/index/contexts/card-loading.tsx`
+- hook: `/pages/index/hooks/card-loading.ts`
+
+首页下拉刷新通知所有卡片协作机制. 卡片通过 `useEffect` 注册自己的 refetch 函数 (卸载时 cleanup 注销), `triggerRefresh` 异步等待全部完成, 单卡片失败不影响整体

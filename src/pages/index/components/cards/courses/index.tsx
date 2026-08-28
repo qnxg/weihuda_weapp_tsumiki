@@ -136,7 +136,7 @@ export function Courses({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, onCardFinish } = useCardLoading()
+  const { registerCard, unregisterCard } = useCardLoading()
 
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
   const { data: course, isLoading: isCourseLoading, refetch } = useCourse(semester)
@@ -178,13 +178,8 @@ export function Courses({
 
   useEffect(() => {
     registerCard(cardKey, refetch)
-  }, [registerCard, refetch, cardKey])
-
-  useEffect(() => {
-    if (!isLoading) {
-      onCardFinish(cardKey)
-    }
-  }, [isLoading, onCardFinish, cardKey])
+    return () => unregisterCard(cardKey)
+  }, [registerCard, unregisterCard, cardKey, refetch])
 
   return (
     <Card>
