@@ -240,7 +240,8 @@ export function useQuery<T extends object | null>(
       placeholderData: optionsRef.current.placeholderData,
       lastData: lastDataRef.current,
     })
-  }, [deps])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [...deps])
 
   useEffect(() => {
     if (state.status === "success" || state.status === "error") {
@@ -321,7 +322,8 @@ export function useQuery<T extends object | null>(
       // 卸载或 deps 变化时, 让进行中的 fetch 静默丢弃结果
       countRef.current += 1
     }
-  }, [enabled, deps, run])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, run, ...deps])
 
   const refetch = useCallback(async (): Promise<Response<T>> => {
     return run()
