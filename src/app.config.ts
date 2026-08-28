@@ -8,6 +8,7 @@ export default defineAppConfig({
     "pages/auth/index",
     "pages/disclaimers/index",
     "pages/feedback/index",
+    "pages/feedback-history/index",
     "pages/jifen/index",
     "pages/message/index",
   ],
