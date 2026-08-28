@@ -1,7 +1,7 @@
 import type { FeedbackItem, FeedbackStatus } from "@/apis/models/feedback"
 import { View } from "@tarojs/components"
 import Taro from "@tarojs/taro"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Page, PageContent } from "@/components/page"
@@ -63,7 +63,26 @@ export default function FeedbackHistory() {
   const listLenRef = useRef(0)
   const [hasMore, setHasMore] = useState(true)
 
-  const { data, isLoading } = useRequest(() => api.feedback.get({ page, size: 20 }), [page, refreshKey])
+  // 是否处于下拉刷新中 (受控, 由请求真正结束时复位)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  // 标记当前请求是否由下拉刷新触发, 用于在请求结束后复位刷新态
+  const refreshingRef = useRef(false)
+
+  // 刷新触发的请求真正结束后才复位刷新态, 避免下拉动画提前结束
+  const handleRequestSettled = useCallback(() => {
+    if (refreshingRef.current) {
+      refreshingRef.current = false
+      setIsRefreshing(false)
+    }
+  }, [])
+
+  const { data, isLoading } = useRequest(
+    () => api.feedback.get({ page, size: 20 }),
+    [page, refreshKey],
+    {
+      onSettled: handleRequestSettled,
+    },
+  )
 
   // 实际显示内容
   const [list, setList] = useState<FeedbackItem[]>([])
@@ -96,8 +115,10 @@ export default function FeedbackHistory() {
     setPage(p => p + 1)
   }, [isScrollToLower, isLoading, page, hasMore])
 
-  // 下拉刷新, 重置到第一页并强制重新请求
-  const handleRefresh = async () => {
+  // 下拉刷新, 重置到第一页并强制重新请求, 刷新态在请求真正结束后由 onSettled 复位
+  const handleRefresh = () => {
+    refreshingRef.current = true
+    setIsRefreshing(true)
     prevPageRef.current = 1
     listLenRef.current = 0
     setList([])
@@ -112,6 +133,7 @@ export default function FeedbackHistory() {
         className="h-full"
         lowerThreshold={50}
         onScrollReached={() => setIsScrollToLower(true)}
+        isRefreshing={isRefreshing}
         onRefresh={handleRefresh}
       >
         <View className="flex flex-col gap p">
