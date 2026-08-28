@@ -121,8 +121,8 @@ export default function FeedbackHistory() {
                   {isLoading ? "加载中" : "暂无反馈记录"}
                 </View>
               )
-            : list.map((item, index) => (
-                <Card key={`${item.id}-${index}`}>
+            : list.map(item => (
+                <Card key={`${item.id}`}>
                   <CardContent className="flex flex-col gap p">
                     <View className="text-lg">{item.description}</View>
 
