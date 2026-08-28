@@ -124,7 +124,7 @@
   - `useCachedQuery(fn, deps, key, options)`: 实例级取数 hook, 内部基于 `useQuery` 加 wx.storage 持久化
     - 接收 `取数函数` / `依赖数组` / `storage key` / `配置项`
     - 返回 `data` / `status` (`CachedQueryStatus`, 扩展 `QueryStatus` 多 `waiting` / `updating` / `cached` 三态) / `refetch`
-    - status 三态扩展用于描述 storage 加载占位 / 写中状态 / 失败兑底场景
+    - status 三态扩展用于描述 storage 加载占位 / 写中状态 / 失败兜底场景
 
 - 存储钩子 `/hooks/storage.ts`: 对通用存储类 `/utils/storage.ts` 中各个 Promise 的封装
   - 接收存储键, 返回 `存储值` / `错误` / `加载状态` 等, 同时提供 `set` / `remove` 方法
