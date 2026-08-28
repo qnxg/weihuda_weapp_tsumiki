@@ -1,58 +1,10 @@
-import type { Refresher } from "@/pages/index/contexts/card-loading"
-import { useCallback } from "react"
 import { useCardLoadingContext } from "@/pages/index/contexts/card-loading"
 
 /**
- * @property {boolean} isLoading - 是否正在加载 (count > 0)
- * @property {(key: string, fn: Refresher) => void} registerCard - 注册卡片刷新函数并增加计数
- * @property {(key: string) => void} unregisterCard - 注销卡片刷新函数并减少计数
- * @property {(key: string) => void} onCardFinish - 卡片请求完成时调用, 减少计数
- * @property {() => Promise<void>} triggerRefresh - 触发所有已注册卡片的刷新函数执行, 全部完成后 resolved
+ * @description 卡片加载注册与下拉刷新触发 Hook, 用于统一管理 Index 页面所有卡片的刷新协作
+ *   - registerCard / unregisterCard 在 effect 中成对出现: 挂载时注册, 卸载时注销, 避免闭包滞留
+ *   - triggerRefresh 异步等待所有已注册卡片完成, 全部结束后 resolved
  */
-interface CardLoadingResult {
-  isLoading: boolean
-  registerCard: (key: string, fn: Refresher) => void
-  unregisterCard: (key: string) => void
-  onCardFinish: (key: string) => void
-  triggerRefresh: () => Promise<void>
-}
-
-/**
- * @description 卡片加载状态管理 Hook, 用于统一管理 Index 页面下所有卡片的加载状态
- */
-export function useCardLoading(): CardLoadingResult {
-  const {
-    isLoading,
-    refreshers,
-    setCount,
-    addRefresher,
-    removeRefresher,
-  } = useCardLoadingContext()
-
-  const registerCard = useCallback((key: string, fn: Refresher) => {
-    addRefresher(key, fn)
-    setCount(p => p + 1)
-  }, [addRefresher, setCount])
-
-  const unregisterCard = useCallback((key: string) => {
-    removeRefresher(key)
-    setCount(p => p - 1)
-  }, [removeRefresher, setCount])
-
-  const onCardFinish = useCallback((_key: string) => {
-    setCount(p => p - 1)
-  }, [setCount])
-
-  const triggerRefresh = useCallback(async () => {
-    setCount(refreshers.size)
-    await Promise.allSettled(Array.from(refreshers.values(), fn => fn()))
-  }, [refreshers, setCount])
-
-  return {
-    isLoading,
-    registerCard,
-    unregisterCard,
-    onCardFinish,
-    triggerRefresh,
-  }
+export function useCardLoading() {
+  return useCardLoadingContext()
 }

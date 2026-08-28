@@ -1,45 +1,54 @@
 import type { ReactNode } from "react"
-import { createContext, useCallback, useContext, useMemo, useState } from "react"
+import { createContext, useContext, useMemo, useRef } from "react"
 
-export type Refresher = () => void
+/**
+ * @description 卡片刷新函数类型
+ *   兼容 useRequest.refetch (() => Promise<Response<T>>) 与 useCachedRequest.refetch (() => Promise<T | null>)
+ */
+export type Refresher = () => Promise<unknown> | void
 
 interface CardLoadingContextValue {
-  isLoading: boolean
-  refreshers: Map<string, Refresher>
-  setCount: (count: number | ((prev: number) => number)) => void
-  addRefresher: (key: string, refresher: Refresher) => void
-  removeRefresher: (key: string) => void
+  registerCard: (key: string, fn: Refresher) => void
+  unregisterCard: (key: string) => void
+  triggerRefresh: () => Promise<void>
 }
 
 const CardLoadingContext = createContext<CardLoadingContextValue | null>(null)
 
+/**
+ * @description 首页卡片加载协作 Provider
+ *   - 卡片在 useEffect 中注册自己的刷新函数, 卸载时通过 cleanup 注销, 避免闭包滞留
+ *   - 刷新函数集合存于 useRef, 不进 Context value, 注册不触发级联重渲染
+ *   - triggerRefresh 快照当前全部刷新函数并异步等待完成, 单卡片失败不影响整体
+ */
 export function CardLoadingProvider({
   children,
 }: Readonly<{
   children: ReactNode
 }>) {
-  const [count, setCount] = useState(0)
-  const [refreshers, setRefreshers] = useState(() => new Map<string, Refresher>())
+  // 刷新函数集合, 用 ref 承载以保持引用稳定
+  const storeRef = useRef(new Map<string, Refresher>())
 
-  const isLoading = useMemo(() => count > 0, [count])
+  // 注册 / 注销 / 触发函数在 useMemo 中一次性创建, value 引用永不变, 彻底消除级联重渲染
+  const value = useMemo(() => {
+    const registerCard = (key: string, fn: Refresher) => {
+      storeRef.current.set(key, fn)
+    }
 
-  const addRefresher = useCallback((key: string, fn: Refresher) =>
-    setRefreshers(p => new Map(p).set(key, fn)), [])
+    const unregisterCard = (key: string) => {
+      storeRef.current.delete(key)
+    }
 
-  const removeRefresher = useCallback((key: string) =>
-    setRefreshers((p) => {
-      const next = new Map(p)
-      next.delete(key)
-      return next
-    }), [])
+    const triggerRefresh = async () => {
+      const fns = Array.from(storeRef.current.values())
+      if (fns.length === 0) {
+        return
+      }
+      await Promise.allSettled(fns.map(fn => fn()))
+    }
 
-  const value = useMemo(() => ({
-    isLoading,
-    refreshers,
-    setCount,
-    addRefresher,
-    removeRefresher,
-  }), [addRefresher, isLoading, refreshers, removeRefresher])
+    return { registerCard, unregisterCard, triggerRefresh }
+  }, [])
 
   return (
     <CardLoadingContext.Provider value={value}>
