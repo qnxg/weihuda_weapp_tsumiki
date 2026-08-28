@@ -112,23 +112,30 @@
 
 ## 通用钩子函数
 
-- 请求钩子 `/hooks/request.ts`: TanStack Query 风格的请求封装
-  - 接收 `请求 Promise` / `依赖数组` / `配置项`, 返回 `数据` / `错误` / `加载状态` / `refetch` / `clearData` 等
+- 请求钩子 `/hooks/request/`: TanStack Query 风格的自研请求 hook 体系
+  - `useQuery(fn, deps, options)`: 实例级取数 hook
+    - 接收 `取数函数` (返回 `Promise<Response<T>>`) / `依赖数组` (变更触发 refetch) / `配置项` (`enabled` / `initialData` / `placeholderData` / `onSuccess` / `onError` / `onSettled`)
+    - 返回 `data` / `error` / `status` (`pending` / `error` / `success`) / `fetchStatus` (`fetching` / `idle`) / `refetch`
+    - 实例级独立, 不做跨实例去重 / 缓存共享 / 失效
+  - `useMutation(fn, options)`: 实例级变更 hook
+    - 接收 `mutation 函数` / `配置项` (`onMutate` / `onSuccess` / `onError` / `onSettled`)
+    - 返回 `mutate(vars, callbacks)` / `mutateAsync(vars)` / `isPending` / `isError` / `isSuccess` / `reset`
+    - 同实例 `mutate` 串行执行, 实例级独立, 无失效机制
+  - `useCachedQuery(fn, deps, key, options)`: 实例级取数 hook, 内部基于 `useQuery` 加 wx.storage 持久化
+    - 接收 `取数函数` / `依赖数组` / `storage key` / `配置项`
+    - 返回 `data` / `status` (`CachedQueryStatus`, 扩展 `QueryStatus` 多 `waiting` / `updating` / `cached` 三态) / `refetch`
+    - status 三态扩展用于描述 storage 加载占位 / 写中状态 / 失败兑底场景
 
 - 存储钩子 `/hooks/storage.ts`: 对通用存储类 `/utils/storage.ts` 中各个 Promise 的封装
   - 接收存储键, 返回 `存储值` / `错误` / `加载状态` 等, 同时提供 `set` / `remove` 方法
 
-- 带缓存的请求钩子 `/hooks/cached-request.ts`: 基于请求钩子封装, 自动缓存请求结果到通用存储类中
-  - 接收 `请求 Promise` / `依赖数组` / `配置项`, 返回 `数据` / `错误` / `加载状态` 等, 同时提供手动刷新方法
-  - 加载时, 先加载缓存中的数据(若有), 并并发的发送请求, 请求完成后更新数据和缓存, 请求失败则使用缓存数据兜底(若有), 二者均失效才报错
-
-- 课程钩子 `hooks/course.ts`: 带缓存的课程数据请求钩子
-  - 由于缓存请求 hook `useCachedRequest` 要求传入稳定的 `请求 Promise`, 但课程相关请求依赖学期参数, 本钩子兼容了学期未就绪的情况
+- 课程钩子 `hooks/course.ts`: 课程数据请求钩子
+  - 基于 `useCachedQuery` 封装, 兼容学期未就绪的情况
   - `useCourse`: 课表课程钩子
   - `useExtraCourse`: 无课表课程钩子
 
 - 成绩钩子 `hooks/grade.ts`: 成绩数据请求钩子
-  - 同课程钩子, 兼容学期未就绪的情况
+  - 基于 `useQuery` 封装, 兼容学期未就绪的情况
 
 ## 全局状态共享相关函数
 
