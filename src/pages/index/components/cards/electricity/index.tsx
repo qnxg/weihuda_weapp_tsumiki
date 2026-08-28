@@ -38,9 +38,8 @@ export function Electricity({
     isDormLoading || isElectricityLoading
   ), [isDormLoading, isElectricityLoading])
 
-  const refetch = useCallback(() => {
-    void dormRefetch()
-    void electricityRefetch()
+  const refetch = useCallback(async () => {
+    await Promise.all([dormRefetch(), electricityRefetch()])
   }, [dormRefetch, electricityRefetch])
 
   const isFailed = useMemo(() => (
