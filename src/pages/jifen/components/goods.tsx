@@ -2,7 +2,7 @@ import { Image, View } from "@tarojs/components"
 import { showToast } from "@tarojs/taro"
 import { api } from "@/apis"
 import { MyButton } from "@/components/my-button"
-import { useQuery } from "@/hooks/request"
+import { useMutation, useQuery } from "@/hooks/request"
 import { cn } from "@/utils/cn"
 import { showModal } from "@/utils/modal"
 
@@ -13,41 +13,47 @@ export function Goods({
 }>) {
   const { data, isLoading, refetch } = useQuery(() => api.jifen.getGoods())
 
+  const { mutate } = useMutation(
+    (id: number) => api.jifen.postGoods(id),
+    {
+      onSuccess: () => {
+        void showToast({
+          title: "兑换成功",
+          icon: "success",
+        })
+        void refetch()
+      },
+      onError: (err) => {
+        switch (err.code) {
+          case "GOODS_NOT_FOUND":
+            void showToast({
+              title: "奖品不存在",
+              icon: "error",
+            })
+            break
+          case "JIFEN_NOT_ENOUGH":
+            void showToast({
+              title: "积分不足",
+              icon: "error",
+            })
+            break
+          default:
+            void showToast({
+              title: "兑换失败",
+              icon: "error",
+            })
+        }
+      },
+    },
+  )
+
   const handleClick = (id: number) => {
     void showModal(
       "确认兑换?",
       "兑换后请前往 \"积分规则\" 栏目指定地点领取",
       "default",
       () => {
-        api.jifen.postGoods(id)
-          .then(() => {
-            void showToast({
-              title: "兑换成功",
-              icon: "success",
-            })
-            void refetch()
-          })
-          .catch((err) => {
-            switch (err.code) {
-              case "GOODS_NOT_FOUND":
-                void showToast({
-                  title: "奖品不存在",
-                  icon: "error",
-                })
-                break
-              case "JIFEN_NOT_ENOUGH":
-                void showToast({
-                  title: "积分不足",
-                  icon: "error",
-                })
-                break
-              default:
-                void showToast({
-                  title: "兑换失败",
-                  icon: "error",
-                })
-            }
-          })
+        mutate(id)
       },
     )
   }

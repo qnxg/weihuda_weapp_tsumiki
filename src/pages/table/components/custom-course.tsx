@@ -1,15 +1,15 @@
 import type { BaseEventOrig, PickerMultiSelectorProps } from "@tarojs/components"
 import type { CustomCourseRequest } from "@/apis/models/course"
 import type { Cell, CourseItemWithColor } from "@/pages/table"
-import type { RequestError } from "@/types/request"
 import type { Semester } from "@/types/semester"
 import { Input, Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading, showToast } from "@tarojs/taro"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
 import { LABEL } from "@/config/logger-label"
+import { useMutation } from "@/hooks/request"
 import { cn } from "@/utils/cn"
 import { logger } from "@/utils/logger"
 
@@ -130,6 +130,48 @@ export function CustomCourse({
     setPicker(newPicker)
   }
 
+  // 合并请求
+  const request = useCallback(
+    (vars: { id: number | null, data: CustomCourseRequest }) =>
+      vars.id != null
+        ? api.course.custom.put(vars.id, vars.data)
+        : api.course.custom.post({
+            xn: semester!.xn,
+            xq: semester!.xq,
+            course: vars.data,
+          }),
+    [semester],
+  )
+
+  const { mutate } = useMutation(
+    (vars: { id: number | null, data: CustomCourseRequest }) => request(vars),
+    {
+      onMutate: () => {
+        void showLoading({ title: "正在保存..." })
+      },
+      onSuccess: () => {
+        hideLoading()
+        onConfirm()
+      },
+      onError: (err) => {
+        hideLoading()
+        switch (err.code) {
+          case "SEMESTER_NOT_FOUND":
+            void showToast({
+              title: "学期不存在",
+              icon: "error",
+            })
+            break
+          default:
+            void showToast({
+              title: `保存失败: ${err.message}`,
+              icon: "error",
+            })
+        }
+      },
+    },
+  )
+
   // 更新课程
   const handleConfirm = () => {
     if (!semester) {
@@ -148,35 +190,7 @@ export function CustomCourse({
       return
     }
 
-    void showLoading({ title: "正在保存..." })
-    const customizeId = course?.customize_id
-    const request = customizeId != null
-      ? api.course.custom.put(customizeId, data)
-      : api.course.custom.post({
-          xn: semester.xn,
-          xq: semester.xq,
-          course: data,
-        })
-    request.then(() => {
-      hideLoading()
-      onConfirm()
-    }).catch((err: RequestError) => {
-      hideLoading()
-
-      switch (err.code) {
-        case "SEMESTER_NOT_FOUND":
-          void showToast({
-            title: "学期不存在",
-            icon: "error",
-          })
-          break
-        default:
-          void showToast({
-            title: `保存失败: ${err.message}`,
-            icon: "error",
-          })
-      }
-    })
+    mutate({ id: course?.customize_id ?? null, data })
   }
 
   // 当 picker 完成变化后, 更新 data 中的 day 和 times

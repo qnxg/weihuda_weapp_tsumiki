@@ -5,14 +5,13 @@ import { api } from "@/apis"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { PageContent } from "@/components/page"
-import { useQuery } from "@/hooks/request"
+import { useMutation, useQuery } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/grade/ranking/empty.svg"
 import { RankContent } from "@/tools/pages/grade/ranking/components/rank-content"
 import { od } from "@/utils/ohday"
 
 export function CA() {
   const [bootstrapped, setBootstrapped] = useState(false)
-  const [isUpdating, setIsUpdating] = useState(false)
   const onSettled = useCallback(() => {
     setBootstrapped(true)
   }, [])
@@ -20,36 +19,39 @@ export function CA() {
     onSettled,
   })
 
+  const { mutate, isPending } = useMutation(() => api.rank.ca.put(), {
+    onMutate: () => {
+      void showLoading({
+        title: "加载中...",
+      })
+    },
+    onError: (err) => {
+      switch (err.code) {
+        case "NOT_SUPPORTED":
+          void showToast({
+            title: "暂不支持研究生",
+            icon: "error",
+          })
+          break
+        default:
+          void showToast({
+            title: "更新失败",
+            icon: "error",
+          })
+      }
+    },
+    onSettled: () => {
+      hideLoading()
+    },
+  })
+
   // 触发后端重新生成数据
   const handleClick = () => {
-    if (isUpdating)
+    if (isPending) {
       return
+    }
 
-    setIsUpdating(true)
-    void showLoading({
-      title: "加载中...",
-    })
-
-    api.rank.ca.put()
-      .catch((err) => {
-        switch (err.code) {
-          case "NOT_SUPPORTED":
-            void showToast({
-              title: "暂不支持研究生",
-              icon: "error",
-            })
-            break
-          default:
-            void showToast({
-              title: "更新失败",
-              icon: "error",
-            })
-        }
-      })
-      .finally(() => {
-        setIsUpdating(false)
-        hideLoading()
-      })
+    mutate()
   }
 
   return (
@@ -69,7 +71,7 @@ export function CA() {
                 </View>
                 <MyButton
                   active
-                  disabled={isUpdating}
+                  disabled={isPending}
                   className="py-sm px-3xl rounded-sm text-md"
                   onClick={() => handleClick()}
                 >

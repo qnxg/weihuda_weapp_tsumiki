@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
+import { useMutation } from "@/hooks/request"
 import { unlockAuthPrompts } from "@/libs/auth-bridge"
 
 /**
@@ -26,14 +27,14 @@ export function TFA({
   const [countdown, setCountdown] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval>>()
 
-  const handleSendCode = () => {
-    if (countdown > 0) {
-      return
-    }
-
-    void showLoading({ title: "发送中..." })
-    api.auth.tfa.get()
-      .then(() => {
+  // 发送验证码
+  const { mutate: sendMutate, isPending: sendIsPending } = useMutation(
+    () => api.auth.tfa.get(),
+    {
+      onMutate: () => {
+        void showLoading({ title: "发送中..." })
+      },
+      onSuccess: () => {
         hideLoading()
         void showToast({
           title: "验证码已发送",
@@ -50,28 +51,25 @@ export function TFA({
             return prev - 1
           })
         }, 1000)
-      })
-      .catch(() => {
+      },
+      onError: () => {
         hideLoading()
         void showToast({
           title: "验证码发送失败",
           icon: "error",
         })
-      })
-  }
+      },
+    },
+  )
 
-  const handleSubmit = () => {
-    if (!code) {
-      void showToast({
-        title: "请填写验证码",
-        icon: "error",
-      })
-      return
-    }
-
-    void showLoading({ title: "验证中..." })
-    api.auth.tfa.post({ code })
-      .then(() => {
+  // 提交验证码
+  const { mutate: submitMutate } = useMutation(
+    (vars: { code: string }) => api.auth.tfa.post(vars),
+    {
+      onMutate: () => {
+        void showLoading({ title: "验证中..." })
+      },
+      onSuccess: () => {
         hideLoading()
 
         // 鉴权成功: 解锁会话锁, 允许后续 401 再次弹窗
@@ -83,14 +81,33 @@ export function TFA({
         })
 
         void navigateBack()
-      })
-      .catch(() => {
+      },
+      onError: () => {
         hideLoading()
         void showToast({
           title: "验证失败",
           icon: "error",
         })
+      },
+    },
+  )
+
+  const handleSendCode = () => {
+    if (countdown > 0 || sendIsPending) {
+      return
+    }
+    sendMutate()
+  }
+
+  const handleSubmit = () => {
+    if (!code) {
+      void showToast({
+        title: "请填写验证码",
+        icon: "error",
       })
+      return
+    }
+    submitMutate({ code })
   }
 
   useEffect(() => {
