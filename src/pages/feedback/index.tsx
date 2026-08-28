@@ -172,10 +172,8 @@ export default function Feedback() {
                     />
                     {!noAuth && (
                       <View
-                        className="flex flex-col items-center justify-center gap-xs rounded-sm p"
-                        style={{
-                          border: "1px dashed #bebebe",
-                        }}
+                        className="flex flex-col items-center justify-center gap-xs rounded-sm p border border-divider"
+                        style={{ borderStyle: "dashed" }}
                         onClick={() => handleChooseImg()}
                       >
                         {imgPath
