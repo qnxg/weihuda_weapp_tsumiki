@@ -129,15 +129,15 @@ export default function PhysicalGrade() {
                       items={[
                         {
                           title: "类型",
-                          content: data.report_type || "--",
+                          content: data.report_type,
                         },
                         {
                           title: "状态",
-                          content: data.report_status || "--",
+                          content: data.report_status,
                         },
                         {
                           title: "描述",
-                          content: data.report_description || "--",
+                          content: data.report_description,
                         },
                       ].map<OptionItem>(item => ({
                         title: (
