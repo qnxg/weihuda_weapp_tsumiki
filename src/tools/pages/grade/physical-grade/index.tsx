@@ -125,39 +125,57 @@ export default function PhysicalGrade() {
                     </View>
 
                     <Options type="divided">
-                      {[
-                        {
-                          title: "类型",
-                          content: data.report_type,
-                        },
-                        {
-                          title: "状态",
-                          content: data.report_status,
-                        },
-                        {
-                          title: "描述",
-                          content: data.report_description,
-                        },
-                      ].map(item => (
-                        <Option
-                          key={item.title}
-                          className="gap text-lg"
-                          size="lg"
-                          title={(
-                            <View
-                              className="text-toned"
-                              style={{ flexShrink: 0 }}
-                            >
-                              {item.title}
-                            </View>
-                          )}
-                          content={(
-                            <View style={{ textAlign: "right", minWidth: 0 }}>
-                              {item.content}
-                            </View>
-                          )}
-                        />
-                      ))}
+                      <Option
+                        className="gap text-lg"
+                        size="lg"
+                        title={(
+                          <View
+                            className="text-toned"
+                            style={{ flexShrink: 0 }}
+                          >
+                            类型
+                          </View>
+                        )}
+                        content={(
+                          <View style={{ textAlign: "right", minWidth: 0 }}>
+                            {data.report_type}
+                          </View>
+                        )}
+                      />
+                      <Option
+                        className="gap text-lg"
+                        size="lg"
+                        title={(
+                          <View
+                            className="text-toned"
+                            style={{ flexShrink: 0 }}
+                          >
+                            状态
+                          </View>
+                        )}
+                        content={(
+                          <View style={{ textAlign: "right", minWidth: 0 }}>
+                            {data.report_status}
+                          </View>
+                        )}
+                      />
+                      <Option
+                        className="gap text-lg"
+                        size="lg"
+                        title={(
+                          <View
+                            className="text-toned"
+                            style={{ flexShrink: 0 }}
+                          >
+                            描述
+                          </View>
+                        )}
+                        content={(
+                          <View style={{ textAlign: "right", minWidth: 0 }}>
+                            {data.report_description}
+                          </View>
+                        )}
+                      />
                     </Options>
                   </CardContent>
                 </Card>
