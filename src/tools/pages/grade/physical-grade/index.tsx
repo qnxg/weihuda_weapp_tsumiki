@@ -178,7 +178,7 @@ export default function PhysicalGrade() {
                       }}
                     >
                       <View
-                        className="absolute inset-0 h-full"
+                        className="absolute inset-0"
                         style={{
                           width: "8rpx",
                           backgroundColor: FONT_COLOR[index]!,
