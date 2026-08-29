@@ -1,11 +1,10 @@
-import type { OptionItem } from "@/components/options"
 import type { XN } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
-import { Options } from "@/components/options"
+import { Option, Options } from "@/components/options"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
@@ -125,8 +124,8 @@ export default function PhysicalGrade() {
                       ))}
                     </View>
 
-                    <Options
-                      items={[
+                    <Options type="divided">
+                      {[
                         {
                           title: "类型",
                           content: data.report_type,
@@ -139,25 +138,27 @@ export default function PhysicalGrade() {
                           title: "描述",
                           content: data.report_description,
                         },
-                      ].map<OptionItem>(item => ({
-                        title: (
-                          <View
-                            className="text-toned"
-                            style={{ flexShrink: 0 }}
-                          >
-                            {item.title}
-                          </View>
-                        ),
-                        content: (
-                          <View style={{ textAlign: "right", minWidth: 0 }}>
-                            {item.content}
-                          </View>
-                        ),
-                        size: "lg",
-                        className: "gap text-lg",
-                      }))}
-                      type="divided"
-                    />
+                      ].map(item => (
+                        <Option
+                          key={item.title}
+                          className="gap text-lg"
+                          size="lg"
+                          title={(
+                            <View
+                              className="text-toned"
+                              style={{ flexShrink: 0 }}
+                            >
+                              {item.title}
+                            </View>
+                          )}
+                          content={(
+                            <View style={{ textAlign: "right", minWidth: 0 }}>
+                              {item.content}
+                            </View>
+                          )}
+                        />
+                      ))}
+                    </Options>
                   </CardContent>
                 </Card>
 
