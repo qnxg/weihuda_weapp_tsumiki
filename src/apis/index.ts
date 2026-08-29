@@ -1,7 +1,5 @@
-import type { ClasstableGetRequest, ClasstableGetResponse } from "./models/classtable"
 import type { AboutResponse } from "@/apis/models/about"
 import type { AnnouncementResponse } from "@/apis/models/announcement"
-
 import type {
   AuthLoginRequest,
   AuthLoginResponse,
@@ -12,6 +10,7 @@ import type {
   AuthTFARequest,
 } from "@/apis/models/auth"
 import type { CardInfoResponse, CardRecordRequest, CardRecordResponse } from "@/apis/models/card"
+import type { ClasstableGetRequest, ClasstableGetResponse } from "@/apis/models/classtable"
 import type {
   CourseCustomPostRequest,
   CourseCustomPutRequest,
