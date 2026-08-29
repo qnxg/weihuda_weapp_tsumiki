@@ -1,9 +1,11 @@
+import type { OptionItem } from "@/components/options"
 import type { XN } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { useEffect, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
+import { Options } from "@/components/options"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
@@ -123,8 +125,8 @@ export default function PhysicalGrade() {
                       ))}
                     </View>
 
-                    <View className="flex flex-col bg-subtle gap-2xs">
-                      {[
+                    <Options
+                      items={[
                         {
                           title: "类型",
                           content: data.report_type || "--",
@@ -137,31 +139,25 @@ export default function PhysicalGrade() {
                           title: "描述",
                           content: data.report_description || "--",
                         },
-                      ].map(item => (
-                        <View
-                          key={item.title}
-                          className="flex items-center gap py-lg bg"
-                        >
+                      ].map<OptionItem>(item => ({
+                        title: (
                           <View
-                            className="text-toned text-lg"
-                            style={{
-                              flexShrink: 0,
-                            }}
+                            className="text-toned"
+                            style={{ flexShrink: 0 }}
                           >
                             {item.title}
                           </View>
-                          <View
-                            className="flex-1 text-lg"
-                            style={{
-                              textAlign: "right",
-                              minWidth: 0,
-                            }}
-                          >
+                        ),
+                        content: (
+                          <View style={{ textAlign: "right", minWidth: 0 }}>
                             {item.content}
                           </View>
-                        </View>
-                      ))}
-                    </View>
+                        ),
+                        size: "lg",
+                        className: "gap text-lg",
+                      }))}
+                      type="divided"
+                    />
                   </CardContent>
                 </Card>
 
