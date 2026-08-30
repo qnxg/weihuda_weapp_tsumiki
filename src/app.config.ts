@@ -17,7 +17,7 @@ export default defineAppConfig({
       pages: [
         "pages/grade/grade/index",
         "pages/grade/ranking/index",
-        "pages/grade/experiment-grade/index",
+        "pages/grade/lab-grade/index",
         "pages/grade/physical-grade/index",
         "pages/exam/experiment-arrange/index",
         "pages/exam/exam/index",

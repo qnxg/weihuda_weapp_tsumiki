@@ -115,7 +115,7 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 
 - 成绩查询 `grade/grade`: 教务系统成绩查询
 - 成绩排名 `grade/ranking`: 教务系统与可信电子凭证排名
-- 实验成绩 `grade/experiment-grade`: 大物实验成绩查询
+- 实验成绩 `grade/lab-grade`: 大物实验成绩查询
 - 体测成绩 `grade/physical-grade`: 体测成绩查询
 - 实验安排 `exam/experiment-arrange`: 大物实验安排 (尚未完成)
 - 考试安排 `exam/exam`: 考试安排查询

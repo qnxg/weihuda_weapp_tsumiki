@@ -13,8 +13,8 @@ import PhysicalStandardIcon from "@/static/toolkit/campus/physical-standard.svg"
 import ExamIcon from "@/static/toolkit/exam/exam.svg"
 import ExperimentArrangeIcon from "@/static/toolkit/exam/experiment-arrange.svg"
 import PhysicalAppointIcon from "@/static/toolkit/exam/physical-appoint.svg"
-import ExperimentGradeIcon from "@/static/toolkit/grade/experiment-grade.svg"
 import GradeIcon from "@/static/toolkit/grade/grade.svg"
+import LabGradeIcon from "@/static/toolkit/grade/lab-grade.svg"
 import PhysicalGradeIcon from "@/static/toolkit/grade/physical-grade.svg"
 import RankingIcon from "@/static/toolkit/grade/ranking.svg"
 
@@ -29,7 +29,7 @@ const sections: SectionItem[] = [
     items: [
       { title: "成绩查询", icon: GradeIcon, to: "/tools/pages/grade/grade/index" },
       { title: "成绩排名", icon: RankingIcon, to: "/tools/pages/grade/ranking/index" },
-      { title: "实验成绩", icon: ExperimentGradeIcon, to: "/tools/pages/grade/experiment-grade/index" },
+      { title: "实验成绩", icon: LabGradeIcon, to: "/tools/pages/grade/lab-grade/index" },
       { title: "体测成绩", icon: PhysicalGradeIcon, to: "/tools/pages/grade/physical-grade/index" },
     ],
   },

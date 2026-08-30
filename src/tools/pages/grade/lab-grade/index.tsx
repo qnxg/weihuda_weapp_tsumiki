@@ -15,7 +15,7 @@ import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useAuth } from "@/hooks/auth"
 import { useQuery } from "@/hooks/request"
 import { useSemester } from "@/hooks/semester"
-import EmptyIcon from "@/static/tools/grade/experiment-grade/empty.svg"
+import EmptyIcon from "@/static/tools/grade/lab-grade/empty.svg"
 
 function LabCard({
   item,
@@ -87,7 +87,7 @@ function LabCard({
   )
 }
 
-export default function ExperimentGrade() {
+export default function LabGrade() {
   const { user, isLoading: isAuthLoading } = useAuth()
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
 
