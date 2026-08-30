@@ -15,8 +15,7 @@ import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { useAuth } from "@/hooks/auth"
 import { useQuery } from "@/hooks/request"
 import { useSemester } from "@/hooks/semester"
-import EmptyIcon from "@/static/tools/grade/grade/empty.svg"
-import { od } from "@/utils/ohday"
+import EmptyIcon from "@/static/tools/grade/experiment-grade/empty.svg"
 
 function LabCard({
   item,
@@ -92,8 +91,8 @@ export default function ExperimentGrade() {
   const { user, isLoading: isAuthLoading } = useAuth()
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
 
-  const [selectYear, setSelectYear] = useState<XN>(() => od().year)
-  const [selectSemester, setSelectSemester] = useState<LabSemester>("autumn")
+  const [selectYear, setSelectYear] = useState<XN | null>(null)
+  const [selectSemester, setSelectSemester] = useState<LabSemester | null>(null)
 
   const years = useMemo<XN[]>(() => {
     if (!semester)
@@ -109,14 +108,16 @@ export default function ExperimentGrade() {
     )
   }, [semester, user])
 
-  const gradeSemester = useMemo<LabGradeRequest | null>(() => semester
+  const gradeSemester = useMemo<LabGradeRequest | null>(() => (
+    semester && selectYear !== null && selectSemester !== null
+  )
     ? {
         xn: selectYear,
         xq: selectSemester,
       }
     : null, [selectSemester, selectYear, semester])
 
-  const { data, isLoading, refetch } = useQuery(
+  const { data, isPending, refetch } = useQuery(
     () => api.lab.grade(gradeSemester!),
     [gradeSemester?.xn, gradeSemester?.xq],
     { enabled: gradeSemester !== null },
@@ -135,9 +136,15 @@ export default function ExperimentGrade() {
   }, [semester])
 
   return (
-    <Page isLoading={isSemesterLoading || isAuthLoading}>
+    <Page
+      isLoading={
+        isSemesterLoading
+        || isAuthLoading
+        || (semester !== null && gradeSemester === null)
+      }
+    >
       <Tabs
-        value={selectYear}
+        value={selectYear ?? undefined}
         onChange={value => setSelectYear(value as XN)}
       >
         <TabList>
@@ -150,7 +157,7 @@ export default function ExperimentGrade() {
       </Tabs>
 
       <Tabs
-        value={selectSemester}
+        value={selectSemester ?? undefined}
         onChange={value => setSelectSemester(value as LabSemester)}
       >
         <TabList>
@@ -161,7 +168,7 @@ export default function ExperimentGrade() {
 
       <PageContent
         className="h-full"
-        isLoading={isLoading && !data}
+        isLoading={isPending && gradeSemester !== null && !data}
         onRefresh={refetch}
       >
         {data
