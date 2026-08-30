@@ -1,10 +1,11 @@
 import type { CustomExamScheduleRequest, ExamScheduleItem } from "@/apis/models/exam"
 import { Input, Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading, showToast } from "@tarojs/taro"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { MyButton } from "@/components/my-button"
+import { useMutation } from "@/hooks/request"
 import { od } from "@/utils/ohday"
 
 export function Custom({
@@ -29,26 +30,25 @@ export function Custom({
     seat: exam?.seat ?? "",
   })
 
-  const handleConfirm = () => {
-    if (!data.course_name) {
-      void showToast({
-        title: "请填写必填项",
-        icon: "error",
-      })
-    }
+  // 合并请求
+  const request = useCallback(
+    (vars: { id: number, data: CustomExamScheduleRequest }) =>
+      vars.id !== -1 ? api.exam.put(vars.id, vars.data) : api.exam.post(vars.data),
+    [],
+  )
 
-    void showLoading({ title: "保存中..." })
-    const request = exam
-      ? api.exam.put(exam.customize_id, data)
-      : api.exam.post(data)
-    request
-      .then(() => {
+  const { mutate } = useMutation(
+    (vars: { id: number, data: CustomExamScheduleRequest }) => request(vars),
+    {
+      onMutate: () => {
+        void showLoading({ title: "保存中..." })
+      },
+      onSuccess: () => {
         hideLoading()
         onConfirm()
-      })
-      .catch((err) => {
+      },
+      onError: (err) => {
         hideLoading()
-
         switch (err.code) {
           case "EXAM_SCHEDULE_NOT_FOUND":
             void showToast({
@@ -62,7 +62,20 @@ export function Custom({
               icon: "error",
             })
         }
+      },
+    },
+  )
+
+  const handleConfirm = () => {
+    if (!data.course_name) {
+      void showToast({
+        title: "请填写必填项",
+        icon: "error",
       })
+      return
+    }
+
+    mutate({ id: exam?.customize_id ?? -1, data })
   }
 
   return (

@@ -1,5 +1,5 @@
 import type { ClasstableItem } from "@/apis/models/classtable"
-import type { Status } from "@/hooks/cached-request"
+import type { CachedQueryStatus } from "@/hooks/request/cached-query"
 import type { Semester } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { useEffect, useMemo, useState } from "react"
@@ -44,8 +44,8 @@ export interface Cell {
  */
 type OverlayContentKey = "detail" | "options" | "extra" | "custom"
 
-const STATUS_TEXT: Record<Status, string> = {
-  loading: "(加载中)",
+const STATUS_TEXT: Record<CachedQueryStatus, string> = {
+  pending: "(加载中)",
   waiting: "(同步中)",
   updating: "(同步中)",
   success: "",

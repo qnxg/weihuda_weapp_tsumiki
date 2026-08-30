@@ -7,7 +7,7 @@ import { Icon } from "@/components/icon"
 import { Option, Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
 import { useAuth } from "@/hooks/auth"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import ClearIcon from "@/static/profile/clear.svg"
 import DisclaimersIcon from "@/static/profile/disclaimers.svg"
 import FeedbackIcon from "@/static/profile/feedback.svg"
@@ -29,7 +29,7 @@ const options: OptionItem[] = [
 
 export default function Profile() {
   const { user } = useAuth()
-  const { data: jifenData } = useRequest(() => api.jifen.get())
+  const { data: jifenData } = useQuery(() => api.jifen.get())
 
   const handleClearCache = () => {
     void showModal(

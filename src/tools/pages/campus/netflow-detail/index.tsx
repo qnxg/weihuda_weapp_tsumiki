@@ -9,7 +9,7 @@ import { Options } from "@/components/options"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/campus/netflow-detail/empty.svg"
 import { Detail } from "@/tools/pages/campus/netflow-detail/components/detail"
 import { parseNetflowItemName } from "@/tools/pages/campus/netflow-detail/utils/detail"
@@ -30,14 +30,13 @@ export default function NetflowDetail() {
   // 详情弹窗
   const [activeItem, setActiveItem] = useState<NetflowDetailItem | null>(null)
 
-  const { data, isLoading, refetch } = useRequest(
+  const { data, isLoading, refetch } = useQuery(
     () => api.netflow.getDetail({
       year: od(selectedDate).year,
       month: od(selectedDate).month,
       day: tab === "month" ? undefined : od(selectedDate).date,
     }),
     [tab, selectedDate],
-    { refetchClearData: false },
   )
 
   useEffect(() => {

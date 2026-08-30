@@ -1,12 +1,12 @@
 import { View } from "@tarojs/components"
 import { showToast } from "@tarojs/taro"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { Skeleton } from "@/components/skeleton"
-import { useRequest } from "@/hooks/request"
+import { useMutation, useQuery } from "@/hooks/request"
 import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import JifenIcon from "@/static/index/jifen.svg"
 import { cn } from "@/utils/cn"
@@ -21,25 +21,19 @@ export function Jifen({
 }>) {
   const { registerCard, onCardFinish } = useCardLoading()
 
-  const { data, isLoading, refetch } = useRequest(() => api.jifen.get())
+  const { data, isLoading, refetch } = useQuery(() => api.jifen.get())
 
-  const [isChecking, setIsChecking] = useState(false)
-
-  const handleClick = () => {
-    if (isChecking)
-      return
-
-    setIsChecking(true)
-
-    api.jifen.post()
-      .then(() => {
+  const { mutate, isPending } = useMutation(
+    () => api.jifen.post(),
+    {
+      onSuccess: () => {
         void showToast({
           title: "签到成功",
           icon: "success",
         })
         void refetch()
-      })
-      .catch((err) => {
+      },
+      onError: (err) => {
         switch (err.code) {
           case "REPEATED_CHECK":
             void showToast({
@@ -53,8 +47,15 @@ export function Jifen({
               icon: "error",
             })
         }
-      })
-      .finally(() => setIsChecking(false))
+      },
+    },
+  )
+
+  const handleClick = () => {
+    if (isPending) {
+      return
+    }
+    mutate()
   }
 
   useEffect(() => {
@@ -91,12 +92,12 @@ export function Jifen({
                 <MyButton
                   className={cn(
                     "w-l-md py-sm flex center rounded-sm",
-                    (isChecking || data.is_checked) ? "bg-page text-base" : "bg-primary text-reverse",
+                    (isPending || data.is_checked) ? "bg-page text-base" : "bg-primary text-reverse",
                   )}
                   onClick={() => handleClick()}
-                  disabled={isChecking || data.is_checked}
+                  disabled={isPending || data.is_checked}
                 >
-                  {isChecking
+                  {isPending
                     ? "加载中..."
                     : data.is_checked ? "已签" : "签到"}
                 </MyButton>

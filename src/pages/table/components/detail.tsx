@@ -1,5 +1,4 @@
 import type { Cell, CourseItemWithColor } from "@/pages/table"
-import type { RequestError } from "@/types/request"
 import type { Semester } from "@/types/semester"
 import { ScrollView, Swiper, SwiperItem, View } from "@tarojs/components"
 import { hideLoading, showLoading, showToast } from "@tarojs/taro"
@@ -7,6 +6,7 @@ import { api } from "@/apis"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { OverlayMask } from "@/components/overlay"
+import { useMutation } from "@/hooks/request"
 import EditIcon from "@/static/table/edit.svg"
 import TrashIcon from "@/static/table/trash.svg"
 import { showModal } from "@/utils/modal"
@@ -40,6 +40,41 @@ export function Detail({
 
   const courses = [...currentWeekCourses, ...notCurrentWeekCourses]
 
+  const { mutate } = useMutation(
+    (id: number) => api.course.custom.delete(id),
+    {
+      onMutate: () => {
+        void showLoading({ title: "加载中..." })
+      },
+      onSuccess: () => {
+        hideLoading()
+        onCustomDelete()
+      },
+      onError: (err) => {
+        hideLoading()
+        switch (err.code) {
+          case "SEMESTER_NOT_FOUND":
+            void showToast({
+              title: "学期不存在",
+              icon: "error",
+            })
+            break
+          case "COURSE_NOT_FOUND":
+            void showToast({
+              title: "课程不存在",
+              icon: "error",
+            })
+            break
+          default:
+            void showToast({
+              title: `删除失败: ${err.message}`,
+              icon: "error",
+            })
+        }
+      },
+    },
+  )
+
   const handleDelete = (course: CourseItemWithColor) => {
     if (!semester) {
       void showToast({
@@ -50,43 +85,16 @@ export function Detail({
     }
 
     const customizeId = course.customize_id
-    if (customizeId == null)
+    if (customizeId == null) {
       return
+    }
 
     void showModal(
       "确认删除",
       `删除课程 ${course.course_name}?`,
       "dangerous",
       () => {
-        void showLoading({ title: "加载中..." })
-        api.course.custom.delete(customizeId)
-          .then(() => {
-            hideLoading()
-            onCustomDelete()
-          })
-          .catch((err: RequestError) => {
-            hideLoading()
-
-            switch (err.code) {
-              case "SEMESTER_NOT_FOUND":
-                void showToast({
-                  title: "学期不存在",
-                  icon: "error",
-                })
-                break
-              case "COURSE_NOT_FOUND":
-                void showToast({
-                  title: "课程不存在",
-                  icon: "error",
-                })
-                break
-              default:
-                void showToast({
-                  title: `删除失败: ${err.message}`,
-                  icon: "error",
-                })
-            }
-          })
+        mutate(customizeId)
       },
     )
   }
@@ -157,6 +165,7 @@ export function Detail({
                     {course.credit && (
                       <View>
                         {course.credit}
+                        {" "}
                         学分
                       </View>
                     )}

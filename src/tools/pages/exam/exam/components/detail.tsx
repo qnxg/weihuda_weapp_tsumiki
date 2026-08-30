@@ -2,10 +2,10 @@ import type { ExamScheduleItem } from "@/apis/models/exam"
 import type { OptionItem } from "@/components/options"
 import { View } from "@tarojs/components"
 import { hideLoading, showLoading, showToast } from "@tarojs/taro"
-import { useState } from "react"
 import { api } from "@/apis"
 import { Option, Options } from "@/components/options"
 import { Popup } from "@/components/overlay"
+import { useMutation } from "@/hooks/request"
 import EditIcon from "@/static/tools/exam/exam-arrange/edit.svg"
 import TrashIcon from "@/static/tools/exam/exam-arrange/trash.svg"
 import { showModal } from "@/utils/modal"
@@ -21,7 +21,58 @@ export function Detail({
   onEdit: (id: number) => void
   onDelete: (id: number) => void
 }>) {
-  const [isLoading, setIsLoading] = useState(false)
+  const { mutate, isPending } = useMutation(
+    (id: number) => api.exam.delete(id),
+    {
+      onMutate: () => {
+        void showLoading({
+          title: "删除中...",
+        })
+      },
+      onSuccess: () => {
+        hideLoading()
+        void showToast({
+          title: "已删除",
+          icon: "success",
+        })
+      },
+      onError: (err) => {
+        hideLoading()
+        switch (err.code) {
+          case "EXAM_SCHEDULE_NOT_FOUND":
+            void showToast({
+              title: "考试安排不存在",
+              icon: "error",
+            })
+            break
+          default:
+            void showToast({
+              title: "删除失败",
+              icon: "error",
+            })
+        }
+      },
+      onSettled: () => {
+        onDelete(exam.customize_id)
+      },
+    },
+  )
+
+  const handleDelete = async () => {
+    if (isPending) {
+      return
+    }
+
+    const confirmed = await showModal(
+      "确认删除",
+      `确认删除 ${exam.course_name} 的考试安排吗?`,
+      "dangerous",
+    )
+
+    if (confirmed) {
+      mutate(exam.customize_id)
+    }
+  }
 
   const options: OptionItem[] = [
     { title: "课程名称", content: exam.course_name },
@@ -31,50 +82,6 @@ export function Detail({
     { title: "考试地点", content: exam.area && exam.classroom ? `${exam.area} ${exam.classroom}` : "---" },
     { title: "座位号", content: exam.seat || "---" },
   ]
-
-  const handleDelete = async () => {
-    if (isLoading)
-      return
-
-    setIsLoading(true)
-    const res = await showModal("确认删除", `确认删除 ${exam.course_name} 的考试安排吗?`, "dangerous")
-
-    if (res) {
-      void showLoading({
-        title: "删除中...",
-      })
-      api.exam.delete(exam.customize_id)
-        .then(() => {
-          hideLoading()
-          showToast({
-            title: "已删除",
-            icon: "success",
-          })
-        })
-        .catch((err) => {
-          switch (err.code) {
-            case "EXAM_SCHEDULE_NOT_FOUND":
-              showToast({
-                title: "考试安排不存在",
-                icon: "error",
-              })
-              break
-            default:
-              showToast({
-                title: "删除失败",
-                icon: "error",
-              })
-          }
-        })
-        .finally(() => {
-          setIsLoading(false)
-          onDelete(exam.customize_id)
-        })
-    }
-    else {
-      setIsLoading(false)
-    }
-  }
 
   return (
     <Popup

@@ -1,52 +1,52 @@
 import { View } from "@tarojs/components"
 import { hideLoading, showLoading } from "@tarojs/taro"
-import { useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { Page, PageContent } from "@/components/page"
-import { useRequest } from "@/hooks/request"
+import { useMutation, useQuery } from "@/hooks/request"
 import EmptyIcon from "@/static/tools/campus/electricity/empty.svg"
 import { showModal } from "@/utils/modal"
 
 export default function Electricity() {
-  const { data: electricityData, isLoading: isElectricityLoading, refetch: electricityRefetch } = useRequest(
+  const {
+    data: electricityData,
+    isLoading: isElectricityLoading,
+    refetch: electricityRefetch,
+  } = useQuery(
     () => api.electricity.get(),
-    [],
-    { refetchClearData: false },
   )
 
-  const { data: dormData, isLoading: dormLoading, refetch: dormRefetch } = useRequest(
+  const {
+    data: dormData,
+    isLoading: dormLoading,
+    refetch: dormRefetch,
+  } = useQuery(
     () => api.dorm.get(),
-    [],
-    { refetchClearData: false },
   )
 
   const isLoading = isElectricityLoading || dormLoading
-
-  const [isUpdating, setIsUpdating] = useState(false)
 
   const refetch = () => Promise.allSettled([
     electricityRefetch(),
     dormRefetch(),
   ])
 
-  const handleClick = () => {
-    if (isUpdating)
-      return
-
-    setIsUpdating(true)
-    void showLoading({
-      title: "更新中...",
-    })
-    api.dorm.put()
-      .then(async () => {
-        await refetch()
+  const { mutate, isPending } = useMutation(
+    () => api.dorm.put(),
+    {
+      onMutate: () => {
+        void showLoading({
+          title: "更新中...",
+        })
+      },
+      onSuccess: async () => {
         hideLoading()
+        await refetch()
         showModal("宿舍信息已更新", "如宿舍信息有误或无法获取, 请前往\"我的/问题反馈\"上报问题")
-      })
-      .catch((err) => {
+      },
+      onError: (err) => {
         hideLoading()
         switch (err.code) {
           case "DORM_NOT_FOUND":
@@ -55,8 +55,15 @@ export default function Electricity() {
           default:
             showModal("宿舍信息更新失败", "请前往\"我的/问题反馈\"上报问题")
         }
-      })
-      .finally(() => setIsUpdating(false))
+      },
+    },
+  )
+
+  const handleClick = () => {
+    if (isPending) {
+      return
+    }
+    mutate()
   }
 
   return (
