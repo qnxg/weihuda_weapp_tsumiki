@@ -186,7 +186,11 @@ export default function Feedback() {
                                   className="w-full h-full"
                                   src={imgPath}
                                   mode="aspectFill"
-                                  onClick={() => handleChooseImg()}
+                                  onClick={(e) => {
+                                    // 阻止冒泡到外层上传区, 否则 handleChooseImg 会触发两次
+                                    e.stopPropagation()
+                                    handleChooseImg()
+                                  }}
                                 />
                                 <View
                                   className="absolute bg-shadow rounded-full px-md py-sm flex center"
