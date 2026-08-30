@@ -120,7 +120,7 @@ export default function Feedback() {
                 <MyButton
                   active
                   className="w-full p flex center text-xl rounded-sm"
-                  onClick={() => Taro.navigateBack()}
+                  onClick={() => void Taro.navigateBack()}
                 >
                   完成
                 </MyButton>
@@ -221,7 +221,7 @@ export default function Feedback() {
                 <MyButton
                   active
                   className="p flex center text-xl rounded-sm"
-                  onClick={() => handleSubmit()}
+                  onClick={() => void handleSubmit()}
                 >
                   提交
                 </MyButton>
