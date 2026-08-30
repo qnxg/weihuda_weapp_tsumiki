@@ -79,13 +79,14 @@ export default function Feedback() {
           img: null,
         })
       }
+      Taro.hideLoading()
       setSubmitted(true)
     }
     catch {
+      Taro.hideLoading()
       await Taro.showToast({ title: "提交失败", icon: "none" })
     }
     finally {
-      Taro.hideLoading()
       setSubmitting(false)
     }
   }
