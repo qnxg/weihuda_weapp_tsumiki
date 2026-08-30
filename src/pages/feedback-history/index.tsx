@@ -6,7 +6,7 @@ import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Page, PageContent } from "@/components/page"
 import { ENV } from "@/config/env"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import { cn } from "@/utils/cn"
 import { od } from "@/utils/ohday"
 
@@ -76,7 +76,7 @@ export default function FeedbackHistory() {
     }
   }, [])
 
-  const { data, isLoading } = useRequest(
+  const { data, isLoading } = useQuery(
     () => api.feedback.get({ page, size: 20 }),
     [page, refreshKey],
     {
