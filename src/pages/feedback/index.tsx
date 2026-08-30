@@ -104,12 +104,12 @@ export default function Feedback() {
                   />
                 </View>
                 <View className="text-xl text-bold">反馈提交成功</View>
-                <View className="text-muted text-center">感谢你的反馈，我们会尽快查看并处理</View>
+                <View className="text-muted text-center">感谢你的反馈, 我们会尽快查看并处理</View>
 
                 <Card className="w-full my-md">
                   <CardContent className="flex flex-col items-center gap-md p">
                     <View className="text-lg text-bold">加入交流群</View>
-                    <View className="text-muted text-md">欢迎加群交流，让问题反馈更快解决</View>
+                    <View className="text-muted text-md">欢迎加群交流, 让问题反馈更快解决</View>
                     <Image
                       style={{ width: "75%" }}
                       src={GroupQrcode}
@@ -131,7 +131,7 @@ export default function Feedback() {
               <View className="flex flex-col gap p">
                 {!noAuth && (
                   <View className="bg-subtle rounded-sm p text-sm">
-                    <View className="text-primary">优质反馈或建议被采纳后，可获得一定的积分奖励。</View>
+                    <View className="text-primary">优质反馈或建议被采纳后, 可获得一定的积分奖励</View>
                   </View>
                 )}
 
@@ -142,7 +142,7 @@ export default function Feedback() {
                       <Input
                         className="flex-1"
                         value={stuId}
-                        placeholder="请输入学号（必填）"
+                        placeholder="请输入学号 (必填)"
                         onInput={e => setStuId(e.detail.value)}
                       />
                     </CardContent>
@@ -155,7 +155,7 @@ export default function Feedback() {
                     <Input
                       className="flex-1"
                       value={contact}
-                      placeholder={noAuth ? "电子邮箱地址（必填）" : "电子邮箱地址（选填）"}
+                      placeholder={noAuth ? "电子邮箱地址 (必填)" : "电子邮箱地址 (选填)"}
                       onInput={e => setContact(e.detail.value)}
                     />
                   </CardContent>
@@ -167,7 +167,7 @@ export default function Feedback() {
                     <Textarea
                       className="flex-1"
                       value={desc}
-                      placeholder="请填写描述信息（必填）"
+                      placeholder="请填写描述信息 (必填)"
                       style={{ minHeight: "100px" }}
                       onInput={e => setDesc(e.detail.value)}
                     />
