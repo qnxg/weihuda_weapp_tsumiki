@@ -14,15 +14,23 @@ import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
  *   </CardContent>
  * </Card>
  * ```
+ * @param {string} [background] - 背景颜色原子类 token, 未设置时使用默认主题背景
  */
 function Card({
+  background,
   className,
   children,
   ...props
-}: Readonly<ComponentProps<typeof View>>) {
+}: Readonly<{
+  background?: string
+} & ComponentProps<typeof View>>) {
   return (
     <View
-      className={cn("p bg rounded-sm flex flex-col gap", className)}
+      className={cn(
+        "p rounded-sm flex flex-col gap",
+        background ? `bg-${background}` : "bg",
+        className,
+      )}
       {...props}
     >
       {children}
