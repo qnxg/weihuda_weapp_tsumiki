@@ -143,38 +143,41 @@ export default function FeedbackHistory() {
                   {isLoading ? "加载中" : "暂无反馈记录"}
                 </View>
               )
-            : list.map(item => (
-                <Card key={`${item.id}`}>
-                  <CardContent className="flex flex-col gap p">
-                    <View className="text-lg">{item.description}</View>
+            : list.map((item) => {
+                const src = imgSrc(item.img)
+                return (
+                  <Card key={`${item.id}`}>
+                    <CardContent className="flex flex-col gap p">
+                      <View className="text-lg">{item.description}</View>
 
-                    <View className="flex items-center gap">
-                      <View className={cn("text-sm", STATUS_CLASS[item.status])}>
-                        {STATUS_TEXT[item.status]}
+                      <View className="flex items-center gap">
+                        <View className={cn("text-sm", STATUS_CLASS[item.status])}>
+                          {STATUS_TEXT[item.status]}
+                        </View>
+                        <View className="text-sm text-muted">
+                          {od(item.created_at).p("YYYY-MM-DD HH:mm")}
+                        </View>
                       </View>
-                      <View className="text-sm text-muted">
-                        {od(item.created_at).p("YYYY-MM-DD HH:mm")}
-                      </View>
-                    </View>
 
-                    {item.img && imgSrc(item.img) && (
-                      <View
-                        className="flex center bg-subtle rounded-sm p"
-                        onClick={() => void Taro.previewImage({ urls: [imgSrc(item.img) ?? ""] })}
-                      >
-                        <View className="text-sm text-primary">查看图片</View>
-                      </View>
-                    )}
+                      {src && (
+                        <View
+                          className="flex center bg-subtle rounded-sm p"
+                          onClick={() => void Taro.previewImage({ urls: [src] })}
+                        >
+                          <View className="text-sm text-primary">查看图片</View>
+                        </View>
+                      )}
 
-                    {item.replies.length > 0 && (
-                      <View className="flex flex-col gap-xs">
-                        <View className="text-sm text-muted">处理结果</View>
-                        <View className="text-toned">{item.replies.at(-1)?.msg}</View>
-                      </View>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                      {item.replies.length > 0 && (
+                        <View className="flex flex-col gap-xs">
+                          <View className="text-sm text-muted">处理结果</View>
+                          <View className="text-toned">{item.replies.at(-1)?.msg}</View>
+                        </View>
+                      )}
+                    </CardContent>
+                  </Card>
+                )
+              })}
         </View>
       </PageContent>
     </Page>
