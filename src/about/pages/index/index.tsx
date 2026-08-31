@@ -9,7 +9,7 @@ import { Icon } from "@/components/icon"
 import { Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
 import { ABOUT_DEFAULTS } from "@/config/about"
-import { useRequest } from "@/hooks/request"
+import { useQuery } from "@/hooks/request"
 import CreditIcon from "@/static/about/index/credit.svg"
 import DisclaimersIcon from "@/static/about/index/disclaimers.svg"
 import HomepageIcon from "@/static/about/index/homepage.svg"
@@ -23,7 +23,7 @@ import "./index.scss"
 export default function Index() {
   const version = Taro.getAccountInfoSync().miniProgram.version
 
-  const { data } = useRequest(() => api.about())
+  const { data } = useQuery(() => api.about())
 
   const slogans = data?.slogans?.length ? data.slogans : ABOUT_DEFAULTS.slogans
   const home = data?.home || ABOUT_DEFAULTS.home
