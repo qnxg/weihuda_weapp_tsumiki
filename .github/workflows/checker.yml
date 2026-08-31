@@ -6,6 +6,7 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, edited]
 
 jobs:
   quality:
@@ -54,3 +55,28 @@ jobs:
 
       - name: Lint commit messages
         uses: wagoid/commitlint-github-action@v6
+
+  pr-title-lint:
+    name: PR Title Lint
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --trust-lockfile
+
+      - name: Lint PR title with commitlint
+        # commitlint 期望 "subject\n", 用 printf 避免 echo 把开头标记吞掉
+        run: |
+          printf '%s\n' "${{ github.event.pull_request.title }}" \
+            | pnpm exec commitlint
