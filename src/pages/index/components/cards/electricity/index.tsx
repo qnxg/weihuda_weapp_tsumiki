@@ -38,8 +38,9 @@ export function Electricity({
     isDormLoading || isElectricityLoading
   ), [isDormLoading, isElectricityLoading])
 
+  // allSettled 隔离单请求失败: 避免一个请求 reject 提前结束刷新等待, 也避免重试按钮点击产生无人接管的 rejection
   const refetch = useCallback(async () => {
-    await Promise.all([dormRefetch(), electricityRefetch()])
+    await Promise.allSettled([dormRefetch(), electricityRefetch()])
   }, [dormRefetch, electricityRefetch])
 
   const isFailed = useMemo(() => (
