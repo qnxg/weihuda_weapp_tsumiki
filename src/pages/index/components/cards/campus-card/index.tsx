@@ -1,11 +1,10 @@
 import { View } from "@tarojs/components"
-import { useEffect } from "react"
 import { api } from "@/apis"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useQuery } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
-import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import { useCardRegistration } from "@/pages/index/hooks/card-loading"
 import CampusIcon from "@/static/index/campus.svg"
 
 /**
@@ -16,14 +15,9 @@ export function CampusCard({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, unregisterCard } = useCardLoading()
-
   const { data, isLoading, refetch } = useQuery(() => api.card.info())
 
-  useEffect(() => {
-    registerCard(cardKey, refetch)
-    return () => unregisterCard(cardKey)
-  }, [registerCard, unregisterCard, cardKey, refetch])
+  useCardRegistration(cardKey, refetch)
 
   return (
     <Card>

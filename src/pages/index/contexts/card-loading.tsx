@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { createContext, useContext, useRef } from "react"
+import { createContext, useContext, useMemo } from "react"
 
 /**
  * @description 卡片刷新函数类型
@@ -42,12 +42,11 @@ export function CardLoadingProvider({
 }: Readonly<{
   children: ReactNode
 }>) {
-  // value 惰性初始化, 避免每次渲染创建临时对象
-  const valueRef = useRef<CardLoadingContextValue | null>(null)
-  valueRef.current ??= createCardLoadingValue()
+  // value 用工厂函数创建, 引用永不变化; 卡片将 registerCard 列入 effect deps, 即使 memo 缓存被重建也会自动重新注册
+  const value = useMemo(createCardLoadingValue, [])
 
   return (
-    <CardLoadingContext.Provider value={valueRef.current}>
+    <CardLoadingContext.Provider value={value}>
       {children}
     </CardLoadingContext.Provider>
   )
