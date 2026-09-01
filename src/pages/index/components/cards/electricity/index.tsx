@@ -1,11 +1,11 @@
 import { View } from "@tarojs/components"
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { api } from "@/apis"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useQuery } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
-import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import { useCardRegistration } from "@/pages/index/hooks/card-loading"
 import ElectricityIcon from "@/static/index/electricity.svg"
 
 /**
@@ -16,8 +16,6 @@ export function Electricity({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, unregisterCard } = useCardLoading()
-
   const {
     data: dormData,
     isLoading: isDormLoading,
@@ -47,10 +45,7 @@ export function Electricity({
     !dormData || !electricityData
   ), [dormData, electricityData])
 
-  useEffect(() => {
-    registerCard(cardKey, refetch)
-    return () => unregisterCard(cardKey)
-  }, [registerCard, unregisterCard, cardKey, refetch])
+  useCardRegistration(cardKey, refetch)
 
   return (
     <Card>

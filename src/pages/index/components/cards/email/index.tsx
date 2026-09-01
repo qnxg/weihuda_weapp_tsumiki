@@ -5,7 +5,7 @@ import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useQuery } from "@/hooks/request"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
-import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import { useCardRegistration } from "@/pages/index/hooks/card-loading"
 import EmailIcon from "@/static/index/email.svg"
 
 /**
@@ -16,8 +16,6 @@ export function Email({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, unregisterCard } = useCardLoading()
-
   const { data, isLoading, error, refetch } = useQuery(() => api.email.get())
 
   const [message, setMessage] = useState("")
@@ -41,10 +39,7 @@ export function Email({
     }
   }, [data, isLoading, error])
 
-  useEffect(() => {
-    registerCard(cardKey, refetch)
-    return () => unregisterCard(cardKey)
-  }, [registerCard, unregisterCard, cardKey, refetch])
+  useCardRegistration(cardKey, refetch)
 
   return (
     <Card>
