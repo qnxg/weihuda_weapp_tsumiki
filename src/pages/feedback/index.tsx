@@ -142,7 +142,7 @@ export default function Feedback() {
                     <CardContent className="flex flex-col gap p">
                       <View className="text-bold">学号</View>
                       <Input
-                        className="flex-1"
+                        className="w-full"
                         value={stuId}
                         placeholder="请输入学号 (必填)"
                         onInput={e => setStuId(e.detail.value)}
@@ -155,7 +155,7 @@ export default function Feedback() {
                   <CardContent className="flex flex-col gap p">
                     <View className="text-bold">联系方式</View>
                     <Input
-                      className="flex-1"
+                      className="w-full"
                       value={contact}
                       placeholder={noAuth ? "电子邮箱地址 (必填)" : "电子邮箱地址 (选填)"}
                       onInput={e => setContact(e.detail.value)}
@@ -167,7 +167,7 @@ export default function Feedback() {
                   <CardContent className="flex flex-col gap p">
                     <View className="text-bold">详细描述</View>
                     <Textarea
-                      className="flex-1"
+                      className="w-full"
                       value={desc}
                       placeholder="请填写描述信息 (必填)"
                       style={{ minHeight: "100px" }}
