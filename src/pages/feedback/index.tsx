@@ -224,6 +224,7 @@ export default function Feedback() {
                 <MyButton
                   active
                   className="p flex center text-xl rounded-sm"
+                  disabled={submitting}
                   onClick={() => void handleSubmit()}
                 >
                   提交
