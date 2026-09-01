@@ -1,57 +1,53 @@
 import type { ReactNode } from "react"
-import { createContext, useContext, useMemo, useRef } from "react"
+import { createContext, useContext, useRef } from "react"
 
 /**
  * @description 卡片刷新函数类型
- *   兼容 useRequest.refetch (() => Promise<Response<T>>) 与 useCachedRequest.refetch (() => Promise<T | null>)
+ *   兼容 useQuery / useCachedQuery 的 refetch (() => Promise<Response<T>>) 与无返回值的同步刷新函数
  */
 export type Refresher = () => Promise<unknown> | void
 
 interface CardLoadingContextValue {
   registerCard: (key: string, fn: Refresher) => void
   unregisterCard: (key: string) => void
-  triggerRefresh: () => Promise<void>
+  getRefreshers: () => Refresher[]
 }
 
 const CardLoadingContext = createContext<CardLoadingContextValue | null>(null)
 
 /**
+ * @description 创建注册表原语; 注册表 Map 由闭包持有, 无组件作用域依赖
+ */
+function createCardLoadingValue(): CardLoadingContextValue {
+  const store = new Map<string, Refresher>()
+
+  return {
+    registerCard: (key, fn) => {
+      store.set(key, fn)
+    },
+    unregisterCard: (key) => {
+      store.delete(key)
+    },
+    getRefreshers: () => Array.from(store.values()),
+  }
+}
+
+/**
  * @description 首页卡片加载协作 Provider
- *   - 卡片在 useEffect 中注册自己的刷新函数, 卸载时通过 cleanup 注销, 避免闭包滞留
- *   - 刷新函数集合存于 useRef, 不进 Context value, 注册不触发级联重渲染
- *   - triggerRefresh 快照当前全部刷新函数并异步等待完成, 单卡片失败不影响整体
+ *   - 仅承载注册表原语 (注册 / 注销 / 读取), 刷新编排逻辑在 hooks/card-loading.ts, 遵循状态业务分离
+ *   - value 惰性创建一次且引用永不变化, 注册不触发级联重渲染
  */
 export function CardLoadingProvider({
   children,
 }: Readonly<{
   children: ReactNode
 }>) {
-  // 刷新函数集合, 用 ref 承载以保持引用稳定
-  const storeRef = useRef(new Map<string, Refresher>())
-
-  // 注册 / 注销 / 触发函数在 useMemo 中一次性创建, value 引用永不变, 彻底消除级联重渲染
-  const value = useMemo(() => {
-    const registerCard = (key: string, fn: Refresher) => {
-      storeRef.current.set(key, fn)
-    }
-
-    const unregisterCard = (key: string) => {
-      storeRef.current.delete(key)
-    }
-
-    const triggerRefresh = async () => {
-      const fns = Array.from(storeRef.current.values())
-      if (fns.length === 0) {
-        return
-      }
-      await Promise.allSettled(fns.map(fn => fn()))
-    }
-
-    return { registerCard, unregisterCard, triggerRefresh }
-  }, [])
+  // value 惰性初始化, 避免每次渲染创建临时对象
+  const valueRef = useRef<CardLoadingContextValue | null>(null)
+  valueRef.current ??= createCardLoadingValue()
 
   return (
-    <CardLoadingContext.Provider value={value}>
+    <CardLoadingContext.Provider value={valueRef.current}>
       {children}
     </CardLoadingContext.Provider>
   )
