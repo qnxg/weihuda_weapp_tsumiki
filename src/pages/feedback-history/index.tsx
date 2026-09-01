@@ -76,7 +76,7 @@ export default function FeedbackHistory() {
     }
   }, [])
 
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, isFetching, error } = useQuery(
     () => api.feedback.get({ page, size: 20 }),
     [page, refreshKey],
     {
@@ -109,11 +109,12 @@ export default function FeedbackHistory() {
       return
     }
 
-    if (!isScrollToLower || isLoading || !hasMore)
+    // useQuery 的 isLoading 仅首次加载成立, 翻页 / 刷新的请求中状态须用 isFetching 防止并发触发
+    if (!isScrollToLower || isFetching || !hasMore)
       return
 
     setPage(p => p + 1)
-  }, [isScrollToLower, isLoading, page, hasMore])
+  }, [isScrollToLower, isFetching, page, hasMore])
 
   // 下拉刷新, 重置到第一页并强制重新请求, 刷新态在请求真正结束后由 onSettled 复位
   const handleRefresh = () => {
@@ -140,7 +141,7 @@ export default function FeedbackHistory() {
           {list.length === 0
             ? (
                 <View className="h-l-sm flex center text-lg">
-                  {isLoading ? "加载中" : error ? "加载失败" : "暂无反馈记录"}
+                  {isFetching ? "加载中" : error ? "加载失败" : "暂无反馈记录"}
                 </View>
               )
             : list.map((item) => {
