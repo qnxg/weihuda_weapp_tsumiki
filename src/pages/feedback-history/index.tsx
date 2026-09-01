@@ -146,7 +146,7 @@ export default function FeedbackHistory() {
             : list.map((item) => {
                 const src = imgSrc(item.img)
                 return (
-                  <Card key={`${item.id}`}>
+                  <Card key={item.id}>
                     <CardContent className="flex flex-col gap p">
                       <View className="text-lg">{item.description}</View>
 
