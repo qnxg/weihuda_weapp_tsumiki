@@ -256,7 +256,8 @@ export default function Feedback() {
           >
             <View
               className="flex flex-col gap p"
-              style={{ paddingBottom: "80px" }}
+              /* 弹窗底部留空, 使内容避开导航条等系统元素, 也优化内容观感 */
+              style={{ paddingBottom: "40px" }}
             >
               <View style={{ whiteSpace: "pre-wrap" }}>{selectedFaq.a}</View>
             </View>
