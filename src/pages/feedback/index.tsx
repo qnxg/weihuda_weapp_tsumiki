@@ -1,6 +1,6 @@
 import type { FaqObject } from "@/pages/feedback/components/faq-data"
 import { Image, Input, Textarea, View } from "@tarojs/components"
-import Taro, { useRouter } from "@tarojs/taro"
+import Taro from "@tarojs/taro"
 import { useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -8,6 +8,7 @@ import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { Overlay, Popup } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
+import { useAuth } from "@/hooks/auth"
 import { Faq } from "@/pages/feedback/components/faq"
 import CheckIcon from "@/static/common/check.svg"
 import GroupQrcode from "@/static/feedback/group-qrcode.png"
@@ -17,13 +18,14 @@ import { navigate } from "@/utils/navigate"
 /**
  * @description 意见反馈页
  * - 已登录: 联系方式(选填) + 描述(必填) + 图片(选填)
- * - 未登录(noAuth=1): 学号(必填) + 联系方式(必填) + 描述(必填), 不支持图片
+ * - 未登录(登录态恢复失败): 学号(必填) + 联系方式(必填) + 描述(必填), 不支持图片
  *
  * TODO: 已登录的图片上传逻辑暂未处理, 目前选择图片仅供 UI 行为预览
  */
 export default function Feedback() {
-  const router = useRouter()
-  const noAuth = router.params.noAuth === "1"
+  const { user, isLoading } = useAuth()
+  // 登录态恢复完成后若 user 仍为 null, 视为未登录, 切换为未登录表单
+  const noAuth = !isLoading && user === null
 
   const [stuId, setStuId] = useState("")
   const [contact, setContact] = useState("")
@@ -93,7 +95,7 @@ export default function Feedback() {
 
   return (
     <Page>
-      <PageContent className="h-full">
+      <PageContent className="h-full" isLoading={isLoading}>
         {submitted
           ? (
               <View className="p-3xl flex flex-col items-center justify-center gap">
