@@ -76,7 +76,7 @@ export default function FeedbackHistory() {
     }
   }, [])
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, error } = useQuery(
     () => api.feedback.get({ page, size: 20 }),
     [page, refreshKey],
     {
@@ -140,7 +140,7 @@ export default function FeedbackHistory() {
           {list.length === 0
             ? (
                 <View className="h-l-sm flex center text-lg">
-                  {isLoading ? "加载中" : "暂无反馈记录"}
+                  {isLoading ? "加载中" : error ? "加载失败" : "暂无反馈记录"}
                 </View>
               )
             : list.map((item) => {
