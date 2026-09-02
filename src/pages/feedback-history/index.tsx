@@ -117,9 +117,11 @@ export default function FeedbackHistory() {
   }, [isScrollToLower, isFetching, page, hasMore])
 
   // 下拉刷新, 重置到第一页并强制重新请求, 刷新态在请求真正结束后由 onSettled 复位
+  // 触底标志必须一并复位: 加载到底后标志悬挂为 true, 刷新后 effect 会带着旧标志直接翻到第 2 页, 丢失第 1 页数据
   const handleRefresh = () => {
     refreshingRef.current = true
     setIsRefreshing(true)
+    setIsScrollToLower(false)
     prevPageRef.current = 1
     listLenRef.current = 0
     setList([])
