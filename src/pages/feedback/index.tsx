@@ -109,17 +109,19 @@ export default function Feedback() {
       <PageContent className="h-full" isLoading={isLoading}>
         {isSuccess
           ? (
-              <View className="p-3xl flex flex-col items-center justify-center gap">
-                <View className="size-l-md rounded-full bg-success flex center">
-                  <Icon
-                    className="size-xl"
-                    src={CheckIcon}
-                  />
+              <View className="p-3xl flex flex-col items-center justify-center gap-2xl">
+                <View className="flex flex-col items-center gap">
+                  <View className="size-l-md rounded-full bg-success flex center">
+                    <Icon
+                      className="size-xl"
+                      src={CheckIcon}
+                    />
+                  </View>
+                  <View className="text-xl text-bold">反馈提交成功</View>
+                  <View className="text-muted text-center">感谢你的反馈, 我们会尽快查看并处理</View>
                 </View>
-                <View className="text-xl text-bold">反馈提交成功</View>
-                <View className="text-muted text-center">感谢你的反馈, 我们会尽快查看并处理</View>
 
-                <Card className="w-full my-md">
+                <Card className="w-full">
                   <CardContent className="flex flex-col items-center gap-md p">
                     <View className="text-lg text-bold">加入交流群</View>
                     <View className="text-muted text-md">欢迎加群交流, 让问题反馈更快解决</View>
