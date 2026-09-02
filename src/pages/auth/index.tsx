@@ -32,12 +32,12 @@ export default function Auth() {
         </TabList>
       </Tabs>
 
-      <PageContent fixed className="h-full">
+      <PageContent fixed className="h-full flex flex-col gap-2xl">
         {tab === "login"
           ? <Login />
           : <TFA phone={router.params.phone ?? ""} />}
 
-        <View className="flex center my-2xl">
+        <View className="flex center">
           <View
             className="text-primary underline"
             onClick={() => navigate("/pages/feedback/index")}
