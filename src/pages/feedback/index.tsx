@@ -1,4 +1,4 @@
-import type { FAQItem } from "@/pages/feedback/components/faq-data"
+import type { FAQItem } from "@/pages/feedback/config/faq"
 import { Image, Input, Textarea, View } from "@tarojs/components"
 import { chooseImage, hideLoading, navigateBack, previewImage, showLoading, showToast } from "@tarojs/taro"
 import { useState } from "react"
@@ -23,7 +23,6 @@ import { navigate } from "@/utils/navigate"
  *
  * TODO: 已登录的图片上传逻辑暂未处理, 目前选择图片仅供 UI 行为预览
  */
-
 /**
  * @description 反馈提交参数, 字段在提交前已 trim
  */
@@ -114,6 +113,8 @@ export default function Feedback() {
                   <View className="size-l-md rounded-full bg-success flex center">
                     <Icon
                       className="size-xl"
+                      // 白勾放在有色底上, 不能被 auto 主题的深色模式反色, 对齐 checkbox 的写法
+                      theme="light"
                       src={CheckIcon}
                     />
                   </View>
@@ -183,12 +184,14 @@ export default function Feedback() {
                       className="w-full"
                       value={desc}
                       placeholder="请填写描述信息 (必填)"
+                      // 微信默认 maxlength 为 140, 不设会静默截断长文案
+                      maxlength={-1}
                       style={{ minHeight: "100px" }}
                       onInput={e => setDesc(e.detail.value)}
                     />
                     {!noAuth && (
                       <View
-                        className="flex flex-col items-center justify-center gap-xs rounded-sm p border border-divider"
+                        className="flex flex-col items-center justify-center gap-xs rounded-sm p border-divider"
                         style={{ borderStyle: "dashed" }}
                         onClick={() => handleChooseImg()}
                       >

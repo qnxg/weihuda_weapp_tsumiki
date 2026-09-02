@@ -1,7 +1,7 @@
-import type { FAQItem } from "@/pages/feedback/components/faq-data"
+import type { FAQItem } from "@/pages/feedback/config/faq"
 import { Option, Options } from "@/components/options"
 import { TabContent, TabItem, TabList, Tabs, TabTrigger } from "@/components/tabs"
-import { FAQS } from "@/pages/feedback/components/faq-data"
+import { FAQS } from "@/pages/feedback/config/faq"
 
 /**
  * @description 常见问题组件, 用 Tabs 分类展示问题列表, 点击条目后通过回调触发展示答案
