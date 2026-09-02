@@ -132,7 +132,7 @@ export default function Feedback() {
           : (
               <View className="flex flex-col gap p">
                 {!noAuth && (
-                  <View className="bg-subtle rounded-sm p text-sm">
+                  <View className="bg-blue rounded-sm p">
                     <View className="text-primary">优质反馈或建议被采纳后, 可获得一定的积分奖励</View>
                   </View>
                 )}
