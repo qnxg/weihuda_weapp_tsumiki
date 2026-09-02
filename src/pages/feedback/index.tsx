@@ -65,7 +65,7 @@ export default function Feedback() {
       },
       onError: () => {
         hideLoading()
-        void showToast({ title: "提交失败", icon: "none" })
+        void showToast({ title: "提交失败", icon: "error" })
       },
     },
   )
@@ -84,15 +84,15 @@ export default function Feedback() {
       return
 
     if (noAuth && stuId.trim().length === 0) {
-      void showToast({ title: "请填写学号", icon: "none" })
+      void showToast({ title: "请填写学号", icon: "error" })
       return
     }
     if (noAuth && contact.trim().length === 0) {
-      void showToast({ title: "请填写联系方式", icon: "none" })
+      void showToast({ title: "请填写联系方式", icon: "error" })
       return
     }
     if (desc.trim().length === 0) {
-      void showToast({ title: "请填写反馈内容", icon: "none" })
+      void showToast({ title: "请填写反馈内容", icon: "error" })
       return
     }
 
