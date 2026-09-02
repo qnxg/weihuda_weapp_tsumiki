@@ -1,6 +1,6 @@
 import type { FeedbackItem, FeedbackStatus } from "@/apis/models/feedback"
 import { View } from "@tarojs/components"
-import Taro from "@tarojs/taro"
+import { previewImage } from "@tarojs/taro"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -165,7 +165,7 @@ export default function FeedbackHistory() {
                       {src && (
                         <View
                           className="flex center bg-subtle rounded-sm p"
-                          onClick={() => void Taro.previewImage({ urls: [src] })}
+                          onClick={() => void previewImage({ urls: [src] })}
                         >
                           <View className="text-sm text-primary">查看图片</View>
                         </View>
