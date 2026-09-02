@@ -28,7 +28,7 @@
 - `text-primary`: 主要文本颜色, 适用于强调文本 (为主题蓝色)
 - `text-success`: 成功状态色 (`#00aa00`, 深浅一致)
 - `text-danger`: 危险状态色 (`#dd0000`, 深浅一致)
-- `text-warning`: 警告状态色 (`#ff9900`, 深浅一致, 当前无消费方, 预留)
+- `text-warning`: 警告状态色 (`#ff9900`, 深浅一致)
 - `text-blue` / `text-orange` / `text-cyan` / `text-purple` / `text-amber` / `text-pink` / `text-indigo` / `text-magenta` / `text-violet` / `text-gold`: 按色名预设色 (与 `config/color.ts` 的 `FONT_COLOR` 同源)
 
 #### 背景颜色 `.bg`
