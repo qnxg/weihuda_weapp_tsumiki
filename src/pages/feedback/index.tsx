@@ -1,6 +1,6 @@
-import type { FaqObject } from "@/pages/feedback/components/faq-data"
+import type { FAQItem } from "@/pages/feedback/components/faq-data"
 import { Image, Input, Textarea, View } from "@tarojs/components"
-import Taro from "@tarojs/taro"
+import { chooseImage, hideLoading, navigateBack, previewImage, showLoading, showToast } from "@tarojs/taro"
 import { useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
@@ -9,6 +9,7 @@ import { MyButton } from "@/components/my-button"
 import { Overlay, Popup } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { useAuth } from "@/hooks/auth"
+import { useMutation } from "@/hooks/request"
 import { Faq } from "@/pages/feedback/components/faq"
 import CheckIcon from "@/static/common/check.svg"
 import GroupQrcode from "@/static/feedback/group-qrcode.png"
@@ -22,6 +23,16 @@ import { navigate } from "@/utils/navigate"
  *
  * TODO: 已登录的图片上传逻辑暂未处理, 目前选择图片仅供 UI 行为预览
  */
+
+/**
+ * @description 反馈提交参数, 字段在提交前已 trim
+ */
+interface FeedbackPayload {
+  stuId: string
+  contact: string
+  description: string
+}
+
 export default function Feedback() {
   const { user, isLoading } = useAuth()
   // 登录态恢复完成后若 user 仍为 null, 视为未登录, 切换为未登录表单
@@ -32,13 +43,35 @@ export default function Feedback() {
   const [desc, setDesc] = useState("")
   // TODO: 选择的本地图片临时路径, 仅用于预览, 上传功能待接入
   const [imgPath, setImgPath] = useState<string | null>(null)
-  // 是否已提交成功, 成功后切换到成功页
-  const [submitted, setSubmitted] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [selectedFaq, setSelectedFaq] = useState<FaqObject | null>(null)
+  const [selectedFaq, setSelectedFaq] = useState<FAQItem | null>(null)
+
+  // 提交状态机: idle(表单) / pending(提交中) / success(成功页) / error(表单 + 错误提示), 直接由 mutation 请求态派生
+  const { mutate: submit, isPending, isSuccess } = useMutation(
+    (payload: FeedbackPayload) => noAuth
+      ? api.feedback.postNoAuth({
+          stu_id: payload.stuId,
+          contact: payload.contact,
+          description: payload.description,
+        })
+      // TODO: 图片上传待接入. 接入后先 api.img.upload(imgPath) 获取图片 id 再作为 img 提交
+      : api.feedback.post({
+          contact: payload.contact,
+          description: payload.description,
+          img: null,
+        }),
+    {
+      onSuccess: () => {
+        hideLoading()
+      },
+      onError: () => {
+        hideLoading()
+        void showToast({ title: "提交失败", icon: "none" })
+      },
+    },
+  )
 
   const handleChooseImg = () => {
-    void Taro.chooseImage({
+    void chooseImage({
       count: 1,
       success(res) {
         setImgPath(res.tempFilePaths[0] ?? null)
@@ -46,57 +79,35 @@ export default function Feedback() {
     })
   }
 
-  const handleSubmit = async () => {
-    if (submitting)
+  const handleSubmit = () => {
+    if (isPending)
       return
 
     if (noAuth && stuId.trim().length === 0) {
-      await Taro.showToast({ title: "请填写学号", icon: "none" })
+      void showToast({ title: "请填写学号", icon: "none" })
       return
     }
     if (noAuth && contact.trim().length === 0) {
-      await Taro.showToast({ title: "请填写联系方式", icon: "none" })
+      void showToast({ title: "请填写联系方式", icon: "none" })
       return
     }
     if (desc.trim().length === 0) {
-      await Taro.showToast({ title: "请填写反馈内容", icon: "none" })
+      void showToast({ title: "请填写反馈内容", icon: "none" })
       return
     }
 
-    setSubmitting(true)
-    await Taro.showLoading({ title: "正在提交" })
-    try {
-      if (noAuth) {
-        await api.feedback.postNoAuth({
-          stu_id: stuId.trim(),
-          contact: contact.trim(),
-          description: desc.trim(),
-        })
-      }
-      else {
-        // TODO: 图片上传待接入. 接入后先 api.img.upload(imgPath) 获取图片 id 再作为 img 提交
-        await api.feedback.post({
-          contact: contact.trim(),
-          description: desc.trim(),
-          img: null,
-        })
-      }
-      Taro.hideLoading()
-      setSubmitted(true)
-    }
-    catch {
-      Taro.hideLoading()
-      await Taro.showToast({ title: "提交失败", icon: "none" })
-    }
-    finally {
-      setSubmitting(false)
-    }
+    void showLoading({ title: "正在提交" })
+    submit({
+      stuId: stuId.trim(),
+      contact: contact.trim(),
+      description: desc.trim(),
+    })
   }
 
   return (
     <Page>
       <PageContent className="h-full" isLoading={isLoading}>
-        {submitted
+        {isSuccess
           ? (
               <View className="p-3xl flex flex-col items-center justify-center gap">
                 <View className="size-l-md rounded-full bg-success flex center">
@@ -123,7 +134,7 @@ export default function Feedback() {
                 <MyButton
                   active
                   className="w-full p flex center text-xl rounded-sm"
-                  onClick={() => void Taro.navigateBack()}
+                  onClick={() => void navigateBack()}
                 >
                   完成
                 </MyButton>
@@ -200,7 +211,7 @@ export default function Feedback() {
                                   style={{ top: "12px", right: "12px" }}
                                   onClick={(e) => {
                                     e.stopPropagation()
-                                    void Taro.previewImage({ urls: [imgPath] })
+                                    void previewImage({ urls: [imgPath] })
                                   }}
                                 >
                                   <View className="text-reverse text-md">查看原图</View>
@@ -224,8 +235,8 @@ export default function Feedback() {
                 <MyButton
                   active
                   className="p flex center text-xl rounded-sm"
-                  disabled={submitting}
-                  onClick={() => void handleSubmit()}
+                  disabled={isPending}
+                  onClick={handleSubmit}
                 >
                   提交
                 </MyButton>
