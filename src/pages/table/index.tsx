@@ -162,76 +162,74 @@ export default function Table() {
       />
 
       {/* 覆盖层 */}
-      {overlayContentKey && (
-        <Overlay>
-          {overlayContentKey === "detail" && activeCell && (
-            <Detail
-              cell={activeCell}
-              week={week}
-              semester={semester}
-              onClose={() => {
-                setActiveCell(null)
-                setOverlayContentKey(null)
-              }}
-              onCustomDelete={() => {
-                void refetch()
-                setActiveCell(null)
-                setOverlayContentKey(null)
-              }}
-              onCustomEdit={(course) => {
-                setActiveCustomCourse(course)
-                setOverlayContentKey("custom")
-              }}
-            />
-          )}
-          {overlayContentKey === "options" && (
-            <CourseOptions
-              enable={!isUpdating}
-              semester={semester}
-              week={week}
-              weeks={semester ? semester.weeks : 1}
-              tableSetting={settings.tableSetting ?? SETTINGS.tableSetting!}
-              onSemesterChange={(semester) => {
-                setDisplaySemester(semester)
-              }}
-              onWeekChange={(week) => {
-                setWeek(week)
-              }}
-              onTableSettingChange={setting => updateTableSetting(setting)}
-              onClose={() => {
-                setOverlayContentKey(null)
-              }}
-            />
-          )}
-          {overlayContentKey === "extra" && (
-            <ExtraCourses
-              semester={semester}
-              onClose={() => {
-                setOverlayContentKey(null)
-              }}
-            />
-          )}
-          {overlayContentKey === "custom" && (
-            <CustomCourse
-              weeks={semester ? semester.weeks : 1}
-              cell={activeCell}
-              course={activeCustomCourse}
-              semester={semester}
-              onCancel={() => {
-                setActiveCell(null)
-                setActiveCustomCourse(null)
-                setOverlayContentKey(null)
-              }}
-              onConfirm={() => {
-                void refetch()
-                setActiveCell(null)
-                setActiveCustomCourse(null)
-                setOverlayContentKey(null)
-              }}
-            />
-          )}
-        </Overlay>
-      )}
+      <Overlay active={overlayContentKey !== null}>
+        {overlayContentKey === "detail" && activeCell && (
+          <Detail
+            cell={activeCell}
+            week={week}
+            semester={semester}
+            onClose={() => {
+              setActiveCell(null)
+              setOverlayContentKey(null)
+            }}
+            onCustomDelete={() => {
+              void refetch()
+              setActiveCell(null)
+              setOverlayContentKey(null)
+            }}
+            onCustomEdit={(course) => {
+              setActiveCustomCourse(course)
+              setOverlayContentKey("custom")
+            }}
+          />
+        )}
+        {overlayContentKey === "options" && (
+          <CourseOptions
+            enable={!isUpdating}
+            semester={semester}
+            week={week}
+            weeks={semester ? semester.weeks : 1}
+            tableSetting={settings.tableSetting ?? SETTINGS.tableSetting!}
+            onSemesterChange={(semester) => {
+              setDisplaySemester(semester)
+            }}
+            onWeekChange={(week) => {
+              setWeek(week)
+            }}
+            onTableSettingChange={setting => updateTableSetting(setting)}
+            onClose={() => {
+              setOverlayContentKey(null)
+            }}
+          />
+        )}
+        {overlayContentKey === "extra" && (
+          <ExtraCourses
+            semester={semester}
+            onClose={() => {
+              setOverlayContentKey(null)
+            }}
+          />
+        )}
+        {overlayContentKey === "custom" && (
+          <CustomCourse
+            weeks={semester ? semester.weeks : 1}
+            cell={activeCell}
+            course={activeCustomCourse}
+            semester={semester}
+            onCancel={() => {
+              setActiveCell(null)
+              setActiveCustomCourse(null)
+              setOverlayContentKey(null)
+            }}
+            onConfirm={() => {
+              void refetch()
+              setActiveCell(null)
+              setActiveCustomCourse(null)
+              setOverlayContentKey(null)
+            }}
+          />
+        )}
+      </Overlay>
     </Page>
   )
 }

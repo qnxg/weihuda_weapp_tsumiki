@@ -204,14 +204,14 @@ export default function Grade() {
       </PageContent>
 
       {/* 覆盖层 */}
-      {jx0404id && (
-        <Overlay>
+      <Overlay active={jx0404id !== null}>
+        {jx0404id && (
           <Detail
             jx0404id={jx0404id}
             onClose={() => setJX0404id(null)}
           />
-        </Overlay>
-      )}
+        )}
+      </Overlay>
     </Page>
   )
 }
