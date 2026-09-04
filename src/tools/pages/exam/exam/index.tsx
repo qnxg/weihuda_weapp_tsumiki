@@ -69,39 +69,37 @@ export default function ExamArrange() {
         )}
       </PageContent>
 
-      {overlayContentKey && (
-        <Overlay>
-          {overlayContentKey === "detail" && activeExam && (
-            <Detail
-              exam={activeExam}
-              onClose={() => {
-                setActiveExam(null)
-                setOverlayContentKey(null)
-              }}
-              onDelete={() => {
-                setActiveExam(null)
-                setOverlayContentKey(null)
-                void refetch()
-              }}
-              onEdit={() => setOverlayContentKey("custom")}
-            />
-          )}
-          {overlayContentKey === "custom" && (
-            <Custom
-              exam={activeExam}
-              onCancel={() => {
-                setActiveExam(null)
-                setOverlayContentKey(null)
-              }}
-              onConfirm={() => {
-                setActiveExam(null)
-                setOverlayContentKey(null)
-                void refetch()
-              }}
-            />
-          )}
-        </Overlay>
-      )}
+      <Overlay active={overlayContentKey !== null}>
+        {overlayContentKey === "detail" && activeExam && (
+          <Detail
+            exam={activeExam}
+            onClose={() => {
+              setActiveExam(null)
+              setOverlayContentKey(null)
+            }}
+            onDelete={() => {
+              setActiveExam(null)
+              setOverlayContentKey(null)
+              void refetch()
+            }}
+            onEdit={() => setOverlayContentKey("custom")}
+          />
+        )}
+        {overlayContentKey === "custom" && (
+          <Custom
+            exam={activeExam}
+            onCancel={() => {
+              setActiveExam(null)
+              setOverlayContentKey(null)
+            }}
+            onConfirm={() => {
+              setActiveExam(null)
+              setOverlayContentKey(null)
+              void refetch()
+            }}
+          />
+        )}
+      </Overlay>
     </Page>
   )
 }

@@ -16,14 +16,17 @@ import "./index.scss"
  * ```
  */
 function Overlay({
+  active,
   children,
 }: Readonly<{
+  active: boolean
   children: ReactNode
 }>) {
   return (
     <View
       className="h-screen w-screen"
       style={{
+        display: active ? "block" : "none",
         position: "fixed",
         zIndex: "9999",
       }}

@@ -236,14 +236,14 @@ export default function PhysicalGrade() {
             )}
       </PageContent>
 
-      {data && showEye && (
-        <Overlay>
+      <Overlay active={data !== null && showEye}>
+        {data && showEye && (
           <Eye
             data={data.eye}
             onClose={() => setShowEye(false)}
           />
-        </Overlay>
-      )}
+        )}
+      </Overlay>
     </Page>
   )
 }

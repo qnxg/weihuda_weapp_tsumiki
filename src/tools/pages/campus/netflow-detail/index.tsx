@@ -170,14 +170,14 @@ export default function NetflowDetail() {
         </View>
       </PageContent>
 
-      {activeItem && (
-        <Overlay>
+      <Overlay active={activeItem !== null}>
+        {activeItem && (
           <Detail
             item={activeItem}
             onClose={() => setActiveItem(null)}
           />
-        </Overlay>
-      )}
+        )}
+      </Overlay>
     </Page>
   )
 }

@@ -26,7 +26,7 @@
   - `Checkbox`: 左侧方框指示选中态, 支持 label / description
 
 - 遮罩组件 `/overlay`: 全屏遮罩层组件
-  - `Overlay`: 遮罩层组件, 全屏 fixed 定位
+  - `Overlay`: 遮罩层组件, 全屏 fixed 定位, 使用 active 标记启用
   - `OverlayMask`: 带遮罩内容展示组件, 支持 loading 状态和 top/center/bottom 三种定位模式
   - `Popup`: 底部弹出式弹窗组件, 集成 Overlay + OverlayMask + ScrollView, 支持滑入动画
 

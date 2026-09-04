@@ -146,14 +146,14 @@ export default function CardBill() {
         </View>
       </PageContent>
 
-      {activeRecord && (
-        <Overlay>
+      <Overlay active={activeRecord !== null}>
+        {activeRecord && (
           <Detail
             record={activeRecord}
             onClose={() => setActiveRecord(null)}
           />
-        </Overlay>
-      )}
+        )}
+      </Overlay>
     </Page>
   )
 }
