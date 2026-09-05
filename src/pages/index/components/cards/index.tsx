@@ -24,7 +24,8 @@ const CARD_CONTENTS: Record<string, ReactNode> = {
   electricity: <Electricity cardKey="electricity" />,
   campus_card: <CampusCard cardKey="campus_card" />,
   tasks: <Tasks cardKey="tasks" />,
-  count_down: <CountDown cardKey="count_down" />,
+  // count_down 无自身请求 (数据来自 useSemester), 不注册刷新, 故无需 cardKey
+  count_down: <CountDown />,
   email: <Email cardKey="email" />,
   grade: <Grade cardKey="grade" />,
 }

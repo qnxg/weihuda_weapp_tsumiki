@@ -1,13 +1,13 @@
 import type { GradeItem } from "@/apis/models/grade"
 import { View } from "@tarojs/components"
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useGrade } from "@/hooks/grade"
 import { useSemester } from "@/hooks/semester"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { IndexCardEmpty } from "@/pages/index/components/cards/index-card-empty"
-import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import { useCardRegistration } from "@/pages/index/hooks/card-loading"
 import GradeIcon from "@/static/index/grade.svg"
 import EmptyIcon from "@/static/index/grade/empty.svg"
 
@@ -57,8 +57,6 @@ export function Grade({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, onCardFinish } = useCardLoading()
-
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
   const { data: grade, isLoading: isGradeLoading, refetch } = useGrade(semester)
 
@@ -66,15 +64,7 @@ export function Grade({
     isSemesterLoading || isGradeLoading
   ), [isSemesterLoading, isGradeLoading])
 
-  useEffect(() => {
-    registerCard(cardKey, refetch)
-  }, [registerCard, refetch, cardKey])
-
-  useEffect(() => {
-    if (!isLoading) {
-      onCardFinish(cardKey)
-    }
-  }, [isLoading, onCardFinish, cardKey])
+  useCardRegistration(cardKey, refetch)
 
   return (
     <Card>

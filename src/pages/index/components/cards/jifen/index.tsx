@@ -1,13 +1,12 @@
 import { View } from "@tarojs/components"
 import { showToast } from "@tarojs/taro"
-import { useEffect } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
 import { MyButton } from "@/components/my-button"
 import { Skeleton } from "@/components/skeleton"
 import { useMutation, useQuery } from "@/hooks/request"
-import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import { useCardRegistration } from "@/pages/index/hooks/card-loading"
 import JifenIcon from "@/static/index/jifen.svg"
 import { cn } from "@/utils/cn"
 
@@ -19,8 +18,6 @@ export function Jifen({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, onCardFinish } = useCardLoading()
-
   const { data, isLoading, refetch } = useQuery(() => api.jifen.get())
 
   const { mutate, isPending } = useMutation(
@@ -58,15 +55,7 @@ export function Jifen({
     mutate()
   }
 
-  useEffect(() => {
-    registerCard(cardKey, refetch)
-  }, [registerCard, refetch, cardKey])
-
-  useEffect(() => {
-    if (!isLoading) {
-      onCardFinish(cardKey)
-    }
-  }, [isLoading, onCardFinish, cardKey])
+  useCardRegistration(cardKey, refetch)
 
   return (
     <Card>

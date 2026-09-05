@@ -14,7 +14,7 @@ import {
 } from "@/pages/index/components/cards/courses/utils/course"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
 import { IndexCardEmpty } from "@/pages/index/components/cards/index-card-empty"
-import { useCardLoading } from "@/pages/index/hooks/card-loading"
+import { useCardRegistration } from "@/pages/index/hooks/card-loading"
 import CoursesIcon from "@/static/index/courses.svg"
 import EmptyIcon from "@/static/index/courses/empty.svg"
 import { cn } from "@/utils/cn"
@@ -136,8 +136,6 @@ export function Courses({
 }: Readonly<{
   cardKey: string
 }>) {
-  const { registerCard, onCardFinish } = useCardLoading()
-
   const { data: semester, isLoading: isSemesterLoading } = useSemester()
   const { data: course, isLoading: isCourseLoading, refetch } = useCourse(semester)
 
@@ -176,15 +174,7 @@ export function Courses({
     }
   }, [course, day, week])
 
-  useEffect(() => {
-    registerCard(cardKey, refetch)
-  }, [registerCard, refetch, cardKey])
-
-  useEffect(() => {
-    if (!isLoading) {
-      onCardFinish(cardKey)
-    }
-  }, [isLoading, onCardFinish, cardKey])
+  useCardRegistration(cardKey, refetch)
 
   return (
     <Card>

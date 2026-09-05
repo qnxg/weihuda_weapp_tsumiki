@@ -4,20 +4,13 @@ import { Card, CardHeader } from "@/components/card"
 import { Skeleton } from "@/components/skeleton"
 import { useSemester } from "@/hooks/semester"
 import { IndexCardContent } from "@/pages/index/components/cards/index-card-content"
-import { useCardLoading } from "@/pages/index/hooks/card-loading"
 import CountDownIcon from "@/static/index/count-down.svg"
 import { getSemesterDateInfo } from "@/utils/semester"
 
 /**
  * @description 假期倒计时
  */
-export function CountDown({
-  cardKey,
-}: Readonly<{
-  cardKey: string
-}>) {
-  const { onCardFinish } = useCardLoading()
-
+export function CountDown() {
   const { data, isLoading } = useSemester()
 
   const [next, setNext] = useState(0)
@@ -28,12 +21,6 @@ export function CountDown({
       setNext(newNext)
     }
   }, [data])
-
-  useEffect(() => {
-    if (!isLoading) {
-      onCardFinish(cardKey)
-    }
-  }, [isLoading, onCardFinish, cardKey])
 
   return (
     <Card>

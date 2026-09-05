@@ -1,45 +1,49 @@
 import type { ReactNode } from "react"
-import { createContext, useCallback, useContext, useMemo, useState } from "react"
+import { createContext, useContext, useMemo } from "react"
 
-export type Refresher = () => void
+/**
+ * @description 卡片刷新函数类型
+ *   兼容 useQuery / useCachedQuery 的 refetch (() => Promise<Response<T>>) 与无返回值的同步刷新函数
+ */
+export type Refresher = () => Promise<unknown> | void
 
 interface CardLoadingContextValue {
-  isLoading: boolean
-  refreshers: Map<string, Refresher>
-  setCount: (count: number | ((prev: number) => number)) => void
-  addRefresher: (key: string, refresher: Refresher) => void
-  removeRefresher: (key: string) => void
+  registerCard: (key: string, fn: Refresher) => void
+  unregisterCard: (key: string) => void
+  getRefreshers: () => Refresher[]
 }
 
 const CardLoadingContext = createContext<CardLoadingContextValue | null>(null)
 
+/**
+ * @description 创建注册表原语; 注册表 Map 由闭包持有, 无组件作用域依赖
+ */
+function createCardLoadingValue(): CardLoadingContextValue {
+  const store = new Map<string, Refresher>()
+
+  return {
+    registerCard: (key, fn) => {
+      store.set(key, fn)
+    },
+    unregisterCard: (key) => {
+      store.delete(key)
+    },
+    getRefreshers: () => Array.from(store.values()),
+  }
+}
+
+/**
+ * @description 首页卡片加载协作 Provider
+ *   - 仅承载注册表原语 (注册 / 注销 / 读取), 刷新编排逻辑在 hooks/card-loading.ts, 遵循状态业务分离
+ *   - value 惰性创建一次且引用永不变化, 注册不触发级联重渲染
+ */
 export function CardLoadingProvider({
   children,
 }: Readonly<{
   children: ReactNode
 }>) {
-  const [count, setCount] = useState(0)
-  const [refreshers, setRefreshers] = useState(() => new Map<string, Refresher>())
-
-  const isLoading = useMemo(() => count > 0, [count])
-
-  const addRefresher = useCallback((key: string, fn: Refresher) =>
-    setRefreshers(p => new Map(p).set(key, fn)), [])
-
-  const removeRefresher = useCallback((key: string) =>
-    setRefreshers((p) => {
-      const next = new Map(p)
-      next.delete(key)
-      return next
-    }), [])
-
-  const value = useMemo(() => ({
-    isLoading,
-    refreshers,
-    setCount,
-    addRefresher,
-    removeRefresher,
-  }), [addRefresher, isLoading, refreshers, removeRefresher])
+  // value 用工厂函数创建, 引用永不变化; 卡片将 registerCard 列入 effect deps, 即使 memo 缓存被重建也会自动重新注册
+  const value = useMemo(createCardLoadingValue, [])
 
   return (
     <CardLoadingContext.Provider value={value}>
