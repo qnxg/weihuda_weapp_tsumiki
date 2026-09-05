@@ -17,13 +17,6 @@ import UploadIcon from "@/static/feedback/upload.svg"
 import { navigate } from "@/utils/navigate"
 
 /**
- * @description 意见反馈页
- * - 已登录: 联系方式(选填) + 描述(必填) + 图片(选填)
- * - 未登录(登录态恢复失败): 学号(必填) + 联系方式(必填) + 描述(必填), 不支持图片
- *
- * TODO: 已登录的图片上传逻辑暂未处理, 目前选择图片仅供 UI 行为预览
- */
-/**
  * @description 反馈提交参数, 字段在提交前已 trim
  */
 interface FeedbackPayload {
@@ -32,6 +25,13 @@ interface FeedbackPayload {
   description: string
 }
 
+/**
+ * @description 意见反馈页
+ * - 已登录: 联系方式(选填) + 描述(必填) + 图片(选填)
+ * - 未登录(登录态恢复失败): 学号(必填) + 联系方式(必填) + 描述(必填), 不支持图片
+ *
+ * TODO: 已登录的图片上传逻辑暂未处理, 目前选择图片仅供 UI 行为预览
+ */
 export default function Feedback() {
   const { user, isLoading } = useAuth()
   // 登录态恢复完成后若 user 仍为 null, 视为未登录, 切换为未登录表单
