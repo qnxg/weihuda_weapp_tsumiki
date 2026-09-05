@@ -1,6 +1,6 @@
 {
   "name": "weihuda_weapp_tsumiki",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@11.10.0",
   "description": "湖南大学微生活小程序前端 Tsumiki 版",

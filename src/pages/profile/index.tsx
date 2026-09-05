@@ -8,8 +8,8 @@ import { Option, Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
 import { useAuth } from "@/hooks/auth"
 import { useQuery } from "@/hooks/request"
+import AboutIcon from "@/static/profile/about.svg"
 import ClearIcon from "@/static/profile/clear.svg"
-import DisclaimersIcon from "@/static/profile/disclaimers.svg"
 import FeedbackIcon from "@/static/profile/feedback.svg"
 import JifenIcon from "@/static/profile/jifen.svg"
 import MessageIcon from "@/static/profile/message.svg"
@@ -17,14 +17,13 @@ import SettingIcon from "@/static/profile/setting.svg"
 import UnbindIcon from "@/static/profile/unbind.svg"
 import { showModal } from "@/utils/modal"
 import { navigate } from "@/utils/navigate"
-import { od } from "@/utils/ohday"
 import { clearAllStorage } from "@/utils/storage"
 
 const options: OptionItem[] = [
   { title: "小程序设置", icon: SettingIcon, to: "/setting/pages/index/index", size: "lg" },
   { title: "消息盒子", icon: MessageIcon, to: "/pages/message/index", size: "lg" },
   { title: "我要反馈", icon: FeedbackIcon, to: "/pages/feedback/index", size: "lg" },
-  { title: "免责声明", icon: DisclaimersIcon, to: "/pages/disclaimers/index", size: "lg" },
+  { title: "关于", icon: AboutIcon, to: "/about/pages/index/index", size: "lg" },
 ]
 
 export default function Profile() {
@@ -136,23 +135,6 @@ export default function Profile() {
               </Options>
             </CardContent>
           </Card>
-
-          <View className="flex flex-col center gap">
-            <View className="flex center text-muted">
-              Version
-              {" "}
-              {Taro.getAppBaseInfo().version}
-            </View>
-            <View className="flex center text-muted">
-              Copyright
-              {" "}
-              &copy;
-              {" "}
-              {`2017-${od().year}`}
-              {" "}
-              易千
-            </View>
-          </View>
         </View>
       </PageContent>
     </Page>

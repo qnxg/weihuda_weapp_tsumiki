@@ -6,7 +6,6 @@ export default defineAppConfig({
     "pages/profile/index",
     // 非 tab 页
     "pages/auth/index",
-    "pages/disclaimers/index",
     "pages/feedback/index",
     "pages/jifen/index",
     "pages/message/index",
@@ -38,6 +37,14 @@ export default defineAppConfig({
         "pages/index-card/index",
         "pages/lab-bind/index",
         "pages/class-table/index",
+      ],
+    },
+    {
+      root: "about",
+      pages: [
+        "pages/index/index",
+        "pages/disclaimers/index",
+        "pages/credit/index",
       ],
     },
   ],
