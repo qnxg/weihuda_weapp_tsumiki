@@ -1,8 +1,10 @@
 name: reviewer
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  # 在找到安全稳定的 reviewer 方案之前, 暂时 disabled
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 # 仅授予必要权限: 读代码, 写 PR 评论, 上传诊断 artifact
 permissions:
