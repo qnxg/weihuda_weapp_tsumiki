@@ -3,14 +3,8 @@ import { View } from "@tarojs/components"
 import { cn } from "@/utils/cn"
 import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
 
-type CardBackground = "primary" | "success" | "warning" | "danger"
-
-const CARD_BACKGROUND_CLASS: Record<CardBackground, string> = {
-  primary: "bg-primary",
-  success: "bg-success",
-  warning: "bg-warning",
-  danger: "bg-danger",
-}
+// 检测 className 是否含 bg-* 背景类, 是则不附加默认 bg, 避免与用户的 bg-* 冲突
+const HAS_BG_CLASS = /(?:^|\s)bg-/
 
 /**
  * @description 卡片组件
@@ -23,21 +17,18 @@ const CARD_BACKGROUND_CLASS: Record<CardBackground, string> = {
  *   </CardContent>
  * </Card>
  * ```
- * @param {CardBackground} [background] - 卡片背景颜色, 未设置时使用默认主题背景
  */
 function Card({
-  background,
   className,
   children,
   ...props
-}: Readonly<{
-  background?: CardBackground
-} & ComponentProps<typeof View>>) {
+}: Readonly<ComponentProps<typeof View>>) {
+  const hasBg = HAS_BG_CLASS.test(className ?? "")
   return (
     <View
       className={cn(
         "p rounded-sm flex flex-col gap",
-        background ? CARD_BACKGROUND_CLASS[background] : "bg",
+        hasBg ? "" : "bg",
         className,
       )}
       {...props}
