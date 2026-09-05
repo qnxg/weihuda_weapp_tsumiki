@@ -1,3 +1,5 @@
+@use "@/assets/css/variables" as *;
+
 @keyframes rockLeft {
   0%,
   100% {
@@ -16,4 +18,15 @@
   50% {
     transform: translateX(100%);
   }
+}
+
+.logo-glow {
+  // 辉光, 等同于浅色模式的 primary
+  $glow: #328ccb;
+
+  box-shadow:
+    0 0 128px rgba($glow, 0.75),
+    0 0 256px rgba($glow, 0.55),
+    0 0 352px rgba($glow, 0.25),
+    0 0 480px rgba($glow, 0.12);
 }
