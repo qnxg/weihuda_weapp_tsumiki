@@ -3,6 +3,9 @@ import { View } from "@tarojs/components"
 import { cn } from "@/utils/cn"
 import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
 
+// 检测 className 是否含 bg-* 背景类, 是则不附加默认 bg, 避免与用户的 bg-* 冲突
+const HAS_BG_CLASS = /(?:^|\s)bg-/
+
 /**
  * @description 卡片组件
  * @example
@@ -20,9 +23,14 @@ function Card({
   children,
   ...props
 }: Readonly<ComponentProps<typeof View>>) {
+  const hasBg = HAS_BG_CLASS.test(className ?? "")
   return (
     <View
-      className={cn("p bg rounded-sm flex flex-col gap", className)}
+      className={cn(
+        "p rounded-sm flex flex-col gap",
+        hasBg ? "" : "bg",
+        className,
+      )}
       {...props}
     >
       {children}

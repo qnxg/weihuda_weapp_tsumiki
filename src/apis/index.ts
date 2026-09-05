@@ -50,6 +50,7 @@ import type {
   JifenGetResponse,
   JifenPostResponse,
 } from "@/apis/models/jifen"
+import type { LabGradeRequest, LabGradeResponse } from "@/apis/models/lab"
 import type { IndexCardSettingRequestData, MeResponse, MeSettingResponse, TableSettingRequestData } from "@/apis/models/me"
 import type {
   MonthNetflowResponse,
@@ -133,6 +134,9 @@ export const api = {
   grade: {
     get: (data: GradeRequest) => request.get<GradeResponse>("/grade", data),
     getDetail: (jx0404id: string) => request.get<GradeDetailResponse>(`/grade/${jx0404id}`),
+  },
+  lab: {
+    grade: (data: LabGradeRequest) => request.get<LabGradeResponse>("/lab/grade", data),
   },
   netflow: {
     get: () => request.get<MonthNetflowResponse>("/netflow"),
