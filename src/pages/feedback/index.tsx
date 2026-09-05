@@ -266,8 +266,8 @@ export default function Feedback() {
             )}
       </PageContent>
 
-      {selectedFaq && (
-        <Overlay>
+      <Overlay active={selectedFaq !== null}>
+        {selectedFaq && (
           <Popup
             isLoading={false}
             title={selectedFaq.q}
@@ -281,8 +281,8 @@ export default function Feedback() {
               <View style={{ whiteSpace: "pre-wrap" }}>{selectedFaq.a}</View>
             </View>
           </Popup>
-        </Overlay>
-      )}
+        )}
+      </Overlay>
     </Page>
   )
 }
