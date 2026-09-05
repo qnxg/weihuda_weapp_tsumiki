@@ -5,7 +5,7 @@
 通用组件位于 `src/compoents/` 下, 当前定义组件有:
 
 - 卡片组件 `/card`: 页面最基础的构建部分之一
-  - `Card`: 基础卡片容器, 支持通过 `background` 设置主题 / 成功 / 警告 / 失败四种语义背景
+  - `Card`: 基础卡片容器
   - `CardHeader`: 卡片头部组件
   - `CardIcon`: 卡片头部的图标组件
   - `CardTitle`: 卡片头部的标题组件
