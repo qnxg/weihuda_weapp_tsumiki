@@ -3,6 +3,15 @@ import { View } from "@tarojs/components"
 import { cn } from "@/utils/cn"
 import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
 
+type CardBackground = "primary" | "success" | "warning" | "danger"
+
+const CARD_BACKGROUND_CLASS: Record<CardBackground, string> = {
+  primary: "bg-primary",
+  success: "bg-success",
+  warning: "bg-warning",
+  danger: "bg-danger",
+}
+
 /**
  * @description 卡片组件
  * @example
@@ -14,7 +23,7 @@ import { CardAction, CardHeader, CardIcon, CardTitle } from "./header"
  *   </CardContent>
  * </Card>
  * ```
- * @param {string} [background] - 背景颜色原子类 token, 未设置时使用默认主题背景
+ * @param {CardBackground} [background] - 卡片背景颜色, 未设置时使用默认主题背景
  */
 function Card({
   background,
@@ -22,13 +31,13 @@ function Card({
   children,
   ...props
 }: Readonly<{
-  background?: string
+  background?: CardBackground
 } & ComponentProps<typeof View>>) {
   return (
     <View
       className={cn(
         "p rounded-sm flex flex-col gap",
-        background ? `bg-${background}` : "bg",
+        background ? CARD_BACKGROUND_CLASS[background] : "bg",
         className,
       )}
       {...props}
