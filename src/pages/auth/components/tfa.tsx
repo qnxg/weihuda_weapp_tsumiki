@@ -117,7 +117,7 @@ export function TFA({
   }, [])
 
   return (
-    <View className="h-full bg-page flex flex-col gap p">
+    <View className="flex flex-col gap p">
       <Card>
         <CardContent className="p flex flex-col gap">
           <View className="text-toned">

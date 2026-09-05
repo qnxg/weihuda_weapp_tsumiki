@@ -1,9 +1,11 @@
+import { View } from "@tarojs/components"
 import { useRouter } from "@tarojs/taro"
 import { useState } from "react"
 import { Page, PageContent } from "@/components/page"
 import { TabList, Tabs, TabTrigger } from "@/components/tabs"
 import { Login } from "@/pages/auth/components/login"
 import { TFA } from "@/pages/auth/components/tfa"
+import { navigate } from "@/utils/navigate"
 
 /**
  * @description 鉴权页 Tab 值
@@ -30,10 +32,19 @@ export default function Auth() {
         </TabList>
       </Tabs>
 
-      <PageContent fixed className="h-full">
+      <PageContent fixed className="h-full flex flex-col gap-2xl">
         {tab === "login"
           ? <Login />
           : <TFA phone={router.params.phone ?? ""} />}
+
+        <View className="flex center">
+          <View
+            className="text-primary underline"
+            onClick={() => navigate("/pages/feedback/index")}
+          >
+            问题反馈
+          </View>
+        </View>
       </PageContent>
     </Page>
   )
