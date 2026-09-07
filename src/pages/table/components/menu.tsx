@@ -25,7 +25,7 @@ export function Menu({
       onClick={() => setIsActive(!isActive)}
       style={{
         // size-xl 一半大小
-        bottom: "40rpx",
+        bottom: "160rpx",
         right: "40rpx",
       }}
     >
