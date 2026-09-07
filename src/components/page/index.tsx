@@ -1,11 +1,13 @@
 import type { ComponentProps, ReactNode } from "react"
 import { ScrollView, View } from "@tarojs/components"
+import { getRoutePath, isTabRoute, NavBar } from "@/components/nav"
 import { PullRefresh } from "@/components/pull-refresh"
 import { cn } from "@/utils/cn"
 import "./index.scss"
 
 /**
- * @description 页面容器组件, 提供基本布局样式, 支持 loading 状态
+ * @description 页面容器组件, 提供基本布局样式, 支持 loading 状态;
+ *  在四个 tab 页上自动挂载自定义悬浮导航栏, 并为底部预留导航栏留白
  */
 function Page({
   children,
@@ -14,8 +16,16 @@ function Page({
   children: ReactNode
   isLoading?: boolean
 }>) {
+  // 当前是否为四个 tab 页之一
+  const isTab = isTabRoute(getRoutePath())
+
   return (
-    <View className="relative w-screen h-screen flex flex-col bg text overflow-hidden">
+    <View
+      className={cn(
+        "relative w-screen h-screen flex flex-col bg text overflow-hidden",
+        isTab && "page-nav",
+      )}
+    >
       {isLoading
         ? (
             <View className="w-full h-full flex center">
@@ -31,6 +41,7 @@ function Page({
             </View>
           )
         : children}
+      {isTab && <NavBar />}
     </View>
   )
 }

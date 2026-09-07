@@ -1,8 +1,6 @@
 import type { ComponentProps } from "react"
 import { View } from "@tarojs/components"
 import Taro, { useRouter } from "@tarojs/taro"
-import { useEffect, useState } from "react"
-
 import { Icon } from "@/components/icon"
 import indexDarkSelected from "@/static/tab/index-dark-selected.png"
 import indexDefault from "@/static/tab/index-default.png"
@@ -17,9 +15,8 @@ import toolkitDarkSelected from "@/static/tab/toolkit-dark-selected.png"
 import toolkitDefault from "@/static/tab/toolkit-default.png"
 import toolkitSelected from "@/static/tab/toolkit-selected.png"
 import { cn } from "@/utils/cn"
+import { getTheme } from "@/utils/theme"
 import "./index.scss"
-
-type NavTheme = "light" | "dark"
 
 interface NavIconMap {
   default: string
@@ -27,52 +24,50 @@ interface NavIconMap {
   dark: string
 }
 
-/** 取当前系统主题, 无 theme 字段时按浅色处理 */
-function getNavTheme(): NavTheme {
-  return Taro.getAppBaseInfo().theme === "dark" ? "dark" : "light"
+/** 四个 tab 页路由表, key 为页面路径, 值为导航栏 key */
+const TAB_ROUTES: Readonly<Record<string, string>> = {
+  "pages/index/index": "index",
+  "pages/toolkit/index": "toolkit",
+  "pages/table/index": "table",
+  "pages/profile/index": "profile",
+}
+
+/** 取当前页面路径, 优先 getCurrentPages 的 route, 缺失时兜底传入的 path */
+function getRoutePath(fallback?: string): string {
+  const pages = Taro.getCurrentPages()
+  const current = pages.at(-1)
+  return typeof current === "object" && current !== null
+    ? (current.route ?? fallback ?? "")
+    : (fallback ?? "")
+}
+
+/** 是否为四个 tab 页之一 */
+function isTabRoute(route: string): boolean {
+  return route in TAB_ROUTES
 }
 
 /**
  * @description 自定义悬浮药丸导航栏 (替代原生 tabBar)
  *  固定于底部中央, 半透明表面 + 细边框 + 受控阴影.
- *  仅用于四个 tab 页: 首页 / 工具箱 / 课表 / 我的
+ *  仅用于四个 tab 页: 首页 / 工具箱 / 课表 / 我的, 由 Page 统一挂载,
+ *  非 tab 页面不渲染.
  *  图标复用 `src/static/tab/` 的原生 tabBar 图标, 激活态按主题切换 selected / dark-selected.
  * @example
  * ```tsx
  * <Page>
  *   ... 页面内容 ...
- *   <NavBar />
  * </Page>
  * ```
  */
 function NavBar({ className }: Readonly<{ className?: string } & Pick<ComponentProps<typeof View>, "style">>) {
   const router = useRouter()
-  const [active, setActive] = useState("index")
-  const [theme, setTheme] = useState<NavTheme>(getNavTheme)
+  const active = TAB_ROUTES[getRoutePath(router.path)]
+  // 微信小程序主题在启动时固定, 无需监听运行时切换
+  const { isDark } = getTheme()
 
-  useEffect(() => {
-    const handleThemeChange = ({ theme }: { theme: NavTheme }) => {
-      setTheme(theme)
-    }
-    Taro.onThemeChange(handleThemeChange)
-    return () => Taro.offThemeChange(handleThemeChange)
-  }, [])
-
-  useEffect(() => {
-    const pages = Taro.getCurrentPages()
-    const current = pages.at(-1)
-    const route = typeof current === "object" && current !== null
-      ? (current.route ?? router.path ?? "")
-      : (router.path ?? "")
-    if (route.includes("toolkit"))
-      setActive("toolkit")
-    else if (route.includes("table"))
-      setActive("table")
-    else if (route.includes("profile"))
-      setActive("profile")
-    else
-      setActive("index")
-  }, [router.path])
+  // 非 tab 页不渲染
+  if (!active)
+    return null
 
   const items: { key: string, label: string, icons: NavIconMap, to: string }[] = [
     {
@@ -106,7 +101,7 @@ function NavBar({ className }: Readonly<{ className?: string } & Pick<ComponentP
       {items.map((item) => {
         const isActive = active === item.key
         const iconSrc = isActive
-          ? (theme === "dark" ? item.icons.dark : item.icons.light)
+          ? (isDark ? item.icons.dark : item.icons.light)
           : item.icons.default
         return (
           <View
@@ -132,4 +127,4 @@ function NavBar({ className }: Readonly<{ className?: string } & Pick<ComponentP
   )
 }
 
-export { NavBar }
+export { getRoutePath, isTabRoute, NavBar, TAB_ROUTES }

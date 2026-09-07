@@ -4,7 +4,6 @@ import Taro, { clearStorageSync, reLaunch } from "@tarojs/taro"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
-import { NavBar } from "@/components/nav"
 import { Option, Options } from "@/components/options"
 import { Page, PageContent } from "@/components/page"
 import { useAuth } from "@/hooks/auth"
@@ -68,11 +67,7 @@ export default function Profile() {
   return (
     <Page>
       <PageContent fixed className="h-full">
-        {/* 底部留白, 避免内容被悬浮导航栏遮挡 */}
-        <View
-          className="h-full flex flex-col gap p"
-          style={{ paddingBottom: "180rpx" }}
-        >
+        <View className="h-full flex flex-col gap p">
           <Card>
             <CardContent className="flex gap p">
               <View className="size-l-xs rounded-full bg-primary flex center text-2xl text-reverse">
@@ -142,8 +137,6 @@ export default function Profile() {
           </Card>
         </View>
       </PageContent>
-
-      <NavBar />
     </Page>
   )
 }

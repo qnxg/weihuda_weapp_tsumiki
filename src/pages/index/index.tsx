@@ -1,7 +1,5 @@
 import type { CardItem } from "@/pages/index/components/cards"
 
-import { View } from "@tarojs/components"
-import { NavBar } from "@/components/nav"
 import { Page, PageContent } from "@/components/page"
 import { useSetting } from "@/hooks/setting"
 import { CardList } from "@/pages/index/components/card-list"
@@ -28,13 +26,8 @@ function IndexContent() {
         onRefresh={triggerRefresh}
         isLoading={isLoading}
       >
-        {/* 底部留白, 避免内容被悬浮导航栏遮挡 */}
-        <View style={{ paddingBottom: "180rpx" }}>
-          <CardList cards={displayCards} />
-        </View>
+        <CardList cards={displayCards} />
       </PageContent>
-
-      <NavBar />
     </Page>
   )
 }

@@ -7,3 +7,9 @@
     transform: rotate(360deg);
   }
 }
+
+// tab 页: 底部预留悬浮导航栏的留白, 避免内容被遮挡
+.page-nav {
+  box-sizing: border-box;
+  padding-bottom: 180rpx;
+}
