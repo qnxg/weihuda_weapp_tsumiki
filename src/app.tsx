@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react"
-import Taro, { setTabBarItem, useLaunch } from "@tarojs/taro"
+import Taro, { hideTabBar, setTabBarItem, useLaunch } from "@tarojs/taro"
 
 import { AuthProvider } from "@/contexts/auth"
 import { SemesterProvider } from "@/contexts/semester"
@@ -36,6 +36,8 @@ export default function App({
   children,
 }: PropsWithChildren<any>) {
   useLaunch(() => {
+    // 原生 tabBar 由自定义悬浮导航栏替代, 仅保留配置以支持 switchTab
+    void hideTabBar({ animation: false })
     const theme = Taro.getAppBaseInfo().theme || "light"
     updateTabBarIcons(theme as "light" | "dark")
     Taro.onThemeChange(({ theme }) => {

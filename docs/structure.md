@@ -107,6 +107,9 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 - 工具箱 `toolkit`: 各类工具页入口聚合
 - 课表 `table`: 课表展示与管理
 - 我的 `profile`: 个人中心
+
+> 注: 4 个 tab 页底部由 `src/components/nav/` 的自定义悬浮导航栏替代原生 tabBar; 原生 tabBar 配置仍保留在 `app.config.ts`, 仅用于支持 `switchTab`, 运行时经 `hideTabBar` 隐藏. `src/static/tab/` 的图标 (default / selected / dark-selected) 被悬浮导航栏复用.
+
 - 登录 `auth`: 账号密码登录与双因子认证
 - 反馈 `feedback`: 意见反馈 (尚未完成)
 - 积分中心 `jifen`: 积分查询与兑换
@@ -150,7 +153,7 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 
 - 页面专用图标放在与页面路径同构的子目录下, 即 `src/static/<页面路径>/`. 例如课表页 `src/pages/table/` 的图标在 `src/static/table/`, 课表设置页 `src/setting/pages/class-table/` 的图标在 `src/static/setting/class-table/`.
 - 首页卡片等多层级页面同理逐层对应, 如 `src/static/index/courses/` 对应首页课程卡片.
-- 跨页面共享的资源单独归类: `src/static/common/` 放通用图标 (如 `to.svg`, `close.svg`), `src/static/tab/` 放 TabBar 图标.
+- 跨页面共享的资源单独归类: `src/static/common/` 放通用图标 (如 `to.svg`, `close.svg`), `src/static/tab/` 放 tab 图标 (原原生 tabBar 图标, 同时供悬浮导航栏复用).
 - 即使多个页面复用同一图标, 也各自在对应目录保留一份副本 (而非跨页面直接引用), 以维持 `按页聚合` 的结构一致性.
 
 图标经 `@/static/*` 路径别名以 ES Module 方式导入, 再传入 `src/components/icon/` 的 `Icon` 组件渲染:

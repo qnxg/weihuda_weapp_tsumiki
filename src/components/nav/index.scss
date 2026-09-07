@@ -1,0 +1,90 @@
+// 悬浮药丸导航栏样式 (适配原项目主题变量)
+.nav-float {
+  position: fixed;
+  bottom: 32rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 640rpx;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(50, 140, 203, 0.2);
+  box-shadow: 0 10rpx 36rpx rgba(0, 0, 0, 0.18);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 12rpx 16rpx;
+}
+
+@media (prefers-color-scheme: dark) {
+  .nav-float {
+    background-color: rgba(36, 36, 36, 0.85);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10rpx 36rpx rgba(0, 0, 0, 0.4);
+  }
+}
+
+.nav-item {
+  // 固定宽度, 保证 4 个 tab 的选中药丸一致 (标签文字长度不同)
+  box-sizing: border-box;
+  width: 112rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  padding: 8rpx 26rpx;
+  border-radius: 9999px;
+  // 松手回弹用 back 曲线, 略带过冲
+  transition:
+    background-color 0.2s ease,
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-item-pressed {
+  // 按下缩小用快速过渡, 回弹曲线由 .nav-item 上的 transition 承担
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  transform: scale(0.93);
+}
+
+.nav-item-active {
+  background-color: rgba(50, 140, 203, 0.16);
+}
+
+.nav-icon {
+  opacity: 0.9;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.nav-icon-active {
+  opacity: 1;
+  transform: scale(1.06);
+  // 极淡蓝光, 仅焦点图标
+  filter: drop-shadow(0 0 12rpx rgba(50, 140, 203, 0.35));
+}
+
+.nav-label {
+  font-size: 18rpx;
+  letter-spacing: 0.14em;
+  color: var(--text-color-muted);
+  transition: color 0.2s ease;
+}
+
+.nav-label-active {
+  color: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-item,
+  .nav-item-pressed,
+  .nav-icon,
+  .nav-label {
+    transition: none;
+  }
+}

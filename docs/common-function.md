@@ -47,6 +47,9 @@
   - `TabContent`: 标签页内容容器组件
   - `TabItem`: 标签页内容项, 根据 activeTab 匹配显示
 
+- 悬浮导航栏组件 `/nav`: 自定义悬浮药丸导航栏 (替代原生 tabBar)
+  - `NavBar`: 固定于底部中央的悬浮导航栏, 用于 4 个 tab 页 (首页 / 工具箱 / 课表 / 我的) 切换; 图标复用 `src/static/tab/` 原 tab 图标, 激活态按系统主题切换 selected / dark-selected
+
 ## 通用普通函数
 
 通用函数位于 `src/utils/` 和 `src/libs/` 下, 其中较复杂内容放置在 `src/libs/` 下, 简单内容放置在 `src/utils/` 下, 当前定义函数有:

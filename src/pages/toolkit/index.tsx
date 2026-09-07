@@ -1,5 +1,6 @@
 import type { Item } from "@/pages/toolkit/components/section"
 import { View } from "@tarojs/components"
+import { NavBar } from "@/components/nav"
 import { Page, PageContent } from "@/components/page"
 
 import { Section } from "@/pages/toolkit/components/section"
@@ -59,7 +60,10 @@ export default function Toolkit() {
   return (
     <Page>
       <PageContent fixed className="h-full">
-        <View className="h-full p flex flex-col gap">
+        <View
+          className="h-full p flex flex-col gap"
+          style={{ paddingBottom: "180rpx" }}
+        >
           {sections.map(section => (
             <Section
               key={section.title}
@@ -69,6 +73,8 @@ export default function Toolkit() {
           ))}
         </View>
       </PageContent>
+
+      <NavBar />
     </Page>
   )
 }

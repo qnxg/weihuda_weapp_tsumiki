@@ -3,6 +3,7 @@ import type { CachedQueryStatus } from "@/hooks/request/cached-query"
 import type { Semester } from "@/types/semester"
 import { View } from "@tarojs/components"
 import { useEffect, useMemo, useState } from "react"
+import { NavBar } from "@/components/nav"
 import { Overlay } from "@/components/overlay"
 import { Page, PageContent } from "@/components/page"
 import { SETTINGS } from "@/config/setting"
@@ -126,33 +127,39 @@ export default function Table() {
           className="h-full"
           onRefresh={() => refetch()}
         >
-          <View className="flex w-full">
-            {/* 左侧时间头 */}
-            {/* 纵向: h-l-sm * 12 + gap-4rpx */}
-            <TimeHeader />
+          {/* 底部留白, 避免末行被悬浮导航栏遮挡 */}
+          <View style={{ paddingBottom: "180rpx" }}>
+            <View className="flex w-full">
+              {/* 左侧时间头 */}
+              {/* 纵向: h-l-sm * 12 + gap-4rpx */}
+              <TimeHeader />
 
-            {/* 表格区 */}
-            <TableContent
-              week={week}
-              cells={cells}
-              onShowDetail={(cell) => {
-                setActiveCell(cell)
-                setOverlayContentKey("detail")
-              }}
-              onChangePrevWeek={() => {
-                if (week <= 1)
-                  return
-                setWeek(p => p - 1)
-              }}
-              onChangeNextWeek={() => {
-                if (!semester || week >= semester.weeks)
-                  return
-                setWeek(p => p + 1)
-              }}
-            />
+              {/* 表格区 */}
+              <TableContent
+                week={week}
+                cells={cells}
+                onShowDetail={(cell) => {
+                  setActiveCell(cell)
+                  setOverlayContentKey("detail")
+                }}
+                onChangePrevWeek={() => {
+                  if (week <= 1)
+                    return
+                  setWeek(p => p - 1)
+                }}
+                onChangeNextWeek={() => {
+                  if (!semester || week >= semester.weeks)
+                    return
+                  setWeek(p => p + 1)
+                }}
+              />
+            </View>
           </View>
         </PageContent>
       </View>
+
+      {/* 自定义悬浮导航栏 */}
+      <NavBar />
 
       {/* 绝对定位层 */}
       <Menu
