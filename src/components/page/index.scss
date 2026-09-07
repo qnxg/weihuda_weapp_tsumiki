@@ -8,8 +8,8 @@
   }
 }
 
-// tab 页: 底部预留悬浮导航栏的留白, 避免内容被遮挡
-.page-nav {
+// 悬浮导航栏留白: 追加在内容底部 (属于内容面, 非根节点), 使末行可滚到导航栏上方
+.nav-bottom-pad {
   box-sizing: border-box;
   padding-bottom: 180rpx;
 }

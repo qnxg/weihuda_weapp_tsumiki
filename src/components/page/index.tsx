@@ -7,7 +7,7 @@ import "./index.scss"
 
 /**
  * @description 页面容器组件, 提供基本布局样式, 支持 loading 状态;
- *  在四个 tab 页上自动挂载自定义悬浮导航栏, 并为底部预留导航栏留白
+ *  在四个 tab 页上自动挂载自定义悬浮导航栏, 内容延伸到底部, 导航栏悬浮于内容之上
  */
 function Page({
   children,
@@ -20,12 +20,7 @@ function Page({
   const isTab = isTabRoute(getRoutePath())
 
   return (
-    <View
-      className={cn(
-        "relative w-screen h-screen flex flex-col bg text overflow-hidden",
-        isTab && "page-nav",
-      )}
-    >
+    <View className="relative w-screen h-screen flex flex-col bg text overflow-hidden">
       {isLoading
         ? (
             <View className="w-full h-full flex center">
@@ -93,6 +88,18 @@ function PageContent({
   onScrollReached?: () => void // 触底回调
   fixed?: boolean // 是否禁用滚动, 默认为 false
 } & ComponentProps<typeof ScrollView>>) {
+  // 是否处于四个 tab 页, 是则在内容底部追加导航栏留白 (末行可滚到导航栏上方)
+  const isTab = isTabRoute(getRoutePath())
+
+  // tab 页内容底部追加留白; 固定页需占满高度供子元素 h-full 计算
+  const content = isTab
+    ? (
+        <View className={cn("nav-bottom-pad", fixed && "h-full")}>
+          {children}
+        </View>
+      )
+    : children
+
   if (isLoading) {
     return (
       <View className="bg-page w-full h-full flex center">
@@ -112,7 +119,7 @@ function PageContent({
   if (fixed) {
     return (
       <View className={cn("bg-page overflow-hidden", className)}>
-        {children}
+        {content}
       </View>
     )
   }
@@ -128,7 +135,7 @@ function PageContent({
           onScrollToLower={() => onScrollReached?.()}
           {...props}
         >
-          {children}
+          {content}
         </PullRefresh>
       </View>
     )
@@ -145,7 +152,7 @@ function PageContent({
         onScrollToLower={() => onScrollReached?.()}
         {...props}
       >
-        {children}
+        {content}
       </ScrollView>
     </View>
   )

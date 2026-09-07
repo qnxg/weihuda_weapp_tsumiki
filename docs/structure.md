@@ -108,7 +108,7 @@ React 项目中一般有单独的 `compponents/` 组件文件夹, `contexts/` �
 - 课表 `table`: 课表展示与管理
 - 我的 `profile`: 个人中心
 
-> 注: 4 个 tab 页底部由 `src/components/nav/` 的自定义悬浮导航栏替代原生 tabBar; 导航栏由 `src/components/page/` 的 `Page` 统一挂载 (仅 tab 页渲染, 并自动为页面底部预留留白), 各页面无需单独引入. 原生 tabBar 配置仍保留在 `app.config.ts`, 仅用于支持 `switchTab`, 运行时经 `hideTabBar` 隐藏. `src/static/tab/` 的图标 (default / selected / dark-selected) 被悬浮导航栏复用.
+> 注: 4 个 tab 页底部由 `src/components/nav/` 的自定义悬浮导航栏替代原生 tabBar; 导航栏由 `src/components/page/` 的 `Page` 统一挂载 (仅 tab 页渲染), 悬浮于页面内容之上, 底部留白由 `PageContent` 按 tab 路由自动追加在内容底部, 各页面无需单独引入. 原生 tabBar 配置仍保留在 `app.config.ts`, 仅用于支持 `switchTab`, 运行时经 `hideTabBar` 隐藏. `src/static/tab/` 的图标 (default / selected / dark-selected) 被悬浮导航栏复用.
 
 - 登录 `auth`: 账号密码登录与双因子认证
 - 反馈 `feedback`: 意见反馈 (尚未完成)

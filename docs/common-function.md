@@ -48,7 +48,7 @@
   - `TabItem`: 标签页内容项, 根据 activeTab 匹配显示
 
 - 悬浮导航栏组件 `/nav`: 自定义悬浮药丸导航栏 (替代原生 tabBar)
-  - `NavBar`: 固定于底部中央的悬浮导航栏, 用于 4 个 tab 页 (首页 / 工具箱 / 课表 / 我的) 切换; 由 `Page` 组件在 tab 页统一挂载, 非 tab 页不渲染, 同时为其自动预留底部留白; 图标复用 `src/static/tab/` 原 tab 图标, 激活态按系统主题切换 selected / dark-selected
+  - `NavBar`: 固定于底部中央的悬浮导航栏, 用于 4 个 tab 页 (首页 / 工具箱 / 课表 / 我的) 切换; 由 `Page` 组件在 tab 页统一挂载, 非 tab 页不渲染; 悬浮于页面内容之上, 底部 180rpx 留白由 `PageContent` 追加在内容底部, 末行可滚到导航栏上方; 图标复用 `src/static/tab/` 原 tab 图标, 激活态按系统主题切换 selected / dark-selected
   - `TAB_ROUTES`: 4 个 tab 页路由表, 供 `Page` 判断是否 tab 页
   - `getRoutePath`: 取当前页面路径 (优先 getCurrentPages, 兜底参数)
   - `isTabRoute`: 判断指定路径是否为 4 个 tab 页之一
