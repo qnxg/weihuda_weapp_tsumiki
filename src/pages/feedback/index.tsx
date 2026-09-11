@@ -1,4 +1,4 @@
-import type { FAQItem } from "@/pages/feedback/config/faq"
+import type { FAQItem } from "@/config/faq"
 import { Image, Input, Textarea, View } from "@tarojs/components"
 import { chooseImage, hideLoading, navigateBack, previewImage, showLoading, showToast } from "@tarojs/taro"
 import { useState } from "react"
