@@ -6,6 +6,8 @@ on:
   push:
     branches: [main]
   pull_request:
+    # edited: 仅改标题/描述时也重跑, 否则标题修正后旧检查不会重检
+    types: [opened, synchronize, reopened, edited]
 
 jobs:
   quality:
@@ -31,6 +33,31 @@ jobs:
 
       - name: Lint
         run: pnpm lint
+
+  pr-title-lint:
+    name: PR Title Lint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --trust-lockfile
+
+      # 标题经 env 传入, 避免 shell 注入
+      - name: Lint PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: echo "$PR_TITLE" | pnpm commitlint
 
   commitlint:
     name: Commit Lint
