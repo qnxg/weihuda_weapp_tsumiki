@@ -3,9 +3,10 @@ import { createContext, useContext, useMemo } from "react"
 
 /**
  * @description 卡片刷新函数类型
- *   兼容 useQuery / useCachedQuery 的 refetch (() => Promise<Response<T>>) 与无返回值的同步刷新函数
+ *   兼容 useQuery / useCachedQuery 的 refetch (() => Promise<Response<T>>)
+ *   必须返回 Promise: 保证 triggerRefresh 的 allSettled 能等待完成, 同步函数的异常也不会逃逸出 allSettled
  */
-export type Refresher = () => Promise<unknown> | void
+export type Refresher = () => Promise<unknown>
 
 interface CardLoadingContextValue {
   registerCard: (key: string, fn: Refresher) => void
