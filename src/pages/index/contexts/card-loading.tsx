@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { createContext, useContext, useMemo } from "react"
+import { createContext, useCallback, useContext, useMemo, useRef } from "react"
 
 /**
  * @description 卡片刷新函数类型
@@ -17,34 +17,36 @@ interface CardLoadingContextValue {
 const CardLoadingContext = createContext<CardLoadingContextValue | null>(null)
 
 /**
- * @description 创建注册表原语; 注册表 Map 由闭包持有, 无组件作用域依赖
- */
-function createCardLoadingValue(): CardLoadingContextValue {
-  const store = new Map<string, Refresher>()
-
-  return {
-    registerCard: (key, fn) => {
-      store.set(key, fn)
-    },
-    unregisterCard: (key) => {
-      store.delete(key)
-    },
-    getRefreshers: () => Array.from(store.values()),
-  }
-}
-
-/**
  * @description 首页卡片加载协作 Provider
  *   - 仅承载注册表原语 (注册 / 注销 / 读取), 刷新编排逻辑在 hooks/card-loading.ts, 遵循状态业务分离
- *   - value 惰性创建一次且引用永不变化, 注册不触发级联重渲染
+ *   - 注册表为共享状态, 持有于 React 机制内的 useRef: 注册 / 注销只改 Map 不触发重渲染, 避免卡片注册引发级联更新
  */
 export function CardLoadingProvider({
   children,
 }: Readonly<{
   children: ReactNode
 }>) {
-  // value 用工厂函数创建, 引用永不变化; 卡片将 registerCard 列入 effect deps, 即使 memo 缓存被重建也会自动重新注册
-  const value = useMemo(createCardLoadingValue, [])
+  const storeRef = useRef<Map<string, Refresher> | null>(null)
+  storeRef.current ??= new Map()
+
+  const registerCard = useCallback((key: string, fn: Refresher) => {
+    storeRef.current?.set(key, fn)
+  }, [])
+
+  const unregisterCard = useCallback((key: string) => {
+    storeRef.current?.delete(key)
+  }, [])
+
+  const getRefreshers = useCallback(
+    () => Array.from(storeRef.current?.values() ?? []),
+    [],
+  )
+
+  const value = useMemo(() => ({
+    registerCard,
+    unregisterCard,
+    getRefreshers,
+  }), [registerCard, unregisterCard, getRefreshers])
 
   return (
     <CardLoadingContext.Provider value={value}>
