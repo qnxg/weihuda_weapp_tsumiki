@@ -2,7 +2,7 @@
 
 ## 设计文档
 
-- [贡献指南](./CONTRIBUTING.md)
+- [贡献指南](./contributing.md)
 - [部署项目](./deploy.md)
 - [项目结构](./structure.md)
 - [通用函数](./common-function.md)
