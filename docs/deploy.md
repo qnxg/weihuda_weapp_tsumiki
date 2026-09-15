@@ -72,6 +72,6 @@ pnpm dev
 
 ![Screenshot](assets/devtools-create-project.png)
 
-4. 回到微信开发者工具, 点击右上角三条横线图标, 在 `本地设置` 中勾选 `不校验合法域名`.
+4. 打开项目后，点击右上角三条横线图标, 在 `本地设置` 中勾选 `不校验合法域名`.
 
 ![Screenshot](assets/devtools-local-settings.png)
