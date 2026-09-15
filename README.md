@@ -1,8 +1,15 @@
-<p align="center">
+<div align="center">
   <img src="./docs/assets/hero.png" width="100%" alt="湖南大学微生活小程序 Tsumiki 版: 课表管理、成绩查询、校园卡、电费、流量等校园信息一站式查询">
-</p>
+  <p>
+    <a href="https://github.com/qnxg/weihuda_weapp_tsumiki/stargazers"><img src="https://img.shields.io/github/stars/qnxg/weihuda_weapp_tsumiki?style=flat-square&logo=github&label=Stars" alt="Stars"></a>
+    <a href="https://github.com/qnxg/weihuda_weapp_tsumiki/graphs/contributors"><img src="https://img.shields.io/github/contributors/qnxg/weihuda_weapp_tsumiki?style=flat-square&logo=github&label=Contributors" alt="Contributors"></a>
+    <img src="https://img.shields.io/badge/Taro-4.1.11-05C5F1?style=flat-square" alt="Taro">
+    <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React">
+    <a href="https://qm.qq.com/q/BA6FQbxXBS"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-1051502207-12B7F5?style=flat-square&logo=tencent-qq&logoColor=white" alt="QQ"></a>
+  </p>
+</div>
 
-# 湖南大学微生活小程序 (Tsumiki 版)
+## 概述
 
 湖南大学校园信息一站式查询微信小程序. 课表管理、成绩查询、校园卡余额、电费查询、校园网流量、考试安排等校园服务, 一个小程序全部搞定.
 
