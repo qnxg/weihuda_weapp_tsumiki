@@ -8,11 +8,11 @@
 
 - [Node.js 22](https://nodejs.org) (参考 `.nvmrc`), 并使用 Corepack 或全局安装启用 [pnpm](https://pnpm.io/zh/) `11.10.0`.
 - [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
-- [Apifox](https://docs.apifox.com/download)(可选), 用于开发过程中为前端提供 Mock 接口. 若不安装桌面版应用, 也可使用网页版
+- [Apifox](https://docs.apifox.com/download) (可选), 用于开发过程中为前端提供 Mock 接口. 若不安装桌面版应用, 也可使用网页版.
 
 > [!IMPORTANT]
 >
-> 本项目使用 pnpm 管理依赖。请不要混用 `npm` 或 `yarn`, 否则可能会出现依赖相关的问题 (项目下出现 `package-lock.json` / `yarn.lock` 即表示混用了其他包管理器).
+> 本项目使用 pnpm 管理依赖. 请不要混用 `npm` 或 `yarn`, 否则可能会出现依赖相关的问题 (项目下出现 `package-lock.json` / `yarn.lock` 即表示混用了其他包管理器).
 
 然后你需要克隆存储库并安装依赖:
 
@@ -31,7 +31,7 @@ pnpm install
 
 ## Mock 接口配置
 
-前端开发需要使用 Apifox 来提供一套临时接口供前端调用。你可以按以下步骤配置 Mock 接口.
+开发过程中, 需要使用 Apifox 提供的一套临时 Mock 接口供前端调用. 你可以按以下步骤配置 Mock 接口.
 
 1. 前往 [Apifox 网站](https://apifox.com) 安装 Apifox. 不建议使用网页版, 因为可能无法使用 Mock 功能.
 2. 获取 Apifox 接口文档邀请链接 <!-- TODO: 公开接口文档后需要改为具体的获取方式 -->
@@ -47,15 +47,15 @@ pnpm install
 
 ## 配置并启动项目
 
-将项目根目录下的 `.env-example` 文件复制一份并更名为 `.env`, 并修改其中 `TARO_APP_BASE_URL` 的值为刚刚 `前置 URL` 的值, 例如 `TARO_APP_BASE_URL="https://example.com/xxxxxx"`
+将项目根目录下的 `.env-example` 文件复制一份并更名为 `.env`, 并修改其中 `TARO_APP_BASE_URL` 的值为刚刚 `前置 URL` 的值, 例如 `TARO_APP_BASE_URL="https://example.com/xxxxxx"`.
 
-然后启动项目
+然后启动项目:
 
 ```shell
 pnpm dev
 ```
 
-运行以上命令后当前工作目录中会出现 `dist` 文件夹, 这是项目的打包结果. 当 `src/` 下所有被 import 的模块或 Taro 配置文件发生变化时, 项目会被重新构建.
+运行以上命令后, 当前工作目录中会出现 `dist` 文件夹, 这是项目的打包结果. 当 `src/` 下所有被 import 的模块或 Taro 配置文件发生变化时, 项目会被重新构建.
 
 ## 将项目导入微信开发者工具
 
@@ -70,6 +70,6 @@ pnpm dev
 
 ![Screenshot](assets/devtools-create-project.png)
 
-5. 回到微信开发者工具, 点击右上角三条横线图标, 在 `本地设置` 中勾选 `不校验合法域名`
+4. 回到微信开发者工具, 点击右上角三条横线图标, 在 `本地设置` 中勾选 `不校验合法域名`
 
 ![Screenshot](assets/devtools-local-settings.png)
