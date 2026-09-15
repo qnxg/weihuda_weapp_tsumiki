@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1200" height="400" viewBox="0 0 1200 400"
+     role="img" aria-labelledby="title desc">
+  <title id="title">湖南大学微生活小程序 Tsumiki 版</title>
+  <desc id="desc">湖南大学校园信息一站式查询微信小程序, 基于 Taro + React + TypeScript 构建</desc>
+
+  <!-- 布局源文件说明 -->
+  <!-- 本文件为合成 hero 的编辑源: docs/assets/hero.png 由本文件渲染生成, 使用方法: -->
+  <!--   rsvg-convert -w 1200 -h 400 hero.svg -o hero.png -->
+  <!-- 右侧手机框内嵌真实截图 (./app-screenshot.png), 修改布局后请重新渲染 PNG 并确认效果 -->
+
+  <defs>
+    <!-- 手机屏幕裁剪区域: 与设备边框内沿一致, 圆角 24 -->
+    <clipPath id="screen-clip">
+      <rect x="8" y="8" width="180" height="360" rx="24"/>
+    </clipPath>
+  </defs>
+
+  <!-- 背景: 白色圆角底板, 与 GitHub 深浅主题均可相容 -->
+  <rect width="1200" height="400" rx="16" fill="#ffffff"/>
+
+  <!-- 隐约的网格纹理: 40px 间距, 仅做视觉秩序, 不承载内容 -->
+  <g opacity="0.035" fill="#000">
+    <rect x="0" y="0" width="1" height="400"/>
+    <rect x="40" y="0" width="1" height="400"/>
+    <rect x="80" y="0" width="1" height="400"/>
+    <rect x="120" y="0" width="1" height="400"/>
+    <rect x="160" y="0" width="1" height="400"/>
+    <rect x="200" y="0" width="1" height="400"/>
+    <rect x="240" y="0" width="1" height="400"/>
+    <rect x="280" y="0" width="1" height="400"/>
+    <rect x="320" y="0" width="1" height="400"/>
+    <rect x="360" y="0" width="1" height="400"/>
+    <rect x="400" y="0" width="1" height="400"/>
+    <rect x="440" y="0" width="1" height="400"/>
+    <rect x="480" y="0" width="1" height="400"/>
+    <rect x="520" y="0" width="1" height="400"/>
+    <rect x="560" y="0" width="1" height="400"/>
+    <rect x="600" y="0" width="1" height="400"/>
+    <rect x="640" y="0" width="1" height="400"/>
+    <rect x="680" y="0" width="1" height="400"/>
+    <rect x="720" y="0" width="1" height="400"/>
+    <rect x="760" y="0" width="1" height="400"/>
+    <rect x="800" y="0" width="1" height="400"/>
+    <rect x="840" y="0" width="1" height="400"/>
+    <rect x="880" y="0" width="1" height="400"/>
+    <rect x="920" y="0" width="1" height="400"/>
+    <rect x="960" y="0" width="1" height="400"/>
+    <rect x="1000" y="0" width="1" height="400"/>
+    <rect x="1040" y="0" width="1" height="400"/>
+    <rect x="1080" y="0" width="1" height="400"/>
+    <rect x="1120" y="0" width="1" height="400"/>
+    <rect x="1160" y="0" width="1" height="400"/>
+    <rect x="0" y="0" width="1200" height="1"/>
+    <rect x="0" y="40" width="1200" height="1"/>
+    <rect x="0" y="80" width="1200" height="1"/>
+    <rect x="0" y="120" width="1200" height="1"/>
+    <rect x="0" y="160" width="1200" height="1"/>
+    <rect x="0" y="200" width="1200" height="1"/>
+    <rect x="0" y="240" width="1200" height="1"/>
+    <rect x="0" y="280" width="1200" height="1"/>
+    <rect x="0" y="320" width="1200" height="1"/>
+    <rect x="0" y="360" width="1200" height="1"/>
+  </g>
+
+  <!-- ========== 左侧: 标题区块 ========== -->
+  <!-- 布局自上而下: 分类标签 / 主标题 / 副标题 / 描述 / 功能胶囊 / 技术栈徽章 -->
+  <g id="title-block" transform="translate(64 56)">
+
+    <!-- 分类标签: 项目类别, 蓝色浅底 + 等宽字体 -->
+    <rect x="0" y="0" width="168" height="26" rx="5" fill="#328ccb" opacity="0.1"/>
+    <text x="84" y="17"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="12" fill="#328ccb" text-anchor="middle"
+          font-weight="500" letter-spacing="1">WECHAT MINI-PROGRAM</text>
+
+    <!-- 主标题 -->
+    <text x="0" y="72"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+          font-size="52" fill="#1a1a1a" font-weight="700"
+          letter-spacing="-0.5">湖南大学微生活</text>
+
+    <!-- 副标题 -->
+    <text x="0" y="110"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+          font-size="20" fill="#888888" font-weight="400">Tsumiki 版 — 校园信息一站式查询</text>
+
+    <!-- 描述 -->
+    <text x="0" y="150"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+          font-size="15" fill="#666666" font-weight="400">面向湖南大学学生的校园信息一站式查询服务</text>
+
+    <!-- 功能胶囊: 与左侧内容宽 64-720 范围内排布, 蓝底文字与浅蓝底一致 -->
+    <g font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+       font-size="13" font-weight="500">
+      <rect x="0" y="176" width="80" height="30" rx="15" fill="#eef5fb"/>
+      <text x="40" y="195" text-anchor="middle" fill="#328ccb">课表管理</text>
+
+      <rect x="92" y="176" width="80" height="30" rx="15" fill="#eef5fb"/>
+      <text x="132" y="195" text-anchor="middle" fill="#328ccb">成绩查询</text>
+
+      <rect x="184" y="176" width="93" height="30" rx="15" fill="#eef5fb"/>
+      <text x="230" y="195" text-anchor="middle" fill="#328ccb">校园卡余额</text>
+
+      <rect x="289" y="176" width="80" height="30" rx="15" fill="#eef5fb"/>
+      <text x="329" y="195" text-anchor="middle" fill="#328ccb">电费查询</text>
+
+      <rect x="381" y="176" width="93" height="30" rx="15" fill="#eef5fb"/>
+      <text x="427" y="195" text-anchor="middle" fill="#328ccb">校园网流量</text>
+
+      <rect x="486" y="176" width="80" height="30" rx="15" fill="#eef5fb"/>
+      <text x="526" y="195" text-anchor="middle" fill="#328ccb">考试安排</text>
+    </g>
+
+    <!-- 技术栈徽章: 灰底等宽, 编译目标 weapp 用蓝色强调 -->
+    <g transform="translate(0 250)">
+      <rect x="0" y="0" width="54" height="26" rx="5" fill="#f0f0f0"/>
+      <text x="27" y="17"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+            font-size="11" fill="#555" text-anchor="middle" font-weight="500">Taro</text>
+
+      <rect x="62" y="0" width="54" height="26" rx="5" fill="#f0f0f0"/>
+      <text x="89" y="17"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+            font-size="11" fill="#555" text-anchor="middle" font-weight="500">React</text>
+
+      <rect x="124" y="0" width="86" height="26" rx="5" fill="#f0f0f0"/>
+      <text x="167" y="17"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+            font-size="11" fill="#555" text-anchor="middle" font-weight="500">TypeScript</text>
+
+      <rect x="218" y="0" width="52" height="26" rx="5" fill="#328ccb" opacity="0.12"/>
+      <text x="244" y="17"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+            font-size="11" fill="#328ccb" text-anchor="middle" font-weight="500">weapp</text>
+    </g>
+  </g>
+
+  <!-- ========== 右侧: 真实截图 ========== -->
+  <!-- 手机边框内展示 docs/assets/app-screenshot.png, 按 xMidYMid slice 裁剪填满屏幕 -->
+  <g id="phone" transform="translate(900 14)">
+
+    <!-- 设备边框: 深灰圆角, 呼应手机机身 -->
+    <rect x="0" y="0" width="196" height="376" rx="32" fill="#2b2f33"/>
+
+    <!-- 截图: 宽高 180x360, 超出区域由 screen-clip 裁掉 -->
+    <g clip-path="url(#screen-clip)">
+      <image x="8" y="8" width="180" height="360"
+             preserveAspectRatio="xMidYMid slice"
+             href="./app-screenshot.png"/>
+    </g>
+
+    <!-- Home 指示条: 手机底部装饰 -->
+    <rect x="78" y="370" width="40" height="3" rx="1.5" fill="#ffffff" opacity="0.45"/>
+  </g>
+
+  <!-- ========== 底部辅助信息 ========== -->
+  <!-- 装饰线 -->
+  <line x1="64" y1="368" x2="360" y2="368" stroke="#328ccb" stroke-width="2" opacity="0.15"/>
+
+  <!-- 版本与仓库信息: 非必需元数据, 小字号即可 -->
+  <text x="64" y="390" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-size="11" fill="#cccccc">v0.1.0 · qnxg/weihuda_weapp_tsumiki</text>
+</svg>
