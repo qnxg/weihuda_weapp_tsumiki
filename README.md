@@ -29,17 +29,7 @@ pnpm fix      # 自动修复
 
 ## 贡献
 
-欢迎贡献代码. 请先阅读 [贡献指南](docs/CONTRIBUTING.md), 了解分支规范、提交规范与 AI 协作要求.
-
-### 提交规范
-
-提交信息遵循 [Conventional Commits](https://www.conventionalcommits.org/), 描述使用中文. 示例:
-
-```
-feat(体测标准): 完成体测标准介绍页和男生页
-fix(index): 修复课表卡片在深色模式下文字不可见的问题
-docs: 补充贡献指南的代码提交规范
-```
+欢迎贡献代码. 请先阅读 [贡献指南](docs/contributing.md), 了解分支规范、提交规范与 AI 协作要求. 若要在本地配置开发环境, 请阅读 [部署指南](docs/deploy.md).
 
 ### 文档
 
@@ -50,4 +40,12 @@ docs: 补充贡献指南的代码提交规范
 - [样式方案](docs/style-scheme.md) — 原子类 + 内联 + SCSS 兜底
 - [通用组件与函数](docs/common-function.md) — 可复用模块清单
 - [部署项目](docs/deploy.md) — 开发环境搭建
-- [贡献指南](docs/CONTRIBUTING.md) — 开发流程与规范
+- [贡献指南](docs/contributing.md) — 开发流程与规范
+
+## 反馈
+
+你可以通过如下方式反馈问题:
+
+1. Github Issue, 详见 [contributing.md](docs/contributing.md) 的 `Issue 报告规范` 部分
+2. [湖大微生活用户交流群](https://qm.qq.com/q/BA6FQbxXBS), QQ 群号为 1051502207. 在群内交流可获得更快的答复.
+3. 使用湖大微生活小程序内的反馈功能. 在页面下方点击 `我的`, 选择 `我要反馈` 并填写相关信息即可.

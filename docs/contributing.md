@@ -29,9 +29,6 @@
 | ESLint             | https://eslint.org/docs/latest/                             | 代码检查与格式化 (@antfu/eslint-config)       |
 | Sass               | https://sass-lang.com/                                      | 样式兜底方案                                  |
 
-> 旧版使用的 TailwindCSS 在本项目中已不再使用. 本项目自维护一套原子类样式, 配合内联样式与 SCSS 兜底构成分层样式方案, 详见 [样式方案](./style-scheme.md).
-> 本项目未引入任何全局状态管理库 (Redux / Zustand), 全局状态共享统一通过 React Context 完成, 详见 [状态管理](./state-manager.md).
-
 ### 项目结构
 
 本项目采用 `按页聚合` 与 `非结构化命名, 按路径分类` 的结构, 具体设计见 [项目结构](./structure.md).
@@ -77,7 +74,6 @@ src
 ## Issue 报告规范
 
 - Issue 列表仅用于 bug 报告与功能建议, 不符合的内容会被直接关闭.
-- 如有疑问, 可以在 QQ 群内交流获取更快的答复.
 - 提交之前先搜索是否已有相同 Issue, 它可能已经被回答甚至被解决.
 - 请清楚描述复现问题的步骤, 并使用最少的代码复现异常行为, 明确说明预期行为与实际行为.
 - 没有清晰复现步骤的 Issue 不会被优先处理.
@@ -102,36 +98,6 @@ src
 
 提交信息遵循 [Conventional Commits](https://www.conventionalcommits.org/), 描述使用中文, 由 Git Hooks 中的 Commitlint (`commitlint.config.mjs`) 在 `commit-msg` 阶段校验.
 
-### 格式
-
-基本格式为 `<type>(<scope>): <描述>`:
-
-- `type`: 提交类型, 必须使用以下之一.
-- `scope`: 改动范围 (可省略), 如 `index` / `api` / `体测标准`.
-- `描述`: 对本次改动的简短说明, 使用中文, 祈使句现在时, 不加结尾句号.
-
-| type     | 说明                                 |
-| -------- | ------------------------------------ |
-| feat     | 新增功能                             |
-| fix      | 修复 bug                             |
-| refactor | 重构代码, 不改变行为                 |
-| perf     | 性能优化                             |
-| style    | 不影响逻辑的格式调整 (缩进 / 标点等) |
-| test     | 增删或修正测试                       |
-| docs     | 仅修改文档                           |
-| build    | 构建工具 / 依赖 相关                 |
-| ci       | CI 相关                              |
-| chore    | 杂项, 如修改 `.gitignore`            |
-| revert   | 撤销某次提交                         |
-
-示例:
-
-```shell
-feat(体测标准): 完成体测标准介绍页和男生页
-fix(index): 修复课表卡片在深色模式下文字不可见的问题
-docs: 补充贡献指南的代码提交规范
-```
-
 ### 提交前检查
 
 项目配置了 [Husky](https://typicode.github.io/husky/) Git Hooks:
@@ -151,7 +117,7 @@ pnpm lint     # eslint ., 代码检查
 pnpm fix      # eslint . --fix, 自动修复
 ```
 
-测试环境搭建与真机调试方式见 [../README.md](../README.md) 的 `测试` 章节与 [`deploy.md`](./deploy.md).
+测试环境搭建方式见 [`deploy.md`](./deploy.md).
 
 ## AI 协作规范
 
