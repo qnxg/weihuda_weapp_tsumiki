@@ -3,8 +3,6 @@ import type { AnnouncementResponse } from "@/apis/models/announcement"
 import type {
   AuthLoginRequest,
   AuthLoginResponse,
-  AuthPowRequest,
-  AuthPowResponse,
   AuthRefreshRequest,
   AuthRefreshResponse,
   AuthTFARequest,
@@ -76,8 +74,7 @@ export const api = {
       get: () => request.get("/auth/tfa"),
       post: (data: AuthTFARequest) => request.post("/auth/tfa", data),
     },
-    unbind: () => request.get("/auth/unbind"),
-    pow: (data: AuthPowRequest) => request.get<AuthPowResponse>("/auth/pow", data),
+    unbind: () => request.post("/auth/unbind"),
   },
   me: {
     get: () => request.get<MeResponse>("/me"),
