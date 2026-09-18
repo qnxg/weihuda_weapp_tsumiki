@@ -60,7 +60,7 @@
 
 - 鉴权处理函数 `/utils/auth.ts`: 承载 token 存储与 401 恢复逻辑, 供 `auth-request.ts` 调用
   - `accessTokenStorage` / `refreshTokenStorage`: 两个 token 的存储实例
-  - `refreshAccessToken`: 单飞刷新 access_token, 并发 401 只发起一次 `/auth/refresh`, 失败返回 null
+  - `refreshAccessToken`: 单飞刷新 token, 并发 401 只发起一次 `/auth/refresh`, 将响应中的 `access_token` 和 `refresh_token` 一并写入存储, 失败返回 null
   - `handleLoginLost`: token 失效时先静默刷新并透明重试原请求, 刷新失败则引导登录
   - `handleTFA`: 需要双因子认证时引导前往验证码页
   - `clearTokens`: 清除本地 token, 用于登出 / 登录丢失

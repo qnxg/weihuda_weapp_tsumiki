@@ -25,7 +25,7 @@ export const refreshTokenStorage = new Storage<string>(STORAGE.token.refresh_tok
 let refreshPromise: Promise<string | null> | null = null
 
 /**
- * @description 单飞刷新 access_token: 用 refresh_token 换取新的 access_token
+ * @description 单飞刷新 token: 用 refresh_token 换取新的 access_token 和 refresh_token, 并一并写入存储
  * @returns 新的 access_token, 失败 (含 refresh_token 缺失 / 失效) 返回 null
  */
 export async function refreshAccessToken(): Promise<string | null> {
@@ -40,13 +40,16 @@ export async function refreshAccessToken(): Promise<string | null> {
       // 直接使用底层 request (而非 api / auth-request), 避免循环依赖
       return request.post<AuthRefreshResponse>("/auth/refresh", { refresh_token: refreshToken })
         .then(async (res) => {
-          const accessToken = res.data.access_token
-          await accessTokenStorage.set(accessToken)
-          logger.info(LABEL.util.auth, "刷新 access_token 成功")
+          const { access_token: accessToken, refresh_token: newRefreshToken } = res.data
+          await Promise.all([
+            accessTokenStorage.set(accessToken),
+            refreshTokenStorage.set(newRefreshToken),
+          ])
+          logger.info(LABEL.util.auth, "刷新 token 成功")
           return accessToken
         })
         .catch((error) => {
-          logger.error(LABEL.util.auth, "刷新 access_token 失败: ", error)
+          logger.error(LABEL.util.auth, "刷新 token 失败: ", error)
           return null
         })
     })().finally(() => {
