@@ -53,3 +53,12 @@ export class AbortError extends BaseRequestError {
     super("ABORT", -2, "canceled")
   }
 }
+
+/**
+ * @description 未知错误
+ */
+export class UnknownError extends BaseRequestError {
+  constructor(error?: unknown) {
+    super("UNKNOWN", -114514, "unknown", undefined, error)
+  }
+}

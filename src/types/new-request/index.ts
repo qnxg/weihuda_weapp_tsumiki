@@ -53,8 +53,8 @@ export interface ResponseMeta<T = unknown> {
  */
 export interface RequestContext {
   request: RequestMeta
-  response?: ResponseMeta
-  error?: BaseRequestError
+  response: ResponseMeta | null
+  error: BaseRequestError | null
   meta: Record<string | symbol, unknown>
 }
 

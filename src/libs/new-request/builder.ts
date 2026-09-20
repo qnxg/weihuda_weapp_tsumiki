@@ -3,18 +3,21 @@ import type {
   RequestAdapter,
   RequestConfig,
   RequestContext,
-  ResponseMeta,
 } from "@/types/new-request"
+import { UnknownError } from "@/types/new-request/error"
+import { pipeline } from "./pipeline"
 
-const DEFAULT_REQUEST_CONTEXT = {
+const DEFAULT_REQUEST_CONTEXT: RequestContext = {
   request: {
     url: "",
     method: "GET",
     headers: {},
     signal: { aborted: false },
   },
+  response: null,
+  error: null,
   meta: {},
-} as const
+}
 
 export class RequestBuilder {
   adapter: RequestAdapter | null = null
@@ -22,8 +25,8 @@ export class RequestBuilder {
   middlewares: BaseRequestMiddleware[] = []
 
   constructor(config: RequestConfig) {
-    this.adapter = config.adapter ?? null
-    const { adapter: _, ...rest } = config
+    const { adapter, ...rest } = config
+    this.adapter = adapter ?? null
     this.add(rest)
   }
 
@@ -66,12 +69,22 @@ export class RequestBuilder {
     return this
   }
 
-  request<T>(config: RequestConfig) {
+  async request<T>(config: RequestConfig): Promise<T> {
     this.add(config)
     if (!this.adapter) {
       throw new Error("No adapter configured")
     }
-    return this.adapter(this.context) as Promise<ResponseMeta<T>>
+
+    await pipeline(this.context, this.middlewares, this.adapter)
+    if (this.context.error) {
+      throw this.context.error
+    }
+
+    if (!this.context.response) {
+      throw new UnknownError()
+    }
+
+    return this.context.response.data as T
   }
 
   get<T>(path?: string, data?: unknown) {
