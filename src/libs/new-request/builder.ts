@@ -21,7 +21,7 @@ const DEFAULT_REQUEST_CONTEXT: RequestContext = {
 
 export class RequestBuilder {
   adapter: RequestAdapter | null = null
-  context: RequestContext = DEFAULT_REQUEST_CONTEXT
+  context: RequestContext = { ...DEFAULT_REQUEST_CONTEXT }
   middlewares: BaseRequestMiddleware[] = []
 
   constructor(config: RequestConfig) {
@@ -32,7 +32,7 @@ export class RequestBuilder {
 
   create(config: RequestConfig) {
     const instance = new RequestBuilder(config)
-    instance.middlewares = this.middlewares
+    instance.middlewares = [...this.middlewares]
     return instance
   }
 
