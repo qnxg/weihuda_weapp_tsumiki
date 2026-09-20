@@ -41,11 +41,11 @@ export interface RequestMeta {
 /**
  * @description 通用响应元数据
  */
-export interface ResponseMeta<T = unknown> {
+export interface ResponseMeta {
   status: number
   text: string
   headers: RequestHeader
-  data: T
+  data: unknown
 }
 
 /**
@@ -71,10 +71,15 @@ export type RequestConfig = Partial<RequestMeta> & {
 }
 
 /**
+ * @description 中间件 next 函数
+ */
+export type RequestMiddlewareNext = (context: RequestContext) => Promise<RequestContext>
+
+/**
  * @description 通用请求中间件基类
  */
 export abstract class BaseRequestMiddleware {
-  async onStart?(context: RequestContext, next: () => Promise<void>): Promise<void>
-  async onSuccess?(context: RequestContext, next: () => Promise<void>): Promise<void>
-  async onError?(context: RequestContext, next: () => Promise<void>): Promise<void>
+  async onStart?(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
+  async onSuccess?(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
+  async onError?(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
 }

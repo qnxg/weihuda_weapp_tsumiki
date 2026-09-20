@@ -4,79 +4,86 @@ import { BaseRequestError, UnknownError } from "@/types/new-request/error"
 async function runRequestPipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
-): Promise<boolean> {
+): Promise<{ ctx: RequestContext, proceed: boolean }> {
   let index = 0
-  const next = async () => {
+  const ctx = context
+
+  const next = async (currentCtx: RequestContext): Promise<RequestContext> => {
     const middleware = middlewares[index++]
 
     if (!middleware)
-      return
+      return currentCtx
 
     if (middleware.onStart) {
       let called = false
-      await middleware.onStart(context, async () => {
+      return middleware.onStart(currentCtx, async (passedCtx) => {
         if (called) {
           throw new Error("next() called multiple times")
         }
         called = true
-        await next()
+        return next(passedCtx)
       })
     }
     else {
-      await next()
+      return next(currentCtx)
     }
   }
 
-  await next()
-  return index >= middlewares.length
+  const finalCtx = await next(ctx)
+  return { ctx: finalCtx, proceed: index >= middlewares.length }
 }
 
 async function runResponsePipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
-) {
+): Promise<RequestContext> {
   let index = middlewares.length - 1
-  const next = async () => {
+  const ctx = context
+
+  const next = async (currentCtx: RequestContext): Promise<RequestContext> => {
     const middleware = middlewares[index--]
 
     if (!middleware)
-      return
+      return currentCtx
 
-    const func = context.error ? middleware.onError : middleware.onSuccess
+    const hook = currentCtx.error ? middleware.onError : middleware.onSuccess
 
-    if (func) {
+    if (hook) {
       let called = false
-      await func(context, async () => {
+      return hook(currentCtx, async (passedCtx) => {
         if (called) {
           throw new Error("next() called multiple times")
         }
         called = true
-        await next()
+        return next(passedCtx)
       })
     }
     else {
-      await next()
+      return next(currentCtx)
     }
   }
 
-  await next()
+  return next(ctx)
 }
 
 export async function pipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
   adapter: RequestAdapter,
-) {
-  const proceed = await runRequestPipeline(context, middlewares)
-  if (!proceed || context.error)
-    return
+): Promise<RequestContext> {
+  const { ctx: ctxAfterStart, proceed } = await runRequestPipeline(context, middlewares)
+  if (!proceed || ctxAfterStart.error)
+    return ctxAfterStart
 
+  let ctx: RequestContext
   try {
-    context.response = await adapter(context)
+    const response = await adapter(ctxAfterStart)
+    ctx = { ...ctxAfterStart, response, error: null }
   }
   catch (error) {
-    context.error = error instanceof BaseRequestError ? error : new UnknownError(error)
+    const classified = error instanceof BaseRequestError ? error : new UnknownError(error)
+    ctx = { ...ctxAfterStart, response: null, error: classified }
   }
 
-  await runResponsePipeline(context, middlewares)
+  return runResponsePipeline(ctx, middlewares)
 }

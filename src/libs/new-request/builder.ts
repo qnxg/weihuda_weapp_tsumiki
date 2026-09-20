@@ -25,30 +25,88 @@ export class RequestBuilder {
   middlewares: BaseRequestMiddleware[] = []
 
   constructor(config: RequestConfig) {
-    const { adapter, ...rest } = config
-    this.adapter = adapter ?? null
-    this.add(rest)
+    this.adapter = config.adapter ?? null
+    this.applyConfig(config)
   }
 
-  create(config: RequestConfig) {
-    const instance = new RequestBuilder(config)
-    instance.middlewares = [...this.middlewares]
-    return instance
-  }
-
-  with(middleware: BaseRequestMiddleware) {
-    this.middlewares.push(middleware)
-    return this
-  }
-
-  add(config: RequestConfig) {
-    const { adapter, ...rest } = config
-
-    if (this.adapter && adapter) {
-      throw new Error("No change adapter")
+  fork(config: RequestConfig): RequestBuilder {
+    const child = new RequestBuilder({})
+    child.adapter = this.adapter
+    child.context = {
+      ...this.context,
+      request: { ...this.context.request },
+      meta: {},
     }
+    child.middlewares = [...this.middlewares]
 
-    const { url, method, headers, body, signal, timeout } = rest
+    child.applyConfig(config)
+    return child
+  }
+
+  add(config: RequestConfig): RequestBuilder {
+    return this.fork(config)
+  }
+
+  with(middleware: BaseRequestMiddleware): RequestBuilder {
+    const child = new RequestBuilder({})
+    child.adapter = this.adapter
+    child.context = {
+      ...this.context,
+      request: { ...this.context.request },
+      meta: {},
+    }
+    child.middlewares = [...this.middlewares, middleware]
+    return child
+  }
+
+  append(path: string): RequestBuilder {
+    const child = new RequestBuilder({})
+    child.adapter = this.adapter
+    child.context = {
+      ...this.context,
+      request: { ...this.context.request, url: this.context.request.url + path },
+      meta: {},
+    }
+    child.middlewares = [...this.middlewares]
+    return child
+  }
+
+  async run<T>(): Promise<T> {
+    if (!this.adapter) {
+      throw new Error("No adapter configured")
+    }
+    const ctx = await pipeline(this.context, this.middlewares, this.adapter)
+    if (ctx.error) {
+      throw ctx.error
+    }
+    if (!ctx.response) {
+      throw new UnknownError()
+    }
+    return ctx.response.data as T
+  }
+
+  async request<T>(config: RequestConfig): Promise<T> {
+    return this.fork(config).run<T>()
+  }
+
+  get<T>(path?: string, data?: unknown): Promise<T> {
+    return this.request<T>({ method: "GET", url: path, body: data })
+  }
+
+  post<T>(path?: string, data?: unknown): Promise<T> {
+    return this.request<T>({ method: "POST", url: path, body: data })
+  }
+
+  put<T>(path?: string, data?: unknown): Promise<T> {
+    return this.request<T>({ method: "PUT", url: path, body: data })
+  }
+
+  delete<T>(path?: string, data?: unknown): Promise<T> {
+    return this.request<T>({ method: "DELETE", url: path, body: data })
+  }
+
+  private applyConfig(config: RequestConfig): void {
+    const { url, method, headers, body, signal, timeout } = config
     if (url !== undefined)
       this.context.request.url = url
     if (method !== undefined)
@@ -61,45 +119,5 @@ export class RequestBuilder {
       this.context.request.signal = signal
     if (timeout !== undefined)
       this.context.request.timeout = timeout
-    return this
-  }
-
-  append(path: string) {
-    this.context.request.url += path
-    return this
-  }
-
-  async request<T>(config: RequestConfig): Promise<T> {
-    this.add(config)
-    if (!this.adapter) {
-      throw new Error("No adapter configured")
-    }
-
-    await pipeline(this.context, this.middlewares, this.adapter)
-    if (this.context.error) {
-      throw this.context.error
-    }
-
-    if (!this.context.response) {
-      throw new UnknownError()
-    }
-
-    return this.context.response.data as T
-  }
-
-  get<T>(path?: string, data?: unknown) {
-    return this.request<T>({ method: "GET", url: path, body: data })
-  }
-
-  post<T>(path?: string, data?: unknown) {
-    return this.request<T>({ method: "POST", url: path, body: data })
-  }
-
-  put<T>(path?: string, data?: unknown) {
-    return this.request<T>({ method: "PUT", url: path, body: data })
-  }
-
-  delete<T>(path?: string, data?: unknown) {
-    return this.request<T>({ method: "DELETE", url: path, body: data })
   }
 }

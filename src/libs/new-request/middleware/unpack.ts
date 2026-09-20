@@ -1,4 +1,4 @@
-import type { RequestContext, ResponseMeta } from "@/types/new-request"
+import type { RequestContext, RequestMiddlewareNext, ResponseMeta } from "@/types/new-request"
 import { BaseRequestMiddleware } from "@/types/new-request"
 
 interface ResponseEnvelope {
@@ -18,18 +18,19 @@ function isEnvelope(data: unknown): data is ResponseEnvelope {
 }
 
 export class UnpackMiddleware extends BaseRequestMiddleware {
-  async onSuccess(context: RequestContext, next: () => Promise<void>): Promise<void> {
-    const response = context.response as ResponseMeta | undefined
+  async onSuccess(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext> {
+    const response = context.response
+
     if (!response) {
-      await next()
-      return
+      return next(context)
     }
 
-    const data = response.data
+    const data = response.data as unknown
     if (isEnvelope(data) && data.code === "OK") {
-      response.data = data.data
+      const newResponse: ResponseMeta = { ...response, data: data.data }
+      return next({ ...context, response: newResponse })
     }
 
-    await next()
+    return next(context)
   }
 }

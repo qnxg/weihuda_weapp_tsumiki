@@ -2,7 +2,7 @@ import type { RequestContext, ResponseMeta } from "@/types/new-request"
 import { request } from "@tarojs/taro"
 import { AbortError, NetworkError } from "@/types/new-request/error"
 
-export function adapter<T>(context: RequestContext): Promise<ResponseMeta<T>> {
+export function adapter(context: RequestContext): Promise<ResponseMeta> {
   return new Promise((resolve, reject) => {
     const { url, method, headers, signal, timeout, body } = context.request
 
@@ -11,7 +11,7 @@ export function adapter<T>(context: RequestContext): Promise<ResponseMeta<T>> {
       return
     }
 
-    const task = request<T>({
+    const task = request({
       url,
       method,
       header: headers,
