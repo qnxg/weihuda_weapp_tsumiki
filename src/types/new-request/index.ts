@@ -19,14 +19,6 @@ export interface RequestSignal {
 }
 
 /**
- * @description 请求中断控制器
- */
-export interface RequestController {
-  signal: RequestSignal
-  abort: () => void
-}
-
-/**
  * @description 通用请求元数据
  */
 export interface RequestMeta {
