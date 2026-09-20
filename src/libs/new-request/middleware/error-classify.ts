@@ -1,6 +1,8 @@
 import type { RequestAdapter, RequestContext, RequestMiddlewareNext } from "@/types/new-request"
+import { LABEL } from "@/config/logger-label"
 import { BaseRequestMiddleware } from "@/types/new-request"
 import { BusinessError, ServerError } from "@/types/new-request/error"
+import { logger } from "@/utils/logger"
 
 /**
  * @description 服务器与业务错误分类中间件
@@ -27,6 +29,7 @@ export class ErrorClassifyMiddleware extends BaseRequestMiddleware {
 
     // 服务器错误
     if (status >= 500) {
+      logger.error(LABEL.lib.request.SERVER_ERROR, `${context.request.method} ${context.request.url}: `, data)
       return next({ ...context, error: new ServerError(status, msg) })
     }
 

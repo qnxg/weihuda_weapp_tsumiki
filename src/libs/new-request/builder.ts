@@ -28,7 +28,11 @@ const DEFAULT_REQUEST_CONTEXT: RequestContext = {
  */
 export class RequestBuilder {
   adapter: RequestAdapter | null = null
-  context: RequestContext = { ...DEFAULT_REQUEST_CONTEXT }
+  context: RequestContext = {
+    ...DEFAULT_REQUEST_CONTEXT,
+    request: { ...DEFAULT_REQUEST_CONTEXT.request },
+  }
+
   middlewares: BaseRequestMiddleware[] = []
 
   constructor(config: RequestConfig) {
@@ -40,7 +44,7 @@ export class RequestBuilder {
    * @description fork 新实例
    * @param {RequestConfig} config - 插入配置
    */
-  fork(config: RequestConfig): RequestBuilder {
+  fork(config: RequestConfig = {}): RequestBuilder {
     const child = new RequestBuilder({})
     child.adapter = this.adapter
     child.context = {
@@ -67,14 +71,8 @@ export class RequestBuilder {
    * @param {BaseRequestMiddleware} middleware - 中间件实例
    */
   with(middleware: BaseRequestMiddleware): RequestBuilder {
-    const child = new RequestBuilder({})
-    child.adapter = this.adapter
-    child.context = {
-      ...this.context,
-      request: { ...this.context.request },
-      meta: {},
-    }
-    child.middlewares = [...this.middlewares, middleware]
+    const child = this.fork()
+    child.middlewares = [...child.middlewares, middleware]
     return child
   }
 
@@ -83,15 +81,7 @@ export class RequestBuilder {
    * @param {string} path - 追加的路径
    */
   append(path: string): RequestBuilder {
-    const child = new RequestBuilder({})
-    child.adapter = this.adapter
-    child.context = {
-      ...this.context,
-      request: { ...this.context.request, url: this.context.request.url + path },
-      meta: {},
-    }
-    child.middlewares = [...this.middlewares]
-    return child
+    return this.fork({ url: this.context.request.url + path })
   }
 
   /**
@@ -107,45 +97,45 @@ export class RequestBuilder {
   /**
    * @description 发起 GET 请求
    * @template T - 响应数据类型
-   * @param {string} [path] - 请求路径
+   * @param {string} [path] - 追加的路径
    * @param {unknown} [data] - 请求数据
    * @returns {Promise<T>} 响应数据
    */
   get<T>(path?: string, data?: unknown): Promise<T> {
-    return this.request<T>({ method: "GET", url: path, body: data })
+    return this.append(path ?? "").request<T>({ method: "GET", body: data })
   }
 
   /**
    * @description 发起 POST 请求
    * @template T - 响应数据类型
-   * @param {string} [path] - 请求路径
+   * @param {string} [path] - 追加的路径
    * @param {unknown} [data] - 请求数据
    * @returns {Promise<T>} 响应数据
    */
   post<T>(path?: string, data?: unknown): Promise<T> {
-    return this.request<T>({ method: "POST", url: path, body: data })
+    return this.append(path ?? "").request<T>({ method: "POST", body: data })
   }
 
   /**
    * @description 发起 PUT 请求
    * @template T - 响应数据类型
-   * @param {string} [path] - 请求路径
+   * @param {string} [path] - 追加的路径
    * @param {unknown} [data] - 请求数据
    * @returns {Promise<T>} 响应数据
    */
   put<T>(path?: string, data?: unknown): Promise<T> {
-    return this.request<T>({ method: "PUT", url: path, body: data })
+    return this.append(path ?? "").request<T>({ method: "PUT", body: data })
   }
 
   /**
    * @description 发起 DELETE 请求
    * @template T - 响应数据类型
-   * @param {string} [path] - 请求路径
+   * @param {string} [path] - 追加的路径
    * @param {unknown} [data] - 请求数据
    * @returns {Promise<T>} 响应数据
    */
   delete<T>(path?: string, data?: unknown): Promise<T> {
-    return this.request<T>({ method: "DELETE", url: path, body: data })
+    return this.append(path ?? "").request<T>({ method: "DELETE", body: data })
   }
 
   /**

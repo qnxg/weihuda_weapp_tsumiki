@@ -1,6 +1,8 @@
 import type { RequestContext, ResponseMeta } from "@/types/new-request"
 import { request } from "@tarojs/taro"
+import { LABEL } from "@/config/logger-label"
 import { AbortError, NetworkError } from "@/types/new-request/error"
+import { logger } from "@/utils/logger"
 
 /**
  * @description 通用请求适配器
@@ -33,6 +35,7 @@ export function adapter(context: RequestContext): Promise<ResponseMeta> {
           reject(new AbortError())
         }
         else {
+          logger.error(LABEL.lib.request.NETWORK_ERROR, `${method} ${url}: `, err)
           reject(new NetworkError(err.errMsg, err))
         }
       },
