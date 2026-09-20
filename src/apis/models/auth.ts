@@ -2,17 +2,13 @@
  * @description 登录和 cas 绑定请求(刷新 refresh_token)
  * @property {string} code - wx login code
  * @property {string} stu_id - 学号
- * @property {string} password - 密码 (公钥 RSA 加密)
- * @property {string} pow_ticket - 工作量证明 ticket
- * @property {number} pow_answer - 工作量证明答案
+ * @property {string} password - 密码 (base64 加密)
  * @see https://app.apifox.com/link/project/8311217/apis/api-461746340
  */
 export interface AuthLoginRequest {
   code: string
   stu_id: string
   password: string
-  pow_ticket: string
-  pow_answer: number
 }
 
 /**
@@ -36,10 +32,12 @@ export interface AuthRefreshRequest {
 /**
  * @description 刷新令牌响应
  * @property {string} access_token - 新的访问令牌
+ * @property {string} refresh_token - 新的刷新令牌
  * @see https://app.apifox.com/link/project/8311217/apis/api-461746813
  */
 export interface AuthRefreshResponse {
   access_token: string
+  refresh_token: string
 }
 
 /**
@@ -57,24 +55,4 @@ export interface AuthTFARequest {
  */
 export interface AuthTFAErrorData {
   phone: string
-}
-
-/**
- * @description 工作量证明请求
- * @property {string} stu_id - 学号
- * @see https://app.apifox.com/link/project/8311217/apis/api-462316739
- */
-export interface AuthPowRequest {
-  stu_id: string
-}
-
-/**
- * @description 工作量证明响应
- * @property {string} ticket - 工作量证明 ticket
- * @property {number} difficulty - 工作量证明难度
- * @see https://app.apifox.com/link/project/8311217/apis/api-462316739
- */
-export interface AuthPowResponse {
-  ticket: string
-  difficulty: number
 }
