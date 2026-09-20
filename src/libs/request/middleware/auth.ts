@@ -3,12 +3,12 @@ import type {
   RequestContext,
   RequestMiddlewareNext,
   ResponseMeta,
-} from "@/types/new-request"
+} from "@/types/request"
 import { LABEL } from "@/config/logger-label"
 import { promptLoginLost, promptTFA } from "@/libs/auth-bridge"
-import { RequestBuilder } from "@/libs/new-request/builder"
-import { BaseRequestMiddleware } from "@/types/new-request"
-import { BusinessError } from "@/types/new-request/error"
+import { RequestBuilder } from "@/libs/request/builder"
+import { BaseRequestMiddleware } from "@/types/request"
+import { BusinessError } from "@/types/request/error"
 import { accessTokenStorage, refreshAccessToken } from "@/utils/auth"
 import { logger } from "@/utils/logger"
 

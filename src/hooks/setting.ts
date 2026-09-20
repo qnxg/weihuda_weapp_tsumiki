@@ -57,7 +57,7 @@ export function useSetting(): SettingHookResult {
 
     setIsLoading(true)
 
-    const apiPromise = api.me.setting.get().then(res => res.data).catch((error) => {
+    const apiPromise = api.me.setting.get().catch((error) => {
       logger.error(LABEL.hook.setting.FETCH_ERROR, error)
       return null
     })
@@ -107,7 +107,7 @@ export function useSetting(): SettingHookResult {
         },
       }
       const res = await api.me.setting.putIndexCard(requestData)
-      const converted = convertIndexCardSetting(res.data)
+      const converted = convertIndexCardSetting(res)
       await indexCardSettingStorage.set(converted)
       setIndexCardSetting(converted)
     }
@@ -130,7 +130,7 @@ export function useSetting(): SettingHookResult {
         },
       }
       const res = await api.me.setting.putTable(requestData)
-      const converted = convertTableSetting(res.data)
+      const converted = convertTableSetting(res)
       await tableSettingStorage.set(converted)
       setTableSetting(converted)
     }

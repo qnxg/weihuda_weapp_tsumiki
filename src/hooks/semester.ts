@@ -1,4 +1,4 @@
-import type { RequestError } from "@/types/request"
+import type { BaseRequestError } from "@/types/request/error"
 import type { Semester, SemesterInfo } from "@/types/semester"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
@@ -11,12 +11,12 @@ const semesterStorage = new Storage<SemesterInfo>(STORAGE.semester.current)
 /**
  * @property {SemesterInfo | null} data - 学期信息
  * @property {boolean} isLoading - 加载状态
- * @property {RequestError | null} error - 错误信息
+ * @property {BaseRequestError | null} error - 错误信息
  */
 interface UseSemesterResult {
   data: SemesterInfo | null
   isLoading: boolean
-  error: RequestError | null
+  error: BaseRequestError | null
 }
 
 /**
@@ -29,7 +29,7 @@ export function useSemester(s?: Semester): UseSemesterResult {
   const { getSemester, setSemester } = useSemesterContext()
 
   const [data, setData] = useState<SemesterInfo | null>(null)
-  const [error, setError] = useState<RequestError | null>(null)
+  const [error, setError] = useState<BaseRequestError | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const getSemesterRef = useRef(getSemester)
@@ -42,10 +42,10 @@ export function useSemester(s?: Semester): UseSemesterResult {
     setError(null)
     try {
       const res = await api.semester(s)
-      return res.data
+      return res
     }
     catch (err) {
-      const requestError = err as RequestError
+      const requestError = err as BaseRequestError
       setError(requestError)
       return null
     }

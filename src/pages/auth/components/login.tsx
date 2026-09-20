@@ -29,7 +29,7 @@ export function Login() {
       },
       onSuccess: async (res) => {
         // 保存 refresh_token, 供后续静默刷新 access_token 使用
-        await refreshTokenStorage.set(res.data.refresh_token)
+        await refreshTokenStorage.set(res.refresh_token)
 
         hideLoading()
 

@@ -1,5 +1,5 @@
-import type { BaseRequestMiddleware, RequestAdapter, RequestContext } from "@/types/new-request"
-import { BaseRequestError, UnknownError } from "@/types/new-request/error"
+import type { BaseRequestMiddleware, RequestAdapter, RequestContext } from "@/types/request"
+import { BaseRequestError, UnknownError } from "@/types/request/error"
 
 /**
  * @description 请求中间件请求管线

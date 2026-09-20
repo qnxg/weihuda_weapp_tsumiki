@@ -1,4 +1,4 @@
-import type { BaseRequestError } from "@/types/new-request/error"
+import type { BaseRequestError } from "@/types/request/error"
 
 /**
  * @description 请求方法

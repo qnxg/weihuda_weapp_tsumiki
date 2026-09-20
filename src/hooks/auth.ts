@@ -34,7 +34,7 @@ export function useAuth(): AuthHookResult {
     setIsLoading(true)
     return api.me.get()
       .then((res) => {
-        const data = res.data
+        const data = res
         const userInfo: UserInfo = {
           name: data.name,
           sex: parseSex(data.sex),

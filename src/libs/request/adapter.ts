@@ -1,7 +1,7 @@
-import type { RequestContext, ResponseMeta } from "@/types/new-request"
+import type { RequestContext, ResponseMeta } from "@/types/request"
 import { request } from "@tarojs/taro"
 import { LABEL } from "@/config/logger-label"
-import { AbortError, NetworkError } from "@/types/new-request/error"
+import { AbortError, NetworkError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**

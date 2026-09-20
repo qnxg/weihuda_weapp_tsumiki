@@ -3,8 +3,8 @@ import type {
   RequestAdapter,
   RequestConfig,
   RequestContext,
-} from "@/types/new-request"
-import { UnknownError } from "@/types/new-request/error"
+} from "@/types/request"
+import { UnknownError } from "@/types/request/error"
 import { pipeline } from "./pipeline"
 
 const DEFAULT_REQUEST_CONTEXT: RequestContext = {

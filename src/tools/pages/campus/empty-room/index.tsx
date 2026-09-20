@@ -1,7 +1,7 @@
 import type { EmptyRoomItem, EmptyRoomRequest } from "@/apis/models/empty-room"
 import { Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading, showToast } from "@tarojs/taro"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Checkbox } from "@/components/checkbox"
@@ -13,6 +13,7 @@ import { BUILDINGS } from "@/config/buildings"
 import {
   MAJOR_PERIODS,
 } from "@/config/schedule"
+import { useQuery } from "@/hooks/request"
 import ToIcon from "@/static/common/to.svg"
 import EmptyIcon from "@/static/tools/campus/empty-room/empty.svg"
 import { od } from "@/utils/ohday"
@@ -75,6 +76,12 @@ interface QueryResult {
   periodLabel: string
 }
 
+interface QueryInput {
+  request: EmptyRoomRequest
+  buildingName: string
+  periodLabel: string
+}
+
 const BUILDING_NAMES = BUILDINGS.map(building => building.name)
 
 function PickerValue({
@@ -98,7 +105,7 @@ export default function EmptyRoom() {
   const [buildingIndex, setBuildingIndex] = useState(0)
   const [periods, setPeriods] = useState<number[]>(() => getDefaultMajorPeriods())
   const [result, setResult] = useState<QueryResult | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [submitted, setSubmitted] = useState<QueryInput | null>(null)
 
   const dateDisplay = od(date).p("YYYY-MM-DD")
   const building = BUILDINGS[buildingIndex]
@@ -111,31 +118,25 @@ export default function EmptyRoom() {
     })
   }
 
-  const fetchRooms = useCallback(async (request: EmptyRoomRequest, buildingName: string, periodLabel: string) => {
-    setIsLoading(true)
-
-    return api.emptyRoom.get(request)
-      .then((res) => {
-        setResult({
-          request,
-          rooms: res.data,
-          buildingName,
-          periodLabel,
-        })
-        hideLoading()
-      })
-      .catch(() => {
-        hideLoading()
+  // 取数: 以已提交的查询条件为入参, loading / 错误 / 取消交由 hook 统一管理
+  const { isFetching, refetch } = useQuery(
+    () => api.emptyRoom.get(submitted!.request),
+    [submitted],
+    {
+      enabled: submitted !== null,
+      onSuccess: rooms => setResult({ ...submitted!, rooms }),
+      onError: () => {
         void showToast({
           title: "空教室查询失败",
           icon: "error",
         })
-      })
-      .finally(() => setIsLoading(false))
-  }, [])
+      },
+      onSettled: () => hideLoading(),
+    },
+  )
 
   const handleSubmit = () => {
-    if (isLoading)
+    if (isFetching)
       return
 
     if (periods.length === 0) {
@@ -146,25 +147,26 @@ export default function EmptyRoom() {
       return
     }
 
-    const request: EmptyRoomRequest = {
-      building_id: building.id,
-      time: formatMajorPeriods(periods),
-      date: dateDisplay,
-    }
-
     void showLoading({
       title: "加载中...",
     })
-    void fetchRooms(request, building.name, formatMajorPeriodLabel(periods))
+
+    setSubmitted({
+      request: {
+        building_id: building.id,
+        time: formatMajorPeriods(periods),
+        date: dateDisplay,
+      },
+      buildingName: building.name,
+      periodLabel: formatMajorPeriodLabel(periods),
+    })
   }
 
   return (
     <Page>
       <PageContent
         className="h-full"
-        onRefresh={result
-          ? () => fetchRooms(result.request, result.buildingName, result.periodLabel)
-          : null}
+        onRefresh={result ? () => refetch() : null}
       >
         <View className="flex flex-col p gap-3xl">
           <Card>

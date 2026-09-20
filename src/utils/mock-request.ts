@@ -1,5 +1,4 @@
-import type { Response } from "@/types/request"
-import { RequestError } from "@/types/request"
+import { BaseRequestError } from "@/types/request/error"
 
 /**
  * @description Mock 请求配置项
@@ -17,10 +16,10 @@ interface MockRequestOptions {
  * @param {T} data - 模拟返回数据
  * @param {MockRequestOptions} [options] - 配置项
  */
-export async function mockRequest<T extends object | null>(
+export async function mockRequest<T>(
   data: T,
   options: MockRequestOptions = {},
-): Promise<Response<T>> {
+): Promise<T> {
   const { delay = "auto", errorRate = 0 } = options
 
   const ms = delay === "auto" ? Math.floor(Math.random() * 5000) : delay
@@ -28,8 +27,8 @@ export async function mockRequest<T extends object | null>(
   await new Promise<void>(resolve => setTimeout(resolve, ms))
 
   if (Math.random() < errorRate) {
-    throw new RequestError(-1, "MOCK_ERROR", null)
+    throw new BaseRequestError("MOCK", -2, "MOCK_ERROR")
   }
 
-  return { code: "OK", data } as Response<T>
+  return data
 }

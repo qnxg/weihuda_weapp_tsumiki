@@ -16,23 +16,23 @@ export type CachedQueryStatus = QueryStatus | "waiting" | "updating" | "cached"
 
 /**
  * @description useCachedQuery 返回值; 与 useQuery 一致, 但 status 字段类型扩展为 CachedQueryStatus
- * @template T - 响应数据类型, 约束 object | null
+ * @template T - 响应数据类型
  */
-export type UseCachedQueryResult<T extends object | null> = Omit<UseQueryResult<T>, "status"> & {
+export type UseCachedQueryResult<T> = Omit<UseQueryResult<T>, "status"> & {
   status: CachedQueryStatus
 }
 
 /**
  * @description 带 wx.storage 持久化的取数 Hook
  *   内部封装 useQuery, fetch 成功时写 storage; storage 异步读在 fetch 未成功时作为 data 占位 / 失败时兜底
- * @template T - 响应数据类型, 约束 object | null
+ * @template T - 响应数据类型
  * @param {QueryFunction<T>} fn - 取数函数
  * @param {unknown[]} [deps] - 变更检测数组; deps 变化时自动重新执行; 默认 []
  * @param {string} key - 存储键
  * @param {UseQueryOptions<T>} [options] - 配置项; 默认 {}
  * @returns {UseCachedQueryResult<T>} - 扩展 status 字段的 useQuery 返回值
  */
-export function useCachedQuery<T extends object | null>(
+export function useCachedQuery<T>(
   fn: QueryFunction<T>,
   deps: unknown[] = [],
   key: string,
@@ -69,10 +69,10 @@ export function useCachedQuery<T extends object | null>(
     ...options,
     onSuccess: (res) => {
       setIsWritingStorage(true)
-      storage.set(res.data)
+      storage.set(res)
         .then(() => {
           // 写成功后同步 storageData, 让后续 refetch 能感知 "waiting" 状态 (fetch 中 + storage 占位渲染)
-          setStorageData(res.data)
+          setStorageData(res)
         })
         .catch(() => {
           // 写失败不影响当前数据流

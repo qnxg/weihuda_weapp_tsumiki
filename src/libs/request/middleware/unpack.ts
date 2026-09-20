@@ -1,5 +1,5 @@
-import type { RequestAdapter, RequestContext, RequestMiddlewareNext, ResponseMeta } from "@/types/new-request"
-import { BaseRequestMiddleware } from "@/types/new-request"
+import type { RequestAdapter, RequestContext, RequestMiddlewareNext, ResponseMeta } from "@/types/request"
+import { BaseRequestMiddleware } from "@/types/request"
 
 interface ResponseEnvelope {
   code: string

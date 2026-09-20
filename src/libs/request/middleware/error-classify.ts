@@ -1,7 +1,7 @@
-import type { RequestAdapter, RequestContext, RequestMiddlewareNext } from "@/types/new-request"
+import type { RequestAdapter, RequestContext, RequestMiddlewareNext } from "@/types/request"
 import { LABEL } from "@/config/logger-label"
-import { BaseRequestMiddleware } from "@/types/new-request"
-import { BusinessError, ServerError } from "@/types/new-request/error"
+import { BaseRequestMiddleware } from "@/types/request"
+import { BusinessError, ServerError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**
