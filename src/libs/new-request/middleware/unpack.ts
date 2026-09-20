@@ -1,4 +1,4 @@
-import type { RequestContext, RequestMiddlewareNext, ResponseMeta } from "@/types/new-request"
+import type { RequestAdapter, RequestContext, RequestMiddlewareNext, ResponseMeta } from "@/types/new-request"
 import { BaseRequestMiddleware } from "@/types/new-request"
 
 interface ResponseEnvelope {
@@ -21,7 +21,7 @@ function isEnvelope(data: unknown): data is ResponseEnvelope {
  * @description 响应解包中间件
  */
 export class UnpackMiddleware extends BaseRequestMiddleware {
-  async onSuccess(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext> {
+  async onSuccess(_adapter: RequestAdapter, context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext> {
     const response = context.response
 
     if (!response) {

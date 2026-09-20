@@ -7,6 +7,7 @@ import { BaseRequestError, UnknownError } from "@/types/new-request/error"
 async function runRequestPipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
+  adapter: RequestAdapter,
 ): Promise<{ ctx: RequestContext, proceed: boolean }> {
   let index = 0
   const ctx = context
@@ -19,7 +20,7 @@ async function runRequestPipeline(
 
     if (middleware.onStart) {
       let called = false
-      return middleware.onStart(currentCtx, async (passedCtx) => {
+      return middleware.onStart(adapter, currentCtx, async (passedCtx) => {
         if (called) {
           throw new Error("next() called multiple times")
         }
@@ -42,6 +43,7 @@ async function runRequestPipeline(
 async function runResponsePipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
+  adapter: RequestAdapter,
 ): Promise<RequestContext> {
   let index = middlewares.length - 1
   const ctx = context
@@ -56,7 +58,7 @@ async function runResponsePipeline(
 
     if (hook) {
       let called = false
-      return hook(currentCtx, async (passedCtx) => {
+      return hook(adapter, currentCtx, async (passedCtx) => {
         if (called) {
           throw new Error("next() called multiple times")
         }
@@ -80,7 +82,7 @@ export async function pipeline(
   middlewares: BaseRequestMiddleware[],
   adapter: RequestAdapter,
 ): Promise<RequestContext> {
-  const { ctx: ctxAfterStart, proceed } = await runRequestPipeline(context, middlewares)
+  const { ctx: ctxAfterStart, proceed } = await runRequestPipeline(context, middlewares, adapter)
   if (!proceed || ctxAfterStart.error)
     return ctxAfterStart
 
@@ -94,5 +96,5 @@ export async function pipeline(
     ctx = { ...ctxAfterStart, response: null, error: classified }
   }
 
-  return runResponsePipeline(ctx, middlewares)
+  return runResponsePipeline(ctx, middlewares, adapter)
 }

@@ -95,31 +95,12 @@ export class RequestBuilder {
   }
 
   /**
-   * @description 执行当前实例的中间件管线并返回响应数据
-   * @template T - 响应数据类型
-   * @returns {Promise<T>} 响应数据
-   */
-  async run<T>(): Promise<T> {
-    if (!this.adapter) {
-      throw new Error("No adapter configured")
-    }
-    const ctx = await pipeline(this.context, this.middlewares, this.adapter)
-    if (ctx.error) {
-      throw ctx.error
-    }
-    if (!ctx.response) {
-      throw new UnknownError()
-    }
-    return ctx.response.data as T
-  }
-
-  /**
-   * @description fork 出带 config 的新实例并执行
+   * @description 执行请求和中间件管线
    * @template T - 响应数据类型
    * @param {RequestConfig} config - 插入配置
    * @returns {Promise<T>} 响应数据
    */
-  async request<T>(config: RequestConfig): Promise<T> {
+  async request<T>(config: RequestConfig = {}): Promise<T> {
     return this.fork(config).run<T>()
   }
 
@@ -185,5 +166,24 @@ export class RequestBuilder {
       this.context.request.signal = signal
     if (timeout !== undefined)
       this.context.request.timeout = timeout
+  }
+
+  /**
+   * @description 执行当前实例的请求和中间件管线
+   * @template T - 响应数据类型
+   * @returns {Promise<T>} 响应数据
+   */
+  private async run<T>(): Promise<T> {
+    if (!this.adapter) {
+      throw new Error("No adapter configured")
+    }
+    const ctx = await pipeline(this.context, this.middlewares, this.adapter)
+    if (ctx.error) {
+      throw ctx.error
+    }
+    if (!ctx.response) {
+      throw new UnknownError()
+    }
+    return ctx.response.data as T
   }
 }

@@ -91,23 +91,26 @@ export type RequestMiddlewareNext = (context: RequestContext) => Promise<Request
 export abstract class BaseRequestMiddleware {
   /**
    * @description 请求阶段中间件进入回调
+   * @param {RequestAdapter} adapter - 请求适配器
    * @param {RequestContext} context - 请求上下文
    * @param {RequestContext} next - 中间件 next 函数
    * @return {Promise<RequestContext>} 处理后的上下文
    */
-  async onStart?(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
+  async onStart?(adapter: RequestAdapter, context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
   /**
    * @description 响应成功时回调
+   * @param {RequestAdapter} adapter - 请求适配器
    * @param {RequestContext} context - 请求上下文
    * @param {RequestContext} next - 中间件 next 函数
    * @return {Promise<RequestContext>} 处理后的上下文
    */
-  async onSuccess?(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
+  async onSuccess?(adapter: RequestAdapter, context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
   /**
    * @description 响应失败时回调
+   * @param {RequestAdapter} adapter - 请求适配器
    * @param {RequestContext} context - 请求上下文
    * @param {RequestContext} next - 中间件 next 函数
    * @return {Promise<RequestContext>} 处理后的上下文
    */
-  async onError?(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
+  async onError?(adapter: RequestAdapter, context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext>
 }
