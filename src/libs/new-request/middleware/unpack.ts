@@ -17,6 +17,9 @@ function isEnvelope(data: unknown): data is ResponseEnvelope {
   )
 }
 
+/**
+ * @description 响应解包中间件
+ */
 export class UnpackMiddleware extends BaseRequestMiddleware {
   async onSuccess(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext> {
     const response = context.response

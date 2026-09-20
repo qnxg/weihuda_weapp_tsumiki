@@ -2,6 +2,9 @@ import type { RequestContext, RequestMiddlewareNext } from "@/types/new-request"
 import { BaseRequestMiddleware } from "@/types/new-request"
 import { BusinessError, ServerError } from "@/types/new-request/error"
 
+/**
+ * @description 服务器与业务错误分类中间件
+ */
 export class ErrorClassifyMiddleware extends BaseRequestMiddleware {
   async onSuccess(context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext> {
     const response = context.response

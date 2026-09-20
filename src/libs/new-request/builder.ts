@@ -19,6 +19,13 @@ const DEFAULT_REQUEST_CONTEXT: RequestContext = {
   meta: {},
 }
 
+/**
+ * @description 通用请求类构造器
+ * @param {RequestConfig} config - 请求配置
+ * @property {RequestAdapter | null} adapter - 请求适配器
+ * @property {RequestContext} context - 请求上下文
+ * @property {BaseRequestMiddleware[]} middlewares - 请求中间件
+ */
 export class RequestBuilder {
   adapter: RequestAdapter | null = null
   context: RequestContext = { ...DEFAULT_REQUEST_CONTEXT }
@@ -29,6 +36,10 @@ export class RequestBuilder {
     this.applyConfig(config)
   }
 
+  /**
+   * @description fork 新实例
+   * @param {RequestConfig} config - 插入配置
+   */
   fork(config: RequestConfig): RequestBuilder {
     const child = new RequestBuilder({})
     child.adapter = this.adapter
@@ -43,10 +54,18 @@ export class RequestBuilder {
     return child
   }
 
+  /**
+   * @description 添加配置项
+   * @param {RequestConfig} config - 插入配置
+   */
   add(config: RequestConfig): RequestBuilder {
     return this.fork(config)
   }
 
+  /**
+   * @description 注册中间件
+   * @param {BaseRequestMiddleware} middleware - 中间件实例
+   */
   with(middleware: BaseRequestMiddleware): RequestBuilder {
     const child = new RequestBuilder({})
     child.adapter = this.adapter
@@ -59,6 +78,10 @@ export class RequestBuilder {
     return child
   }
 
+  /**
+   * @description 追加路径到当前 URL
+   * @param {string} path - 追加的路径
+   */
   append(path: string): RequestBuilder {
     const child = new RequestBuilder({})
     child.adapter = this.adapter
@@ -71,6 +94,11 @@ export class RequestBuilder {
     return child
   }
 
+  /**
+   * @description 执行当前实例的中间件管线并返回响应数据
+   * @template T - 响应数据类型
+   * @returns {Promise<T>} 响应数据
+   */
   async run<T>(): Promise<T> {
     if (!this.adapter) {
       throw new Error("No adapter configured")
@@ -85,26 +113,64 @@ export class RequestBuilder {
     return ctx.response.data as T
   }
 
+  /**
+   * @description fork 出带 config 的新实例并执行
+   * @template T - 响应数据类型
+   * @param {RequestConfig} config - 插入配置
+   * @returns {Promise<T>} 响应数据
+   */
   async request<T>(config: RequestConfig): Promise<T> {
     return this.fork(config).run<T>()
   }
 
+  /**
+   * @description 发起 GET 请求
+   * @template T - 响应数据类型
+   * @param {string} [path] - 请求路径
+   * @param {unknown} [data] - 请求数据
+   * @returns {Promise<T>} 响应数据
+   */
   get<T>(path?: string, data?: unknown): Promise<T> {
     return this.request<T>({ method: "GET", url: path, body: data })
   }
 
+  /**
+   * @description 发起 POST 请求
+   * @template T - 响应数据类型
+   * @param {string} [path] - 请求路径
+   * @param {unknown} [data] - 请求数据
+   * @returns {Promise<T>} 响应数据
+   */
   post<T>(path?: string, data?: unknown): Promise<T> {
     return this.request<T>({ method: "POST", url: path, body: data })
   }
 
+  /**
+   * @description 发起 PUT 请求
+   * @template T - 响应数据类型
+   * @param {string} [path] - 请求路径
+   * @param {unknown} [data] - 请求数据
+   * @returns {Promise<T>} 响应数据
+   */
   put<T>(path?: string, data?: unknown): Promise<T> {
     return this.request<T>({ method: "PUT", url: path, body: data })
   }
 
+  /**
+   * @description 发起 DELETE 请求
+   * @template T - 响应数据类型
+   * @param {string} [path] - 请求路径
+   * @param {unknown} [data] - 请求数据
+   * @returns {Promise<T>} 响应数据
+   */
   delete<T>(path?: string, data?: unknown): Promise<T> {
     return this.request<T>({ method: "DELETE", url: path, body: data })
   }
 
+  /**
+   * @description 应用配置到当前 context
+   * @param {RequestConfig} config - 配置项
+   */
   private applyConfig(config: RequestConfig): void {
     const { url, method, headers, body, signal, timeout } = config
     if (url !== undefined)

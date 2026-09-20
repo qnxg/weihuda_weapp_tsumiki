@@ -2,6 +2,9 @@ import type { RequestContext, ResponseMeta } from "@/types/new-request"
 import { request } from "@tarojs/taro"
 import { AbortError, NetworkError } from "@/types/new-request/error"
 
+/**
+ * @description 通用请求适配器
+ */
 export function adapter(context: RequestContext): Promise<ResponseMeta> {
   return new Promise((resolve, reject) => {
     const { url, method, headers, signal, timeout, body } = context.request

@@ -1,5 +1,10 @@
 /**
  * @description 通用请求错误基类
+ * @property {string} type - 错误类型 (NETWORK / SERVER / BUSINESS / ABORT / UNKNOWN)
+ * @property {string | number} code - 错误码
+ * @property {string} msg - 错误消息
+ * @property {unknown} [data] - 业务数据 (如业务错误返回的 data)
+ * @property {unknown} [error] - 原始错误对象 (如 Taro fail 的 err)
  */
 export class BaseRequestError extends Error {
   type: string

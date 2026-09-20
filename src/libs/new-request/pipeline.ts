@@ -1,6 +1,9 @@
 import type { BaseRequestMiddleware, RequestAdapter, RequestContext } from "@/types/new-request"
 import { BaseRequestError, UnknownError } from "@/types/new-request/error"
 
+/**
+ * @description 请求中间件请求管线
+ */
 async function runRequestPipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
@@ -33,6 +36,9 @@ async function runRequestPipeline(
   return { ctx: finalCtx, proceed: index >= middlewares.length }
 }
 
+/**
+ * @description 请求中间件响应管线
+ */
 async function runResponsePipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
@@ -66,6 +72,9 @@ async function runResponsePipeline(
   return next(ctx)
 }
 
+/**
+ * @description 请求中间件总管线
+ */
 export async function pipeline(
   context: RequestContext,
   middlewares: BaseRequestMiddleware[],
