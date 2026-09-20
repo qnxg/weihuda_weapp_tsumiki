@@ -4,7 +4,7 @@ import { BaseRequestMiddleware } from "@/types/request"
 interface ResponseEnvelope {
   code: string
   data: unknown
-  msg: string
+  msg?: string
 }
 
 function isEnvelope(data: unknown): data is ResponseEnvelope {
@@ -13,7 +13,6 @@ function isEnvelope(data: unknown): data is ResponseEnvelope {
     && data !== null
     && "code" in data
     && "data" in data
-    && "msg" in data
   )
 }
 
