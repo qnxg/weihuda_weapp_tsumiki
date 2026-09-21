@@ -1,8 +1,7 @@
 import type { Reducer } from "react"
-import type { Response } from "@/types/request"
 import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
-import { RequestError } from "@/types/request"
+import { BaseRequestError, UnknownError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**
@@ -22,9 +21,9 @@ export type FetchStatus = "fetching" | "idle"
 
 /**
  * @description 取数函数; 不接收取消信号 (无 AbortSignal), 与 useRequest 一致采用悬空式取消
- * @template T - 响应数据类型, 约束 object | null
+ * @template T - 响应数据类型
  */
-export type QueryFunction<T extends object | null> = () => Promise<Response<T>>
+export type QueryFunction<T> = () => Promise<T>
 
 /**
  * @description `placeholderData` 的 `keepPreviousData` 占位符
@@ -35,32 +34,32 @@ export type KeepPreviousData = typeof KEEP_PREVIOUS_DATA
 
 /**
  * @description useQuery 配置项
- * @template T - 响应数据类型, 约束 object | null
+ * @template T - 响应数据类型
  * @property {boolean} [enabled=true] - 是否自动执行; 为 false 时不自动 fetch, 仅 refetch 触发
  * @property {T | (() => T)} [initialData] - 预填充数据, 仅本次挂载的初始 state 生效, 不持久化
  * @property {T | ((prev: T | null) => T) | KeepPreviousData} [placeholderData] - 占位数据, 不入 state, 仅渲染
- * @property {(res: Response<T>) => void} [onSuccess] - 成功回调
- * @property {(err: RequestError) => void} [onError] - 失败回调
- * @property {(res: Response<T> | null, err: RequestError | null) => void} [onSettled] - 结束回调, 不论成败
+ * @property {(res: T) => void} [onSuccess] - 成功回调
+ * @property {(err: BaseRequestError) => void} [onError] - 失败回调
+ * @property {(res: T | null, err: BaseRequestError | null) => void} [onSettled] - 结束回调, 不论成败
  */
-export interface UseQueryOptions<T extends object | null> {
+export interface UseQueryOptions<T> {
   enabled?: boolean
   initialData?: T | (() => T)
   placeholderData?: T | ((prev: T | null) => T) | KeepPreviousData
-  onSuccess?: (res: Response<T>) => void
-  onError?: (err: RequestError) => void
-  onSettled?: (res: Response<T> | null, err: RequestError | null) => void
+  onSuccess?: (res: T) => void
+  onError?: (err: BaseRequestError) => void
+  onSettled?: (res: T | null, err: BaseRequestError | null) => void
 }
 
 /**
  * @description useQuery 内部 state; 实例级, 不做跨实例共享
- * @template T - 响应数据类型, 约束 object | null
+ * @template T - 响应数据类型
  */
-interface QueryState<T extends object | null> {
+interface QueryState<T> {
   status: QueryStatus
   fetchStatus: FetchStatus
   data: T | null
-  error: RequestError | null
+  error: BaseRequestError | null
   dataUpdatedAt: number
   errorUpdatedAt: number
   failureCount: number
@@ -80,7 +79,7 @@ interface QueryState<T extends object | null> {
  *   与 useRequest 一致, 请求不真正中断; 实例卸载或 deps 变化触发新 fetch 时, 旧 fetch 完成会被忽略
  *   (countRef 计数比对, 不抛错, 仅不写入 state)
  */
-function makeInitialState<T extends object | null>(
+function makeInitialState<T>(
   initialData: UseQueryOptions<T>["initialData"],
 ): QueryState<T> {
   if (initialData !== undefined) {
@@ -122,13 +121,13 @@ function makeInitialState<T extends object | null>(
  *      - placeholderData = value → active (value)
  *   2. CLEAR (fetch 成功或失败触发): → none
  */
-type PlaceholderState<T extends object | null> = { kind: "none" } | { kind: "active", value: T }
+type PlaceholderState<T> = { kind: "none" } | { kind: "active", value: T }
 
-type PlaceholderAction<T extends object | null>
+type PlaceholderAction<T>
   = | { type: "EVAL", placeholderData: UseQueryOptions<T>["placeholderData"], lastData: T | null }
     | { type: "CLEAR" }
 
-function placeholderReducer<T extends object | null>(
+function placeholderReducer<T>(
   state: PlaceholderState<T>,
   action: PlaceholderAction<T>,
 ): PlaceholderState<T> {
@@ -147,7 +146,7 @@ function placeholderReducer<T extends object | null>(
         return { kind: "active", value: action.lastData }
       }
       if (typeof opt === "function") {
-        return { kind: "active", value: opt(action.lastData) }
+        return { kind: "active", value: (opt as (prev: T | null) => T)(action.lastData) }
       }
       return { kind: "active", value: opt }
     }
@@ -158,9 +157,9 @@ function placeholderReducer<T extends object | null>(
 
 /**
  * @description useQuery 返回值
- * @template T - 响应数据类型, 约束 object | null
+ * @template T - 响应数据类型
  * @property {T | null} data - 当前数据; placeholder 生效时返回 placeholder 值
- * @property {RequestError | null} error - 最近一次 fetch 的错误
+ * @property {BaseRequestError | null} error - 最近一次 fetch 的错误
  * @property {QueryStatus} status - 数据状态
  * @property {FetchStatus} fetchStatus - 取数状态
  * @property {boolean} isPending - 是否 `status === "pending"`
@@ -171,11 +170,11 @@ function placeholderReducer<T extends object | null>(
  * @property {boolean} isLoadingError - 是否首次加载失败 (`isError && failureCount <= 1`)
  * @property {boolean} isRefetchError - 是否非首次失败 (`isError && failureCount > 1`)
  * @property {boolean} isPlaceholderData - 当前 data 是否来自 placeholderData
- * @property {() => Promise<Response<T>>} refetch - 主动重新触发 fetch, 等待 inflight 完成
+ * @property {() => Promise<T>} refetch - 主动重新触发 fetch, 等待 inflight 完成
  */
-export interface UseQueryResult<T extends object | null> {
+export interface UseQueryResult<T> {
   data: T | null
-  error: RequestError | null
+  error: BaseRequestError | null
   status: QueryStatus
   fetchStatus: FetchStatus
   isPending: boolean
@@ -186,7 +185,7 @@ export interface UseQueryResult<T extends object | null> {
   isLoadingError: boolean
   isRefetchError: boolean
   isPlaceholderData: boolean
-  refetch: () => Promise<Response<T>>
+  refetch: () => Promise<T>
 }
 
 /**
@@ -194,13 +193,13 @@ export interface UseQueryResult<T extends object | null> {
  *   每次挂载自动 fetch, deps 变化自动重新执行; 实例级独立, 不做跨组件共享
  *   持久化需求请用 `useCachedQuery` (基于本 hook + wx.storage 透传), 本 hook 不做任何持久化
  *   取消语义与 useRequest 一致: 请求悬空, 不真正中断; 实例卸载或 deps 变化时旧 fetch 结果会被忽略
- * @template T - 响应数据类型, 约束 object | null
+ * @template T - 响应数据类型
  * @param {QueryFunction<T>} fn - 取数函数
  * @param {unknown[]} [deps] - 变更检测数组; deps 变化时自动重新执行; 默认 []
  * @param {UseQueryOptions<T>} [options] - 配置项; 默认 {}
  * @returns {UseQueryResult<T>} - 当前快照 + 衍生布尔 + refetch 句柄
  */
-export function useQuery<T extends object | null>(
+export function useQuery<T>(
   fn: QueryFunction<T>,
   deps: unknown[] = [],
   options: UseQueryOptions<T> = {},
@@ -250,7 +249,7 @@ export function useQuery<T extends object | null>(
   }, [state.status, state.dataUpdatedAt, state.errorUpdatedAt])
 
   // 触发 fetch; 实例级, 不复用 inflight
-  const run = useCallback(async (): Promise<Response<T>> => {
+  const run = useCallback(async (): Promise<T> => {
     countRef.current += 1
     const currentCount = countRef.current
 
@@ -262,7 +261,7 @@ export function useQuery<T extends object | null>(
       if (currentCount !== countRef.current)
         return res
 
-      const data = res.data
+      const data = res
 
       setState({
         status: "success",
@@ -282,14 +281,14 @@ export function useQuery<T extends object | null>(
     }
     catch (err) {
       if (currentCount !== countRef.current)
-        throw err instanceof RequestError ? err : new RequestError(-2, "REQUEST_HOOK_ERROR", null)
+        throw err instanceof BaseRequestError ? err : new UnknownError(err)
 
-      if (!(err instanceof RequestError)) {
+      if (!(err instanceof BaseRequestError)) {
         logger.error(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
       }
-      const myError = err instanceof RequestError
+      const myError = err instanceof BaseRequestError
         ? err
-        : new RequestError(-2, "REQUEST_HOOK_ERROR", null)
+        : new UnknownError(err)
 
       setState(prev => ({
         ...prev,
@@ -313,7 +312,7 @@ export function useQuery<T extends object | null>(
       return
     void run()
       .catch((err) => {
-        if (!(err instanceof RequestError)) {
+        if (!(err instanceof BaseRequestError)) {
           logger.fatal(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
         }
       })
@@ -325,7 +324,7 @@ export function useQuery<T extends object | null>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, run, ...deps])
 
-  const refetch = useCallback(async (): Promise<Response<T>> => {
+  const refetch = useCallback(async (): Promise<T> => {
     return run()
   }, [run])
 

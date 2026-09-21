@@ -9,7 +9,7 @@ import { MyButton } from "@/components/my-button"
 import { useAuth } from "@/hooks/auth"
 import { useMutation } from "@/hooks/request"
 import { unlockAuthPrompts } from "@/libs/auth-bridge"
-import { refreshTokenStorage } from "@/utils/auth"
+import { accessTokenStorage, refreshTokenStorage } from "@/utils/auth"
 
 /**
  * @description 账号密码登录
@@ -28,8 +28,11 @@ export function Login() {
         void showLoading({ title: "登录中..." })
       },
       onSuccess: async (res) => {
-        // 保存 refresh_token, 供后续静默刷新 access_token 使用
-        await refreshTokenStorage.set(res.data.refresh_token)
+        // 登录同时下发 access_token 与 refresh_token, 一并落盘, 后续请求无需先走一次 401 刷新
+        await Promise.all([
+          accessTokenStorage.set(res.access_token),
+          refreshTokenStorage.set(res.refresh_token),
+        ])
 
         hideLoading()
 
@@ -41,7 +44,7 @@ export function Login() {
           icon: "success",
         })
 
-        // 重新拉取用户信息; 首次请求会触发 refresh 流程自动换取 access_token
+        // 重新拉取用户信息
         await updateUser()
 
         void navigateBack()

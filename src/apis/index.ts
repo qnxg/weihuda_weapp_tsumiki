@@ -62,7 +62,7 @@ import type {
   RankResponse,
 } from "@/apis/models/rank"
 import type { SemesterRequest, SemesterResponse } from "@/apis/models/semester"
-import { request } from "@/libs/auth-request"
+import { request } from "@/libs/request"
 
 export const api = {
   base: () => request.get<{ hello: string }>("/"),

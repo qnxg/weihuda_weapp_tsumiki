@@ -14,9 +14,11 @@ export interface AuthLoginRequest {
 /**
  * @description 登录响应
  * @property {string} refresh_token - 刷新令牌
+ * @property {string} access_token - 访问令牌
  * @see https://app.apifox.com/link/project/8311217/apis/api-461746340
  */
 export interface AuthLoginResponse {
+  access_token: string
   refresh_token: string
 }
 

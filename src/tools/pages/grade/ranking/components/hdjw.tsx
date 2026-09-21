@@ -2,7 +2,7 @@ import type { RankRequest, RankResponse } from "@/apis/models/rank"
 import type { XN, XQ } from "@/types/semester"
 import { Picker, View } from "@tarojs/components"
 import { hideLoading, showLoading, showToast } from "@tarojs/taro"
-import { useCallback, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { api } from "@/apis"
 import { Card, CardContent } from "@/components/card"
 import { Icon } from "@/components/icon"
@@ -10,6 +10,7 @@ import { MyButton } from "@/components/my-button"
 import { Option, Options } from "@/components/options"
 import { PageContent } from "@/components/page"
 import { useAuth } from "@/hooks/auth"
+import { useQuery } from "@/hooks/request"
 import { useSemester } from "@/hooks/semester"
 import ToIcon from "@/static/common/to.svg"
 import EmptyIcon from "@/static/tools/grade/ranking/empty.svg"
@@ -95,10 +96,11 @@ export function HDJW() {
     display: "max",
   })
 
+  // 已提交的请求, 作为取数与刷新的入参
+  const [submitted, setSubmitted] = useState<RankRequest | null>(null)
+
   // 展示数据
   const [data, setData] = useState<Data | null>(null)
-
-  const [isLoading, setIsLoading] = useState(false)
 
   // 选择值
   const [picker, setPicker] = useState([0, 0])
@@ -140,19 +142,14 @@ export function HDJW() {
     }))
   }
 
-  // 请求 Promise
-  const fetchRank = useCallback(async (request: RankRequest) => {
-    setIsLoading(true)
-
-    return api.rank.get(request)
-      .then((res) => {
-        setData({
-          request,
-          response: res.data,
-        })
-        hideLoading()
-      })
-      .catch((err) => {
+  // 取数: 以已提交请求为入参, loading / 错误 / 取消交由 hook 统一管理
+  const { isFetching, refetch } = useQuery(
+    () => api.rank.get(submitted!),
+    [submitted],
+    {
+      enabled: submitted !== null,
+      onSuccess: response => setData({ request: submitted!, response }),
+      onError: (err) => {
         switch (err.code) {
           case "NOT_SUPPORTED":
             void showToast({
@@ -166,25 +163,26 @@ export function HDJW() {
               icon: "error",
             })
         }
-      })
-      .finally(() => setIsLoading(false))
-  }, [])
+      },
+      onSettled: () => hideLoading(),
+    },
+  )
 
   // 查询
   const handleSubmit = () => {
-    if (isLoading)
+    if (isFetching)
       return
 
     void showLoading({
       title: "加载中...",
     })
-    void fetchRank(form)
+    setSubmitted({ ...form })
   }
 
   return (
     <PageContent
       isLoading={isBootstrapLoading}
-      onRefresh={data ? () => fetchRank(data.request) : null}
+      onRefresh={data ? () => refetch() : null}
       className="h-full"
     >
       {!isBootstrapReady

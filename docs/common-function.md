@@ -51,18 +51,18 @@
 
 通用函数位于 `src/utils/` 和 `src/libs/` 下, 其中较复杂内容放置在 `src/libs/` 下, 简单内容放置在 `src/utils/` 下, 当前定义函数有:
 
-- 通用请求函数 `/libs/request.ts`: 基于 Taro.request 封装, 自动拼接 BASE_URL, 支持请求/响应各阶段回调, 提供快捷请求方法
-  - 本请求函数将分层处理错误, 对于网络错误和服务器错误, 直接记录日志, 不暴露给下一层处理; 仅正常的业务错误才会暴露
-  - 本函数保证抛出的错误均为 `RequestError` 类型, 方便统一处理
+- 请求框架 `/libs/request/`: 基于 Taro.request 封装, 以 `适配器 + 中间件管线` 组织请求, 对外暴露全局 `request` 实例
+  - 入口 `/libs/request/index.ts`: 以 `ENV.BASE_URL` 为根 URL, 按固定顺序挂载中间件 (请求阶段 `AuthMiddleware` -> `UnpackMiddleware` -> `ErrorClassifyMiddleware`)
+  - 构建器 `RequestBuilder` (`/libs/request/builder.ts`): 不可变构建器, 提供 `fork` / `add` / `with` / `append` 与 `get` / `post` / `put` / `delete`; 四个快捷方法的参数为追加到根 URL 的 path
+  - 适配器 `adapter` (`/libs/request/adapter.ts`): 唯一接触 Taro.request 的适配器, 负责发起请求与网络错误归一化
+  - 中间件 (`/libs/request/middleware/`): `AuthMiddleware` (自动带 token, 401 刷新重试, TFA 引导) / `UnpackMiddleware` (解包 `{ code, data, msg }` 信封) / `ErrorClassifyMiddleware` (5xx 归服务器错误, 非 200 或 code 非 OK 归业务错误)
+  - 错误类型 (`/types/request/error.ts`): `BaseRequestError` 基类, 以及 `NetworkError` / `ServerError` / `BusinessError` / `AbortError` / `UnknownError`
+  - 取消控制 (`/libs/request/signal.ts`): `RequestController` 提供 `signal` 与 `abort()`
+  - 成功响应已解包, 故 `request.get<T>()` 直接返回 `T`
 
-- 带鉴权的请求函数 `/libs/auth-request.ts`: 基于通用请求函数封装, 自动携带鉴权头并拦截 401, 分发到 `utils/auth.ts` 处理; 对外仍暴露 `request` (提供 get/post/put/delete 快捷方法)
-  - 与 `libs/request.ts` (底层请求) 和 `utils/auth.ts` (鉴权处理) 构成三层请求体系
-
-- 鉴权处理函数 `/utils/auth.ts`: 承载 token 存储与 401 恢复逻辑, 供 `auth-request.ts` 调用
+- 鉴权处理函数 `/utils/auth.ts`: 承载 token 存储与刷新逻辑, 供 `AuthMiddleware` 调用
   - `accessTokenStorage` / `refreshTokenStorage`: 两个 token 的存储实例
-  - `refreshAccessToken`: 单飞刷新 token, 并发 401 只发起一次 `/auth/refresh`, 将响应中的 `access_token` 和 `refresh_token` 一并写入存储, 失败返回 null
-  - `handleLoginLost`: token 失效时先静默刷新并透明重试原请求, 刷新失败则引导登录
-  - `handleTFA`: 需要双因子认证时引导前往验证码页
+  - `refreshAccessToken`: 单飞刷新 token, 并发 401 只发起一次 `/auth/refresh`; 使用局部构建的、不挂 `AuthMiddleware` 的独立请求实例, 避免刷新失败递归; 将响应中的 `access_token` 和 `refresh_token` 一并写入存储, 失败返回 null
   - `clearTokens`: 清除本地 token, 用于登出 / 登录丢失
 
 - 鉴权弹窗桥接函数 `/libs/auth-bridge.ts`: 解耦请求层与页面导航, 提供鉴权引导弹窗
@@ -108,14 +108,14 @@
 - 日志函数 `/utils/logger.ts`: 通用日志函数, 支持 debug/info/warn/error/fatal 五级日志
   - 虽然暂时无日志记录需求, 但本项目 linter 配置禁用了 `console.log` 的使用, 防止提交时误留调试日志, 因此提供了一个通用日志函数, 以便在必须记录时使用
 
-- Mock 请求函数 `/utils/mock-request.ts`: 用于开发调试的模拟请求函数, 支持自定义延迟和错误概率
+- Mock 请求函数 `/utils/mock-request.ts`: 用于开发调试的模拟请求函数, 支持自定义延迟和错误概率; 直接返回模拟数据 (不自带 `{ code, data }` 信封), 出错抛出 `type` 为 `MOCK` 的 `BaseRequestError`
 
 ## 通用钩子函数
 
 - 请求钩子 `/hooks/request/`: TanStack Query 风格的自研请求 hook 体系
   - `useQuery(fn, deps, options)`: 实例级取数 hook
-    - 接收 `取数函数` (返回 `Promise<Response<T>>`) / `依赖数组` (变更触发 refetch) / `配置项` (`enabled` / `initialData` / `placeholderData` / `onSuccess` / `onError` / `onSettled`)
-    - 返回 `data` / `error` / `status` (`pending` / `error` / `success`) / `fetchStatus` (`fetching` / `idle`) / `refetch`
+    - 接收 `取数函数` (返回 `Promise<T>`) / `依赖数组` (变更触发 refetch) / `配置项` (`enabled` / `initialData` / `placeholderData` / `onSuccess` / `onError` / `onSettled`)
+    - 返回 `data` / `error` (`BaseRequestError`) / `status` (`pending` / `error` / `success`) / `fetchStatus` (`fetching` / `idle`) / `refetch`
     - 实例级独立, 不做跨实例去重 / 缓存共享 / 失效
   - `useMutation(fn, options)`: 实例级变更 hook
     - 接收 `mutation 函数` / `配置项` (`onMutate` / `onSuccess` / `onError` / `onSettled`)

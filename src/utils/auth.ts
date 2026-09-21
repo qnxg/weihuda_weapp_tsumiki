@@ -1,10 +1,11 @@
-import type { AuthRefreshResponse, AuthTFAErrorData } from "@/apis/models/auth"
-import type { RequestOptions } from "@/libs/request"
-import type { RequestError, RequestMethod, Response } from "@/types/request"
+import type { AuthRefreshResponse } from "@/apis/models/auth"
+import { ENV } from "@/config/env"
 import { LABEL } from "@/config/logger-label"
 import { STORAGE } from "@/config/storage-key"
-import { promptLoginLost, promptTFA } from "@/libs/auth-bridge"
-import { request } from "@/libs/request"
+import { adapter } from "@/libs/request/adapter"
+import { RequestBuilder } from "@/libs/request/builder"
+import { ErrorClassifyMiddleware } from "@/libs/request/middleware/error-classify"
+import { UnpackMiddleware } from "@/libs/request/middleware/unpack"
 import { logger } from "@/utils/logger"
 import { Storage } from "@/utils/storage"
 
@@ -17,6 +18,16 @@ export const accessTokenStorage = new Storage<string>(STORAGE.token.access_token
  * @description refresh_token 存储实例
  */
 export const refreshTokenStorage = new Storage<string>(STORAGE.token.refresh_token)
+
+/**
+ * @description 刷新专用请求实例
+ */
+const refreshRequest = new RequestBuilder({
+  adapter,
+  url: ENV.BASE_URL,
+})
+  .with(new UnpackMiddleware())
+  .with(new ErrorClassifyMiddleware())
 
 /**
  * @description refresh 单飞锁: 并发 401 只发起一次 /auth/refresh
@@ -37,10 +48,9 @@ export async function refreshAccessToken(): Promise<string | null> {
         return null
       }
 
-      // 直接使用底层 request (而非 api / auth-request), 避免循环依赖
-      return request.post<AuthRefreshResponse>("/auth/refresh", { refresh_token: refreshToken })
+      return refreshRequest.post<AuthRefreshResponse>("/auth/refresh", { refresh_token: refreshToken })
         .then(async (res) => {
-          const { access_token: accessToken, refresh_token: newRefreshToken } = res.data
+          const { access_token: accessToken, refresh_token: newRefreshToken } = res
           await Promise.all([
             accessTokenStorage.set(accessToken),
             refreshTokenStorage.set(newRefreshToken),
@@ -57,56 +67,6 @@ export async function refreshAccessToken(): Promise<string | null> {
     })
   }
   return refreshPromise
-}
-
-/**
- * @description AUTH_TOKEN_INVALID 处理: 先静默 refresh, 成功则用新 token 透明
- * 重试原请求并返回; 失败则通知 auth-bridge 弹窗引导登录 (会话锁去重), 抛出原错误
- * @template T - 响应数据的类型
- */
-export async function handleLoginLost<T extends object | null>(
-  error: RequestError,
-  url: string,
-  data: unknown,
-  method: RequestMethod,
-  options: RequestOptions<T>,
-): Promise<Response<T>> {
-  const newToken = await refreshAccessToken()
-  if (newToken) {
-    return request<T>(url, data, method, {
-      ...options,
-      header: {
-        Authorization: `Bearer ${newToken}`,
-        ...options.header,
-      },
-    })
-  }
-
-  logger.error(LABEL.util.auth, "刷新失败, 登录已丢失")
-  promptLoginLost()
-  throw error
-}
-
-/**
- * @description 从 401 TFA 错误数据中安全提取手机号, 取不到返回空串
- */
-function extractTFAPhone(data: unknown): string {
-  if (typeof data === "object" && data !== null && "phone" in data) {
-    const { phone } = data as AuthTFAErrorData
-    if (typeof phone === "string") {
-      return phone
-    }
-  }
-  return ""
-}
-
-/**
- * @description TFA 处理: 通知 auth-bridge 弹窗引导前往验证码页 (会话锁去重), 抛出原错误
- */
-export function handleTFA(error: RequestError): never {
-  logger.error(LABEL.util.auth, "需要进行双因子验证")
-  promptTFA(extractTFAPhone(error.data))
-  throw error
 }
 
 /**
