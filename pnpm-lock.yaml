@@ -41,9 +41,9 @@ importers:
       '@tarojs/taro':
         specifier: 4.1.11
         version: 4.1.11(@tarojs/components@4.1.11(@tarojs/helper@4.1.11)(@types/react@18.3.29)(postcss@8.5.15)(rollup@3.30.0))(@tarojs/helper@4.1.11)(@tarojs/shared@4.1.11)(@types/react@18.3.29)(postcss@8.5.15)(rollup@3.30.0)
-      '@twisuki/ohday':
-        specifier: ^1.0.5
-        version: 1.0.5
+      '@xtwis/ohday':
+        specifier: ^1.0.1
+        version: 1.0.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -2239,9 +2239,6 @@ packages:
   '@ts-morph/common@0.27.0':
     resolution: {integrity: sha512-Wf29UqxWDpc+i61k3oIOzcUfQt79PIT9y/MWfAGlrkjg6lBC1hwDECLXPVJAhWjiGbfBCxZd65F/LIZF3+jeJQ==}
 
-  '@twisuki/ohday@1.0.5':
-    resolution: {integrity: sha512-FX/i0UXsGiKNmuDuvxWPTazYgPH5g0pSKE6zD+LnXKOhfBA2oXwqyQ5dW9kaVhAy7uT/nosjE0Oecv+oQTnQEQ==}
-
   '@types/archy@0.0.31':
     resolution: {integrity: sha512-v+dxizsFVyXgD3EpFuqT9YjdEjbJmPxNf1QIX9ohZOhxh1ZF2yhqv3vYaeum9lg3VghhxS5S0a6yldN9J9lPEQ==}
 
@@ -2491,6 +2488,9 @@ packages:
 
   '@vue/shared@3.5.34':
     resolution: {integrity: sha512-24uqU4OIiX29ryC3MeWid/Xf2fa2EFRUVLb77nRhk+UrTVrh/XiGtFAFmJBAtBRbjwNdsPRP+jj/OL27Eg1NDA==}
+
+  '@xtwis/ohday@1.0.1':
+    resolution: {integrity: sha512-xGZtjCrnNlxKG3AxRJyGjdOgaDRMBFpsCRSUE9iaI+obGYQJe/RIPN3FuXHH1soVG7VKwodiKPCW2RjysKKGdg==}
 
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
@@ -3304,8 +3304,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-flat-gitignore@2.3.0:
-    resolution: {integrity: sha512-bg4ZLGgoARg1naWfsINUUb/52Ksw/K22K+T16D38Y8v+/sGwwIYrGvH/JBjOin+RQtxxC9tzNNiy4shnGtGyyQ==}
+  eslint-config-flat-gitignore@2.4.0:
+    resolution: {integrity: sha512-JhYC+V7qEDiCDsbJcVP8fxNc62fk4+i91YLP/YvmVHlkaQ8Xo99olYN8MO5COdxl7onGlsrfZVONe5NYsZP1UA==}
     peerDependencies:
       eslint: ^9.5.0 || ^10.0.0
 
@@ -6114,7 +6114,7 @@ snapshots:
       ansis: 4.3.0
       cac: 7.0.0
       eslint: 9.39.4(jiti@2.6.1)
-      eslint-config-flat-gitignore: 2.3.0(eslint@9.39.4(jiti@2.6.1))
+      eslint-config-flat-gitignore: 2.4.0(eslint@9.39.4(jiti@2.6.1))
       eslint-flat-config-utils: 3.2.0
       eslint-merge-processors: 2.0.0(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-antfu: 3.2.3(eslint@9.39.4(jiti@2.6.1))
@@ -8280,8 +8280,6 @@ snapshots:
       minimatch: 10.2.5
       path-browserify: 1.0.1
 
-  '@twisuki/ohday@1.0.5': {}
-
   '@types/archy@0.0.31': {}
 
   '@types/babel__core@7.20.5':
@@ -8635,6 +8633,8 @@ snapshots:
       '@vue/shared': 3.5.34
 
   '@vue/shared@3.5.34': {}
+
+  '@xtwis/ohday@1.0.1': {}
 
   JSONStream@1.3.5:
     dependencies:
@@ -9611,7 +9611,7 @@ snapshots:
       eslint: 9.39.4(jiti@2.6.1)
       semver: 7.8.0
 
-  eslint-config-flat-gitignore@2.3.0(eslint@9.39.4(jiti@2.6.1)):
+  eslint-config-flat-gitignore@2.4.0(eslint@9.39.4(jiti@2.6.1)):
     dependencies:
       '@eslint/compat': 2.1.0(eslint@9.39.4(jiti@2.6.1))
       eslint: 9.39.4(jiti@2.6.1)

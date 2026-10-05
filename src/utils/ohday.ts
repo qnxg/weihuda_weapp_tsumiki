@@ -1,1 +1,1 @@
-export { od, OhDay } from "@twisuki/ohday"
+export { od, OhDay } from "@xtwis/ohday"

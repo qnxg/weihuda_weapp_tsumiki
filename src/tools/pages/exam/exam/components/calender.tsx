@@ -1,5 +1,5 @@
-import type { OhDay } from "@twisuki/ohday"
 import type { ExamScheduleItem } from "@/apis/models/exam"
+import type { OhDay } from "@/utils/ohday"
 import { Picker, View } from "@tarojs/components"
 import { useMemo, useState } from "react"
 import { Card, CardContent } from "@/components/card"

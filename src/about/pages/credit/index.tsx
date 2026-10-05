@@ -30,7 +30,7 @@ const sections: SectionItem[] = [
     title: "工具",
     items: [
       { title: "@radix-ui/react-slot", description: "Radix UI 的组件组合原语, 通过 Slot 实现 asChild 模式, 让组件可以将其样式与行为代理给子元素.", version: "1.2.4", license: "MIT" },
-      { title: "@twisuki/ohday", description: "易千自研的链式调用 / 不可变 / 轻量的日期时间处理库.", version: "1.0.5", license: "MIT" },
+      { title: "@xtwis/ohday", description: "易千自研的链式调用 / 不可变 / 轻量的日期时间处理库.", version: "1.0.5", license: "MIT" },
       { title: "clsx", description: "轻量级 className 拼接工具, 支持条件类名与多源合并.", version: "2.1.1", license: "MIT" },
     ],
   },
