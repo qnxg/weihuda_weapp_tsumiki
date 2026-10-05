@@ -2,7 +2,7 @@ import type { Reducer } from "react"
 import { OhNetError } from "@xtwis/ohnet"
 import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
-import { UnknownError } from "@/types/ohnet/error"
+import { UnknownError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**

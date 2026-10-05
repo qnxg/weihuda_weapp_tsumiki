@@ -51,13 +51,12 @@
 
 通用函数位于 `src/utils/` 和 `src/libs/` 下, 其中较复杂内容放置在 `src/libs/` 下, 简单内容放置在 `src/utils/` 下, 当前定义函数有:
 
-- 请求框架 `/libs/request/`: 基于 Taro.request 封装, 以 `适配器 + 中间件管线` 组织请求, 对外暴露全局 `request` 实例
-  - 入口 `/libs/request/index.ts`: 以 `ENV.BASE_URL` 为根 URL, 按固定顺序挂载中间件 (请求阶段 `AuthMiddleware` -> `UnpackMiddleware` -> `ErrorClassifyMiddleware`)
-  - 构建器 `RequestBuilder` (`/libs/request/builder.ts`): 不可变构建器, 提供 `fork` / `add` / `with` / `append` 与 `get` / `post` / `put` / `delete`; 四个快捷方法的参数为追加到根 URL 的 path
-  - 适配器 `adapter` (`/libs/request/adapter.ts`): 唯一接触 Taro.request 的适配器, 负责发起请求与网络错误归一化
-  - 中间件 (`/libs/request/middleware/`): `AuthMiddleware` (自动带 token, 401 刷新重试, TFA 引导) / `UnpackMiddleware` (解包 `{ code, data, msg }` 信封) / `ErrorClassifyMiddleware` (5xx 归服务器错误, 非 200 或 code 非 OK 归业务错误)
-  - 错误类型 (`/types/request/error.ts`): `BaseRequestError` 基类, 以及 `NetworkError` / `ServerError` / `BusinessError` / `AbortError` / `UnknownError`
-  - 取消控制 (`/libs/request/signal.ts`): `RequestController` 提供 `signal` 与 `abort()`
+- 请求框架 `/libs/request/`: 基于 `@xtwis/ohnet@1.0.1`, 以 `适配器 + 中间件管线` 组织请求, 对外暴露全局 `request` 实例
+  - 入口 `/libs/request/index.ts`: 以 `ENV.BASE_URL` 为根 URL, 按固定顺序挂载中间件 (`AuthMiddleware` -> `UnpackMiddleware` -> `ErrorClassifyMiddleware`); `RequestBuilder` 是 `OhNetBuilder` 的薄包装, 把 `get(path, params)` 的 `params` 类型放宽为 `unknown`, 兼容业务侧 `Request` interface
+  - 适配器 `adapter` (`/libs/request/adapter.ts`): 唯一接触 Taro.request 的适配器, 负责发起请求与网络 / 中断错误归一化为 `OhNetAdapterError`
+  - 中间件 (`/libs/request/middleware/`): `AuthMiddleware` (`enter` 自动注入 Bearer token, `leave` 处理 `BusinessError`: `AUTH_TOKEN_INVALID` 触发 `controls.retry()` 走单飞刷新; `TFA` 触发双因子认证引导) / `UnpackMiddleware` (`leave` 解包 `{ code, data, msg }` 信封, code 为 `"OK"` 时把 `data` 提出来) / `ErrorClassifyMiddleware` (`leave` 把 5xx 归 `ServerError`, 状态码非 200 / 信封 code 非 `"OK"` 归 `BusinessError`)
+  - 错误类型 (`/types/request/error.ts`): 继承 `@xtwis/ohnet` 的 `OhNetError`, 自定义 `BusinessError` / `ServerError` / `UnknownError` 三个子类; `BusinessError` 用于业务错误 (含 `code` / `data`), `ServerError` 用于服务器错误, `UnknownError` 用于兜底包装 (类型 `"UNKNOWN"`, 保留原始 `error` 在 `error` 字段)
+  - 取消控制: 使用 ohnet 内置 `OhNetController`, 通过 `subscribeAbort` 把 signal 联动到 Taro `task.abort`
   - 成功响应已解包, 故 `request.get<T>()` 直接返回 `T`
 
 - 鉴权处理函数 `/utils/auth.ts`: 承载 token 存储与刷新逻辑, 供 `AuthMiddleware` 调用

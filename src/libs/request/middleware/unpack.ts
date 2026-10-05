@@ -1,5 +1,5 @@
-import type { RequestAdapter, RequestContext, RequestMiddlewareNext, ResponseMeta } from "@/types/request"
-import { BaseRequestMiddleware } from "@/types/request"
+import type { OhNetAdapter, OhNetContext } from "@xtwis/ohnet"
+import { OhNetMiddleware } from "@xtwis/ohnet"
 
 interface ResponseEnvelope {
   code: string
@@ -19,20 +19,19 @@ function isEnvelope(data: unknown): data is ResponseEnvelope {
 /**
  * @description 响应解包中间件
  */
-export class UnpackMiddleware extends BaseRequestMiddleware {
-  async onSuccess(_adapter: RequestAdapter, context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext> {
+export class UnpackMiddleware extends OhNetMiddleware {
+  readonly name = "unpack"
+
+  async leave(_adapter: OhNetAdapter, context: OhNetContext): Promise<void> {
     const response = context.response
 
     if (!response) {
-      return next(context)
+      return
     }
 
     const data = response.data as unknown
     if (isEnvelope(data) && data.code === "OK") {
-      const newResponse: ResponseMeta = { ...response, data: data.data }
-      return next({ ...context, response: newResponse })
+      context.response = { ...response, data: data.data }
     }
-
-    return next(context)
   }
 }

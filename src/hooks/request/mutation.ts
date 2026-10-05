@@ -1,7 +1,7 @@
 import { OhNetError } from "@xtwis/ohnet"
 import { useCallback, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
-import { UnknownError } from "@/types/ohnet/error"
+import { UnknownError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**
