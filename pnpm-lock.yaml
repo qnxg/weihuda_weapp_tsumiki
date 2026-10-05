@@ -44,6 +44,9 @@ importers:
       '@xtwis/ohday':
         specifier: ^1.0.1
         version: 1.0.1
+      '@xtwis/ohnet':
+        specifier: ^1.0.1
+        version: 1.0.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -2491,6 +2494,9 @@ packages:
 
   '@xtwis/ohday@1.0.1':
     resolution: {integrity: sha512-xGZtjCrnNlxKG3AxRJyGjdOgaDRMBFpsCRSUE9iaI+obGYQJe/RIPN3FuXHH1soVG7VKwodiKPCW2RjysKKGdg==}
+
+  '@xtwis/ohnet@1.0.1':
+    resolution: {integrity: sha512-oLaEa0RKfhL5qYwIFtn2ep2N1AzZIYEY4Yk29PxsnV7chzvFNgVfTHwaMhXLnULmKwCX2pkCHqGd9gnzYJ9QpA==}
 
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
@@ -8635,6 +8641,8 @@ snapshots:
   '@vue/shared@3.5.34': {}
 
   '@xtwis/ohday@1.0.1': {}
+
+  '@xtwis/ohnet@1.0.1': {}
 
   JSONStream@1.3.5:
     dependencies:

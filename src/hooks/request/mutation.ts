@@ -1,6 +1,7 @@
+import { OhNetError } from "@xtwis/ohnet"
 import { useCallback, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
-import { BaseRequestError, UnknownError } from "@/types/request/error"
+import { UnknownError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**
@@ -26,14 +27,14 @@ export type MutationFunction<T, TVariables> = (vars: TVariables) => Promise<T>
  * @template TContext - onMutate 返回值透传类型, 默认 unknown
  * @property {(vars: TVariables) => TContext | Promise<TContext> | undefined} [onMutate] - mutate 前回调; 返回值经 context 透传给后续回调
  * @property {(res: T, vars: TVariables, context: TContext | undefined) => void} [onSuccess] - 成功回调
- * @property {(err: BaseRequestError, vars: TVariables, context: TContext | undefined) => void} [onError] - 失败回调
- * @property {(res: T | null, err: BaseRequestError | null, vars: TVariables, context: TContext | undefined) => void} [onSettled] - 结束回调, 不论成败
+ * @property {(err: OhNetError, vars: TVariables, context: TContext | undefined) => void} [onError] - 失败回调
+ * @property {(res: T | null, err: OhNetError | null, vars: TVariables, context: TContext | undefined) => void} [onSettled] - 结束回调, 不论成败
  */
 export interface UseMutationOptions<T, TVariables = void, TContext = unknown> {
   onMutate?: (vars: TVariables) => TContext | Promise<TContext> | undefined
   onSuccess?: (res: T, vars: TVariables, context: TContext | undefined) => void
-  onError?: (err: BaseRequestError, vars: TVariables, context: TContext | undefined) => void
-  onSettled?: (res: T | null, err: BaseRequestError | null, vars: TVariables, context: TContext | undefined) => void
+  onError?: (err: OhNetError, vars: TVariables, context: TContext | undefined) => void
+  onSettled?: (res: T | null, err: OhNetError | null, vars: TVariables, context: TContext | undefined) => void
 }
 
 /**
@@ -41,13 +42,13 @@ export interface UseMutationOptions<T, TVariables = void, TContext = unknown> {
  * @template T - 响应数据类型
  * @template TVariables - mutate 传入参数类型
  * @property {(res: T, vars: TVariables) => void} [onSuccess] - 一次性成功回调
- * @property {(err: BaseRequestError, vars: TVariables) => void} [onError] - 一次性失败回调
- * @property {(res: T | null, err: BaseRequestError | null, vars: TVariables) => void} [onSettled] - 一次性结束回调
+ * @property {(err: OhNetError, vars: TVariables) => void} [onError] - 一次性失败回调
+ * @property {(res: T | null, err: OhNetError | null, vars: TVariables) => void} [onSettled] - 一次性结束回调
  */
 export interface MutationCallbacks<T, TVariables = void> {
   onSuccess?: (res: T, vars: TVariables) => void
-  onError?: (err: BaseRequestError, vars: TVariables) => void
-  onSettled?: (res: T | null, err: BaseRequestError | null, vars: TVariables) => void
+  onError?: (err: OhNetError, vars: TVariables) => void
+  onSettled?: (res: T | null, err: OhNetError | null, vars: TVariables) => void
 }
 
 /**
@@ -59,7 +60,7 @@ export interface MutationCallbacks<T, TVariables = void> {
 interface MutationState<T, TVariables, TContext> {
   status: MutationStatus
   data: T | null
-  error: BaseRequestError | null
+  error: OhNetError | null
   variables: TVariables | undefined
   context: TContext | undefined
 }
@@ -98,7 +99,7 @@ function makeInitialState<T, TVariables, TContext>(): MutationState<T, TVariable
  * @template TVariables - mutate 传入参数类型, 默认 void
  * @template TContext - onMutate 返回值透传类型, 默认 unknown
  * @property {T | null} data - 最近一次 mutate 成功的数据; reset 后为 null
- * @property {BaseRequestError | null} error - 最近一次 mutate 失败的错误; reset 后为 null
+ * @property {OhNetError | null} error - 最近一次 mutate 失败的错误; reset 后为 null
  * @property {TVariables | undefined} variables - 最近一次 mutate 传入参数; reset 后为 undefined
  * @property {MutationStatus} status - mutation 状态
  * @property {boolean} isPending - 是否 `status === "pending"`
@@ -111,7 +112,7 @@ function makeInitialState<T, TVariables, TContext>(): MutationState<T, TVariable
  */
 export interface UseMutationResult<T, TVariables = void, TContext = unknown> {
   data: T | null
-  error: BaseRequestError | null
+  error: OhNetError | null
   variables: TVariables | undefined
   status: MutationStatus
   isPending: boolean
@@ -172,12 +173,10 @@ export function useMutation<T, TVariables = void, TContext = unknown>(
       context = await optionsRef.current.onMutate?.(vars)
     }
     catch (err) {
-      if (!(err instanceof BaseRequestError)) {
+      if (!(err instanceof OhNetError)) {
         logger.error(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
       }
-      const myError = err instanceof BaseRequestError
-        ? err
-        : new UnknownError(err)
+      const myError = err instanceof OhNetError ? err : new UnknownError(err)
       setState(prev => ({
         ...prev,
         status: "error",
@@ -218,12 +217,10 @@ export function useMutation<T, TVariables = void, TContext = unknown>(
         return res
       }
       catch (err) {
-        if (!(err instanceof BaseRequestError)) {
+        if (!(err instanceof OhNetError)) {
           logger.error(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
         }
-        const myError = err instanceof BaseRequestError
-          ? err
-          : new UnknownError(err)
+        const myError = err instanceof OhNetError ? err : new UnknownError(err)
         setState(prev => ({
           ...prev,
           status: "error",
@@ -249,9 +246,7 @@ export function useMutation<T, TVariables = void, TContext = unknown>(
         opts?.onSettled?.(res, null, vars)
       })
       .catch((err: unknown) => {
-        const myError = err instanceof BaseRequestError
-          ? err
-          : new UnknownError(err)
+        const myError = err instanceof OhNetError ? err : new UnknownError(err)
         opts?.onError?.(myError, vars)
         opts?.onSettled?.(null, myError, vars)
       })

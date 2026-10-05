@@ -1,69 +1,33 @@
-/**
- * @description 通用请求错误基类
- * @property {string} type - 错误类型 (NETWORK / SERVER / BUSINESS / ABORT / UNKNOWN)
- * @property {string | number} code - 错误码
- * @property {string} msg - 错误消息
- * @property {unknown} [data] - 业务数据 (如业务错误返回的 data)
- * @property {unknown} [error] - 原始错误对象 (如 Taro fail 的 err)
- */
-export class BaseRequestError extends Error {
-  type: string
-  code: string | number
-  msg: string
-  data?: unknown
-  error?: unknown
+import { OhNetError } from "@xtwis/ohnet"
 
-  constructor(type: string, code: string | number, msg: string, data?: unknown, error?: unknown) {
-    super(`[${code}] ${msg}`)
-    this.type = type
-    this.code = code
-    this.msg = msg
-    this.data = data
-    this.error = error
+/**
+ * @description 业务错误, 由 ErrorClassifyMiddleware 在 HTTP 状态码非 2xx, 或响应信封 `code` 非 `"OK"` 时抛出
+ * @property {string | number} code - 错误码, 业务侧与后端约定 (如 `"AUTH_TOKEN_INVALID"`, `"TFA"`, 业务自定义码等)
+ * @property {string} message - 错误消息, 优先取 `data.msg`, 兜底 `response.statusText`
+ * @property {unknown} data - 响应信封的 `data` 字段 (如 TFA 引导下发的 phone), 业务侧按需读取
+ */
+export class BusinessError extends OhNetError {
+  constructor(code: string | number, message: string, data: unknown) {
+    super("BUSINESS", String(code), message, data)
   }
 }
 
 /**
- * @description 网络错误
+ * @description 服务器错误, 由 ErrorClassifyMiddleware 在 HTTP 状态码 >= 500 时抛出
+ * @property {string | number} code - HTTP 状态码
+ * @property {string} message - 错误消息, 优先取 `data.msg`, 兜底 `response.statusText`
  */
-export class NetworkError extends BaseRequestError {
-  constructor(msg: string, error?: unknown) {
-    super("NETWORK", -1, msg, undefined, error)
+export class ServerError extends OhNetError {
+  constructor(code: string | number, message: string) {
+    super("SERVER", String(code), message)
   }
 }
 
 /**
- * @description 服务器错误
+ * @description 兜底错误, 用于 ohnet pipeline 未识别的异常包装
  */
-export class ServerError extends BaseRequestError {
-  constructor(code: string | number, msg: string, error?: unknown) {
-    super("SERVER", code, msg, undefined, error)
-  }
-}
-
-/**
- * @description 业务错误
- */
-export class BusinessError extends BaseRequestError {
-  constructor(code: string | number, msg: string, data: unknown, error?: unknown) {
-    super("BUSINESS", code, msg, data, error)
-  }
-}
-
-/**
- * @description 主动中断错误
- */
-export class AbortError extends BaseRequestError {
-  constructor() {
-    super("ABORT", -2, "canceled")
-  }
-}
-
-/**
- * @description 未知错误
- */
-export class UnknownError extends BaseRequestError {
+export class UnknownError extends OhNetError {
   constructor(error?: unknown) {
-    super("UNKNOWN", -114514, "unknown", undefined, error)
+    super("UNKNOWN", "-114514", "unknown", undefined, error)
   }
 }

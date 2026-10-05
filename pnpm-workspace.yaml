@@ -1,5 +1,6 @@
 minimumReleaseAgeExclude:
   - "@xtwis/ohday@1.0.1"
+  - "@xtwis/ohnet@1.0.1"
 shellEmulator: true
 
 trustPolicy: no-downgrade

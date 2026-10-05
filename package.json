@@ -42,6 +42,7 @@
     "@tarojs/shared": "4.1.11",
     "@tarojs/taro": "4.1.11",
     "@xtwis/ohday": "^1.0.1",
+    "@xtwis/ohnet": "^1.0.1",
     "clsx": "^2.1.1",
     "js-base64": "^3.9.3",
     "react": "^18.0.0",

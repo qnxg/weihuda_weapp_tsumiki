@@ -1,21 +1,23 @@
-import type { RequestAdapter, RequestContext, RequestMiddlewareNext } from "@/types/request"
+import type { OhNetAdapter, OhNetContext } from "@xtwis/ohnet"
+import { OhNetMiddleware } from "@xtwis/ohnet"
 import { LABEL } from "@/config/logger-label"
-import { BaseRequestMiddleware } from "@/types/request"
 import { BusinessError, ServerError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**
  * @description 服务器与业务错误分类中间件
  */
-export class ErrorClassifyMiddleware extends BaseRequestMiddleware {
-  async onSuccess(_adapter: RequestAdapter, context: RequestContext, next: RequestMiddlewareNext): Promise<RequestContext> {
+export class ErrorClassifyMiddleware extends OhNetMiddleware {
+  readonly name = "error-classify"
+
+  async leave(_adapter: OhNetAdapter, context: OhNetContext): Promise<void> {
     const response = context.response
 
     if (!response) {
-      return next(context)
+      return
     }
 
-    const { status, text, data } = response
+    const { status, statusText, data } = response
 
     // 构建错误代码: 处理 data: { code, data, msg } 的 code 字段, status 兜底
     const code = typeof data === "object" && data !== null && "code" in data
@@ -24,20 +26,18 @@ export class ErrorClassifyMiddleware extends BaseRequestMiddleware {
 
     // 构建错误信息: 处理 data: { code, data, msg } 的 msg 字段, text 兜底
     const msg = typeof data === "object" && data !== null && "msg" in data
-      ? String((data as { msg: unknown }).msg || text)
-      : text
+      ? String((data as { msg: unknown }).msg || statusText)
+      : statusText
 
     // 服务器错误
     if (status >= 500) {
       logger.error(LABEL.lib.request.SERVER_ERROR, `${context.request.method} ${context.request.url}: `, data)
-      return next({ ...context, error: new ServerError(status, msg) })
+      throw new ServerError(status, msg)
     }
 
     // 业务错误
     if (status !== 200 || code !== "OK") {
-      return next({ ...context, error: new BusinessError(code, msg, data) })
+      throw new BusinessError(code, msg, data)
     }
-
-    return next(context)
   }
 }

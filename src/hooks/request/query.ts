@@ -1,7 +1,8 @@
 import type { Reducer } from "react"
+import { OhNetError } from "@xtwis/ohnet"
 import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { LABEL } from "@/config/logger-label"
-import { BaseRequestError, UnknownError } from "@/types/request/error"
+import { UnknownError } from "@/types/request/error"
 import { logger } from "@/utils/logger"
 
 /**
@@ -39,16 +40,16 @@ export type KeepPreviousData = typeof KEEP_PREVIOUS_DATA
  * @property {T | (() => T)} [initialData] - 预填充数据, 仅本次挂载的初始 state 生效, 不持久化
  * @property {T | ((prev: T | null) => T) | KeepPreviousData} [placeholderData] - 占位数据, 不入 state, 仅渲染
  * @property {(res: T) => void} [onSuccess] - 成功回调
- * @property {(err: BaseRequestError) => void} [onError] - 失败回调
- * @property {(res: T | null, err: BaseRequestError | null) => void} [onSettled] - 结束回调, 不论成败
+ * @property {(err: OhNetError) => void} [onError] - 失败回调
+ * @property {(res: T | null, err: OhNetError | null) => void} [onSettled] - 结束回调, 不论成败
  */
 export interface UseQueryOptions<T> {
   enabled?: boolean
   initialData?: T | (() => T)
   placeholderData?: T | ((prev: T | null) => T) | KeepPreviousData
   onSuccess?: (res: T) => void
-  onError?: (err: BaseRequestError) => void
-  onSettled?: (res: T | null, err: BaseRequestError | null) => void
+  onError?: (err: OhNetError) => void
+  onSettled?: (res: T | null, err: OhNetError | null) => void
 }
 
 /**
@@ -59,7 +60,7 @@ interface QueryState<T> {
   status: QueryStatus
   fetchStatus: FetchStatus
   data: T | null
-  error: BaseRequestError | null
+  error: OhNetError | null
   dataUpdatedAt: number
   errorUpdatedAt: number
   failureCount: number
@@ -159,7 +160,7 @@ function placeholderReducer<T>(
  * @description useQuery 返回值
  * @template T - 响应数据类型
  * @property {T | null} data - 当前数据; placeholder 生效时返回 placeholder 值
- * @property {BaseRequestError | null} error - 最近一次 fetch 的错误
+ * @property {OhNetError | null} error - 最近一次 fetch 的错误
  * @property {QueryStatus} status - 数据状态
  * @property {FetchStatus} fetchStatus - 取数状态
  * @property {boolean} isPending - 是否 `status === "pending"`
@@ -174,7 +175,7 @@ function placeholderReducer<T>(
  */
 export interface UseQueryResult<T> {
   data: T | null
-  error: BaseRequestError | null
+  error: OhNetError | null
   status: QueryStatus
   fetchStatus: FetchStatus
   isPending: boolean
@@ -281,14 +282,12 @@ export function useQuery<T>(
     }
     catch (err) {
       if (currentCount !== countRef.current)
-        throw err instanceof BaseRequestError ? err : new UnknownError(err)
+        throw err instanceof OhNetError ? err : new UnknownError(err)
 
-      if (!(err instanceof BaseRequestError)) {
+      if (!(err instanceof OhNetError)) {
         logger.error(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
       }
-      const myError = err instanceof BaseRequestError
-        ? err
-        : new UnknownError(err)
+      const myError = err instanceof OhNetError ? err : new UnknownError(err)
 
       setState(prev => ({
         ...prev,
@@ -312,7 +311,7 @@ export function useQuery<T>(
       return
     void run()
       .catch((err) => {
-        if (!(err instanceof BaseRequestError)) {
+        if (!(err instanceof OhNetError)) {
           logger.fatal(LABEL.hook.request.REQUEST_HOOK_ERROR, err)
         }
       })

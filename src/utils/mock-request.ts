@@ -1,4 +1,4 @@
-import { BaseRequestError } from "@/types/request/error"
+import { OhNetError } from "@xtwis/ohnet"
 
 /**
  * @description Mock 请求配置项
@@ -27,7 +27,7 @@ export async function mockRequest<T>(
   await new Promise<void>(resolve => setTimeout(resolve, ms))
 
   if (Math.random() < errorRate) {
-    throw new BaseRequestError("MOCK", -2, "MOCK_ERROR")
+    throw new OhNetError("MOCK", "MOCK_ERROR", "MOCK_ERROR")
   }
 
   return data

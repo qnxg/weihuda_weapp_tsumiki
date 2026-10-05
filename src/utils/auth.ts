@@ -1,9 +1,9 @@
 import type { AuthRefreshResponse } from "@/apis/models/auth"
+import { OhNetBuilder } from "@xtwis/ohnet"
 import { ENV } from "@/config/env"
 import { LABEL } from "@/config/logger-label"
 import { STORAGE } from "@/config/storage-key"
 import { adapter } from "@/libs/request/adapter"
-import { RequestBuilder } from "@/libs/request/builder"
 import { ErrorClassifyMiddleware } from "@/libs/request/middleware/error-classify"
 import { UnpackMiddleware } from "@/libs/request/middleware/unpack"
 import { logger } from "@/utils/logger"
@@ -22,7 +22,7 @@ export const refreshTokenStorage = new Storage<string>(STORAGE.token.refresh_tok
 /**
  * @description 刷新专用请求实例
  */
-const refreshRequest = new RequestBuilder({
+const refreshRequest = new OhNetBuilder({
   adapter,
   url: ENV.BASE_URL,
 })
