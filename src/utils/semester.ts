@@ -1,5 +1,5 @@
-import type { OhDay } from "@twisuki/ohday"
 import type { Semester, SemesterInfo, XQ } from "@/types/semester"
+import type { OhDay } from "@/utils/ohday"
 import { od } from "@/utils/ohday"
 
 /**

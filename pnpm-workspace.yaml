@@ -1,5 +1,5 @@
 minimumReleaseAgeExclude:
-  - "@twisuki/ohday@1.0.5"
+  - "@xtwis/ohday@1.0.1"
 shellEmulator: true
 
 trustPolicy: no-downgrade

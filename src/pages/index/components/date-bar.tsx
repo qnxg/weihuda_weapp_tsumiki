@@ -1,4 +1,4 @@
-import type { OhDay } from "@twisuki/ohday"
+import type { OhDay } from "@/utils/ohday"
 import { View } from "@tarojs/components"
 import { cn } from "@/utils/cn"
 import { od } from "@/utils/ohday"
