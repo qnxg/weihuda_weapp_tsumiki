@@ -2241,6 +2241,7 @@ packages:
 
   '@twisuki/ohday@1.0.5':
     resolution: {integrity: sha512-FX/i0UXsGiKNmuDuvxWPTazYgPH5g0pSKE6zD+LnXKOhfBA2oXwqyQ5dW9kaVhAy7uT/nosjE0Oecv+oQTnQEQ==}
+    deprecated: This package has moved to @xtwis/ohday. Please update your dependencies and migrate to @xtwis/ohday@^1.0.0.
 
   '@types/archy@0.0.31':
     resolution: {integrity: sha512-v+dxizsFVyXgD3EpFuqT9YjdEjbJmPxNf1QIX9ohZOhxh1ZF2yhqv3vYaeum9lg3VghhxS5S0a6yldN9J9lPEQ==}
@@ -3304,8 +3305,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-flat-gitignore@2.3.0:
-    resolution: {integrity: sha512-bg4ZLGgoARg1naWfsINUUb/52Ksw/K22K+T16D38Y8v+/sGwwIYrGvH/JBjOin+RQtxxC9tzNNiy4shnGtGyyQ==}
+  eslint-config-flat-gitignore@2.4.0:
+    resolution: {integrity: sha512-JhYC+V7qEDiCDsbJcVP8fxNc62fk4+i91YLP/YvmVHlkaQ8Xo99olYN8MO5COdxl7onGlsrfZVONe5NYsZP1UA==}
     peerDependencies:
       eslint: ^9.5.0 || ^10.0.0
 
@@ -6114,7 +6115,7 @@ snapshots:
       ansis: 4.3.0
       cac: 7.0.0
       eslint: 9.39.4(jiti@2.6.1)
-      eslint-config-flat-gitignore: 2.3.0(eslint@9.39.4(jiti@2.6.1))
+      eslint-config-flat-gitignore: 2.4.0(eslint@9.39.4(jiti@2.6.1))
       eslint-flat-config-utils: 3.2.0
       eslint-merge-processors: 2.0.0(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-antfu: 3.2.3(eslint@9.39.4(jiti@2.6.1))
@@ -9611,7 +9612,7 @@ snapshots:
       eslint: 9.39.4(jiti@2.6.1)
       semver: 7.8.0
 
-  eslint-config-flat-gitignore@2.3.0(eslint@9.39.4(jiti@2.6.1)):
+  eslint-config-flat-gitignore@2.4.0(eslint@9.39.4(jiti@2.6.1)):
     dependencies:
       '@eslint/compat': 2.1.0(eslint@9.39.4(jiti@2.6.1))
       eslint: 9.39.4(jiti@2.6.1)
