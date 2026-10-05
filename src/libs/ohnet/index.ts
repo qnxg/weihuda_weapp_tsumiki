@@ -1,6 +1,7 @@
 import { OhNetBuilder } from "@xtwis/ohnet"
 import { ENV } from "@/config/env"
 import { adapter } from "@/libs/ohnet/adapter"
+import { AuthMiddleware } from "@/libs/ohnet/middleware/auth"
 import { ErrorClassifyMiddleware } from "@/libs/ohnet/middleware/error-classify"
 import { UnpackMiddleware } from "@/libs/ohnet/middleware/unpack"
 
@@ -11,5 +12,6 @@ export const request = new OhNetBuilder({
   adapter,
   url: ENV.BASE_URL,
 })
+  .with(new AuthMiddleware())
   .with(new UnpackMiddleware())
   .with(new ErrorClassifyMiddleware())
