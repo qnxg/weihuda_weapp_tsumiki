@@ -1,4 +1,4 @@
-import type { BaseRequestError } from "@/types/request/error"
+import type { OhNetError } from "@xtwis/ohnet"
 import type { Semester, SemesterInfo } from "@/types/semester"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { api } from "@/apis"
@@ -11,12 +11,12 @@ const semesterStorage = new Storage<SemesterInfo>(STORAGE.semester.current)
 /**
  * @property {SemesterInfo | null} data - 学期信息
  * @property {boolean} isLoading - 加载状态
- * @property {BaseRequestError | null} error - 错误信息
+ * @property {OhNetError | null} error - 错误信息
  */
 interface UseSemesterResult {
   data: SemesterInfo | null
   isLoading: boolean
-  error: BaseRequestError | null
+  error: OhNetError | null
 }
 
 /**
@@ -29,7 +29,7 @@ export function useSemester(s?: Semester): UseSemesterResult {
   const { getSemester, setSemester } = useSemesterContext()
 
   const [data, setData] = useState<SemesterInfo | null>(null)
-  const [error, setError] = useState<BaseRequestError | null>(null)
+  const [error, setError] = useState<OhNetError | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const getSemesterRef = useRef(getSemester)
@@ -45,7 +45,7 @@ export function useSemester(s?: Semester): UseSemesterResult {
       return res
     }
     catch (err) {
-      const requestError = err as BaseRequestError
+      const requestError = err as OhNetError
       setError(requestError)
       return null
     }

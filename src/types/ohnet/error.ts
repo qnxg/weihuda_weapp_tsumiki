@@ -22,3 +22,12 @@ export class ServerError extends OhNetError {
     super("SERVER", String(code), message)
   }
 }
+
+/**
+ * @description 兜底错误, 用于 ohnet pipeline 未识别的异常包装
+ */
+export class UnknownError extends OhNetError {
+  constructor(error?: unknown) {
+    super("UNKNOWN", "-114514", "unknown", undefined, error)
+  }
+}
