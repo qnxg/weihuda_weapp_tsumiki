@@ -51,8 +51,8 @@
 
 通用函数位于 `src/utils/` 和 `src/libs/` 下, 其中较复杂内容放置在 `src/libs/` 下, 简单内容放置在 `src/utils/` 下, 当前定义函数有:
 
-- 请求框架 `/libs/request/`: 基于 `@xtwis/ohnet@1.0.1`, 以 `适配器 + 中间件管线` 组织请求, 对外暴露全局 `request` 实例
-  - 入口 `/libs/request/index.ts`: 以 `ENV.BASE_URL` 为根 URL, 按固定顺序挂载中间件 (`AuthMiddleware` -> `UnpackMiddleware` -> `ErrorClassifyMiddleware`); `RequestBuilder` 是 `OhNetBuilder` 的薄包装, 把 `get(path, params)` 的 `params` 类型放宽为 `unknown`, 兼容业务侧 `Request` interface
+- 请求框架 `/libs/request/`: 基于 `@xtwis/ohnet@2.0.0`, 以 `适配器 + 中间件管线` 组织请求, 对外暴露全局 `request` 实例
+  - 入口 `/libs/request/index.ts`: 以 `OhNetClient.create` 构造, 以 `ENV.BASE_URL` 为根 URL, 按固定顺序挂载中间件 (`AuthMiddleware` -> `UnpackMiddleware` -> `ErrorClassifyMiddleware`); 导出时以 `RequestClient` 类型把 `get(path, params)` 的 `params` 类型放宽为 `unknown`, 兼容业务侧 `Request` interface
   - 适配器 `adapter` (`/libs/request/adapter.ts`): 唯一接触 Taro.request 的适配器, 负责发起请求与网络 / 中断错误归一化为 `OhNetAdapterError`
   - 中间件 (`/libs/request/middleware/`): `AuthMiddleware` (`enter` 自动注入 Bearer token, `leave` 处理 `BusinessError`: `AUTH_TOKEN_INVALID` 触发 `controls.retry()` 走单飞刷新; `TFA` 触发双因子认证引导) / `UnpackMiddleware` (`leave` 解包 `{ code, data, msg }` 信封, code 为 `"OK"` 时把 `data` 提出来) / `ErrorClassifyMiddleware` (`leave` 把 5xx 归 `ServerError`, 状态码非 200 / 信封 code 非 `"OK"` 归 `BusinessError`)
   - 错误类型 (`/types/request/error.ts`): 继承 `@xtwis/ohnet` 的 `OhNetError`, 自定义 `BusinessError` / `ServerError` / `UnknownError` 三个子类; `BusinessError` 用于业务错误 (含 `code` / `data`), `ServerError` 用于服务器错误, `UnknownError` 用于兜底包装 (类型 `"UNKNOWN"`, 保留原始 `error` 在 `error` 字段)
